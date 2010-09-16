@@ -28,7 +28,7 @@
             'delete' // @todo hard delete should unlink() file.
         )
     );
-    echo $this->Infinitas->adminIndexHead($this, $filterOptions, $massActions);
+	echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 ?>
 <div class="table">
 	<?php
