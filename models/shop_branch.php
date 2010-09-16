@@ -50,7 +50,7 @@
 				)
 			),
 			'Manager' => array(
-				'className' => 'Management.User',
+				'className' => 'Users.User',
 				'foreignKey' => 'manager_id',
 				'fields' => array(
 					'Manager.id',

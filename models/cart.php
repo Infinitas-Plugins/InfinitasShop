@@ -29,7 +29,7 @@
 				)
 			),
 			'User' => array(
-				'className' => 'Management.User',
+				'className' => 'Users.User',
 				'fields' => array(
 					'User.id',
 					'User.username'

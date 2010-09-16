@@ -15,7 +15,7 @@
 				)
 			),
 			'User' => array(
-				'className' => 'Management.User',
+				'className' => 'Users.User',
 				'foreignKey' => 'user_id',
 				'fields' => array(
 				),
