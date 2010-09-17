@@ -13,7 +13,7 @@
 				$this->Session->setFlash(__('You must be logged in to checkout', true));
 				$this->redirect(
 					array(
-						'plugin' => 'management',
+						'plugin' => 'users',
 						'controller' => 'users',
 						'action' => 'login'
 					)

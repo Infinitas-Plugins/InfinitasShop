@@ -2,6 +2,8 @@
 	class Product extends ShopAppModel{
 		var $name = 'Product';
 
+		public $lockable = true;
+
 		var $belongsTo = array(
 			'Image' => array(
 				'className' => 'Shop.Image',
