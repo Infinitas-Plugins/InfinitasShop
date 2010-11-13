@@ -19,7 +19,6 @@
 
     echo $this->Form->create('Stock');
         echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
 	        ?>
 				<div class="data">
 					<?php
@@ -30,12 +29,9 @@
 				</div>
 				<div class="config">
 					<?php
-						echo $this->Design->niceBox();
 				        	echo $this->Form->input('stock');
-				        echo $this->Design->niceBoxEnd();
 				    ?>
 				</div>
 			<?php
-        echo $this->Design->niceBoxEnd();
     echo $this->Form->end();
 ?>

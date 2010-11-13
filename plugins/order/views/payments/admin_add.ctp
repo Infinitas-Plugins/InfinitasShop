@@ -20,7 +20,6 @@
 
     echo $this->Form->create('Payment');
         echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
         	?>
 				<div class="data">
 					<?php
@@ -29,16 +28,13 @@
 				</div>
 				<div class="config">
 					<?php
-        				echo $this->Design->niceBox();
         					?><h2><?php __('config'); ?></h2><?php
         					echo $this->Form->input('order_id');
         					echo $this->Form->input('user_id');
         					echo $this->Form->input('payment_method', array('value' => __('Bank transfer', true)));
-        				echo $this->Design->niceBoxEnd();
 					?>
 				</div>
 				<div class="clr">&nbsp;</div>
 			<?php
-        echo $this->Design->niceBoxEnd();
     echo $this->Form->end();
 ?>

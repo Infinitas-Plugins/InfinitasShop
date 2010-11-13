@@ -20,7 +20,6 @@
 
     echo $this->Form->create('Unit', array('type' => 'file'));
         echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
         	?>
 				<div class="data">
 					<?php
@@ -31,15 +30,12 @@
 				</div>
 				<div class="config">
 					<?php
-        				echo $this->Design->niceBox();
         					?><h2><?php __('config'); ?></h2><?php
 							echo $this->Form->input('symbol');
 							echo $this->Form->input('active');
-        				echo $this->Design->niceBoxEnd();
 					?>
 				</div>
 				<div class="clr">&nbsp;</div>
 			<?php
-        echo $this->Design->niceBoxEnd();
     echo $this->Form->end();
 ?>

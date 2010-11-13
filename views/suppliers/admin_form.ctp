@@ -20,7 +20,6 @@
 
     echo $this->Form->create('Supplier', array('type' => 'file'));
         echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
         	?>
 				<div class="data">
 					<?php
@@ -34,15 +33,12 @@
 				</div>
 				<div class="config">
 					<?php
-        				echo $this->Design->niceBox();
 							echo $this->Form->input('logo', array('type' => 'file'));
 							echo $this->Form->input('terms', array('empty' => __(Configure::read('Website.empty_select'), true), 'options' => (array)Configure::read('Shop.payment_terms')));
 							echo $this->Form->input('active');
-        				echo $this->Design->niceBoxEnd();
 					?>
 				</div>
 				<div class="clr">&nbsp;</div>
 			<?php
-        echo $this->Design->niceBoxEnd();
     echo $this->Form->end();
 ?>

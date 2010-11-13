@@ -20,8 +20,6 @@
 
     echo $this->Form->create('Order', array('type' => 'file'));
         echo $this->Infinitas->adminEditHead($this, array('cancel'));
-        echo '<br/><br/><br/><br/><br/><br/><br/><br/><br/>';
-        echo $this->Design->niceBox();
         	?>
         		<dl>
         			<dt><?php __('Order Number'); ?></dt>
@@ -43,9 +41,6 @@
         			<dt><?php __('Special Info'); ?></dt>
         				<dd><?php echo $order['Order']['special_instructions']; ?></dd>
 				</dl>
-        	<?php
-        echo $this->Design->niceBoxEnd();
-	?>
 	<div class="table">
 		<h2><?php __('Items Ordered'); ?></h2>
 	    <table class="listing" cellpadding="0" cellspacing="0">

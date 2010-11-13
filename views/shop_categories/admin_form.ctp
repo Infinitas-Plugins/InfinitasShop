@@ -20,7 +20,6 @@
 
     echo $this->Form->create('ShopCategory', array('type' => 'file'));
         echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
         	?>
 				<div class="data">
 					<?php
@@ -31,22 +30,18 @@
 				</div>
 				<div class="config">
 					<?php
-        				echo $this->Design->niceBox();
         					?><h2><?php __('Config'); ?></h2><?php
 							echo $this->Form->input('keywords');
 							echo $this->Form->input('parent_id', array('empty' => __('Root Category', true)));
 							echo $this->Form->input('ShopBranch');
 							echo $this->Form->input('active');
-						echo $this->Design->niceBoxEnd();
-        				echo $this->Design->niceBox();
+
         					?><h2><?php __('Image'); ?></h2><?php
 							echo $this->Form->input('Image.image', array('label' => __('New image', true), 'type' => 'file'));
 							echo $this->Form->input('image_id', array('label' => __('Exsisting image', true), 'empty' => __(Configure::read('Website.empty_select'), true)));
-        				echo $this->Design->niceBoxEnd();
+        				
 					?>
 				</div>
-				<div class="clr">&nbsp;</div>
 			<?php
-        echo $this->Design->niceBoxEnd();
     echo $this->Form->end();
 ?>

@@ -19,26 +19,19 @@
      */
 
     echo $this->Form->create('Status');
-        echo $this->Infinitas->adminEditHead();
-        echo $this->Design->niceBox();
-        	?>
-				<div class="data">
-					<?php
-						echo $this->Form->input('id');
-						echo $this->Form->input('name', array('class' => 'title'));
-						echo $this->Shop->wysiwyg('Status.description');
-					?>
-				</div>
-				<div class="config">
-					<?php
-        				echo $this->Design->niceBox();
-        					?><h2><?php __('Config'); ?></h2><?php
-        					echo __('There are no config options available', true);
-        				echo $this->Design->niceBoxEnd();
-					?>
-				</div>
-				<div class="clr">&nbsp;</div>
-			<?php
-        echo $this->Design->niceBoxEnd();
+        echo $this->Infinitas->adminEditHead(); ?>
+			<div class="data">
+				<?php
+					echo $this->Form->input('id');
+					echo $this->Form->input('name', array('class' => 'title'));
+					echo $this->Shop->wysiwyg('Status.description');
+				?>
+			</div>
+			<div class="config">
+				<?php
+						?><h2><?php __('Config'); ?></h2><?php
+						echo __('There are no config options available', true);
+				?>
+			</div><?php
     echo $this->Form->end();
 ?>
