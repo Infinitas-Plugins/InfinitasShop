@@ -16,7 +16,7 @@ class ShopUnitFixture extends CakeTestFixture {
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'product_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
 	var $records = array(
