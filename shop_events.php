@@ -17,7 +17,7 @@
 			);
 		}
 
-		public function onSlugUrl(&$event, $data){
+		public function onSlugUrl($event, $data){
 			switch($data['type']){
 				case 'products':
 					return array(
@@ -41,22 +41,22 @@
 			} // switch
 		}
 
-		public function onSetupConfigEnd(&$event){
+		public function onSetupConfigEnd($event){
 			Configure::load('Shop.config');
 		}
 
-		public function onSetupThemeLayout(&$event, $data){
+		public function onSetupThemeLayout($event, $data){
 			if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index'){
 				//return 'checkout';
 			}
 		}
 
-		public function onSetupTabs(&$event, $data){
+		public function onSetupTabs($event, $data){
 			echo 'yey: shop event';
 			exit;
 		}
 
-		public function onUserLogin(&$event, $data){
+		public function NOonUserLogin($event, $data){
 			App::import('CakeSession');
 			$this->Session = new CakeSession();
 
