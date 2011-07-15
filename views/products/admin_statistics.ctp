@@ -68,7 +68,7 @@
             foreach ($products as $product){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($product['Product']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($product); ?>&nbsp;</td>
                         <td>
 							<?php
 								echo $this->Html->image(

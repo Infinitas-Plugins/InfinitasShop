@@ -66,7 +66,7 @@
             foreach ($specials as $special){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($special['Special']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($special); ?>&nbsp;</td>
                         <td>
 							<?php echo $this->Shop->getImage($special); ?>&nbsp;
 						</td>

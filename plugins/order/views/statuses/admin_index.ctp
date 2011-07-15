@@ -56,7 +56,7 @@
             foreach ($statuses as $status){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($status['Status']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($status); ?>&nbsp;</td>
 						<td>
 							<?php
 								echo $this->Html->link(

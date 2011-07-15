@@ -49,7 +49,7 @@
 					<div class="width"><span><?php echo __('Width', true), ':</span>', $image['Image']['width'], 'px'; ?></div>
 					<div class="height"><span><?php echo __('Height', true), ':</span>', $image['Image']['height'], 'px'; ?></div>
 					<div class="ext"><span><?php echo __('Ext', true), ':</span>', $image['Image']['ext']; ?></div>
-					<div class="check"><?php echo $this->Form->checkbox($image['Image']['id']); ?></div>
+					<div class="check"><?php echo $this->Infinitas->massActionCheckBox($image); ?></div>
 				</div>
 			<?php
 		}

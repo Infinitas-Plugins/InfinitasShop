@@ -66,7 +66,7 @@
             foreach ($branches as $branch){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($branch['ShopBranch']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($branch); ?>&nbsp;</td>
                         <td>
 							<?php
 								echo $this->Html->image(

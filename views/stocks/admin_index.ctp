@@ -50,7 +50,7 @@
             foreach ($stocks as $stock){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($stock['Stock']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($stock); ?>&nbsp;</td>
                         <td>
 							<?php
 								echo $this->Html->link(

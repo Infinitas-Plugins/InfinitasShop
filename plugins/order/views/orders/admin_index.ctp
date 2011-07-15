@@ -59,7 +59,7 @@
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td>
                         	<?php
-                        		echo $this->Form->checkbox($order['Order']['id']);
+                        		echo $this->Infinitas->massActionCheckBox($order);
                         		echo $this->Form->hidden('Save.'.$order['Order']['id'].'.id', array('value' => $order['Order']['id']));
                         	?>&nbsp;
                         </td>

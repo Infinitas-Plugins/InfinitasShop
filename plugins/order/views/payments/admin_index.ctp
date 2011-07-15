@@ -53,7 +53,7 @@
             foreach ($payments as $payment){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($payment['Payment']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($payment); ?>&nbsp;</td>
 						<td>
 							<?php
 								echo $this->Html->link(

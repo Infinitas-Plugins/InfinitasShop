@@ -47,7 +47,7 @@
             foreach ($wishlists as $wishlist){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($wishlist['Wishlist']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($wishlist); ?>&nbsp;</td>
 						<td>
 							<?php
 								echo $this->Html->link(

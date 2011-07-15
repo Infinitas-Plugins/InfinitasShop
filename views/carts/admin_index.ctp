@@ -49,7 +49,7 @@
             foreach ($carts as $cart){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($cart['Cart']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($cart); ?>&nbsp;</td>
 						<td>
 							<?php
 								echo $this->Html->link(

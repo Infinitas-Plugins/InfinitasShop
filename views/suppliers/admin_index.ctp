@@ -68,7 +68,7 @@
             foreach ($suppliers as $supplier){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($supplier['Supplier']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($supplier); ?>&nbsp;</td>
                         <td>
 							<?php
 								echo $this->Html->image(

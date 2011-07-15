@@ -62,7 +62,7 @@
             foreach ($categories as $category){
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-                        <td><?php echo $this->Form->checkbox($category['ShopCategory']['id']); ?>&nbsp;</td>
+                        <td><?php echo $this->Infinitas->massActionCheckBox($category); ?>&nbsp;</td>
                         <td>
 							<?php
 								echo $this->Html->image(
