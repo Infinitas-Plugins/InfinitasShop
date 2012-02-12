@@ -60,13 +60,7 @@
 		}
 
 		function admin_add(){
-			if (!empty($this->data)) {
-				$this->ShopBranch->create();
-				if ($this->ShopBranch->save($this->data)) {
-					$this->Session->setFlash('Your branch has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add();
 
 			$branchDetails = $this->_checkCanAddEdit();
 			$managers = $this->ShopBranch->getManagers();
@@ -74,18 +68,7 @@
 		}
 
 		function admin_edit($id = null){
-			if (!$id) {
-				$this->Session->setFlash(__('That branch could not be found', true), true);
-				$this->redirect($this->referer());
-			}
-
-			if (!empty($this->data)) {
-				$this->ShopBranch->create();
-				if ($this->ShopBranch->save($this->data)) {
-					$this->Session->setFlash('Your branch has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add($id);
 
 			$branchDetails = $this->ShopBranch->BranchDetail->find('list');
 			$managers = $this->ShopBranch->getManagers();
@@ -99,8 +82,12 @@
 		function _checkCanAddEdit(){
 			$branchDetails = $this->ShopBranch->_getAvailableBranches();
 			if (empty($branchDetails)){
-				$this->Session->setFlash(__('Current branches are setup, add more in contacts first', true));
-				$this->redirect($this->referer());
+				$this->notice(
+					__('Current branches are setup, add more in contacts first', true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 
 			return $branchDetails;

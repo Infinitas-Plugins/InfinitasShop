@@ -26,8 +26,12 @@
 			}
 
 			if(empty($wishlists)){
-				$this->Session->setFlash(__('Your wishlist is empty', true));
-				$this->redirect(array('controller' => 'products', 'action' => 'index'));
+				$this->notice(
+					__('Your wishlist is empty', true),
+					array(
+						'redirect' => array('controller' => 'products', 'action' => 'index')
+					)
+				);
 			}
 
 			$this->set(compact('wishlists', 'amounts'));
@@ -35,8 +39,7 @@
 
 		function adjust(){
 			if(!isset($this->params['named']['product_id'])){
-				$this->Session->setFlash(__('Invalid product selected'), true);
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			$this->params['named']['quantity'] = 0;
@@ -62,8 +65,7 @@
 			);
 
 			if(empty($product) || $product['Product']['active'] == false){
-				$this->Session->setFlash(__('That product does not exsist'), true);
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			if(isset($product['Special']) && !empty($product['Special'][0])){
@@ -79,8 +81,7 @@
 
 		function move($product_id = null){
 			if(!$product_id){
-				$this->Session->setFlash(__('Please select the product to move', true));
-				$this->redirect(array('action' => 'index'));
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			$product = $this->Wishlist->Product->find(
@@ -121,8 +122,12 @@
 				);
 
 				if(!$this->Wishlist->deleteAll($deleteConditions)){
-					$this->Session->setFlash(__('There was a problem moving the product', true));
-					$this->redirect($this->referer());
+					$this->notice(
+						__('There was a problem moving the product', true),
+						array(
+							'redirect' => true
+						)
+					);
 				}
 
 				$this->Shop->dbCartSave($Cart, $product);

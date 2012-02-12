@@ -47,11 +47,9 @@
 			$data[$this->modelClass] = $this->data['Save'];
 
 			if($this->{$this->modelClass}->saveAll($data[$this->modelClass])){
-				$this->Session->setFlash(__('All items updated', true));
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeSaved();
 			}
 
-			$this->Session->setFlash(__('There was a problem updating the data', true));
-			$this->redirect($this->referer());
+			$this->Infinitas->noticeNotSaved();
 		}
 	}

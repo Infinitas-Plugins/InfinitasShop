@@ -50,8 +50,12 @@
 
 		function search(){
 			if(!isset($this->data['Search']['search'])){
-				$this->Session->setFlash(__('Please enter your search term', true));
-				$this->redirect($this->referer());
+				$this->notice(
+					__('Please enter your search term', true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 
 			$this->paginate = array(
@@ -95,8 +99,7 @@
 
 		function view(){
 			if (!isset($this->params['slug'])) {
-				$this->Session->setFlash( __('The product could not be found', true) );
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			$conditions = array(
@@ -130,8 +133,7 @@
 			);
 
 			if(empty($product)){
-				$this->Session->setFlash( __('You have selected an invalid product', true) );
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			$tabs = array(
@@ -269,13 +271,7 @@
 		}
 
 		function admin_add(){
-			if (!empty($this->data)) {
-				$this->Product->create();
-				if ($this->Product->saveAll($this->data)) {
-					$this->Session->setFlash('Your product has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add();
 
 			$shopCategories = $this->Product->ShopCategory->generatetreelist(null, null, null, '_');
 			$units = $this->Product->Unit->find('list');
@@ -286,32 +282,7 @@
 		}
 
 		function admin_edit($id = null){
-			if (!$id) {
-				$this->Session->setFlash(__('That product could not be found', true), true);
-				$this->redirect($this->referer());
-			}
-
-			if (!empty($this->data)) {
-				if ($this->Product->saveAll($this->data)) {
-					$this->Session->setFlash('Your product has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
-
-			if ($id && empty($this->data)) {
-				$this->data = $this->Product->find(
-					'first',
-					array(
-						'conditions' => array(
-							'Product.id' => $id
-						),
-						'contain' => array(
-							'ShopBranch',
-							'ShopCategory'
-						)
-					)
-				);
-			}
+			parent::admin_edit($id);
 
 			$units          = $this->Product->Unit->find('list');
 			$suppliers      = $this->Product->Supplier->find('list');

@@ -126,8 +126,7 @@
 			if (!empty($this->data)) {
 				$this->ShopCategory->create();
 				if ($this->ShopCategory->saveAll($this->data)) {
-					$this->Session->setFlash('Your category has been saved.');
-					$this->redirect(array('action' => 'index'));
+					$this->Infinitas->noticeSaved();
 				}
 			}
 
@@ -139,14 +138,12 @@
 
 		function admin_edit($id = null){
 			if (!$id) {
-				$this->Session->setFlash(__('That category could not be found', true), true);
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			if (!empty($this->data)) {
 				if ($this->ShopCategory->saveAll($this->data)) {
-					$this->Session->setFlash('Your category has been saved.');
-					$this->redirect(array('action' => 'index'));
+					$this->Infinitas->noticeSaved();
 				}
 			}
 

@@ -37,14 +37,22 @@
 		function checkout(){
 			$user_id = $this->Session->read('Auth.User.id');
 			if($user_id < 1){
-				$this->Session->setFlash(__('You need to be logged in to checkout', true));
-				$this->redirect(array('plugin' => 'shop', 'controller' => 'carts', 'action' => 'index'));
+				$this->notice(
+					__('You need to be logged in to checkout', true),
+					array(
+						'redirect' => array('plugin' => 'shop', 'controller' => 'carts', 'action' => 'index')
+					)
+				);
 			}
 
 			$cartItems = ClassRegistry::init('Shop.Cart')->getCartData($user_id);
 			if(empty($cartItems)){
-				$this->Session->setFlash(__('You dont have any products', true));
-				$this->redirect(array('plugin' => 'shop', 'controller' => 'products', 'action' => 'dashboard'));
+				$this->notice(
+					__('You dont have any products', true),
+					array(
+						'redirect' => array('plugin' => 'shop', 'controller' => 'products', 'action' => 'dashboard')
+					)
+				);
 			}
 
 			$this->data['Order']['status_id'] = $this->Order->Status->getFirst();
@@ -62,19 +70,27 @@
 
 			if($this->Order->saveAll($this->data)){
 				ClassRegistry::init('Shop.Cart')->clearCart($user_id);
-				$this->Session->setFlash(__('Your order has been completed and now requires payment', true));
-				$this->redirect(array('action' => 'pay'));
+				$this->notice(
+					__('Your order has been completed and now requires payment', true),
+					array('action' => 'pay')
+				);
 			}
 
-			$this->Session->setFlash(__('Your order has been completed and now requires payment', true));
-			$this->redirect(array('action' => 'pay'));
+			$this->notice(
+				__('Your order has been completed and now requires payment', true),
+				array('action' => 'pay')
+			);
 		}
 
 		function pay(){
 			$orders = $this->Order->getPendingOrders($this->Session->read('Auth.User.id'));
 			if(empty($orders)){
-				$this->Session->setFlash(__('It seems you do not have any orders that require payment', true));
-				$this->redirect(array('action' => 'index'));
+				$this->notice(
+					__('It seems you do not have any orders that require payment', true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 
 			$paymentMethods = Configure::read('Shop.payment_methods');
@@ -109,13 +125,20 @@
 
                 // @todo send email here about the payment
 
-                $this->Session->setFlash(__( 'Payment has been credited and items are now being processed', true));
-                $this->redirect(array('plugin' => 'sales', 'controller' => 'orders', 'action' => 'view', $this->params['url']['Extra1']));
+                $this->notice(
+					__( 'Payment has been credited and items are now being processed', true),
+					array(
+						'redirect' => array('plugin' => 'sales', 'controller' => 'orders', 'action' => 'view', $this->params['url']['Extra1'])
+					)
+				);
             }
-            else{
-                $this->Session->setFlash(__('There was a problem with the payment, please contact admin', true));
-                $this->redirect(array( 'plugin' => 'sales', 'controller' => 'orders'));
-            }
+
+			$this->notice(
+				__('There was a problem with the payment, please contact admin', true),
+				array(
+					'redirect' => array( 'plugin' => 'sales', 'controller' => 'orders')
+				)
+			);
         }
 
 		function admin_index(){
@@ -182,8 +205,7 @@
 
 		function admin_view($id = null){
 			if(!$id){
-				$this->Session->setFlash(__('Please select an order to view'));
-				$this->redirect($this->referer());
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			$order = $this->Order->find(

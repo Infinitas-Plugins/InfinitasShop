@@ -76,13 +76,7 @@
 		}
 
 		function admin_add(){
-			if (!empty($this->data)) {
-				$this->Special->create();
-				if ($this->Special->saveAll($this->data)) {
-					$this->Session->setFlash('Your special has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add();
 
 			$shopBranches = $this->Special->ShopBranch->getList();
 			$products = $this->Special->Product->find('list');
@@ -118,21 +112,7 @@
 		}
 
 		function admin_edit($id = null){
-			if (!$id) {
-				$this->Session->setFlash(__('That special could not be found', true), true);
-				$this->redirect($this->referer());
-			}
-
-			if (!empty($this->data)) {
-				if ($this->Special->saveAll($this->data)) {
-					$this->Session->setFlash('Your special has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
-
-			if ($id && empty($this->data)) {
-				$this->data = $this->Special->read(null, $id);
-			}
+			parent::admin_edit($id);
 
 			$shopBranches = $this->Special->ShopBranch->getList();
 			$products = $this->Special->Product->find('list');

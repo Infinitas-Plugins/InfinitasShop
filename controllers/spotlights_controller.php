@@ -73,13 +73,7 @@
 		}
 
 		function admin_add(){
-			if (!empty($this->data)) {
-				$this->Spotlight->create();
-				if ($this->Spotlight->saveAll($this->data)) {
-					$this->Session->setFlash('Your spotlight has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add();
 
 			$shopBranches = $this->Spotlight->ShopBranch->getList();
 			$products = $this->Spotlight->Product->find('list');
@@ -88,21 +82,7 @@
 		}
 
 		function admin_edit($id = null){
-			if (!$id) {
-				$this->Session->setFlash(__('That spotlight could not be found', true), true);
-				$this->redirect($this->referer());
-			}
-
-			if (!empty($this->data)) {
-				if ($this->Spotlight->saveAll($this->data)) {
-					$this->Session->setFlash('Your spotlight has been saved.');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
-
-			if ($id && empty($this->data)) {
-				$this->data = $this->Spotlight->read(null, $id);
-			}
+			parent::admin_edit($id);
 
 			$shopBranches = $this->Spotlight->ShopBranch->getList();
 			$products = $this->Spotlight->Product->find('list');

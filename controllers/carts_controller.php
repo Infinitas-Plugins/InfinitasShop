@@ -10,27 +10,37 @@
 			$userId = $this->Session->read('Auth.User.id');
 
 			if(!$userId){
-				$this->Session->setFlash(__('You must be logged in to checkout', true));
-				$this->redirect(
+				$this->notice(
+					__('You must be logged in to checkout', true),
 					array(
-						'plugin' => 'users',
-						'controller' => 'users',
-						'action' => 'login'
+						'redirect' => array(
+							'plugin' => 'users',
+							'controller' => 'users',
+							'action' => 'login'
+						)
 					)
 				);
 			}
 
 			$addresses = ClassRegistry::init('Management.Address')->getAddressByUser($userId);
 			if(empty($addresses)){
-				$this->Session->setFlash(__('Please setup your address before checking out', true));
-				$this->redirect(array('plugin' => 'management', 'controller' => 'addresses', 'action' => 'add'));
+				$this->notice(
+					__('Please setup your address before checking out', true),
+					array(
+						'redirect' => array('plugin' => 'management', 'controller' => 'addresses', 'action' => 'add')
+					)
+				);
 			}
 
 			$carts = $this->Cart->getCartData($userId);
 
 			if(empty($carts)){
-				$this->Session->setFlash(__('Your cart is empty', true));
-				$this->redirect(array('plugin' => 'shop', 'controller' => 'product', 'action' => 'dashboard'));
+				$this->notice(
+					__('Your cart is empty', true),
+					array(
+						'redirect' => array('plugin' => 'shop', 'controller' => 'product', 'action' => 'dashboard')
+					)
+				);
 			}
 
 			$amounts['sub_total'] = array_sum((array)Set::extract('/Cart/sub_total', $carts));
@@ -53,8 +63,7 @@
 
 		function adjust(){
 			if(!isset($this->params['named']['product_id'])){
-				$this->Session->setFlash(__('Invalid product selected'), true);
-				$this->redirect(array('plugin' => 'shop', 'controller' => 'product', 'action' => 'dashboard'));
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			if(!isset($this->params['named']['quantity'])){
@@ -82,8 +91,7 @@
 			);
 
 			if(empty($product) || $product['Product']['active'] == false){
-				$this->Session->setFlash(__('That product does not exsist'), true);
-				$this->redirect(array('plugin' => 'shop', 'controller' => 'product', 'action' => 'dashboard'));
+				$this->Infinitas->noticeInvalidRecord();
 			}
 
 			if(isset($product['Special']) && !empty($product['Special'][0])){
@@ -101,14 +109,22 @@
 			if(isset($this->data['Cart']['shipping_method']) && !empty($this->data['Cart']['shipping_method'])){
 				$this->Session->write('Shop.shipping_method', $this->data['Cart']['shipping_method']);
 
-				$this->Session->setFlash(__('Shipping method updated', true));
-				$this->redirect(array('action' => 'index'));
+				$this->notice(
+					__('Shipping method updated', true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 
 			$methods = $this->Session->read('Shop.shipping_methods');
 			if(count($methods) < 2){
-				$this->Session->setFlash(__('There are no other options at this time', true));
-				$this->redirect($this->referer());
+				$this->notice(
+					__('There are no other options at this time', true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 		}
 

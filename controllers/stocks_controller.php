@@ -48,8 +48,7 @@
 				}
 
 				if ($this->Stock->save($this->data)) {
-					$this->Session->setFlash('The stock has been updated.');
-					$this->redirect(array('action' => 'index'));
+					$this->Infinitas->noticeSaved();
 				}
 			}
 

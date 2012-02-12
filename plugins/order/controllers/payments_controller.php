@@ -26,13 +26,7 @@
 		}
 
 		function admin_add(){
-			if (!empty($this->data)) {
-				$this->Payment->create();
-				if ($this->Payment->saveAll($this->data)) {
-					$this->Session->setFlash('The manual payment has been entered');
-					$this->redirect(array('action' => 'index'));
-				}
-			}
+			parent::admin_add();
 
 			$orders = $this->Payment->Order->find('list');
 			$users = $this->Payment->User->find('list');

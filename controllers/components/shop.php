@@ -7,14 +7,14 @@
 
 		function sessionCartSave($Model, $product){
 			$datas = $this->Controller->Session->read($Model->alias.'.Temp'.$Model->alias);
-
+			$message = false;
 			if(!empty($datas)){
 				$done = false;
 				foreach($datas as &$data){
 					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']){
 						if($data[$Model->alias]['quantity'] == 0){
 							unset($data);
-							$this->Controller->Session->setFlash(__('Product was removed from the '.$Model->alias, true));
+							$message = __('Product was removed from the '.$Model->alias, true);
 							$done = true;
 						}
 						else{
@@ -22,7 +22,7 @@
 							$data[$Model->alias]['price']     = $product['Product']['price'];
 							$data[$Model->alias]['name']      = $product['Product']['name'];
 							$data[$Model->alias]['sub_total'] = $product['Product']['price'] * $data[$Model->alias]['quantity'];
-							$this->Controller->Session->setFlash(__('Your '.$Model->alias.' was updated', true));
+							$message = __('Your '.$Model->alias.' was updated', true);
 							$done = true;
 						}
 					}
@@ -42,7 +42,7 @@
 				}
 
 				$this->Controller->Session->write($Model->alias.'.Temp'.$Model->alias, $datas);
-				$this->Controller->redirect($this->Controller->referer());
+				$this->Controller->notice($message, array('redirect' => true));
 			}
 
 			$currentCart[0][$Model->alias]['product_id'] = $this->Controller->params['named']['product_id'];
@@ -55,8 +55,12 @@
 			$this->Controller->Session->write($Model->alias.'.Temp'.$Model->alias, $currentCart);
 
 			$this->_updateAddCount($product['Product']);
-			$this->Controller->Session->setFlash(__('The product was added to your '.$Model->alias, true));
-			$this->Controller->redirect($this->Controller->referer());
+			$this->Controller->notice(
+				__('The product was added to your '.$Model->alias, true),
+				array(
+					'redirect' => true
+				)
+			);
 		}
 
 		function dbCartSave($Model,$product){
@@ -72,14 +76,13 @@
 			);
 
 			if(!empty($currentCart)){
-				if($this->Controller->params['named']['quantity'] == 0){
-					if(isset($currentCart[$Model->alias]['id']) && $Model->delete($currentCart[$Model->alias]['id'])){
-						$this->Controller->Session->setFlash(__('Product was removed from the '.$Model->alias, true));
-					}
-					else{
-						$this->Controller->Session->setFlash(__('Something went wrong', true));
+				$message = __('Something went wrong', true);
+				if($this->Controller->params['named']['quantity'] == 0) {
+					if(isset($currentCart[$Model->alias]['id']) && $Model->delete($currentCart[$Model->alias]['id'])) {
+						$message = __('Product was removed from the '.$Model->alias, true);
 					}
 				}
+				
 				else{
 					$currentCart[$Model->alias]['quantity'] += $this->Controller->params['named']['quantity'];
 					$currentCart[$Model->alias]['deleted'] = 0;
@@ -88,10 +91,18 @@
 					$currentCart[$Model->alias]['name'] = $product['Product']['name'];
 
 					if($Model->save($currentCart)){
-						$this->Controller->Session->setFlash(__('Your '.$Model->alias.' was updated', true));
+						$message = __('Your '.$Model->alias.' was updated', true);
 					}
 				}
-				$this->Controller->redirect(array('plugin' => 'shop', 'controller' => Inflector::pluralize(strtolower($Model->alias)), 'action' => 'index'));
+
+				$this->Controller->notice(
+					$message,
+					array(
+						'plugin' => 'shop',
+						'controller' => Inflector::pluralize(strtolower($Model->alias)),
+						'action' => 'index'
+					)
+				);
 			}
 
 			$cart[$Model->alias]['product_id'] = $this->Controller->params['named']['product_id'];
@@ -103,8 +114,12 @@
 			$Model->create();
 			if($Model->save($cart)){
 				$this->_updateAddCount($Model, $product['Product']);
-				$this->Controller->Session->setFlash(__('The product was added to your '.$Model->alias, true));
-				$this->Controller->redirect($this->Controller->referer());
+				$this->Controller->notice(
+					__('The product was added to your '.$Model->alias, true),
+					array(
+						'redirect' => true
+					)
+				);
 			}
 		}
 
