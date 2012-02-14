@@ -1,14 +1,14 @@
 <?php
 	class ShopAppController extends AppController {
-		var $helpers = array(
+		public $helpers = array(
 			'Shop.Shop'
 		);
 
-		var $components = array(
+		public $components = array(
 			'Shop.Shop'
 		);
 
-		function beforeRender(){
+		public function beforeRender(){
 			parent::beforeRender();
 			$user_id = $this->Session->read('Auth.User.id');
 
@@ -20,10 +20,9 @@
 			}
 
 			$this->set(compact('usersCart'));
-
 		}
 
-		function beforeFilter(){
+		public function beforeFilter(){
 			parent::beforeFilter();
 			Configure::write('Rating.time_limit', false);
 

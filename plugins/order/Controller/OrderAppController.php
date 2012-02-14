@@ -1,18 +1,14 @@
 <?php
 	class OrderAppController extends AppController {
-		var $helpers = array(
+		public $helpers = array(
 			'Shop.Shop',
 			'Filter.Filter',
 			'Data.Csv'
 		);
 
-		var $components = array(
+		public $components = array(
 			'Shop.Shop'
 		);
-
-		function beforeRender(){
-			parent::beforeRender();
-		}
 
 		function beforeFilter(){
 			parent::beforeFilter();
