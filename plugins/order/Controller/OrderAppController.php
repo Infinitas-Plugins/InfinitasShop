@@ -24,6 +24,7 @@
 			}
 			Configure::write('Shop.payment_methods', $gateways);
 			Configure::write('Order.notify_url', 'http://'.env('SERVER_NAME').$this->webroot.'order/orders/recive_payment');
+			return true;
 		}
 
 		function admin_mass() {

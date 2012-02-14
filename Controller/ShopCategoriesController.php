@@ -7,10 +7,6 @@
 			'Filter.Filter'
 		);
 
-		function beforeFilter(){
-			parent::beforeFilter();
-		}
-
 		function index(){
 			$conditions = array(
 				'ShopCategory.active' => 1,
