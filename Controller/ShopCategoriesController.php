@@ -113,7 +113,7 @@
 			$filterOptions['fields'] = array(
 				'name',
 				'active' => (array)Configure::read('CORE.active_options'),
-				'parent_id' => $this->ShopCategory->generatetreelist(null, null, null, '_')
+				'parent_id' => $this->ShopCategory->generateTreeList(null, null, null, '_')
 			);
 			$this->set(compact('categories','filterOptions'));
 		}
@@ -126,7 +126,7 @@
 				}
 			}
 
-			$parents = $this->ShopCategory->generatetreelist(null, null, null, '_');
+			$parents = $this->ShopCategory->generateTreeList(null, null, null, '_');
 			$images = $this->ShopCategory->Image->getImagePaths();
 			$branches = $this->ShopCategory->ShopBranch->find('list');
 			$this->set(compact('parents', 'images', 'branches'));
@@ -147,7 +147,7 @@
 				$this->data = $this->ShopCategory->read(null, $id);
 			}
 
-			$parents = $this->ShopCategory->generatetreelist(null, null, null, '_');
+			$parents = $this->ShopCategory->generateTreeList(null, null, null, '_');
 			$images = $this->ShopCategory->Image->getImagePaths();
 			$shopBranches = $this->ShopCategory->ShopBranch->find('list');
 			$this->set(compact('parents', 'images', 'shopBranches'));

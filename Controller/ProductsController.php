@@ -219,7 +219,7 @@
 			$filterOptions = $this->Filter->filterOptions;
 			$filterOptions['fields'] = array(
 				'name',
-				'category_id' => $this->Product->ShopCategory->generatetreelist(null, null, null, '_'),
+				'category_id' => $this->Product->ShopCategory->generateTreeList(null, null, null, '_'),
 				'supplier_id' => $this->Product->Supplier->find('list'),
 				'unit_id' => $this->Product->Unit->find('list'),
 				'active' => (array)Configure::read('CORE.active_options')
@@ -262,7 +262,7 @@
 			$filterOptions = $this->Filter->filterOptions;
 			$filterOptions['fields'] = array(
 				'name',
-				'category_id' => $this->Product->ShopCategory->generatetreelist(null, null, null, '_'),
+				'category_id' => $this->Product->ShopCategory->generateTreeList(null, null, null, '_'),
 				'supplier_id' => $this->Product->Supplier->find('list'),
 				'unit_id' => $this->Product->Unit->find('list'),
 				'active' => (array)Configure::read('CORE.active_options')
@@ -273,7 +273,7 @@
 		function admin_add(){
 			parent::admin_add();
 
-			$shopCategories = $this->Product->ShopCategory->generatetreelist(null, null, null, '_');
+			$shopCategories = $this->Product->ShopCategory->generateTreeList(null, null, null, '_');
 			$units = $this->Product->Unit->find('list');
 			$suppliers = $this->Product->Supplier->find('list');
 			$shopBranches = $this->Product->ShopBranch->getList();
@@ -288,7 +288,7 @@
 			$suppliers      = $this->Product->Supplier->find('list');
 			$images         = $this->Product->Image->getImagePaths();
 			$shopBranches   = $this->Product->ShopBranch->getList();
-			$shopCategories = $this->Product->ShopCategory->generatetreelist(null, null, null, '_');
+			$shopCategories = $this->Product->ShopCategory->generateTreeList(null, null, null, '_');
 			$this->set(compact('shopCategories', 'units', 'suppliers', 'shopBranches', 'images'));
 		}
 	}
