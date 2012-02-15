@@ -20,22 +20,20 @@
 	 * Redistributions of files must retain the above copyright notice.
 	 */
 
-	class ShopBranch extends ShopAppModel{
-		var $name = 'ShopBranch';
-
+	class ShopBranch extends ShopAppModel {
 		/**
 		 * group ids of possible managers.
 		 * @var array
 		 */
-		var $managerGroups = array(
+		public $managerGroups = array(
 			1 // admin
 		);
 
-		var $actsAs = array(
+		public $actsAs = array(
 			'Libs.SoftDeletable'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'BranchDetail' => array(
 				'className' => 'Contact.Branch',
 				'foreignKey' => 'branch_id',
@@ -59,7 +57,7 @@
 			),
 		);
 
-		var $hasAndBelongsToMany = array(
+		public $hasAndBelongsToMany = array(
 			'ShopCategory' => array(
 				'className' => 'Shop.ShopCategory',
 				'foreignKey' => 'category_id',
@@ -167,7 +165,7 @@
 			)
 		);
 
-		function __construct($id = false, $table = null, $ds = null) {
+		public function __construct($id = false, $table = null, $ds = null) {
 			parent::__construct($id, $table, $ds);
 
 			$this->validate = array(
@@ -185,7 +183,7 @@
 		 *
 		 * @return list of users.
 		 */
-		function getManagers(){
+		public function getManagers(){
 			$managers = $this->Manager->find(
 				'list',
 				array(
@@ -209,7 +207,7 @@
 		 *
 		 * @return empty array or array of available branches
 		 */
-		function _getAvailableBranches(){
+		public function _getAvailableBranches(){
 			$ids = $this->find(
 				'list',
 				array(
@@ -232,7 +230,7 @@
 			return $branchDetails;
 		}
 
-		function branchList(){
+		public function branchList(){
 			$branches = $this->find(
 				'all',
 				array(
@@ -257,7 +255,7 @@
 			return $list;
 		}
 
-		function getList(){
+		public function getList(){
 			$ids = $this->find(
 				'list',
 				array(

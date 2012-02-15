@@ -1,8 +1,6 @@
 <?php
-	class Payment extends OrderAppModel{
-		var $name = 'Payment';
-
-		var $belongsTo = array(
+	class Payment extends OrderAppModel {
+		public $belongsTo = array(
 			'Order' => array(
 				'className' => 'Order.Order',
 				'foreignKey' => 'order_id',

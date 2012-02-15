@@ -1,25 +1,16 @@
 <?php
 	class Wishlist extends ShopAppModel{
-		var $name = 'Wishlist';
-
-		/**
-		 * SoftDeletable does not auto load for non admin
-		 *
-		 * @var unknown_type
-		 */
-		var $actsAs = array(
-			'Libs.SoftDeletable'
-		);
+		public $name = 'Wishlist';
 
 		/**
 		 * sub_total is the line total
 		 * @var unknown_type
 		 */
-		var $virtualFields = array(
+		public $virtualFields = array(
 			'sub_total' => 'Wishlist.quantity * Wishlist.price'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Product' => array(
 				'className' => 'Shop.Product',
 				'fields' => array(
@@ -37,7 +28,7 @@
 			)
 		);
 
-		function getWishlistData($user_id = null){
+		public function getWishlistData($user_id = null){
 			if((int)$user_id > 0){
 				$cacheName = cacheName('wishlist', $user_id);
 				$wishlistData = Cache::read($cacheName, 'shop');
@@ -71,15 +62,15 @@
 			return (array)$wishlistData;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('CakeSession');
 			$this->Session = new CakeSession();
 

@@ -1,17 +1,15 @@
 <?php
-	class Special extends ShopAppModel{
-		var $name = 'Special';
-
-		var $virtualFields = array(
+	class Special extends ShopAppModel {
+		public $virtualFields = array(
 			'start' => 'CONCAT(Special.start_date, " ", Special.start_time)',
 			'end'   => 'CONCAT(Special.end_date, " ", Special.end_time)'
 		);
 
-		var $order = array(
+		public $order = array(
 			'end' => 'ASC'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Image' => array(
 				'className' => 'Shop.Image',
 				'foreignKey' => 'image_id',
@@ -48,7 +46,7 @@
 			)
 		);
 
-		var $hasAndBelongsToMany = array(
+		public $hasAndBelongsToMany = array(
 			'ShopBranch' => array(
 				'className' => 'Shop.ShopBranch',
 				'foreignKey' => 'branch_id',
@@ -69,7 +67,7 @@
 			),
 		);
 
-		function getSpecials($limit = 10){
+		public function getSpecials($limit = 10){
 			$cacheName = cacheName('products_specials', $limit);
 			$specials = Cache::read($cacheName, 'shop');
 			if($specials !== false){
@@ -109,11 +107,11 @@
 			return $specials;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 

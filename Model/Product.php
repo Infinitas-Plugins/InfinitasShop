@@ -1,10 +1,8 @@
 <?php
-	class Product extends ShopAppModel{
-		var $name = 'Product';
-
+	class Product extends ShopAppModel {
 		public $lockable = true;
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Image' => array(
 				'className' => 'Shop.Image',
 				'fields' => array(
@@ -35,7 +33,7 @@
 			)
 		);
 
-		var $hasMany = array(
+		public $hasMany = array(
 			'Special' => array(
 				'className' => 'Shop.Special'
 			),
@@ -44,7 +42,7 @@
 			)
 		);
 
-		var $hasAndBelongsToMany = array(
+		public $hasAndBelongsToMany = array(
 			'ProductImage' => array(
 				'className' => 'Shop.Image',
 				'foreignKey' => 'image_id',
@@ -126,7 +124,7 @@
 			)
 		);
 
-		function getBestSellers($limit = 10){
+		public function getBestSellers($limit = 10){
 			$cacheName = cacheName('products_best_sellers', $limit);
 			$products = Cache::read($cacheName, 'shop');
 			if($products !== false){
@@ -166,7 +164,7 @@
 			return $products;
 		}
 
-		function getMostViewed($limit = 10){
+		public function getMostViewed($limit = 10){
 			$cacheName = cacheName('products_mostViewed', $limit);
 			$products = Cache::read($cacheName, 'shop');
 			if($products !== false){
@@ -206,7 +204,7 @@
 			return $products;
 		}
 
-		function getNewest($limit = 10){
+		public function getNewest($limit = 10){
 			$cacheName = cacheName('products_newest', $limit);
 			$products = Cache::read($cacheName, 'shop');
 			if($products !== false){
@@ -246,7 +244,7 @@
 			return $products;
 		}
 
-		function getActiveProducts($category_id = null, $categoryStatus = 1){
+		public function getActiveProducts($category_id = null, $categoryStatus = 1){
 			$conditions = array(
 				'ShopCategory.active' => $categoryStatus
 			);
@@ -293,15 +291,15 @@
 			return $products;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();

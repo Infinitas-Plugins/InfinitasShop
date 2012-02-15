@@ -1,8 +1,6 @@
 <?php
-	class OrdersController extends OrderAppController{
-		var $name = 'Orders';
-
-		function index(){
+	class OrdersController extends OrderAppController {
+		public function index(){
 			$user_id = $this->Session->read('Auth.User.id');
 
 			$this->paginate = array(
@@ -34,7 +32,7 @@
 			$this->set(compact('orders','filterOptions'));
 		}
 
-		function checkout(){
+		public function checkout(){
 			$user_id = $this->Session->read('Auth.User.id');
 			if($user_id < 1){
 				$this->notice(
@@ -82,7 +80,7 @@
 			);
 		}
 
-		function pay(){
+		public function pay(){
 			$orders = $this->Order->getPendingOrders($this->Session->read('Auth.User.id'));
 			if(empty($orders)){
 				$this->notice(
@@ -97,7 +95,7 @@
 			$this->set(compact('orders', 'paymentMethods'));
 		}
 
-        function recive_payment(){
+        public function recive_payment(){
             $this->autoRender = false;
 
             $something['accepted']  = $this->params['url']['TransactionAccepted'];
@@ -141,7 +139,7 @@
 			);
         }
 
-		function admin_index(){
+		public function admin_index(){
 			$year = $month = null;
 			if(isset($this->Filter->filter['Order.year'])){
 				$year  = $this->Filter->filter['Order.year'];
@@ -203,7 +201,7 @@
 			$this->set(compact('orders','filterOptions'));
 		}
 
-		function admin_view($id = null){
+		public function admin_view($id = null){
 			if(!$id){
 				$this->Infinitas->noticeInvalidRecord();
 			}

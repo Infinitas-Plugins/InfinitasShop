@@ -1,17 +1,15 @@
 <?php
-	class Spotlight extends ShopAppModel{
-		var $name = 'Spotlight';
-
-		var $virtualFields = array(
+	class Spotlight extends ShopAppModel {
+		public $virtualFields = array(
 			'start' => 'CONCAT(Spotlight.start_date, " ", Spotlight.start_time)',
 			'end'   => 'CONCAT(Spotlight.end_date, " ", Spotlight.end_time)'
 		);
 
-		var $order = array(
+		public $order = array(
 			'end' => 'ASC'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Image' => array(
 				'className' => 'Shop.Image',
 				'foreignKey' => 'image_id',
@@ -48,7 +46,7 @@
 			)
 		);
 
-		var $hasAndBelongsToMany = array(
+		public $hasAndBelongsToMany = array(
 			'ShopBranch' => array(
 				'className' => 'Shop.ShopBranch',
 				'foreignKey' => 'branch_id',
@@ -69,7 +67,7 @@
 			),
 		);
 
-		function getSpotlights($limit = 10){
+		public function getSpotlights($limit = 10){
 			$cacheName = cacheName('spotlights', $limit);
 			$spotlights = Cache::read($cacheName, 'shop');
 
@@ -109,15 +107,15 @@
 			return $spotlights;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();

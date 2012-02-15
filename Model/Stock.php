@@ -1,8 +1,6 @@
 <?php
-	class Stock extends ShopAppModel{
-		var $name = 'Stock';
-
-		var $belongsTo = array(
+	class Stock extends ShopAppModel {
+		public $belongsTo = array(
 			'ShopBranch' => array(
 				'className' => 'Shop.ShopBranch',
 				'foreignKey' => 'branch_id',

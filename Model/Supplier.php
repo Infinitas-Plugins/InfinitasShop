@@ -1,8 +1,6 @@
 <?php
-	class Supplier extends ShopAppModel{
-		var $name = 'Supplier';
-
-		var $actsAs = array(
+	class Supplier extends ShopAppModel {
+		public $actsAs = array(
 	        'MeioUpload.MeioUpload' => array(
 	        	'logo' => array(
 		        	'dir' => 'img{DS}content{DS}shop{DS}{ModelName}',
@@ -32,19 +30,19 @@
 			)
 		);
 
-		var $hasMany = array(
+		public $hasMany = array(
 			'Product' => array(
 				'className' => 'Shop.Product'
 			)
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Address' => array(
 				'className' => 'Management.Address'
 			)
 		);
 
-		function __construct($id = false, $table = null, $ds = null) {
+		public function __construct($id = false, $table = null, $ds = null) {
 			parent::__construct($id, $table, $ds);
 
 			$this->validate = array(

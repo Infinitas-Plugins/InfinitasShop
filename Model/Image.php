@@ -1,18 +1,16 @@
 <?php
-	class Image extends ShopAppModel{
-		var $name = 'Image';
-
-		var $virtualFields = array(
+	class Image extends ShopAppModel {
+		public $virtualFields = array(
 			'full_path' => 'CONCAT("/infinitas/img/content/shop/global/", Image.image)'
 		);
 
-		var $displayField = 'image';
+		public $displayField = 'image';
 
-		var $order = array(
+		public $order = array(
 			'Image.image' => 'ASC'
 		);
 
-		var $actsAs = array(
+		public $actsAs = array(
 	        'MeioUpload.MeioUpload' => array(
 	        	'image' => array(
 		        	'dir' => 'img{DS}content{DS}shop{DS}global',
@@ -38,13 +36,13 @@
 	        )
 		);
 
-		var $hasMany = array(
+		public $hasMany = array(
 			'Category' => array(
 				'className' => 'Shop.ShopCategory'
 			)
 		);
 
-		function getImagePaths(){
+		public function getImagePaths(){
 			$images = Cache::read('images', 'shop');
 			if($images !== false){
 				return $images;
@@ -65,15 +63,15 @@
 			return $images;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();

@@ -1,8 +1,6 @@
 <?php
-	class ItemsController extends OrderAppController{
-		var $name = 'Items';
-
-		function admin_index(){
+	class ItemsController extends OrderAppController {
+		public function admin_index(){
 			$year = $month = null;
 			if(isset($this->Filter->filter['Item.year'])){
 				$year  = $this->Filter->filter['Item.year'];

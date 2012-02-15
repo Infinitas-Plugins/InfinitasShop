@@ -1,12 +1,10 @@
 <?php
-	class Order extends OrderAppModel{
-		var $name = 'Order';
-
-		var $virtualFields = array(
+	class Order extends OrderAppModel {
+		public $virtualFields = array(
 			'grand_total' => 'Order.total + Order.shipping'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'User' => array(
 				'className' => 'Users.User',
 				'fields' => array(
@@ -29,7 +27,7 @@
 			)
 		);
 
-		var $hasMany = array(
+		public $hasMany = array(
 			'Item' => array(
 				'className' => 'Order.Item'
 			),
@@ -38,7 +36,7 @@
 			)
 		);
 
-		function getPendingOrders($user_id = null){
+		public function getPendingOrders($user_id = null){
 			if(!$user_id){
 				return array();
 			}

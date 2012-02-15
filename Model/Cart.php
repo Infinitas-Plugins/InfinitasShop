@@ -1,13 +1,11 @@
 <?php
-	class Cart extends ShopAppModel{
-		var $name = 'Cart';
-
+	class Cart extends ShopAppModel {
 		/**
 		 * SoftDeletable does not auto load for non admin
 		 *
 		 * @var unknown_type
 		 */
-		var $actsAs = array(
+		public $actsAs = array(
 			'Libs.SoftDeletable'
 		);
 
@@ -15,11 +13,11 @@
 		 * sub_total is the line total
 		 * @var unknown_type
 		 */
-		var $virtualFields = array(
+		public $virtualFields = array(
 			'sub_total' => 'Cart.quantity * Cart.price'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Product' => array(
 				'className' => 'Shop.Product',
 				'fields' => array(
@@ -37,7 +35,7 @@
 			)
 		);
 
-		function getCartData($user_id = null){
+		public function getCartData($user_id = null){
 			if((int)$user_id > 0){
 				$cacheName = cacheName('cart', $user_id);
 				$cartData = Cache::read($cacheName, 'shop');
@@ -71,7 +69,7 @@
 			return (array)$data;
 		}
 
-		function clearCart($user_id = null){
+		public function clearCart($user_id = null){
 			if(!$user_id){
 				return false;
 			}
@@ -91,15 +89,15 @@
 			return $status;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('CakeSession');
 			$this->Session = new CakeSession();
 

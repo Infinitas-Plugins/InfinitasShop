@@ -1,12 +1,10 @@
 <?php
-	class ShopCategory extends ShopAppModel{
-		var $name = 'ShopCategory';
-
-		var $order = array(
+	class ShopCategory extends ShopAppModel {
+		public $order = array(
 			'ShopCategory.lft' => 'ASC'
 		);
 
-		var $belongsTo = array(
+		public $belongsTo = array(
 			'Parent' => array(
 				'className' => 'Shop.ShopCategory',
 				'foreignKey' => 'parent_id',
@@ -39,7 +37,7 @@
 			)
 		);
 
-		var $hasAndBelongsToMany = array(
+		public $hasAndBelongsToMany = array(
 			'Product' => array(
 				'className' => 'Shop.Product',
 				'foreignKey' => 'product_id',
@@ -79,7 +77,7 @@
 			),
 		);
 
-		function getCategories($category_id = null){
+		public function getCategories($category_id = null){
 			$conditions = array(
 				'ShopCategory.parent_id IS NULL'
 			);
@@ -117,7 +115,7 @@
 			return $categories;
 		}
 
-		function getActiveCategories(){
+		public function getActiveCategories(){
 			$cacheName = cacheName('categories_active', $conditions);
 			$category_ids = Cache::read($cacheName, 'shop');
 			if($category_ids !== false){
@@ -141,15 +139,15 @@
 			return $category_ids;
 		}
 
-		function afterSave($created){
+		public function afterSave($created){
 			return $this->dataChanged('afterSave');
 		}
 
-		function afterDelete(){
+		public function afterDelete(){
 			return $this->dataChanged('afterDelete');
 		}
 
-		function dataChanged($from){
+		public function dataChanged($from){
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();

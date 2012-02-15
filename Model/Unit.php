@@ -1,8 +1,6 @@
 <?php
 	class Unit extends ShopAppModel{
-		var $name = 'Unit';
-
-		var $hasMany = array(
+		public $hasMany = array(
 			'Product' => array(
 				'className' => 'Shop.Product'
 			)
