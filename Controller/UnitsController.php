@@ -1,12 +1,6 @@
 <?php
-	class UnitsController extends ShopAppController{
-		var $name = 'Units';
-
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function admin_index(){
+	class UnitsController extends ShopAppController {
+		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(
 					'Unit.id',

@@ -1,13 +1,6 @@
 <?php
-	class ShopCategoriesController extends ShopAppController{
-		var $name = 'ShopCategories';
-		//var $uses = array('Shop.ShopCategory');
-
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function index(){
+	class ShopCategoriesController extends ShopAppController {
+		public function index(){
 			$conditions = array(
 				'ShopCategory.active' => 1,
 				'ShopCategory.parent_id IS NULL'
@@ -82,7 +75,7 @@
 			$this->set(compact('categories', 'products', 'currentCategory', 'specials', 'spotlights'));
 		}
 
-		function admin_index(){
+		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(
 					'ShopCategory.id',
@@ -118,7 +111,7 @@
 			$this->set(compact('categories','filterOptions'));
 		}
 
-		function admin_add(){
+		public function admin_add(){
 			if (!empty($this->data)) {
 				$this->ShopCategory->create();
 				if ($this->ShopCategory->saveAll($this->data)) {
@@ -132,7 +125,7 @@
 			$this->set(compact('parents', 'images', 'branches'));
 		}
 
-		function admin_edit($id = null){
+		public function admin_edit($id = null){
 			if (!$id) {
 				$this->Infinitas->noticeInvalidRecord();
 			}

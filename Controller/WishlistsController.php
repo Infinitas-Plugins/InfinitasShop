@@ -1,12 +1,6 @@
 <?php
-	class WishlistsController extends ShopAppController{
-		var $name = 'Wishlists';
-
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function index(){
+	class WishlistsController extends ShopAppController {
+		public function index(){
 			$userId = $this->Session->read('Auth.User.id');
 			if($userId){
 				$wishlists = $this->Wishlist->find(
@@ -37,7 +31,7 @@
 			$this->set(compact('wishlists', 'amounts'));
 		}
 
-		function adjust(){
+		public function adjust(){
 			if(!isset($this->params['named']['product_id'])){
 				$this->Infinitas->noticeInvalidRecord();
 			}
@@ -79,7 +73,7 @@
 			$this->Shop->sessionCartSave($this->Wishlist, $product);
 		}
 
-		function move($product_id = null){
+		public function move($product_id = null){
 			if(!$product_id){
 				$this->Infinitas->noticeInvalidRecord();
 			}
@@ -146,7 +140,7 @@
 			}
 		}
 
-		function admin_index(){
+		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(
 					'Wishlist.id',

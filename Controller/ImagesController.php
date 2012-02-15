@@ -1,10 +1,8 @@
 <?php
 	class ImagesController extends ShopAppController {
-		public $helpers = array(
-			'Filter.Filter'
-		);
-
-
+		/**
+		 * 
+		 */
 		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(

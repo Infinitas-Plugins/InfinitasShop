@@ -1,12 +1,8 @@
 <?php
-	class ProductsController extends ShopAppController{
-		var $name = 'Products';
+	class ProductsController extends ShopAppController {
+		public $name = 'Products';
 
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function dashboard(){
+		public function dashboard(){
 			$specials = $this->Product->Special->getSpecials();
 			$mostViewedProducts = $this->Product->getMostViewed();
 			$spotlights = $this->Product->Spotlight->getSpotlights();
@@ -15,7 +11,7 @@
 			$this->set(compact('specials', 'mostViewedProducts', 'spotlights', 'newest'));
 		}
 
-		function index(){
+		public function index(){
 			$this->paginate = array(
 				'fields' => array(
 					'Product.id',
@@ -48,7 +44,7 @@
 			$this->set(compact('products', 'specials', 'spotlights'));
 		}
 
-		function search(){
+		public function search(){
 			if(!isset($this->data['Search']['search'])){
 				$this->notice(
 					__('Please enter your search term'),
@@ -97,7 +93,7 @@
 			$this->render('index');
 		}
 
-		function view(){
+		public function view(){
 			if (!isset($this->params['slug'])) {
 				$this->Infinitas->noticeInvalidRecord();
 			}
@@ -166,11 +162,11 @@
 			$this->set(compact('product', 'tabs', 'neighbors', 'specials', 'spotlights'));
 		}
 
-		function admin_dashboard(){
+		public function admin_dashboard(){
 
 		}
 
-		function admin_index(){
+		public function admin_index(){
 			$conditions = array();
 			if(isset($this->Filter->filter['Product.category_id'])){
 				$category_id  = $this->Filter->filter['Product.category_id'];
@@ -227,7 +223,7 @@
 			$this->set(compact('products','filterOptions'));
 		}
 
-		function admin_statistics(){
+		public function admin_statistics(){
 			$this->paginate = array(
 				'fields' => array(
 					'Product.id',
@@ -270,7 +266,7 @@
 			$this->set(compact('products','filterOptions'));
 		}
 
-		function admin_add(){
+		public function admin_add(){
 			parent::admin_add();
 
 			$shopCategories = $this->Product->ShopCategory->generateTreeList(null, null, null, '_');
@@ -281,7 +277,7 @@
 			$this->set(compact('shopCategories', 'units', 'suppliers', 'shopBranches', 'images'));
 		}
 
-		function admin_edit($id = null){
+		public function admin_edit($id = null){
 			parent::admin_edit($id);
 
 			$units          = $this->Product->Unit->find('list');

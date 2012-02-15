@@ -1,12 +1,8 @@
 <?php
 	class CartsController extends ShopAppController{
-		var $name = 'Carts';
+		public $name = 'Carts';
 
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function index(){
+		public function index(){
 			$userId = $this->Session->read('Auth.User.id');
 
 			if(!$userId){
@@ -61,7 +57,7 @@
 			$this->set(compact('addresses', 'carts', 'amounts'));
 		}
 
-		function adjust(){
+		public function adjust(){
 			if(!isset($this->params['named']['product_id'])){
 				$this->Infinitas->noticeInvalidRecord();
 			}
@@ -105,7 +101,7 @@
 			$this->Shop->sessionCartSave($this->Cart, $product);
 		}
 
-		function change_shipping_method(){
+		public function change_shipping_method(){
 			if(isset($this->data['Cart']['shipping_method']) && !empty($this->data['Cart']['shipping_method'])){
 				$this->Session->write('Shop.shipping_method', $this->data['Cart']['shipping_method']);
 
@@ -128,7 +124,7 @@
 			}
 		}
 
-		function admin_index(){
+		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(
 					'Cart.id',

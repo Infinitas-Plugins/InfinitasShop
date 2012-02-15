@@ -2,7 +2,6 @@
 	class OrderAppController extends AppController {
 		public $helpers = array(
 			'Shop.Shop',
-			'Filter.Filter',
 			'Data.Csv'
 		);
 

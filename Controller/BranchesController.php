@@ -21,13 +21,11 @@
 	 */
 
 	class BranchesController extends ShopAppController{
-		var $name = 'Branches';
+		public $name = 'Branches';
 
-		var $uses = array('Shop.ShopBranch');
+		public $uses = array('Shop.ShopBranch');
 
-		var $helpers = array('Filter.Filter');
-
-		function admin_index(){
+		public function admin_index(){
 			$this->paginate = array(
 				'fields' => array(
 					'ShopBranch.branch_id',
@@ -59,7 +57,7 @@
 			$this->set(compact('branches','filterOptions'));
 		}
 
-		function admin_add(){
+		public function admin_add(){
 			parent::admin_add();
 
 			$branchDetails = $this->_checkCanAddEdit();
@@ -67,7 +65,7 @@
 			$this->set(compact('branchDetails', 'managers'));
 		}
 
-		function admin_edit($id = null){
+		public function admin_edit($id = null){
 			parent::admin_add($id);
 
 			$branchDetails = $this->ShopBranch->BranchDetail->find('list');
@@ -79,7 +77,7 @@
 			}
 		}
 
-		function _checkCanAddEdit(){
+		public function _checkCanAddEdit(){
 			$branchDetails = $this->ShopBranch->_getAvailableBranches();
 			if (empty($branchDetails)){
 				$this->notice(

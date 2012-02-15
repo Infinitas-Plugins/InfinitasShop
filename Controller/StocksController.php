@@ -1,12 +1,6 @@
 <?php
-	class StocksController extends ShopAppController{
-		var $name = 'Stocks';
-
-		var $helpers = array(
-			'Filter.Filter'
-		);
-
-		function admin_index(){
+	class StocksController extends ShopAppController {
+		public function admin_index(){
 			$this->paginate = array(
 				'contain' => array(
 					'Product' => array(
@@ -27,7 +21,7 @@
 			$this->set(compact('stocks', 'filterOptions'));
 		}
 
-		function admin_add(){
+		public function admin_add(){
 			if (!empty($this->data)) {
 				$current = $this->Stock->find(
 					'first',
@@ -57,11 +51,11 @@
 			$this->set(compact('branches', 'products'));
 		}
 
-		function admin_edit(){
+		public function admin_edit(){
 
 		}
 
-		function admin_valuation($branch_id = null){
+		public function admin_valuation($branch_id = null){
 
 		}
 	}
