@@ -42,7 +42,7 @@
 				}
 
 				if ($this->Stock->save($this->data)) {
-					$this->Infinitas->noticeSaved();
+					$this->notice('saved');
 				}
 			}
 

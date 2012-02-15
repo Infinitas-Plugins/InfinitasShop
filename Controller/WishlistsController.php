@@ -33,7 +33,7 @@
 
 		public function adjust(){
 			if(!isset($this->params['named']['product_id'])){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			$this->params['named']['quantity'] = 0;
@@ -59,7 +59,7 @@
 			);
 
 			if(empty($product) || $product['Product']['active'] == false){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			if(isset($product['Special']) && !empty($product['Special'][0])){
@@ -75,7 +75,7 @@
 
 		public function move($product_id = null){
 			if(!$product_id){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			$product = $this->Wishlist->Product->find(

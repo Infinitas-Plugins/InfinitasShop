@@ -115,7 +115,7 @@
 			if (!empty($this->data)) {
 				$this->ShopCategory->create();
 				if ($this->ShopCategory->saveAll($this->data)) {
-					$this->Infinitas->noticeSaved();
+					$this->notice('saved');
 				}
 			}
 
@@ -127,12 +127,12 @@
 
 		public function admin_edit($id = null){
 			if (!$id) {
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			if (!empty($this->data)) {
 				if ($this->ShopCategory->saveAll($this->data)) {
-					$this->Infinitas->noticeSaved();
+					$this->notice('saved');
 				}
 			}
 

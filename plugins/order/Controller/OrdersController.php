@@ -203,7 +203,7 @@
 
 		public function admin_view($id = null){
 			if(!$id){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			$order = $this->Order->find(

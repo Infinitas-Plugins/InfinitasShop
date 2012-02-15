@@ -95,7 +95,7 @@
 
 		public function view(){
 			if (!isset($this->params['slug'])) {
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			$conditions = array(
@@ -129,7 +129,7 @@
 			);
 
 			if(empty($product)){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			$tabs = array(

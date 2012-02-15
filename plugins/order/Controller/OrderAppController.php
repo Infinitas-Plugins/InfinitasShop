@@ -43,9 +43,9 @@
 			$data[$this->modelClass] = $this->data['Save'];
 
 			if($this->{$this->modelClass}->saveAll($data[$this->modelClass])){
-				$this->Infinitas->noticeSaved();
+				$this->notice('saved');
 			}
 
-			$this->Infinitas->noticeNotSaved();
+			$this->notice('not_saved');
 		}
 	}

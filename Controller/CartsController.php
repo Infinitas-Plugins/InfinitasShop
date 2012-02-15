@@ -59,7 +59,7 @@
 
 		public function adjust(){
 			if(!isset($this->params['named']['product_id'])){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			if(!isset($this->params['named']['quantity'])){
@@ -87,7 +87,7 @@
 			);
 
 			if(empty($product) || $product['Product']['active'] == false){
-				$this->Infinitas->noticeInvalidRecord();
+				$this->notice('invalid');
 			}
 
 			if(isset($product['Special']) && !empty($product['Special'][0])){
