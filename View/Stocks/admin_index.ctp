@@ -37,8 +37,8 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    $this->Paginator->sort('Branch', 'BranchDetail.name'),
-                    $this->Paginator->sort('Product', 'Product.name') => array(
+                    $this->Paginator->sort('BranchDetail.name', __d('shop', 'Branch')),
+                    $this->Paginator->sort('Product.name', __d('shop', 'Product')) => array(
                         'style' => 'width:150px;'
                     ),
                     $this->Paginator->sort('stock') => array(

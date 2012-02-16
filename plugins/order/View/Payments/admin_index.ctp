@@ -37,7 +37,7 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    $this->Paginator->sort('User', 'User.firstname'),
+                    $this->Paginator->sort('User.firstname', __d('shop', 'User')),
                     $this->Paginator->sort('order_id') => array(
                         'style' => 'width:50px;'
                     ),

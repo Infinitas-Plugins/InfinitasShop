@@ -45,15 +45,15 @@
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('name'),
-                    $this->Paginator->sort('ShopCategory', 'ShopCategory.name'),
-                    $this->Paginator->sort('Branches', 'ShopBranch.name'),
-                    $this->Paginator->sort('Unit', 'Unit.name') => array(
+                    $this->Paginator->sort('ShopCategory.name', __d('shop', 'Category')),
+                    $this->Paginator->sort('ShopBranch.name', __d('shop', 'Branch')),
+                    $this->Paginator->sort('Unit.name', __d('shop', 'Unit')) => array(
                         'style' => 'width:75px;'
                     ),
                     $this->Paginator->sort('price') => array(
                         'style' => 'width:75px;'
                     ),
-                    $this->Paginator->sort('Supplier', 'Supplier.name') => array(
+                    $this->Paginator->sort('Supplier.name', __d('shop', 'Supplier')) => array(
                         'style' => 'width:75px;'
                     ),
                     $this->Paginator->sort('modified') => array(

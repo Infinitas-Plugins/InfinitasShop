@@ -44,7 +44,7 @@
                     __('Image') => array(
                         'style' => 'width:100px;'
                     ),
-                    $this->Paginator->sort('Product', 'Product.name'),
+                    $this->Paginator->sort('Product.name', __d('shop', 'Product')),
                     $this->Paginator->sort('discount'),
                     $this->Paginator->sort('amount'),
                     __('Adjusted Price'),
