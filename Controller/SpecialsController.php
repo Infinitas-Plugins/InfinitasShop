@@ -120,7 +120,7 @@
 					'first',
 					array(
 						'conditions' => array(
-							'Product.id' => $this->params['named']['product']
+							'Product.id' => $this->request->params['named']['product']
 						),
 						'fields' => array(
 							'Product.price',

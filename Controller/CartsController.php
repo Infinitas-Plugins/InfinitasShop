@@ -58,19 +58,19 @@
 		}
 
 		public function adjust(){
-			if(!isset($this->params['named']['product_id'])){
+			if(!isset($this->request->params['named']['product_id'])){
 				$this->notice('invalid');
 			}
 
-			if(!isset($this->params['named']['quantity'])){
-				$this->params['named']['quantity'] = 1;
+			if(!isset($this->request->params['named']['quantity'])){
+				$this->request->params['named']['quantity'] = 1;
 			}
 
 			$product = $this->Cart->Product->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Product.id' => $this->params['named']['product_id']
+						'Product.id' => $this->request->params['named']['product_id']
 					),
 					'fields' => array(
 						'Product.id',

@@ -98,35 +98,35 @@
         public function recive_payment(){
             $this->autoRender = false;
 
-            $something['accepted']  = $this->params['url']['TransactionAccepted'];
-            $something['Reference'] = $this->params['url']['Reference'];
-            $something['Amount']    = $this->params['url']['Amount'];
+            $something['accepted']  = $this->request->params['url']['TransactionAccepted'];
+            $something['Reference'] = $this->request->params['url']['Reference'];
+            $something['Amount']    = $this->request->params['url']['Amount'];
 
-            $this->log(serialize($this->params['url']), 'payment');
+            $this->log(serialize($this->request->params['url']), 'payment');
 
             if (!empty($something) && $something['accepted'] == true){
-                $this->data['Payment']['order_id'] = $this->params['url']['Extra1'];
-                $this->data['Payment']['user_id'] = $this->params['url']['Extra2'];
+                $this->data['Payment']['order_id'] = $this->request->params['url']['Extra1'];
+                $this->data['Payment']['user_id'] = $this->request->params['url']['Extra2'];
                 $this->data['Payment']['payment_method_id'] = 3;
-                $this->data['Payment']['amount'] = $this->params['url']['Amount'];
+                $this->data['Payment']['amount'] = $this->request->params['url']['Amount'];
 
                 if ($this->Payment->save($this->data)){
                     unset( $this->data );
-                    $data['Order']['id'] = $this->params['url']['Extra1'];
+                    $data['Order']['id'] = $this->request->params['url']['Extra1'];
                     $data['Order']['status_id'] = 2;
                     $this->Payment->Order->save($data);
                 }
             }
 
-            if (isset($this->params['url']['Extra1'])){
-                $user = ClassRegistry::init( 'User.User' )->read(null, $this->params['url']['Extra2']);
+            if (isset($this->request->params['url']['Extra1'])){
+                $user = ClassRegistry::init( 'User.User' )->read(null, $this->request->params['url']['Extra2']);
 
                 // @todo send email here about the payment
 
                 $this->notice(
 					__( 'Payment has been credited and items are now being processed'),
 					array(
-						'redirect' => array('plugin' => 'sales', 'controller' => 'orders', 'action' => 'view', $this->params['url']['Extra1'])
+						'redirect' => array('plugin' => 'sales', 'controller' => 'orders', 'action' => 'view', $this->request->params['url']['Extra1'])
 					)
 				);
             }

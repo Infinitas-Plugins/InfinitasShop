@@ -12,7 +12,7 @@
 			echo $this->element('product', array('plugin' => 'shop', 'product' => $spotlight));
 		}
 
-	    if($this->params['controller'] != 'spotlights'){
+	    if($this->request->params['controller'] != 'spotlights'){
 	    	echo $this->Html->link(
 	    		'('.__('See all').')',
 	    		array(

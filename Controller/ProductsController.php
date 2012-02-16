@@ -94,13 +94,13 @@
 		}
 
 		public function view(){
-			if (!isset($this->params['slug'])) {
+			if (!isset($this->request->params['slug'])) {
 				$this->notice('invalid');
 			}
 
 			$conditions = array(
 				'Product.id' => $this->Product->getActiveProducts(),
-				'Product.slug' => $this->params['slug']
+				'Product.slug' => $this->request->params['slug']
 			);
 
 			$product = $this->Product->find(

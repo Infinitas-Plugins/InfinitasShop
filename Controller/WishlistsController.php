@@ -32,17 +32,17 @@
 		}
 
 		public function adjust(){
-			if(!isset($this->params['named']['product_id'])){
+			if(!isset($this->request->params['named']['product_id'])){
 				$this->notice('invalid');
 			}
 
-			$this->params['named']['quantity'] = 0;
+			$this->request->params['named']['quantity'] = 0;
 
 			$product = $this->Wishlist->Product->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Product.id' => $this->params['named']['product_id']
+						'Product.id' => $this->request->params['named']['product_id']
 					),
 					'fields' => array(
 						'Product.id',
@@ -102,8 +102,8 @@
 			}
 
 			$Cart = ClassRegistry::init('Shop.Cart');
-			$this->params['named']['product_id'] = $product_id;
-			$this->params['named']['quantity'] = 1;
+			$this->request->params['named']['product_id'] = $product_id;
+			$this->request->params['named']['quantity'] = 1;
 
 
 			$userId = $this->Session->read('Auth.User.id');

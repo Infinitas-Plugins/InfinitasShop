@@ -23,7 +23,7 @@
 		}
 
 		function admin_mass() {
-			$massAction = $this->MassAction->getAction($this->params['form']);
+			$massAction = $this->MassAction->getAction($this->request->params['form']);
 			switch(strtolower($massAction)){
 				case 'export':
 					$this->redirect($this->referer().'.csv');

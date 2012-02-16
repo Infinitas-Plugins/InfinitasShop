@@ -13,7 +13,7 @@
 			echo $this->element('product', array('plugin' => 'shop', 'product' => $special));
 		}
 
-	    if($this->params['controller'] != 'specials'){
+	    if($this->request->params['controller'] != 'specials'){
 	    	echo $this->Html->link(
 	    		'('.__('See all').')',
 	    		array(

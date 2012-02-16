@@ -7,12 +7,12 @@
 			);
 
 			$category_id = null;
-			if (isset($this->params['slug']) && !empty($this->params['slug'])) {
+			if (isset($this->request->params['slug']) && !empty($this->request->params['slug'])) {
 				$id = $this->ShopCategory->find(
 					'first',
 					array(
 						'conditions' => array(
-							'ShopCategory.slug' => $this->params['slug']
+							'ShopCategory.slug' => $this->request->params['slug']
 						),
 						'fields' => array(
 							'ShopCategory.id',
