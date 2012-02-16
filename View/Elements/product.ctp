@@ -4,7 +4,7 @@
 			$product['Product']['plugin'] = 'shop';
 			$product['Product']['controller'] = 'products';
 			$product['Product']['action'] = 'view';
-			$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $product['Product']));
+			$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $product['Product']));
 
 			$overlay = '';
 			if($this->Shop->isFeatured($product)){

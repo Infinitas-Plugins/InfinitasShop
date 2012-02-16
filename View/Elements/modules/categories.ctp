@@ -15,7 +15,7 @@
 					$category['ShopCategory']['action'] = 'index';
 					$category['ShopCategory']['plugin'] = 'shop';
 
-					$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'categories', 'data' => $category['ShopCategory']));
+					$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'categories', 'data' => $category['ShopCategory']));
 					$out .= '<li>'.$this->Html->link(
 						$category['ShopCategory']['name'],
 						current($eventData['slugUrl'])

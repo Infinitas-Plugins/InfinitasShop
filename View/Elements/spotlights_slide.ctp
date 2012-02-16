@@ -9,7 +9,7 @@
 				?>
 		    			<div class="data">
 		    				<?php
-								$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $spotlight['Product']));
+								$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $spotlight['Product']));
 		    				?>
 		    				<h2 class="fade"><?php echo $this->Html->link($spotlight['Product']['name'], current($eventData['slugUrl']))?></h2>
 		    				<p><?php echo $this->Text->truncate(strip_tags($spotlight['Product']['description']), 300); ?></p>

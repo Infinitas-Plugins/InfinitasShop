@@ -49,7 +49,7 @@
 								$wishlist['Product']['plugin'] = 'shop';
 								$wishlist['Product']['controller'] = 'products';
 								$wishlist['Product']['action'] = 'view';
-								$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $wishlist['Product']));
+								$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $wishlist['Product']));
 
 								echo $this->Html->link(
 									$wishlist['Product']['name'],

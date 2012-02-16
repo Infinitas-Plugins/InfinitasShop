@@ -8,7 +8,7 @@
 	    		<div class="slide">
 	    			<div class="data">
 	    				<?php
-							$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $special['Product']));
+							$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $special['Product']));
 	    				?>
 	    				<h2><?php echo $this->Html->link($special['Product']['name'], current($eventData['slugUrl']))?></h2>
 	    				<p><?php echo $this->Text->truncate(strip_tags($special['Product']['description']), 300); ?></p>

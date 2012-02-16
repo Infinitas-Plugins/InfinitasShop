@@ -6,7 +6,7 @@
 				$prev['Product']['plugin'] = 'shop';
 				$prev['Product']['controller'] = 'products';
 				$prev['Product']['action'] = 'view';
-				$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $prev['Product']));
+				$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $prev['Product']));
 				echo $this->Html->link(
 					$this->Shop->getImage(
 						$prev,
@@ -31,7 +31,7 @@
 				$next['Product']['plugin'] = 'shop';
 				$next['Product']['controller'] = 'products';
 				$next['Product']['action'] = 'view';
-				$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $next['Product']));
+				$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $next['Product']));
 				echo $this->Html->link(
 					$this->Shop->getImage(
 						$next,

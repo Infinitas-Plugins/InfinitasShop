@@ -25,7 +25,7 @@
 							$cartItem['Product']['controller'] = 'products';
 							$cartItem['Product']['action'] = 'view';
 
-							$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $cartItem['Product']));
+							$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $cartItem['Product']));
 
 							$productLink = $this->Html->link(
 								$cartItem['Cart']['name'],

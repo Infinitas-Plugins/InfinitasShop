@@ -5,7 +5,7 @@
 			$category['ShopCategory']['controller'] = 'categories';
 			$category['ShopCategory']['action'] = 'index';
 			$category['ShopCategory']['parent_id'] = $category['ShopCategory']['id'];
-			$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'categories', 'data' => $category['ShopCategory']));
+			$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'categories', 'data' => $category['ShopCategory']));
 
 			echo $this->Html->link(
 				$this->Shop->getImage(

@@ -55,7 +55,7 @@
 								$cart['Product']['plugin'] = 'shop';
 								$cart['Product']['controller'] = 'products';
 								$cart['Product']['action'] = 'view';
-								$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $cart['Product']));
+								$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $cart['Product']));
 
 								echo $this->Html->link(
 									$cart['Product']['name'],

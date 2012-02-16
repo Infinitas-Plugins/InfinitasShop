@@ -10,7 +10,7 @@
 		$currentCategory['ShopCategory']['controller'] = 'categories';
 		$currentCategory['ShopCategory']['action'] = 'index';
 		$currentCategory['ShopCategory']['parent_id'] = $currentCategory['ShopCategory']['id'];
-		$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'categories', 'data' => $currentCategory['ShopCategory']));
+		$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'categories', 'data' => $currentCategory['ShopCategory']));
 
 		$back['url'] = current($eventData['slugUrl']);
 		$back['category'] = $currentCategory['ShopCategory']['name'];

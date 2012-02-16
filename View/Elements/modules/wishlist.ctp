@@ -24,7 +24,7 @@
 							$wishlistItem['Product']['plugin'] = 'shop';
 							$wishlistItem['Product']['controller'] = 'products';
 							$wishlistItem['Product']['action'] = 'view';
-							$eventData = $this->Event->trigger('shop.slugUrl', array('type' => 'products', 'data' => $wishlistItem['Product']));
+							$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $wishlistItem['Product']));
 
 							$productLink = $this->Html->link(
 								$wishlistItem['Wishlist']['name'],
