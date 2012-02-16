@@ -1,6 +1,6 @@
 <div>
 	<?php
-		$userId = $this->Session->read('Auth.User.id');
+		$userId = AuthComponent::user('id');
 		if(!isset($usersCart)){
 			$usersCart = Cache::read(cacheName('cart', $userId), 'shop');
 

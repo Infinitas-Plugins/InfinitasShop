@@ -1,6 +1,6 @@
 <div>
 	<?php
-		$userId = $this->Session->read('Auth.User.id');
+		$userId = AuthComponent::user('id');
 		if(!isset($usersWishlist)){
 			$usersWishlist = Cache::read(cacheName('wishlist', $userId));
 
@@ -41,7 +41,7 @@
 					<tr>
 						<td colspan="2">
 							<?php
-								if($this->Session->read('Auth.User.id') > 0){
+								if(AuthComponent::user('id') > 0){
 									echo $this->Html->link(
 										__('Manage'),
 										array(

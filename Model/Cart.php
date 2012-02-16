@@ -61,10 +61,7 @@
 				return $cartData;
 			}
 
-			App::import('CakeSession');
-			$this->Session = new CakeSession();
-
-			$data = $this->Session->read('Cart.TempCart');
+			$data = CakeSession::read('Cart.TempCart');
 
 			return (array)$data;
 		}
@@ -98,10 +95,7 @@
 		}
 
 		public function dataChanged($from){
-			App::import('CakeSession');
-			$this->Session = new CakeSession();
-
-			Cache::delete(cacheName('cart', $this->Session->read('Auth.User.id')), 'shop');
+			Cache::delete(cacheName('cart', AuthComponent::user('id')), 'shop');
 
 			return true;
 		}

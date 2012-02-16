@@ -1,18 +1,16 @@
 <?php
-	class ClientsController extends OrderAppController{
-		var $name = 'Clients';
+	class ClientsController extends OrderAppController {
+		public $uses = false;
 
-		var $uses = false;
-
-		function index(){
+		public function index(){
 			$this->loadModel('Order.Order');
-			$pendingOrders = $this->Order->getPendingOrders($this->Session->read('Auth.User.id'));
+			$pendingOrders = $this->Order->getPendingOrders($this->Auth->user('id'));
 			$this->set(compact('pendingOrders'));
 		}
 
-		function addresses(){
+		public function addresses(){
 			$this->loadModel('Management.Address');
-			$addresses = $this->Address->getAddressByUser($this->Session->read('Auth.User.id'), 'all');
+			$addresses = $this->Address->getAddressByUser($this->Auth->user('id'), 'all');
 			$this->set(compact('addresses'));
 		}
 	}

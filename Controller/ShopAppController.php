@@ -10,7 +10,7 @@
 
 		public function beforeRender(){
 			parent::beforeRender();
-			$user_id = $this->Session->read('Auth.User.id');
+			$user_id = $this->Auth->user('id');
 
 			if(isset($this->Cart)){
 				$usersCart = $this->Cart->getCartData($user_id);

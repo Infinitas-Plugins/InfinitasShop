@@ -54,10 +54,7 @@
 				return $wishlistData;
 			}
 
-			App::import('CakeSession');
-			$this->Session = new CakeSession();
-
-			$wishlistData = $this->Session->read('Wishlist.TempWishlist');
+			$wishlistData = CakeSession::read('Wishlist.TempWishlist');
 
 			return (array)$wishlistData;
 		}
@@ -70,12 +67,7 @@
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
-			App::import('CakeSession');
-			$this->Session = new CakeSession();
-
-			Cache::delete(cacheName('wishlist', $this->Session->read('Auth.User.id')), 'shop');
-
-			return true;
+		public function dataChanged($from) {
+			return Cache::delete(cacheName('wishlist', AuthComponent::user('id')), 'shop');
 		}
 	}

@@ -3,7 +3,7 @@
 		public $name = 'Carts';
 
 		public function index(){
-			$userId = $this->Session->read('Auth.User.id');
+			$userId = $this->Auth->user('id');
 
 			if(!$userId){
 				$this->notice(
@@ -94,7 +94,7 @@
 				$product['Product']['price'] = $product['Product']['price'] - (($product['Product']['price'] / 100) * $product['Special'][0]['discount']);
 			}
 
-			if($userId = $this->Session->read('Auth.User.id') > 0){
+			if($this->Auth->user('id')){
 				$this->Shop->dbCartSave($this->Cart, $product);
 			}
 

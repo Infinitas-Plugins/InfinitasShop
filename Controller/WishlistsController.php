@@ -1,7 +1,7 @@
 <?php
 	class WishlistsController extends ShopAppController {
 		public function index(){
-			$userId = $this->Session->read('Auth.User.id');
+			$userId = $this->Auth->user('id');
 			if($userId){
 				$wishlists = $this->Wishlist->find(
 					'all',
@@ -66,7 +66,7 @@
 				$product['Product']['price'] = $product['Product']['price'] - (($product['Product']['price'] / 100) * $product['Special'][0]['discount']);
 			}
 
-			if($userId = $this->Session->read('Auth.User.id') > 0){
+			if($userId = $this->Auth->user('id') > 0){
 				$this->Shop->dbCartSave($this->Wishlist, $product);
 			}
 
@@ -106,7 +106,7 @@
 			$this->request->params['named']['quantity'] = 1;
 
 
-			$userId = $this->Session->read('Auth.User.id');
+			$userId = $this->Auth->user('id');
 			if($userId){
 				$this->Wishlist->enableSoftDeletable('delete', false);
 

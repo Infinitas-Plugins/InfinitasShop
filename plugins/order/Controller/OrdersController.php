@@ -1,7 +1,7 @@
 <?php
 	class OrdersController extends OrderAppController {
 		public function index(){
-			$user_id = $this->Session->read('Auth.User.id');
+			$user_id = $this->Auth->user('id');
 
 			$this->paginate = array(
 				'conditions' => array(
@@ -33,7 +33,7 @@
 		}
 
 		public function checkout(){
-			$user_id = $this->Session->read('Auth.User.id');
+			$user_id = $this->Auth->user('id');
 			if($user_id < 1){
 				$this->notice(
 					__('You need to be logged in to checkout'),
@@ -81,7 +81,7 @@
 		}
 
 		public function pay(){
-			$orders = $this->Order->getPendingOrders($this->Session->read('Auth.User.id'));
+			$orders = $this->Order->getPendingOrders($this->Auth->user('id'));
 			if(empty($orders)){
 				$this->notice(
 					__('It seems you do not have any orders that require payment'),

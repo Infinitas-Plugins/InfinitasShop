@@ -56,16 +56,13 @@
 			exit;
 		}
 
-		public function NOonUserLogin($event, $data){
-			App::import('CakeSession');
-			$this->Session = new CakeSession();
-
-			if(ClassRegistry::init('Shop.Cart')->moveSessionToDb($this->Session->read('Cart.TempCart'), $data) === true){
-				$this->Session->delete('Cart');
+		public function NOonUserLogin($event, $data) {
+			if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true){
+				CakeSession::delete('Cart');
 			}
 
-			if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb($this->Session->read('Wishlist.TempWishlist'), $data) === true){
-				$this->Session->delete('Wishlist');
+			if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true){
+				CakeSession::delete('Wishlist');
 			}
 		}
 
