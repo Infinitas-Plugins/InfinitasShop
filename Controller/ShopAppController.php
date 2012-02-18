@@ -28,13 +28,13 @@
 
 			$this->addCss(
 				array(
-					'/shop/css/shop'
+					'Shop.shop'
 				)
 			);
 
 			$this->addJs(
 				array(
-					'/shop/js/shop'
+					'Shop.shop'
 				)
 			);
 
