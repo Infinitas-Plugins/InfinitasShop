@@ -1,7 +1,7 @@
 <?php
 	class SpecialsController extends ShopAppController {
 		public function index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Special.id',
 					'Special.image_id',
@@ -26,14 +26,14 @@
 				)
 			);
 
-			$specials = $this->paginate('Special');
+			$specials = $this->Paginator->paginate('Special');
 
 			$spotlights = $this->Special->Product->Spotlight->getSpotlights(5);
 			$this->set(compact('specials', 'spotlights'));
 		}
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Special.id',
 					'Special.product_id',
@@ -55,7 +55,7 @@
 				)
 			);
 
-			$specials = $this->paginate(
+			$specials = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

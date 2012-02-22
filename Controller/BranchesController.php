@@ -26,7 +26,7 @@
 		public $uses = array('Shop.ShopBranch');
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'ShopBranch.branch_id',
 					'ShopBranch.manager_id',
@@ -43,7 +43,7 @@
 					'Spotlight'
 				)
 			);
-			$branches = $this->paginate(
+			$branches = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

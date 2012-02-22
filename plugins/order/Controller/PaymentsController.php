@@ -1,7 +1,7 @@
 <?php
 	class PaymentsController extends OrderAppController {
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 				),
 				'contain' => array(
@@ -10,7 +10,7 @@
 				)
 			);
 
-			$payments = $this->paginate(
+			$payments = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

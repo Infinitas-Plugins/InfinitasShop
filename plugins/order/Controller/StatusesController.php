@@ -1,13 +1,13 @@
 <?php
 	class StatusesController extends OrderAppController {
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'order' => array(
 					'Status.ordering' => 'ASC'
 				)
 			);
 
-			$statuses = $this->paginate(
+			$statuses = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

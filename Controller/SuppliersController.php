@@ -1,7 +1,7 @@
 <?php
 	class SuppliersController extends ShopAppController {
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Supplier.id',
 					'Supplier.name',
@@ -17,7 +17,7 @@
 				'contain' => false
 			);
 
-			$suppliers = $this->paginate(
+			$suppliers = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

@@ -12,7 +12,7 @@
 		}
 
 		public function index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -37,7 +37,7 @@
 				)
 			);
 
-			$products = $this->paginate('Product');
+			$products = $this->Paginator->paginate('Product');
 
 			$spotlights = $this->Product->Spotlight->getSpotlights(5);
 			$specials = $this->Product->Special->getSpecials(5);
@@ -54,7 +54,7 @@
 				);
 			}
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -85,7 +85,7 @@
 				'limit' => 1
 			);
 
-			$products = $this->paginate('Product');
+			$products = $this->Paginator->paginate('Product');
 
 			$spotlights = $this->Product->Spotlight->getSpotlights(5);
 			$specials = $this->Product->Special->getSpecials(5);
@@ -178,7 +178,7 @@
 				);
 			}
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -207,7 +207,7 @@
 				)
 			);
 
-			$products = $this->paginate(
+			$products = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);
@@ -224,7 +224,7 @@
 		}
 
 		public function admin_statistics(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -250,7 +250,7 @@
 				)
 			);
 
-			$products = $this->paginate(
+			$products = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

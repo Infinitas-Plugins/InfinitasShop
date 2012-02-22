@@ -1,7 +1,7 @@
 <?php
 	class SpotlightsController extends ShopAppController {
 		public function index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Spotlight.id',
 					'Spotlight.image_id',
@@ -25,14 +25,14 @@
 				)
 			);
 
-			$spotlights = $this->paginate('Spotlight');
+			$spotlights = $this->Paginator->paginate('Spotlight');
 
 			$specials = $this->Spotlight->Product->Special->getSpecials(5);
 			$this->set(compact('spotlights', 'specials'));
 		}
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Spotlight.id',
 					'Spotlight.product_id',
@@ -53,7 +53,7 @@
 				)
 			);
 
-			$spotlights = $this->paginate(
+			$spotlights = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

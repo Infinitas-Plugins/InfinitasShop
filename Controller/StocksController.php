@@ -1,7 +1,7 @@
 <?php
 	class StocksController extends ShopAppController {
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'contain' => array(
 					'Product' => array(
 						'ShopCategory'
@@ -17,7 +17,7 @@
 				'branch_id' => $this->Stock->ShopBranch->branchList()
 			);
 
-			$stocks = $this->paginate('Stock');
+			$stocks = $this->Paginator->paginate('Stock');
 			$this->set(compact('stocks', 'filterOptions'));
 		}
 

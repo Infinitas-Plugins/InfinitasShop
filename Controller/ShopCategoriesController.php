@@ -39,7 +39,7 @@
 
 			}
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'ShopCategory.id',
 					'ShopCategory.name',
@@ -53,7 +53,7 @@
 				)
 			);
 
-			$categories = $this->paginate('ShopCategory');
+			$categories = $this->Paginator->paginate('ShopCategory');
 			$products = $this->ShopCategory->Product->find(
 				'all',
 				array(
@@ -76,7 +76,7 @@
 		}
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'ShopCategory.id',
 					'ShopCategory.name',
@@ -97,7 +97,7 @@
 				)
 			);
 
-			$categories = $this->paginate(
+			$categories = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

@@ -4,7 +4,7 @@
 		 * 
 		 */
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Image.id',
 					'Image.image',
@@ -16,7 +16,7 @@
 				'limit' => 24
 			);
 
-			$images = $this->paginate(
+			$images = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

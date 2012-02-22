@@ -25,7 +25,7 @@
 				$conditions = array('Item.created BETWEEN ? AND ?' => array($startDate, $endDate));
 			}
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'conditions' => $conditions,
 				'contain' => array(
 					'Product',
@@ -33,7 +33,7 @@
 				)
 			);
 
-			$items = $this->paginate(
+			$items = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

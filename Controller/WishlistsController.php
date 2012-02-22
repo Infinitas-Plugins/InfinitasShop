@@ -141,7 +141,7 @@
 		}
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Wishlist.id',
 					'Wishlist.user_id',
@@ -163,7 +163,7 @@
 				)
 			);
 
-			$wishlists = $this->paginate(
+			$wishlists = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

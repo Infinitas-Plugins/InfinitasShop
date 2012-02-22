@@ -1,7 +1,7 @@
 <?php
 	class UnitsController extends ShopAppController {
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Unit.id',
 					'Unit.name',
@@ -15,7 +15,7 @@
 				'contain' => false
 			);
 
-			$units = $this->paginate(
+			$units = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

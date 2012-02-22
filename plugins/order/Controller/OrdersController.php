@@ -3,7 +3,7 @@
 		public function index(){
 			$user_id = $this->Auth->user('id');
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'conditions' => array(
 					'Order.user_id' => $user_id
 				),
@@ -17,7 +17,7 @@
 				)
 			);
 
-			$orders = $this->paginate(
+			$orders = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);
@@ -164,7 +164,7 @@
 				$conditions = array('Order.created BETWEEN ? AND ?' => array($startDate, $endDate));
 			}
 
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'conditions' => $conditions,
 				'contain' => array(
 					'User',
@@ -176,7 +176,7 @@
 				)
 			);
 
-			$orders = $this->paginate(
+			$orders = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);

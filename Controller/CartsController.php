@@ -125,7 +125,7 @@
 		}
 
 		public function admin_index(){
-			$this->paginate = array(
+			$this->Paginator->settings = array(
 				'fields' => array(
 					'Cart.id',
 					'Cart.user_id',
@@ -149,7 +149,7 @@
 				)
 			);
 
-			$carts = $this->paginate(
+			$carts = $this->Paginator->paginate(
 				null,
 				$this->Filter->filter
 			);
