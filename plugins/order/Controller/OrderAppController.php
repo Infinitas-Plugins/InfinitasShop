@@ -9,7 +9,7 @@
 			'Shop.Shop'
 		);
 
-		function beforeFilter(){
+		public function beforeFilter(){
 			parent::beforeFilter();
 			$data = $this->Event->trigger('loadPaymentGateways');
 
@@ -22,7 +22,7 @@
 			return true;
 		}
 
-		function admin_mass() {
+		public function admin_mass() {
 			$massAction = $this->MassAction->getAction($this->request->params['form']);
 			switch(strtolower($massAction)){
 				case 'export':
@@ -39,7 +39,7 @@
 			}
 		}
 
-		function save(){
+		public function save(){
 			$data[$this->modelClass] = $this->data['Save'];
 
 			if($this->{$this->modelClass}->saveAll($data[$this->modelClass])){

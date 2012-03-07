@@ -1,9 +1,9 @@
 <?php
 /* ShopImage Fixture generated on: 2010-08-17 14:08:56 : 1282055216 */
 class ShopImageFixture extends CakeTestFixture {
-	var $name = 'ShopImage';
+	public $name = 'ShopImage';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'ext' => array('type' => 'string', 'null' => false, 'default' => 'jpg', 'length' => 4),
 		'width' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -17,7 +17,7 @@ class ShopImageFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 4,
 			'ext' => 'jpg',

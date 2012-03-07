@@ -1,9 +1,9 @@
 <?php
 /* ShopShopCategory Fixture generated on: 2010-08-17 14:08:05 : 1282055225 */
 class ShopShopCategoryFixture extends CakeTestFixture {
-	var $name = 'ShopShopCategory';
+	public $name = 'ShopShopCategory';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
@@ -23,7 +23,7 @@ class ShopShopCategoryFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 3,
 			'name' => 'Artist or Band',

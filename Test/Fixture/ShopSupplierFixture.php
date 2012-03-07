@@ -1,9 +1,9 @@
 <?php
 /* ShopSupplier Fixture generated on: 2010-08-17 14:08:16 : 1282055236 */
 class ShopSupplierFixture extends CakeTestFixture {
-	var $name = 'ShopSupplier';
+	public $name = 'ShopSupplier';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
@@ -23,7 +23,7 @@ class ShopSupplierFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'CakePhp',

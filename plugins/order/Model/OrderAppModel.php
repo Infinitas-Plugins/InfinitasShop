@@ -1,4 +1,4 @@
 <?php
 	class OrderAppModel extends AppModel {
-		var $tablePrefix = 'order_';
+		public $tablePrefix = 'order_';
 	}

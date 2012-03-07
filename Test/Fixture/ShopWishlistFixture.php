@@ -1,9 +1,9 @@
 <?php
 /* ShopWishlist Fixture generated on: 2010-08-17 14:08:22 : 1282055242 */
 class ShopWishlistFixture extends CakeTestFixture {
-	var $name = 'ShopWishlist';
+	public $name = 'ShopWishlist';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -18,7 +18,7 @@ class ShopWishlistFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }
 ?>

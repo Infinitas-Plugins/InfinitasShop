@@ -1,9 +1,9 @@
 <?php
 /* OrderClient Fixture generated on: 2010-08-17 14:08:23 : 1282055183 */
 class OrderClientFixture extends CakeTestFixture {
-	var $name = 'OrderClient';
+	public $name = 'OrderClient';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'order_count' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -13,7 +13,7 @@ class OrderClientFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }
 ?>

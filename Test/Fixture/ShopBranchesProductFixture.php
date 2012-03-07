@@ -1,9 +1,9 @@
 <?php
 /* ShopBranchesProduct Fixture generated on: 2010-08-17 14:08:44 : 1282055204 */
 class ShopBranchesProductFixture extends CakeTestFixture {
-	var $name = 'ShopBranchesProduct';
+	public $name = 'ShopBranchesProduct';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'branch_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -11,7 +11,7 @@ class ShopBranchesProductFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 8,
 			'branch_id' => 1,

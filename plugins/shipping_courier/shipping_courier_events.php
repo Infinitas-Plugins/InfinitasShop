@@ -1,11 +1,11 @@
 <?php
 	class ShippingCourierEvents{
-		function onShopLoad(&$event){
+		public function onShopLoad(&$event){
 			Configure::write('Shop.shipping_method', 'courier');
 			Configure::write('Shop.shipping_methods', array_merge((array)Configure::read('Shop.shipping_methods'), array('courier')));
 		}
 
-		function onCalculateShipping(&$event, $data){
+		public function onCalculateShipping(&$event, $data){
 			switch($data['method']){
 				case 'pick_up':
 					return 0;

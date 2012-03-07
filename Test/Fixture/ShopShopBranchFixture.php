@@ -1,9 +1,9 @@
 <?php
 /* ShopShopBranch Fixture generated on: 2010-08-17 14:08:03 : 1282055223 */
 class ShopShopBranchFixture extends CakeTestFixture {
-	var $name = 'ShopShopBranch';
+	public $name = 'ShopShopBranch';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'branch_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'manager_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -17,7 +17,7 @@ class ShopShopBranchFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'branch_id' => 3,

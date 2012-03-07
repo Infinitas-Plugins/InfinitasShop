@@ -1,9 +1,9 @@
 <?php
 /* ShopProduct Fixture generated on: 2010-08-17 14:08:00 : 1282055220 */
 class ShopProductFixture extends CakeTestFixture {
-	var $name = 'ShopProduct';
+	public $name = 'ShopProduct';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
@@ -30,7 +30,7 @@ class ShopProductFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'name' => 'just a spotlight',

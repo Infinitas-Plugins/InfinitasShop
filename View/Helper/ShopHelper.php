@@ -1,11 +1,11 @@
 <?php
 	class ShopHelper extends AppHelper{
-		var $helpers = array(
+		public $helpers = array(
 			'Number', 'Form', 'Html',
 			'Libs.Wysiwyg', 'Libs.Image'
 		);
 
-		function currency($amount = 0, $currency = null){
+		public function currency($amount = 0, $currency = null){
 			if(!$currency){
 				$currency = Configure::read('Currency.unit');
 			}
@@ -13,7 +13,7 @@
 			return $this->Number->currency($amount, $currency);
 		}
 
-		function calculateSpecial($product = array(), $special = null, $toCurrency = true){
+		public function calculateSpecial($product = array(), $special = null, $toCurrency = true){
 			if(!$special){
 				if(!isset($product['Special']) || empty($product['Special'])){
 					if ($toCurrency){
@@ -42,7 +42,7 @@
 			return $newPrice;
 		}
 
-		function calculateMargin($cost = 0, $sell = 0, $toCurrency = true){
+		public function calculateMargin($cost = 0, $sell = 0, $toCurrency = true){
 			if($cost == 0 || $sell == 0){
 				return __('N/a');
 			}
@@ -56,7 +56,7 @@
 			return $margin;
 		}
 
-		function calculateProfit($cost = 0, $sell = 0, $toCurrency = true){
+		public function calculateProfit($cost = 0, $sell = 0, $toCurrency = true){
 			if($cost = 0 || $sell =0){
 				return __('N/a');
 			}
@@ -70,7 +70,7 @@
 			return $profit;
 		}
 
-		function breakdown($product = null, $special = array()){
+		public function breakdown($product = null, $special = array()){
 			if(!$product){
 				return __('No information available');
 			}
@@ -91,7 +91,7 @@
 			);
 		}
 
-		function getImage($data, $params = array('height' => '35px'), $link = false){
+		public function getImage($data, $params = array('height' => '35px'), $link = false){
 			if(isset($data['Image']['image'])){
 				$img = $data['Image']['image'];
 			}
@@ -118,7 +118,7 @@
 			);
 		}
 
-		function isSpecial($product){
+		public function isSpecial($product){
 			if(isset($product['Special']) && !empty($product['Special'])){
 				return true;
 			}
@@ -126,7 +126,7 @@
 			return false;
 		}
 
-		function isFeatured($product){
+		public function isFeatured($product){
 			if(isset($product['Spotlight']) && !empty($product['Spotlight'])){
 				return true;
 			}
@@ -134,7 +134,7 @@
 			return false;
 		}
 
-		function overlay($type = 'isSpecial'){
+		public function overlay($type = 'isSpecial'){
 			if(!isset($this->Html)){
 				$this->Html = new HtmlHelper();
 			}
@@ -149,7 +149,7 @@
 			).'</span>';
 		}
 
-		function cartActions($cart = null){
+		public function cartActions($cart = null){
 			if(!$cart){
 				$this->errors[] = 'You must pass a record in';
 				return false;
@@ -229,7 +229,7 @@
 			}
 		}
 
-		function wishlistActions($wishlist){
+		public function wishlistActions($wishlist){
 			return
 				$this->Html->link(
 					$this->Html->image(
@@ -276,7 +276,7 @@
 		 *
 		 * @var unknown_type
 		 */
-		var $orderNumber = array(
+		public $orderNumber = array(
 			'prefix' => '#',
 			'count' => 5,
 			'padding' => '0',
@@ -288,7 +288,7 @@
 		 *
 		 * @param $number int
 		 */
-		function orderNumber($number = null){
+		public function orderNumber($number = null){
 			if(!$number){
 				return __('Error!');
 			}

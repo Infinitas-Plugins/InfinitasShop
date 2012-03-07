@@ -1,8 +1,8 @@
 <?php
 	class ShopAppModel extends AppModel {
-		var $tablePrefix = 'shop_';
+		public $tablePrefix = 'shop_';
 
-		var $actsAs = array(
+		public $actsAs = array(
 			'Feed.Feedable'
 		);
 
@@ -17,7 +17,7 @@
 		 *
 		 * @return bool true if all was saved, false if not saved.
 		 */
-		function moveSessionToDb($datas = null, $user = null){
+		public function moveSessionToDb($datas = null, $user = null){
 			if(empty($user)){
 				return false;
 			}
@@ -41,7 +41,7 @@
 			return (bool)$true;
 		}
 
-		function _moveCart($datas, $user){
+		public function _moveCart($datas, $user){
 			$old = $this->getCartData($user['id']);
 			$oldCartIds = Set::extract('/Cart/product_id', $old);
 
@@ -72,7 +72,7 @@
 			return $true;
 		}
 
-		function _moveWishlist($datas, $user){
+		public function _moveWishlist($datas, $user){
 			$old = $this->getWishlistData($user['id']);
 			$oldWishlistIds = Set::extract('/Wishlist/product_id', $old);
 			$true = true;

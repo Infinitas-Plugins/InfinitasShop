@@ -1,9 +1,9 @@
 <?php
 /* OrderItem Fixture generated on: 2010-08-17 14:08:25 : 1282055185 */
 class OrderItemFixture extends CakeTestFixture {
-	var $name = 'OrderItem';
+	public $name = 'OrderItem';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
 		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -16,7 +16,7 @@ class OrderItemFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }
 ?>

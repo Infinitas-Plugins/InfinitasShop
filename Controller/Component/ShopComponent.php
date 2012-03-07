@@ -2,12 +2,12 @@
 	App::uses('InfinitasComponent', 'Libs/Component');
 	
 	class ShopComponent extends InfinitasComponent {
-		function initialize(&$controller, $settings = array()) {
+		public function initialize(&$controller, $settings = array()) {
 			$this->Controller = &$controller;
 			$settings = array_merge(array(), (array)$settings);
 		}
 
-		function sessionCartSave($Model, $product){
+		public function sessionCartSave($Model, $product){
 			$datas = $this->Controller->Session->read($Model->alias.'.Temp'.$Model->alias);
 			$message = false;
 			if(!empty($datas)){
@@ -65,7 +65,7 @@
 			);
 		}
 
-		function dbCartSave($Model,$product){
+		public function dbCartSave($Model,$product){
 			$currentCart = $Model->find(
 				'first',
 				array(
@@ -125,7 +125,7 @@
 			}
 		}
 
-		function _updateAddCount($Model, $product = null){
+		public function _updateAddCount($Model, $product = null){
 			if(!$product || empty($product)){
 				$this->errors[] = 'no product selected';
 				return false;

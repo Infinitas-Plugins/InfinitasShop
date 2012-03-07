@@ -1,9 +1,9 @@
 <?php
 /* ShopSpotlight Fixture generated on: 2010-08-17 14:08:11 : 1282055231 */
 class ShopSpotlightFixture extends CakeTestFixture {
-	var $name = 'ShopSpotlight';
+	public $name = 'ShopSpotlight';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'image_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
@@ -20,7 +20,7 @@ class ShopSpotlightFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 		array(
 			'id' => 1,
 			'product_id' => 1,

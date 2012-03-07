@@ -1,9 +1,9 @@
 <?php
 /* ShopCart Fixture generated on: 2010-08-17 14:08:51 : 1282055211 */
 class ShopCartFixture extends CakeTestFixture {
-	var $name = 'ShopCart';
+	public $name = 'ShopCart';
 
-	var $fields = array(
+	public $fields = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
 		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
@@ -18,7 +18,7 @@ class ShopCartFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
+	public $records = array(
 	);
 }
 ?>
