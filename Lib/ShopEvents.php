@@ -1,9 +1,5 @@
 <?php
-	final class ShopEvents extends AppEvents{
-		public function onSetupConfig(){
-			return Configure::load('Shop.config');
-		}
-		
+	final class ShopEvents extends AppEvents {		
 		public function onSetupCache(){
 			return array(
 				'name' => 'shop',
