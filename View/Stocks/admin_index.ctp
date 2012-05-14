@@ -47,7 +47,7 @@
                 )
             );
 
-            foreach ($stocks as $stock){
+            foreach ($stocks as $stock) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($stock); ?>&nbsp;</td>

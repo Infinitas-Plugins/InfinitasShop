@@ -39,7 +39,7 @@
 				'name' => __d('shop', 'Categories'),
 				'description' => __d('shop', 'Manage product categories'),
 				'icon' => '/contents/img/categories.png',
-				'dashboard' => array('controller' => 'branches', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_categories', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Suppliers'),
@@ -71,7 +71,13 @@
 				'name' => __d('shop', 'Stock'),
 				'description' => __d('shop', 'Manage product stock'),
 				'icon' => '/shop/img/icons/stock.png',
-				'dashboard' => array('controller' => 'stock', 'action' => 'index')
+				'dashboard' => array('controller' => 'stocks', 'action' => 'index')
+			),
+			array(
+				'name' => __d('shop', 'Cart'),
+				'description' => __d('shop', 'View user carts'),
+				'icon' => '/shop/img/icons/cart.png',
+				'dashboard' => array('controller' => 'carts', 'action' => 'index')
 			),
 		)
 	);

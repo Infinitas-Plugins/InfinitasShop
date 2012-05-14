@@ -31,8 +31,8 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    $this->Paginator->sort(__('User'), 'User.name'),
-                    $this->Paginator->sort(__('Product'), 'Product.name'),
+                    $this->Paginator->sort('User.name', __d('shop', 'User')),
+                    $this->Paginator->sort('Product.name', __d('shop', 'Product')),
                     $this->Paginator->sort('quantity'),
                     $this->Paginator->sort('price'),
                     $this->Paginator->sort('sub_total'),

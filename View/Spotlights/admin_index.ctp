@@ -41,7 +41,7 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    __('Image') => array(
+                    __d('shop', 'Image') => array(
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('Product.name', __d('shop', 'Product')),
@@ -72,16 +72,16 @@
                 			<?php echo $this->Html->link($spotlight['Product']['name'], array('action' => 'edit', $spotlight['Spotlight']['id'])); ?>&nbsp;
                 		</td>
 						<td title="<?php echo $this->Shop->breakdown($spotlight['Product'], $spotlight['Product']['Special']); ?>">
-							<?php echo $this->Shop->calculateSpecial($spotlight['Product'], $spotlight['Product']['Special']); ?>
+							<?php echo $this->Shop->calculateSpecial($spotlight['Product'], $spotlight['Product']['Special']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['start_date'].' '.$spotlight['Spotlight']['start_time']); ?>
+							<?php echo $this->Time->niceShort($spotlight['Spotlight']['start_date'].' '.$spotlight['Spotlight']['start_time']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['end_date'].' '.$spotlight['Spotlight']['end_time']); ?>
+							<?php echo $this->Time->niceShort($spotlight['Spotlight']['end_date'].' '.$spotlight['Spotlight']['end_time']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['modified']); ?>
+							<?php echo $this->Time->niceShort($spotlight['Spotlight']['modified']); ?>&nbsp;
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($spotlight['Spotlight']['active']); ?>&nbsp;
