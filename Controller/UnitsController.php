@@ -1,6 +1,6 @@
 <?php
 	class UnitsController extends ShopAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Unit.id',

@@ -8,11 +8,11 @@
 			'Shop.Shop'
 		);
 
-		public function beforeRender(){
+		public function beforeRender() {
 			parent::beforeRender();
 			$user_id = $this->Auth->user('id');
 
-			if(isset($this->Cart)){
+			if(isset($this->Cart)) {
 				$usersCart = $this->Cart->getCartData($user_id);
 			}
 			else{
@@ -22,12 +22,12 @@
 			$this->set(compact('usersCart'));
 		}
 
-		public function beforeFilter(){
+		public function beforeFilter() {
 			parent::beforeFilter();
 			Configure::write('Rating.time_limit', false);
 
 			$this->Event->trigger('shopLoad');
-			if(!$this->Session->read('Shop.shipping_method')){
+			if(!$this->Session->read('Shop.shipping_method')) {
 				$this->Session->write('Shop.shipping_method', Configure::read('Shop.shipping_method'));
 			}
 			

@@ -61,7 +61,7 @@
                 )
             );
 
-            foreach ($spotlights as $spotlight){
+            foreach ($spotlights as $spotlight) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($spotlight); ?>&nbsp;</td>

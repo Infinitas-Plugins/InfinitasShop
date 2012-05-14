@@ -1,6 +1,6 @@
 <?php
 	class ShopCategoriesController extends ShopAppController {
-		public function index(){
+		public function index() {
 			$conditions = array(
 				'ShopCategory.active' => 1,
 				'ShopCategory.parent_id IS NULL'
@@ -31,7 +31,7 @@
 
 				$category_id = isset($id['ShopCategory']['id']) ? $id['ShopCategory']['id'] : null;
 
-				if($id){
+				if($id) {
 					$conditions = array(
 						'ShopCategory.parent_id' => $category_id
 					);
@@ -75,7 +75,7 @@
 			$this->set(compact('categories', 'products', 'currentCategory', 'specials', 'spotlights'));
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'ShopCategory.id',
@@ -111,7 +111,7 @@
 			$this->set(compact('categories','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			if (!empty($this->data)) {
 				$this->ShopCategory->create();
 				if ($this->ShopCategory->saveAll($this->data)) {
@@ -125,7 +125,7 @@
 			$this->set(compact('parents', 'images', 'branches'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			if (!$id) {
 				$this->notice('invalid');
 			}

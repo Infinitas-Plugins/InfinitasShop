@@ -1,6 +1,6 @@
 <?php
 	class SuppliersController extends ShopAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Supplier.id',
@@ -31,14 +31,14 @@
 			$this->set(compact('suppliers','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$addresses = $this->Supplier->Address->find('list');
 			$this->set(compact('addresses'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
 			$addresses = $this->Supplier->Address->find('list');

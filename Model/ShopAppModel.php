@@ -13,17 +13,17 @@
 		 *
 		 * @return bool true if all was saved, false if not saved.
 		 */
-		public function moveSessionToDb($datas = null, $user = null){
-			if(empty($user)){
+		public function moveSessionToDb($datas = null, $user = null) {
+			if(empty($user)) {
 				return false;
 			}
 
-			if(empty($datas)){
+			if(empty($datas)) {
 				return true;
 			}
 
 			$true = true;
-			switch($this->alias){
+			switch($this->alias) {
 				case 'Cart':
 					return $this->_moveCart($datas, $user);
 					break;
@@ -37,20 +37,20 @@
 			return (bool)$true;
 		}
 
-		public function _moveCart($datas, $user){
+		public function _moveCart($datas, $user) {
 			$old = $this->getCartData($user['id']);
 			$oldCartIds = Set::extract('/Cart/product_id', $old);
 
 			$true = true;
 
-			foreach($datas as &$data){
+			foreach($datas as &$data) {
 				unset($data['Product']);
 				$data[$this->alias]['user_id'] = $user['id'];
 				$update = false;
 
-				if(in_array($data[$this->alias]['product_id'], $oldCartIds)){
-					foreach($old as $oldCart){
-						if($oldCart[$this->alias]['product_id'] == $data[$this->alias]['product_id']){
+				if(in_array($data[$this->alias]['product_id'], $oldCartIds)) {
+					foreach($old as $oldCart) {
+						if($oldCart[$this->alias]['product_id'] == $data[$this->alias]['product_id']) {
 							$data[$this->alias]['id'] = $oldCart[$this->alias]['id'];
 							$data[$this->alias]['quantity'] += $oldCart[$this->alias]['quantity'];
 							$update = true;
@@ -59,7 +59,7 @@
 					}
 				}
 
-				if(!$update){
+				if(!$update) {
 					$this->create();
 				}
 				$true &= $this->save($data);
@@ -68,19 +68,19 @@
 			return $true;
 		}
 
-		public function _moveWishlist($datas, $user){
+		public function _moveWishlist($datas, $user) {
 			$old = $this->getWishlistData($user['id']);
 			$oldWishlistIds = Set::extract('/Wishlist/product_id', $old);
 			$true = true;
 
-			foreach($datas as &$data){
+			foreach($datas as &$data) {
 				unset($data['Product']);
 				$data[$this->alias]['user_id'] = $user['id'];
 				$update = false;
 
-				if(in_array($data[$this->alias]['product_id'], $oldWishlistIds)){
-					foreach($old as $oldWishlist){
-						if($oldWishlist[$this->alias]['product_id'] == $data[$this->alias]['product_id']){
+				if(in_array($data[$this->alias]['product_id'], $oldWishlistIds)) {
+					foreach($old as $oldWishlist) {
+						if($oldWishlist[$this->alias]['product_id'] == $data[$this->alias]['product_id']) {
 							$data[$this->alias]['id'] = $oldWishlist[$this->alias]['id'];
 							$update = true;
 							break;
@@ -89,7 +89,7 @@
 				}
 
 				// its already there so dont need to add it again
-				if($update){
+				if($update) {
 					break;
 				}
 

@@ -50,7 +50,7 @@
                 )
             );
 
-            foreach ($payments as $payment){
+            foreach ($payments as $payment) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($payment); ?>&nbsp;</td>

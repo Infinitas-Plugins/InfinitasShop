@@ -1,6 +1,6 @@
 <?php
 	class PaymentsController extends OrderAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 				),
@@ -23,7 +23,7 @@
 			$this->set(compact('payments','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$orders = $this->Payment->Order->find('list');

@@ -124,10 +124,10 @@
 			)
 		);
 
-		public function getBestSellers($limit = 10){
+		public function getBestSellers($limit = 10) {
 			$cacheName = cacheName('products_best_sellers', $limit);
 			$products = Cache::read($cacheName, 'shop');
-			if($products !== false){
+			if($products !== false) {
 				return $products;
 			}
 
@@ -164,10 +164,10 @@
 			return $products;
 		}
 
-		public function getMostViewed($limit = 10){
+		public function getMostViewed($limit = 10) {
 			$cacheName = cacheName('products_mostViewed', $limit);
 			$products = Cache::read($cacheName, 'shop');
-			if($products !== false){
+			if($products !== false) {
 				return $products;
 			}
 
@@ -204,10 +204,10 @@
 			return $products;
 		}
 
-		public function getNewest($limit = 10){
+		public function getNewest($limit = 10) {
 			$cacheName = cacheName('products_newest', $limit);
 			$products = Cache::read($cacheName, 'shop');
-			if($products !== false){
+			if($products !== false) {
 				return $products;
 			}
 
@@ -244,13 +244,13 @@
 			return $products;
 		}
 
-		public function getActiveProducts($category_id = null, $categoryStatus = 1){
+		public function getActiveProducts($category_id = null, $categoryStatus = 1) {
 			$conditions = array(
 				'ShopCategory.active' => $categoryStatus
 			);
 
 
-			if ($category_id){
+			if ($category_id) {
 				$conditions = array(
 					'ShopCategory.active' => $categoryStatus,
 					'ShopCategory.id' => $category_id
@@ -259,7 +259,7 @@
 
 			$cacheName = cacheName('products_active', $conditions);
 			$products = Cache::read($cacheName, 'shop');
-			if($products !== false){
+			if($products !== false) {
 				return $products;
 			}
 
@@ -291,21 +291,21 @@
 			return $products;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
-			foreach($files[1] as $file){
-				if(strstr($file, 'products_') != false){
+			foreach($files[1] as $file) {
+				if(strstr($file, 'products_') != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

@@ -179,7 +179,7 @@
 		 *
 		 * @return list of users.
 		 */
-		public function getManagers(){
+		public function getManagers() {
 			$managers = $this->Manager->find(
 				'list',
 				array(
@@ -203,7 +203,7 @@
 		 *
 		 * @return empty array or array of available branches
 		 */
-		public function _getAvailableBranches(){
+		public function _getAvailableBranches() {
 			$ids = $this->find(
 				'list',
 				array(
@@ -226,7 +226,7 @@
 			return $branchDetails;
 		}
 
-		public function branchList(){
+		public function branchList() {
 			$branches = $this->find(
 				'all',
 				array(
@@ -244,14 +244,14 @@
 			);
 
 			$list = array();
-			foreach($branches as $branch){
+			foreach($branches as $branch) {
 				$list[$branch['ShopBranch']['id']] = $branch['BranchDetail']['name'];
 			}
 
 			return $list;
 		}
 
-		public function getList(){
+		public function getList() {
 			$ids = $this->find(
 				'list',
 				array(
@@ -272,7 +272,7 @@
 			);
 
 			$return = array();
-			foreach($ids as $id){
+			foreach($ids as $id) {
 				$return[$id] = $branchDetails[$id];
 			}
 

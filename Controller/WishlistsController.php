@@ -1,8 +1,8 @@
 <?php
 	class WishlistsController extends ShopAppController {
-		public function index(){
+		public function index() {
 			$userId = $this->Auth->user('id');
-			if($userId){
+			if($userId) {
 				$wishlists = $this->Wishlist->find(
 					'all',
 					array(
@@ -19,7 +19,7 @@
 				$wishlists = $this->Session->read('Wishlist.TempWishlist');
 			}
 
-			if(empty($wishlists)){
+			if(empty($wishlists)) {
 				$this->notice(
 					__('Your wishlist is empty'),
 					array(
@@ -31,8 +31,8 @@
 			$this->set(compact('wishlists', 'amounts'));
 		}
 
-		public function adjust(){
-			if(!isset($this->request->params['named']['product_id'])){
+		public function adjust() {
+			if(!isset($this->request->params['named']['product_id'])) {
 				$this->notice('invalid');
 			}
 
@@ -58,23 +58,23 @@
 				)
 			);
 
-			if(empty($product) || $product['Product']['active'] == false){
+			if(empty($product) || $product['Product']['active'] == false) {
 				$this->notice('invalid');
 			}
 
-			if(isset($product['Special']) && !empty($product['Special'][0])){
+			if(isset($product['Special']) && !empty($product['Special'][0])) {
 				$product['Product']['price'] = $product['Product']['price'] - (($product['Product']['price'] / 100) * $product['Special'][0]['discount']);
 			}
 
-			if($userId = $this->Auth->user('id') > 0){
+			if($userId = $this->Auth->user('id') > 0) {
 				$this->Shop->dbCartSave($this->Wishlist, $product);
 			}
 
 			$this->Shop->sessionCartSave($this->Wishlist, $product);
 		}
 
-		public function move($product_id = null){
-			if(!$product_id){
+		public function move($product_id = null) {
+			if(!$product_id) {
 				$this->notice('invalid');
 			}
 
@@ -97,7 +97,7 @@
 				)
 			);
 
-			if(isset($product['Special']) && !empty($product['Special'][0])){
+			if(isset($product['Special']) && !empty($product['Special'][0])) {
 				$product['Product']['price'] = $product['Product']['price'] - (($product['Product']['price'] / 100) * $product['Special'][0]['discount']);
 			}
 
@@ -107,7 +107,7 @@
 
 
 			$userId = $this->Auth->user('id');
-			if($userId){
+			if($userId) {
 				$this->Wishlist->enableSoftDeletable('delete', false);
 
 				$deleteConditions = array(
@@ -115,7 +115,7 @@
 					'Wishlist.product_id' => $product_id
 				);
 
-				if(!$this->Wishlist->deleteAll($deleteConditions)){
+				if(!$this->Wishlist->deleteAll($deleteConditions)) {
 					$this->notice(
 						__('There was a problem moving the product'),
 						array(
@@ -128,8 +128,8 @@
 			}
 			else{
 				$wishlists = $this->Session->read('Wishlist.TempWishlist');
-				foreach($wishlists as &$wishlist){
-					if($wishlist['Wishlist']['product_id'] == $product_id){
+				foreach($wishlists as &$wishlist) {
+					if($wishlist['Wishlist']['product_id'] == $product_id) {
 						unset($wishlist);
 					}
 				}
@@ -140,7 +140,7 @@
 			}
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Wishlist.id',

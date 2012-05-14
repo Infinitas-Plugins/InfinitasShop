@@ -16,9 +16,9 @@
 			)
 		);
 
-		public function getImagePaths(){
+		public function getImagePaths() {
 			$images = Cache::read('images', 'shop');
-			if($images !== false){
+			if($images !== false) {
 				return $images;
 			}
 
@@ -37,28 +37,28 @@
 			return $images;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
 			Cache::delete('images', 'shop');
 
-			foreach($files[1] as $file){
+			foreach($files[1] as $file) {
 				$shouldDelete =
 					strstr($file, 'products') ||
 					strstr($file, 'specials') ||
 					strstr($file, 'spotlights');
 
-				if($shouldDelete != false){
+				if($shouldDelete != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

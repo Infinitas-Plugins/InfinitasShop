@@ -37,7 +37,7 @@
                 false
             );
 
-            foreach ($orders as $order){
+            foreach ($orders as $order) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 						<td>
@@ -55,7 +55,7 @@
 						</td>
 						<td>
 							<?php
-								if(!empty($order['Order']['payment_method'])){
+								if(!empty($order['Order']['payment_method'])) {
 									echo $order['Order']['payment_method'];
 								}
 								else{

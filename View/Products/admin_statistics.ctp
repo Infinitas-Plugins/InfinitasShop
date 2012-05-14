@@ -65,7 +65,7 @@
                 )
             );
 
-            foreach ($products as $product){
+            foreach ($products as $product) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($product); ?>&nbsp;</td>

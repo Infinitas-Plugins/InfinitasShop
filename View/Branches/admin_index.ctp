@@ -63,7 +63,7 @@
             );
 
             $i = 0;
-            foreach ($branches as $branch){
+            foreach ($branches as $branch) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($branch); ?>&nbsp;</td>

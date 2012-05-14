@@ -46,7 +46,7 @@
             );
 
             $i = 0;
-            foreach ($carts as $cart){
+            foreach ($carts as $cart) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($cart); ?>&nbsp;</td>

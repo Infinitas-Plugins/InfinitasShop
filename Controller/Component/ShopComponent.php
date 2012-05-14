@@ -78,7 +78,7 @@
 				)
 			);
 
-			if(!empty($currentCart)){
+			if(!empty($currentCart)) {
 				$message = __('Something went wrong');
 				if($this->Controller->params['named']['quantity'] == 0) {
 					if(isset($currentCart[$Model->alias]['id']) && $Model->delete($currentCart[$Model->alias]['id'])) {
@@ -93,7 +93,7 @@
 					$currentCart[$Model->alias]['price'] = $product['Product']['price'];
 					$currentCart[$Model->alias]['name'] = $product['Product']['name'];
 
-					if($Model->save($currentCart)){
+					if($Model->save($currentCart)) {
 						$message = __('Your '.$Model->alias.' was updated');
 					}
 				}
@@ -127,11 +127,11 @@
 		}
 
 		public function _updateAddCount($Model, $product = null) {
-			if(!$product || empty($product)){
+			if(!$product || empty($product)) {
 				$this->errors[] = 'no product selected';
 				return false;
 			}
-			switch(isset($product['added_to_cart'])){
+			switch(isset($product['added_to_cart'])) {
 				case true:
 					return $Model->Product->updateAll(
 						array(

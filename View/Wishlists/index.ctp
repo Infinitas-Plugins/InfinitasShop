@@ -41,7 +41,7 @@
             );
 
             $i = 0;
-            foreach ($wishlists as $wishlist){
+            foreach ($wishlists as $wishlist) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
 						<td>

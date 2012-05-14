@@ -47,7 +47,7 @@
             );
 
             $i = 0;
-            foreach ($carts as $cart){
+            foreach ($carts as $cart) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
 						<td>
@@ -98,7 +98,7 @@
 			<td>&nbsp;</td>
         </tr>
         <?php
-        	if($amounts['vat'] > 0){
+        	if($amounts['vat'] > 0) {
         		?>
 			        <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
 						<td><?php echo __('Tax');?>&nbsp;</td>

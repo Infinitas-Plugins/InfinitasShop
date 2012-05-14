@@ -23,10 +23,10 @@
         	?>
 				<div class="data">
 					<?php
-						if(isset($this->data['Special']['amount']) && $this->data['Special']['amount'] > 0){
+						if(isset($this->data['Special']['amount']) && $this->data['Special']['amount'] > 0) {
 							$discount = $this->data['Special']['amount'];
 						}
-						else if(isset($this->data['Special']['discount']) && $this->data['Special']['discount'] > 0){
+						else if(isset($this->data['Special']['discount']) && $this->data['Special']['discount'] > 0) {
 							$discount = $this->data['Product']['price'];
 						}
 

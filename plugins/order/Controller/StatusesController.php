@@ -1,6 +1,6 @@
 <?php
 	class StatusesController extends OrderAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'order' => array(
 					'Status.ordering' => 'ASC'

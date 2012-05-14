@@ -1,6 +1,6 @@
 <?php
 	class PaymentNetcashEvents{
-		public function onLoadPaymentGateways(&$event){
+		public function onLoadPaymentGateways(&$event) {
 			Configure::load('PaymentNetcash.config');
 			return 'netcash';
 		}

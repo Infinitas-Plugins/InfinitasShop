@@ -1,5 +1,5 @@
 <?php
-	if($this->action == 'search'){
+	if($this->action == 'search') {
 		?>
 			<div class="search">
 				<?php
@@ -15,7 +15,7 @@
 <h2 class="fade"><?php echo __('All Products'); ?></h2>
 	<div class="list">
 		<?php
-			foreach($products as $product){
+			foreach($products as $product) {
 				echo $this->element('product', array('plugin' => 'shop', 'product' => $product));
 			}
 			echo $this->element('pagination/navigation');

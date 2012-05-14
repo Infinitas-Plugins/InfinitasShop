@@ -2,7 +2,7 @@
 	<div class="mainImage">
 		<?php
 			$product['ProductImage'][] = $product['Image'];
-			if(count($product['ProductImage']) == 1){
+			if(count($product['ProductImage']) == 1) {
 				$_image['Product']['Image'] = $product['ProductImage'][0];
 				echo $this->Shop->getImage(
 					$_image,
@@ -17,9 +17,9 @@
 	</div>
 	<ul class="gallery">
 		<?php
-			if(count($product['ProductImage']) > 1){
+			if(count($product['ProductImage']) > 1) {
 				shuffle($product['ProductImage']);
-				foreach((array)$product['ProductImage'] as $otherImage){
+				foreach((array)$product['ProductImage'] as $otherImage) {
 					$_image['Product']['Image'] = $otherImage;
 					echo '<li>', $this->Shop->getImage(
 						$_image,

@@ -1,6 +1,6 @@
 <?php
 	class OrdersController extends OrderAppController {
-		public function index(){
+		public function index() {
 			$user_id = $this->Auth->user('id');
 
 			$this->Paginator->settings = array(
@@ -32,9 +32,9 @@
 			$this->set(compact('orders','filterOptions'));
 		}
 
-		public function checkout(){
+		public function checkout() {
 			$user_id = $this->Auth->user('id');
-			if($user_id < 1){
+			if($user_id < 1) {
 				$this->notice(
 					__('You need to be logged in to checkout'),
 					array(
@@ -44,7 +44,7 @@
 			}
 
 			$cartItems = ClassRegistry::init('Shop.Cart')->getCartData($user_id);
-			if(empty($cartItems)){
+			if(empty($cartItems)) {
 				$this->notice(
 					__('You dont have any products'),
 					array(
@@ -57,7 +57,7 @@
 			$this->data['Order']['user_id'] = $user_id;
 			$this->data['Order']['tracking_number'] = '';
 
-			foreach($cartItems as $item){
+			foreach($cartItems as $item) {
 				unset($item['Cart']['created']);
 				unset($item['Cart']['modified']);
 				unset($item['Cart']['sub_total']);
@@ -66,7 +66,7 @@
 				$this->data['Item'][] = $item['Cart'];
 			}
 
-			if($this->Order->saveAll($this->data)){
+			if($this->Order->saveAll($this->data)) {
 				ClassRegistry::init('Shop.Cart')->clearCart($user_id);
 				$this->notice(
 					__('Your order has been completed and now requires payment'),
@@ -80,9 +80,9 @@
 			);
 		}
 
-		public function pay(){
+		public function pay() {
 			$orders = $this->Order->getPendingOrders($this->Auth->user('id'));
-			if(empty($orders)){
+			if(empty($orders)) {
 				$this->notice(
 					__('It seems you do not have any orders that require payment'),
 					array(
@@ -95,7 +95,7 @@
 			$this->set(compact('orders', 'paymentMethods'));
 		}
 
-        public function recive_payment(){
+        public function recive_payment() {
             $this->autoRender = false;
 
             $something['accepted']  = $this->request->params['url']['TransactionAccepted'];
@@ -104,13 +104,13 @@
 
             $this->log(serialize($this->request->params['url']), 'payment');
 
-            if (!empty($something) && $something['accepted'] == true){
+            if (!empty($something) && $something['accepted'] == true) {
                 $this->data['Payment']['order_id'] = $this->request->params['url']['Extra1'];
                 $this->data['Payment']['user_id'] = $this->request->params['url']['Extra2'];
                 $this->data['Payment']['payment_method_id'] = 3;
                 $this->data['Payment']['amount'] = $this->request->params['url']['Amount'];
 
-                if ($this->Payment->save($this->data)){
+                if ($this->Payment->save($this->data)) {
                     unset( $this->data );
                     $data['Order']['id'] = $this->request->params['url']['Extra1'];
                     $data['Order']['status_id'] = 2;
@@ -118,7 +118,7 @@
                 }
             }
 
-            if (isset($this->request->params['url']['Extra1'])){
+            if (isset($this->request->params['url']['Extra1'])) {
                 $user = ClassRegistry::init( 'User.User' )->read(null, $this->request->params['url']['Extra2']);
 
                 // @todo send email here about the payment
@@ -139,23 +139,23 @@
 			);
         }
 
-		public function admin_index(){
+		public function admin_index() {
 			$year = $month = null;
-			if(isset($this->Filter->filter['Order.year'])){
+			if(isset($this->Filter->filter['Order.year'])) {
 				$year  = $this->Filter->filter['Order.year'];
 				unset($this->Filter->filter['Order.year']);
 			}
-			if(isset($this->Filter->filter['Order.month'])){
+			if(isset($this->Filter->filter['Order.month'])) {
 				$month = $this->Filter->filter['Order.month'];
 				unset($this->Filter->filter['Order.month']);
 			}
 
 			$conditions = array();
-			if($year || $month){
-				if(!$year){
+			if($year || $month) {
+				if(!$year) {
 					$year = date('Y');
 				}
-				if(!$month){
+				if(!$month) {
 					$month = date('m');
 				}
 
@@ -201,8 +201,8 @@
 			$this->set(compact('orders','filterOptions'));
 		}
 
-		public function admin_view($id = null){
-			if(!$id){
+		public function admin_view($id = null) {
+			if(!$id) {
 				$this->notice('invalid');
 			}
 

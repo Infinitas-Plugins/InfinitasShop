@@ -1,6 +1,6 @@
 <?php
 	class SpotlightsController extends ShopAppController {
-		public function index(){
+		public function index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Spotlight.id',
@@ -31,7 +31,7 @@
 			$this->set(compact('spotlights', 'specials'));
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Spotlight.id',
@@ -66,7 +66,7 @@
 			$this->set(compact('spotlights','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$shopBranches = $this->Spotlight->ShopBranch->getList();
@@ -75,7 +75,7 @@
 			$this->set(compact('shopBranches', 'products', 'images'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
 			$shopBranches = $this->Spotlight->ShopBranch->getList();

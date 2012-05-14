@@ -61,12 +61,12 @@
 	                false
 	            );
 
-	            foreach ($order['Item'] as $item){
+	            foreach ($order['Item'] as $item) {
 	                ?>
 	                	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 							<td>
 								<?php
-									if(!empty($item['Product'])){
+									if(!empty($item['Product'])) {
 										echo $this->Html->link(
 											$item['Product']['name'],
 											array(
@@ -112,7 +112,7 @@
 	                false
 	            );
 
-	            foreach ($order['Payment'] as $payment){
+	            foreach ($order['Payment'] as $payment) {
 	                ?>
 	                	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 							<td>

@@ -1,6 +1,6 @@
 <?php
 	class SpecialsController extends ShopAppController {
-		public function index(){
+		public function index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Special.id',
@@ -32,7 +32,7 @@
 			$this->set(compact('specials', 'spotlights'));
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Special.id',
@@ -68,7 +68,7 @@
 			$this->set(compact('specials','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$shopBranches = $this->Special->ShopBranch->getList();
@@ -104,7 +104,7 @@
 			$this->set(compact('shopBranches', 'products', 'images', 'minPrice', 'maxPrice'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
 			$shopBranches = $this->Special->ShopBranch->getList();
@@ -113,7 +113,7 @@
 			$this->set(compact('shopBranches', 'products', 'images'));
 		}
 
-		public function admin_getPrices(){
+		public function admin_getPrices() {
 			$this->set(
 				'json',
 				$this->Special->Product->find(

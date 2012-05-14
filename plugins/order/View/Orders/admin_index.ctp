@@ -54,7 +54,7 @@
             );
 
             $i = 0;
-            foreach ($orders as $order){
+            foreach ($orders as $order) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td>

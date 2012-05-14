@@ -35,7 +35,7 @@
                 false
             );
 
-            foreach ($addresses as $address){
+            foreach ($addresses as $address) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 						<td>

@@ -65,7 +65,7 @@
                 )
             );
 
-            foreach ($suppliers as $supplier){
+            foreach ($suppliers as $supplier) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($supplier); ?>&nbsp;</td>

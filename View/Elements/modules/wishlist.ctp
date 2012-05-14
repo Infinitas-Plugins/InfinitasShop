@@ -1,15 +1,15 @@
 <div>
 	<?php
 		$userId = AuthComponent::user('id');
-		if(!isset($usersWishlist)){
+		if(!isset($usersWishlist)) {
 			$usersWishlist = Cache::read(cacheName('wishlist', $userId));
 
-			if($usersWishlist === false){
+			if($usersWishlist === false) {
 				$usersWishlist = ClassRegistry::init('Shop.Wishlist')->getWishlistData($userId);
 			}
 		}
 
-		if(empty($usersWishlist)){
+		if(empty($usersWishlist)) {
 			echo __('Your wishlist is empty');
 		}
 		else{
@@ -20,7 +20,7 @@
 						<th style="width:50px;"><?php echo __('Price' ) ?></th>
 					</tr>
 					<?php
-						foreach((array)$usersWishlist as $wishlistItem){
+						foreach((array)$usersWishlist as $wishlistItem) {
 							$wishlistItem['Product']['plugin'] = 'shop';
 							$wishlistItem['Product']['controller'] = 'products';
 							$wishlistItem['Product']['action'] = 'view';
@@ -41,7 +41,7 @@
 					<tr>
 						<td colspan="2">
 							<?php
-								if(AuthComponent::user('id') > 0){
+								if(AuthComponent::user('id') > 0) {
 									echo $this->Html->link(
 										__('Manage'),
 										array(

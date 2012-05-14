@@ -3,7 +3,7 @@
 		/**
 		 * 
 		 */
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Image.id',

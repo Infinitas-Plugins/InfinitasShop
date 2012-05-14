@@ -28,7 +28,7 @@
 		}
 
 		public function onSlugUrl($event, $data) {
-			switch($data['type']){
+			switch($data['type']) {
 				case 'products':
 					return array(
 						'plugin' => 'shop',
@@ -52,7 +52,7 @@
 		}
 
 		public function onSetupThemeLayout($event, $data) {
-			if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index'){
+			if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index') {
 				//return 'checkout';
 			}
 		}
@@ -64,11 +64,11 @@
 
 		public function onUserLogin($event, $data) {
 			try {
-				if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true){
+				if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true) {
 					CakeSession::delete('Cart');
 				}
 
-				if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true){
+				if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true) {
 					CakeSession::delete('Wishlist');
 				}
 			}

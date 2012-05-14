@@ -56,7 +56,7 @@
                 )
             );
 
-            foreach ($units as $unit){
+            foreach ($units as $unit) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($unit); ?>&nbsp;</td>
