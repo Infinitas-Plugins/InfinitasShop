@@ -2,10 +2,6 @@
 	class ShopAppModel extends AppModel {
 		public $tablePrefix = 'shop_';
 
-		public $actsAs = array(
-			'Feed.Feedable'
-		);
-
 		/**
 		 * Move data from session to cart.
 		 *

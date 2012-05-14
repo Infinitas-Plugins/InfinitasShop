@@ -1,15 +1,6 @@
 <?php
 	class Cart extends ShopAppModel {
 		/**
-		 * SoftDeletable does not auto load for non admin
-		 *
-		 * @var unknown_type
-		 */
-		public $actsAs = array(
-			'Libs.SoftDeletable'
-		);
-
-		/**
 		 * sub_total is the line total
 		 * @var unknown_type
 		 */

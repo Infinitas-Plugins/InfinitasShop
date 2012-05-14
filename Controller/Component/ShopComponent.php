@@ -1,5 +1,5 @@
 <?php
-	App::uses('InfinitasComponent', 'Libs/Component');
+	App::uses('InfinitasComponent', 'Libs.Controller/Component');
 	
 	class ShopComponent extends InfinitasComponent {
 		public function initialize(&$controller, $settings = array()) {
@@ -7,18 +7,19 @@
 			$settings = array_merge(array(), (array)$settings);
 		}
 
-		public function sessionCartSave($Model, $product){
+		public function sessionCartSave($Model, $product) {
 			$datas = $this->Controller->Session->read($Model->alias.'.Temp'.$Model->alias);
 			$message = false;
-			if(!empty($datas)){
+			if(!empty($datas)) {
 				$done = false;
-				foreach($datas as &$data){
-					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']){
-						if($data[$Model->alias]['quantity'] == 0){
+				foreach($datas as &$data) {
+					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']) {
+						if($data[$Model->alias]['quantity'] == 0) {
 							unset($data);
 							$message = __('Product was removed from the '.$Model->alias);
 							$done = true;
 						}
+						
 						else{
 							$data[$Model->alias]['quantity'] += $this->Controller->params['named']['quantity'];
 							$data[$Model->alias]['price']     = $product['Product']['price'];
@@ -30,7 +31,7 @@
 					}
 				}
 
-				if(!$done){
+				if(!$done) {
 					$datas[] = array(
 						$Model->alias => array(
 							'product_id' => $this->Controller->params['named']['product_id'],
@@ -65,7 +66,7 @@
 			);
 		}
 
-		public function dbCartSave($Model,$product){
+		public function dbCartSave($Model, $product) {
 			$currentCart = $Model->find(
 				'first',
 				array(
@@ -114,7 +115,7 @@
 			$cart[$Model->alias]['user_id'] = $this->Controller->Session->read('Auth.User.id');
 
 			$Model->create();
-			if($Model->save($cart)){
+			if($Model->save($cart)) {
 				$this->_updateAddCount($Model, $product['Product']);
 				$this->Controller->notice(
 					__('The product was added to your '.$Model->alias),
@@ -125,7 +126,7 @@
 			}
 		}
 
-		public function _updateAddCount($Model, $product = null){
+		public function _updateAddCount($Model, $product = null) {
 			if(!$product || empty($product)){
 				$this->errors[] = 'no product selected';
 				return false;

@@ -26,22 +26,11 @@
 			parent::beforeFilter();
 			Configure::write('Rating.time_limit', false);
 
-			$this->addCss(
-				array(
-					'Shop.shop'
-				)
-			);
-
-			$this->addJs(
-				array(
-					'Shop.shop'
-				)
-			);
-
 			$this->Event->trigger('shopLoad');
 			if(!$this->Session->read('Shop.shipping_method')){
 				$this->Session->write('Shop.shipping_method', Configure::read('Shop.shipping_method'));
 			}
+			
 			return true;
 		}
 	}

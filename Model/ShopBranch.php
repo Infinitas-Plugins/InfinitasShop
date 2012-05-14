@@ -29,10 +29,6 @@
 			1 // admin
 		);
 
-		public $actsAs = array(
-			'Libs.SoftDeletable'
-		);
-
 		public $belongsTo = array(
 			'BranchDetail' => array(
 				'className' => 'Contact.Branch',
