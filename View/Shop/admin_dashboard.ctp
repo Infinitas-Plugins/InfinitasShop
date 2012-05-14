@@ -51,7 +51,7 @@
 				'name' => __d('shop', 'Units'),
 				'description' => __d('shop', 'Manage product units'),
 				'icon' => '/shop/img/icons/units.png',
-				'dashboard' => array('controller' => 'spotlights', 'action' => 'index')
+				'dashboard' => array('controller' => 'units', 'action' => 'index')
 			),
 		),
 		'manage' => array(
@@ -71,7 +71,7 @@
 				'name' => __d('shop', 'Stock'),
 				'description' => __d('shop', 'Manage product stock'),
 				'icon' => '/shop/img/icons/stock.png',
-				'dashboard' => array('controller' => 'spotlights', 'action' => 'index')
+				'dashboard' => array('controller' => 'stock', 'action' => 'index')
 			),
 		)
 	);
