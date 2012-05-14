@@ -21,8 +21,6 @@
 	 */
 
 	class BranchesController extends ShopAppController{
-		public $name = 'Branches';
-
 		public $uses = array('Shop.ShopBranch');
 
 		public function admin_index(){
