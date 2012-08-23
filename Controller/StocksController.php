@@ -1,6 +1,6 @@
 <?php
 	class StocksController extends ShopAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'contain' => array(
 					'Product' => array(
@@ -21,7 +21,7 @@
 			$this->set(compact('stocks', 'filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			if (!empty($this->data)) {
 				$current = $this->Stock->find(
 					'first',
@@ -33,7 +33,7 @@
 					)
 				);
 
-				if(isset($current['Stock']['stock'])){
+				if(isset($current['Stock']['stock'])) {
 					$this->data['Stock']['id'] = $current['Stock']['id'];
 					$this->data['Stock']['stock'] += $current['Stock']['stock'];
 				}
@@ -51,11 +51,11 @@
 			$this->set(compact('branches', 'products'));
 		}
 
-		public function admin_edit(){
+		public function admin_edit() {
 
 		}
 
-		public function admin_valuation($branch_id = null){
+		public function admin_valuation($branch_id = null) {
 
 		}
 	}

@@ -8,14 +8,14 @@
 			<tr><th><?php echo __('Retail'); ?>:</th><td><?php echo $this->Shop->currency($product['Product']['retail']); ?></td></tr>
 			<?php
 				$class = '';
-				if($isSpecial = $this->Shop->isSpecial($product) === true){
+				if($isSpecial = $this->Shop->isSpecial($product) === true) {
 					$class = 'del';
 				}
 
 			?>
 			<tr><th><?php echo __('Price'); ?>:</th><td class="<?php echo $class; ?>"><?php echo $this->Shop->currency($product['Product']['price']), ' ', $product['Unit']['symbol']; ?></td></tr>
 			<?php
-				if($isSpecial){
+				if($isSpecial) {
 					?>
 						<tr><th><?php echo __('Sale Price'); ?>:</th><td><?php echo $this->Shop->calculateSpecial($product['Product'], $product['Special']), ' ', $product['Unit']['symbol']; ?></td></tr>
 					<?php
@@ -71,10 +71,10 @@
 
 	<div class="extra">
 		<?php
-			foreach($tabs as $tab => $path){
+			foreach($tabs as $tab => $path) {
 				$list[] = '<li><a href="#product_'.Inflector::underscore($tab).'">'.Inflector::humanize($tab).'</a></li>';
 
-				if(strstr($path, '/')){
+				if(strstr($path, '/')) {
 					$temp = Set::extract($path, $product);
 					$temp = isset($temp[0]) ? $temp[0] : '';
 				}

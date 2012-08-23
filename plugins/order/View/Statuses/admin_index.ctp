@@ -53,7 +53,7 @@
             );
 
             $i = 0;
-            foreach ($statuses as $status){
+            foreach ($statuses as $status) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($status); ?>&nbsp;</td>

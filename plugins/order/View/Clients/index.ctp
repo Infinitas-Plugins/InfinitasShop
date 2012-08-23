@@ -1,6 +1,6 @@
 <h2 class="fade"><?php echo __('My Account'); ?></h2>
 <?php
-	if(!empty($pendingOrders)){
+	if(!empty($pendingOrders)) {
 		$here = $this->Html->link(
 			__('Here'),
 			array(

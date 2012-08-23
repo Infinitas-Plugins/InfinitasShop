@@ -41,7 +41,7 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    __('Image') => array(
+                    __d('shhop', 'Image') => array(
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('name'),
@@ -59,7 +59,7 @@
                 )
             );
 
-            foreach ($categories as $category){
+            foreach ($categories as $category) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($category); ?>&nbsp;</td>
@@ -78,7 +78,7 @@
                 		</td>
                 		<td>
                 			<?php
-                				if(!empty($category['Parent']['name'])){
+                				if(!empty($category['Parent']['name'])) {
                 					echo $this->Html->link($category['Parent']['name'], array('action' => 'edit', $category['Parent']['id']));
                 				}
                 				else{

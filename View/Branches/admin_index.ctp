@@ -40,17 +40,17 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    $this->Paginator->sort(__('Image'), 'BranchDetail.image') => array(
+                    $this->Paginator->sort('BranchDetail.image', __d('shop', 'Image')) => array(
                         'style' => 'width:100px;'
                     ),
-                    $this->Paginator->sort(__('Name'), 'BranchDetail.name'),
-                    $this->Paginator->sort(__('Name'), 'BranchDetail.phone') => array(
+                    $this->Paginator->sort('BranchDetail.name', __d('shop', 'Name')),
+                    $this->Paginator->sort('BranchDetail.phone', __d('shop', 'Name')) => array(
                         'style' => 'width:75px;'
                     ),
-                    $this->Paginator->sort(__('Fax'), 'BranchDetail.fax') => array(
+                    $this->Paginator->sort('BranchDetail.fax', __d('shop', 'Fax')) => array(
                         'style' => 'width:75px;'
                     ),
-                    $this->Paginator->sort('ordering') => array(
+                    $this->Paginator->sort('ordering', __d('shop', 'Order')) => array(
                         'style' => 'width:50px;'
                     ),
                     $this->Paginator->sort('modified') => array(
@@ -63,7 +63,7 @@
             );
 
             $i = 0;
-            foreach ($branches as $branch){
+            foreach ($branches as $branch) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($branch); ?>&nbsp;</td>

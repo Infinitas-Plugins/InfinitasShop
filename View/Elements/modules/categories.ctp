@@ -1,15 +1,15 @@
 <div>
 	<?php
-		if(!isset($categories) || empty($categories)){
+		if(!isset($categories) || empty($categories)) {
 			$categories = ClassRegistry::init('Shop.ShopCategory')->getCategories();
 		}
 
-		if($categories === false){
+		if($categories === false) {
 			echo __('No categories setup');
 		}
 		else{
 			$out = '<ul>';
-				foreach($categories as $category){
+				foreach($categories as $category) {
 					$category['ShopCategory']['plugin'] = 'shop';
 					$category['ShopCategory']['controller'] = 'categories';
 					$category['ShopCategory']['action'] = 'index';

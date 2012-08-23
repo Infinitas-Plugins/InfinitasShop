@@ -21,11 +21,9 @@
 	 */
 
 	class BranchesController extends ShopAppController{
-		public $name = 'Branches';
-
 		public $uses = array('Shop.ShopBranch');
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'ShopBranch.branch_id',
@@ -57,7 +55,7 @@
 			$this->set(compact('branches','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$branchDetails = $this->_checkCanAddEdit();
@@ -65,7 +63,7 @@
 			$this->set(compact('branchDetails', 'managers'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			parent::admin_add($id);
 
 			$branchDetails = $this->ShopBranch->BranchDetail->find('list');
@@ -77,9 +75,9 @@
 			}
 		}
 
-		public function _checkCanAddEdit(){
+		public function _checkCanAddEdit() {
 			$branchDetails = $this->ShopBranch->_getAvailableBranches();
-			if (empty($branchDetails)){
+			if (empty($branchDetails)) {
 				$this->notice(
 					__('Current branches are setup, add more in contacts first'),
 					array(

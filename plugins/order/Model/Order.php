@@ -36,8 +36,8 @@
 			)
 		);
 
-		public function getPendingOrders($user_id = null){
-			if(!$user_id){
+		public function getPendingOrders($user_id = null) {
+			if(!$user_id) {
 				return array();
 			}
 

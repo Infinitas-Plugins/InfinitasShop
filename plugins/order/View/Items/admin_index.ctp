@@ -51,7 +51,7 @@
             );
 
             $i = 0;
-            foreach ($items as $item){
+            foreach ($items as $item) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($item); ?>&nbsp;</td>
@@ -70,7 +70,7 @@
 						</td>
 						<td>
 							<?php
-								if(!empty($item['Product'])){
+								if(!empty($item['Product'])) {
 									echo $this->Html->link(
 										$item['Product']['name'],
 										array(

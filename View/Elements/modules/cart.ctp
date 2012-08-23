@@ -1,15 +1,15 @@
 <div>
 	<?php
 		$userId = AuthComponent::user('id');
-		if(!isset($usersCart)){
+		if(!isset($usersCart)) {
 			$usersCart = Cache::read(cacheName('cart', $userId), 'shop');
 
-			if($usersCart === false){
+			if($usersCart === false) {
 				$usersCart = ClassRegistry::init('Shop.Cart')->getCartData($userId);
 			}
 		}
 
-		if(empty($usersCart)){
+		if(empty($usersCart)) {
 			echo __('Your cart is empty');
 		}
 		else{
@@ -20,7 +20,7 @@
 						<th style="width:50px;"><?php echo __('price' ) ?></th>
 					</tr>
 					<?php
-						foreach((array)$usersCart as $cartItem){
+						foreach((array)$usersCart as $cartItem) {
 							$cartItem['Product']['plugin'] = 'shop';
 							$cartItem['Product']['controller'] = 'products';
 							$cartItem['Product']['action'] = 'view';

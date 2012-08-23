@@ -1,15 +1,6 @@
 <?php
 	class Cart extends ShopAppModel {
 		/**
-		 * SoftDeletable does not auto load for non admin
-		 *
-		 * @var unknown_type
-		 */
-		public $actsAs = array(
-			'Libs.SoftDeletable'
-		);
-
-		/**
 		 * sub_total is the line total
 		 * @var unknown_type
 		 */
@@ -35,11 +26,11 @@
 			)
 		);
 
-		public function getCartData($user_id = null){
-			if((int)$user_id > 0){
+		public function getCartData($user_id = null) {
+			if((int)$user_id > 0) {
 				$cacheName = cacheName('cart', $user_id);
 				$cartData = Cache::read($cacheName, 'shop');
-				if($cartData !== false){
+				if($cartData !== false) {
 					return $cartData;
 				}
 
@@ -66,8 +57,8 @@
 			return (array)$data;
 		}
 
-		public function clearCart($user_id = null){
-			if(!$user_id){
+		public function clearCart($user_id = null) {
+			if(!$user_id) {
 				return false;
 			}
 
@@ -80,21 +71,21 @@
 				true
 			);
 
-			if($status){
+			if($status) {
 				$this->dataChanged('afterDelete');
 			}
 			return $status;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			Cache::delete(cacheName('cart', AuthComponent::user('id')), 'shop');
 
 			return true;

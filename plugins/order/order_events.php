@@ -1,6 +1,6 @@
 <?php
 	class OrderEvents{
-		public function onSetupCache(){
+		public function onSetupCache() {
 			return array(
 				'name' => 'orders',
 				'config' => array(
@@ -13,12 +13,12 @@
 			);
 		}
 
-		public function onUserLogin(&$event, $data){
+		public function onUserLogin(&$event, $data) {
 			// check if order status has changed and notify
 		}
 
-		public function onSetupThemeLayout(&$event, $data){
-			if($data['params']['plugin'] == 'order' && $data['params']['controller'] == 'orders' && $data['params']['action'] == 'pay'){
+		public function onSetupThemeLayout(&$event, $data) {
+			if($data['params']['plugin'] == 'order' && $data['params']['controller'] == 'orders' && $data['params']['action'] == 'pay') {
 				return 'checkout';
 			}
 		}

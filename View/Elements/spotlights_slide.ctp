@@ -2,7 +2,7 @@
 	<div class="padding"> </div>
 	<div class="slidesContainer">
 		<?php
-			foreach((array)$spotlights as $spotlight){
+			foreach((array)$spotlights as $spotlight) {
 				$spotlight['Product']['plugin'] = 'shop';
 				$spotlight['Product']['controller'] = 'product';
 				$spotlight['Product']['action'] = 'view';

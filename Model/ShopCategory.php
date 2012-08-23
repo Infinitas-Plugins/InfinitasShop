@@ -77,12 +77,12 @@
 			),
 		);
 
-		public function getCategories($category_id = null){
+		public function getCategories($category_id = null) {
 			$conditions = array(
 				'ShopCategory.parent_id IS NULL'
 			);
 
-			if((int)$category_id > 0){
+			if((int)$category_id > 0) {
 				$conditions = array(
 					'ShopCategory.parent_id' => $category_id
 				);
@@ -90,7 +90,7 @@
 
 			$cacheName = cacheName('categories', $conditions);
 			$categories = Cache::read($cacheName, 'shop');
-			if($categories !== false){
+			if($categories !== false) {
 				return $categories;
 			}
 
@@ -115,10 +115,10 @@
 			return $categories;
 		}
 
-		public function getActiveCategories(){
+		public function getActiveCategories() {
 			$cacheName = cacheName('categories_active', $conditions);
 			$category_ids = Cache::read($cacheName, 'shop');
-			if($category_ids !== false){
+			if($category_ids !== false) {
 				return $category_ids;
 			}
 
@@ -139,21 +139,21 @@
 			return $category_ids;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
-			foreach($files[1] as $file){
-				if(strstr($file, 'categories_') != false){
+			foreach($files[1] as $file) {
+				if(strstr($file, 'categories_') != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

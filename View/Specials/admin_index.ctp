@@ -41,13 +41,13 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    __('Image') => array(
+                    __d('shop', 'Image') => array(
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('Product.name', __d('shop', 'Product')),
                     $this->Paginator->sort('discount'),
                     $this->Paginator->sort('amount'),
-                    __('Adjusted Price'),
+                    __d('shop', 'Adjusted Price'),
                     $this->Paginator->sort('start_date') => array(
                         'style' => 'width:75px;'
                     ),
@@ -63,7 +63,7 @@
                 )
             );
 
-            foreach ($specials as $special){
+            foreach ($specials as $special) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($special); ?>&nbsp;</td>

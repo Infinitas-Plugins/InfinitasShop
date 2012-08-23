@@ -5,7 +5,7 @@
 		'action' => 'index'
 	);
 	$back['category'] = __('Index');
-	if(!empty($currentCategory['ShopCategory']['id'])){
+	if(!empty($currentCategory['ShopCategory']['id'])) {
 		$currentCategory['ShopCategory']['plugin'] = 'shop';
 		$currentCategory['ShopCategory']['controller'] = 'categories';
 		$currentCategory['ShopCategory']['action'] = 'index';
@@ -24,22 +24,22 @@
 		)
 	);
 
-	if(!empty($categories)){
+	if(!empty($categories)) {
 		$categoryName = isset($currentCategory['ShopCategory']['name']) ? $currentCategory['ShopCategory']['name'] : __('All Categories');
 		?>
 			<div>
 				<h2 class="fade"><?php echo sprintf('%s (%s)',__('Categories'), $categoryName); ?></h2><?php
-				foreach($categories as $category){
+				foreach($categories as $category) {
 					echo $this->element('category', array('plugin' => 'shop', 'category' => $category));
 				} ?>
 			</div><div class="clear"> </div>
 		<?php
 	}
-	if(!empty($products)){
+	if(!empty($products)) {
 		?>
 			<div>
 				<h2 class="fade"><?php echo __('Products'); ?></h2><?php
-					foreach($products as $product){
+					foreach($products as $product) {
 						echo $this->element('product', array('plugin' => 'shop', 'product' => $product));
 					}
 

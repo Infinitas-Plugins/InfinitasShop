@@ -2,10 +2,10 @@
 	class CartsController extends ShopAppController{
 		public $name = 'Carts';
 
-		public function index(){
+		public function index() {
 			$userId = $this->Auth->user('id');
 
-			if(!$userId){
+			if(!$userId) {
 				$this->notice(
 					__('You must be logged in to checkout'),
 					array(
@@ -19,7 +19,7 @@
 			}
 
 			$addresses = ClassRegistry::init('Management.Address')->getAddressByUser($userId);
-			if(empty($addresses)){
+			if(empty($addresses)) {
 				$this->notice(
 					__('Please setup your address before checking out'),
 					array(
@@ -30,7 +30,7 @@
 
 			$carts = $this->Cart->getCartData($userId);
 
-			if(empty($carts)){
+			if(empty($carts)) {
 				$this->notice(
 					__('Your cart is empty'),
 					array(
@@ -57,12 +57,12 @@
 			$this->set(compact('addresses', 'carts', 'amounts'));
 		}
 
-		public function adjust(){
-			if(!isset($this->request->params['named']['product_id'])){
+		public function adjust() {
+			if(!isset($this->request->params['named']['product_id'])) {
 				$this->notice('invalid');
 			}
 
-			if(!isset($this->request->params['named']['quantity'])){
+			if(!isset($this->request->params['named']['quantity'])) {
 				$this->request->params['named']['quantity'] = 1;
 			}
 
@@ -86,23 +86,23 @@
 				)
 			);
 
-			if(empty($product) || $product['Product']['active'] == false){
+			if(empty($product) || $product['Product']['active'] == false) {
 				$this->notice('invalid');
 			}
 
-			if(isset($product['Special']) && !empty($product['Special'][0])){
+			if(isset($product['Special']) && !empty($product['Special'][0])) {
 				$product['Product']['price'] = $product['Product']['price'] - (($product['Product']['price'] / 100) * $product['Special'][0]['discount']);
 			}
 
-			if($this->Auth->user('id')){
+			if($this->Auth->user('id')) {
 				$this->Shop->dbCartSave($this->Cart, $product);
 			}
 
 			$this->Shop->sessionCartSave($this->Cart, $product);
 		}
 
-		public function change_shipping_method(){
-			if(isset($this->data['Cart']['shipping_method']) && !empty($this->data['Cart']['shipping_method'])){
+		public function change_shipping_method() {
+			if(isset($this->data['Cart']['shipping_method']) && !empty($this->data['Cart']['shipping_method'])) {
 				$this->Session->write('Shop.shipping_method', $this->data['Cart']['shipping_method']);
 
 				$this->notice(
@@ -114,7 +114,7 @@
 			}
 
 			$methods = $this->Session->read('Shop.shipping_methods');
-			if(count($methods) < 2){
+			if(count($methods) < 2) {
 				$this->notice(
 					__('There are no other options at this time'),
 					array(
@@ -124,7 +124,7 @@
 			}
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Cart.id',

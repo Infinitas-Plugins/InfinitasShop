@@ -1,22 +1,22 @@
 <?php
 	class ItemsController extends OrderAppController {
-		public function admin_index(){
+		public function admin_index() {
 			$year = $month = null;
-			if(isset($this->Filter->filter['Item.year'])){
+			if(isset($this->Filter->filter['Item.year'])) {
 				$year  = $this->Filter->filter['Item.year'];
 				unset($this->Filter->filter['Item.year']);
 			}
-			if(isset($this->Filter->filter['Item.month'])){
+			if(isset($this->Filter->filter['Item.month'])) {
 				$month = $this->Filter->filter['Item.month'];
 				unset($this->Filter->filter['Item.month']);
 			}
 
 			$conditions = array();
-			if($year || $month){
-				if(!$year){
+			if($year || $month) {
+				if(!$year) {
 					$year = date('Y');
 				}
-				if(!$month){
+				if(!$month) {
 					$month = date('m');
 				}
 

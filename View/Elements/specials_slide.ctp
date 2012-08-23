@@ -1,6 +1,6 @@
 <div id="slideshow">
 	<div id="slidesContainer"><?php
-		foreach((array)$specials as $special){
+		foreach((array)$specials as $special) {
 			$special['Product']['plugin'] = 'shop';
 			$special['Product']['controller'] = 'product';
 			$special['Product']['action'] = 'view';

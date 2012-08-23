@@ -67,10 +67,10 @@
 			),
 		);
 
-		public function getSpecials($limit = 10){
+		public function getSpecials($limit = 10) {
 			$cacheName = cacheName('products_specials', $limit);
 			$specials = Cache::read($cacheName, 'shop');
-			if($specials !== false){
+			if($specials !== false) {
 				return $specials;
 			}
 			$specials = $this->find(
@@ -107,21 +107,21 @@
 			return $specials;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
-			foreach($files[1] as $file){
-				if(strstr($file, 'products_specials') != false){
+			foreach($files[1] as $file) {
+				if(strstr($file, 'products_specials') != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

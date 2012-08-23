@@ -44,7 +44,7 @@
                     $this->Paginator->sort('symbol') => array(
                         'style' => 'width:50px;'
                     ),
-                    $this->Paginator->sort('Products','product_count') => array(
+                    $this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
                         'style' => 'width:75px;'
                     ),
                     $this->Paginator->sort('modified') => array(
@@ -56,12 +56,12 @@
                 )
             );
 
-            foreach ($units as $unit){
+            foreach ($units as $unit) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($unit); ?>&nbsp;</td>
                 		<td>
-                			<?php echo $this->Html->link($unit['Unit']['name'], array('action' => 'edit', $unit['Unit']['id']), array('title' => __('Description').' :: '.$unit['Unit']['description'])); ?>&nbsp;
+                			<?php echo $this->Html->link($unit['Unit']['name'], array('action' => 'edit', $unit['Unit']['id']), array('title' => __d('shop', 'Description').' :: '.$unit['Unit']['description'])); ?>&nbsp;
                 		</td>
 						<td>
 							<?php echo $unit['Unit']['symbol']; ?>

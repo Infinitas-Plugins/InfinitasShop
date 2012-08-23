@@ -1,5 +1,5 @@
 <?php
-	App::uses('InfinitasComponent', 'Libs/Component');
+	App::uses('InfinitasComponent', 'Libs.Controller/Component');
 	
 	class ShopComponent extends InfinitasComponent {
 		public function initialize(&$controller, $settings = array()) {
@@ -7,18 +7,19 @@
 			$settings = array_merge(array(), (array)$settings);
 		}
 
-		public function sessionCartSave($Model, $product){
+		public function sessionCartSave($Model, $product) {
 			$datas = $this->Controller->Session->read($Model->alias.'.Temp'.$Model->alias);
 			$message = false;
-			if(!empty($datas)){
+			if(!empty($datas)) {
 				$done = false;
-				foreach($datas as &$data){
-					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']){
-						if($data[$Model->alias]['quantity'] == 0){
+				foreach($datas as &$data) {
+					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']) {
+						if($data[$Model->alias]['quantity'] == 0) {
 							unset($data);
 							$message = __('Product was removed from the '.$Model->alias);
 							$done = true;
 						}
+						
 						else{
 							$data[$Model->alias]['quantity'] += $this->Controller->params['named']['quantity'];
 							$data[$Model->alias]['price']     = $product['Product']['price'];
@@ -30,7 +31,7 @@
 					}
 				}
 
-				if(!$done){
+				if(!$done) {
 					$datas[] = array(
 						$Model->alias => array(
 							'product_id' => $this->Controller->params['named']['product_id'],
@@ -65,7 +66,7 @@
 			);
 		}
 
-		public function dbCartSave($Model,$product){
+		public function dbCartSave($Model, $product) {
 			$currentCart = $Model->find(
 				'first',
 				array(
@@ -77,7 +78,7 @@
 				)
 			);
 
-			if(!empty($currentCart)){
+			if(!empty($currentCart)) {
 				$message = __('Something went wrong');
 				if($this->Controller->params['named']['quantity'] == 0) {
 					if(isset($currentCart[$Model->alias]['id']) && $Model->delete($currentCart[$Model->alias]['id'])) {
@@ -92,7 +93,7 @@
 					$currentCart[$Model->alias]['price'] = $product['Product']['price'];
 					$currentCart[$Model->alias]['name'] = $product['Product']['name'];
 
-					if($Model->save($currentCart)){
+					if($Model->save($currentCart)) {
 						$message = __('Your '.$Model->alias.' was updated');
 					}
 				}
@@ -114,7 +115,7 @@
 			$cart[$Model->alias]['user_id'] = $this->Controller->Session->read('Auth.User.id');
 
 			$Model->create();
-			if($Model->save($cart)){
+			if($Model->save($cart)) {
 				$this->_updateAddCount($Model, $product['Product']);
 				$this->Controller->notice(
 					__('The product was added to your '.$Model->alias),
@@ -125,12 +126,12 @@
 			}
 		}
 
-		public function _updateAddCount($Model, $product = null){
-			if(!$product || empty($product)){
+		public function _updateAddCount($Model, $product = null) {
+			if(!$product || empty($product)) {
 				$this->errors[] = 'no product selected';
 				return false;
 			}
-			switch(isset($product['added_to_cart'])){
+			switch(isset($product['added_to_cart'])) {
 				case true:
 					return $Model->Product->updateAll(
 						array(

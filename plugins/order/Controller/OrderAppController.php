@@ -9,12 +9,12 @@
 			'Shop.Shop'
 		);
 
-		public function beforeFilter(){
+		public function beforeFilter() {
 			parent::beforeFilter();
 			$data = $this->Event->trigger('loadPaymentGateways');
 
 			$gateways = array();
-			foreach($data['loadPaymentGateways'] as $gateway){
+			foreach($data['loadPaymentGateways'] as $gateway) {
 				$gateways[] = $gateway;
 			}
 			Configure::write('Shop.payment_methods', $gateways);
@@ -24,7 +24,7 @@
 
 		public function admin_mass() {
 			$massAction = $this->MassAction->getAction($this->request->params['form']);
-			switch(strtolower($massAction)){
+			switch(strtolower($massAction)) {
 				case 'export':
 					$this->redirect($this->referer().'.csv');
 					break;
@@ -39,10 +39,10 @@
 			}
 		}
 
-		public function save(){
+		public function save() {
 			$data[$this->modelClass] = $this->data['Save'];
 
-			if($this->{$this->modelClass}->saveAll($data[$this->modelClass])){
+			if($this->{$this->modelClass}->saveAll($data[$this->modelClass])) {
 				$this->notice('saved');
 			}
 

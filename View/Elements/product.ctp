@@ -7,10 +7,10 @@
 			$eventData = $this->Event->trigger('Shop.slugUrl', array('type' => 'products', 'data' => $product['Product']));
 
 			$overlay = '';
-			if($this->Shop->isFeatured($product)){
+			if($this->Shop->isFeatured($product)) {
 				$overlay = $this->Shop->overlay('isFeatured');
 			}
-			if($this->Shop->isSpecial($product)){
+			if($this->Shop->isSpecial($product)) {
 				$overlay = $this->Shop->overlay('isSpecial');
 			}
 			echo $this->Html->link(
@@ -44,7 +44,7 @@
 	    </div>
 	   	<div class="price">
 			<?php
-				if($this->Shop->isSpecial($product)){
+				if($this->Shop->isSpecial($product)) {
 					echo '<span>'.$this->Shop->currency($product['Product']['price']).'</span><br/>';
 				}
 				$product['Special'] = isset($product['Special']) ? $product['Special'] : null;

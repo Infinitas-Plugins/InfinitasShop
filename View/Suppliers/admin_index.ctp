@@ -40,7 +40,7 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    __('Logo') => array(
+                    __d('shop', 'Logo') => array(
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('name'),
@@ -50,7 +50,7 @@
                     $this->Paginator->sort('fax') => array(
                         'style' => 'width:75px;'
                     ),
-                    $this->Paginator->sort('product_count') => array(
+                    $this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
                         'style' => 'width:50px;'
                     ),
                     $this->Paginator->sort('terms') => array(
@@ -65,7 +65,7 @@
                 )
             );
 
-            foreach ($suppliers as $supplier){
+            foreach ($suppliers as $supplier) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($supplier); ?>&nbsp;</td>

@@ -1,6 +1,6 @@
 <?php
 	echo $this->Form->create('Cart');
-		foreach(Configure::read('Shop.shipping_methods') as $type){
+		foreach(Configure::read('Shop.shipping_methods') as $type) {
 			$types[$type] = Inflector::humanize($type);
 		}
 

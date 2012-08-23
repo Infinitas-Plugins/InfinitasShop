@@ -1,7 +1,7 @@
 <div class="neighbors">
 	<div class="prev">
 		<?php
-			if(isset($neighbors['prev']) || !empty($neighbors['prev'])){
+			if(isset($neighbors['prev']) || !empty($neighbors['prev'])) {
 				$prev = $neighbors['prev'];
 				$prev['Product']['plugin'] = 'shop';
 				$prev['Product']['controller'] = 'products';
@@ -26,7 +26,7 @@
 	</div>
 	<div class="next">
 		<?php
-			if(isset($neighbors['next']) || !empty($neighbors['next'])){
+			if(isset($neighbors['next']) || !empty($neighbors['next'])) {
 				$next = $neighbors['next'];
 				$next['Product']['plugin'] = 'shop';
 				$next['Product']['controller'] = 'products';

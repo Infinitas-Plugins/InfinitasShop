@@ -2,7 +2,7 @@
 	class ProductsController extends ShopAppController {
 		public $name = 'Products';
 
-		public function dashboard(){
+		public function dashboard() {
 			$specials = $this->Product->Special->getSpecials();
 			$mostViewedProducts = $this->Product->getMostViewed();
 			$spotlights = $this->Product->Spotlight->getSpotlights();
@@ -11,7 +11,7 @@
 			$this->set(compact('specials', 'mostViewedProducts', 'spotlights', 'newest'));
 		}
 
-		public function index(){
+		public function index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
@@ -44,8 +44,8 @@
 			$this->set(compact('products', 'specials', 'spotlights'));
 		}
 
-		public function search(){
-			if(!isset($this->data['Search']['search'])){
+		public function search() {
+			if(!isset($this->data['Search']['search'])) {
 				$this->notice(
 					__('Please enter your search term'),
 					array(
@@ -93,7 +93,7 @@
 			$this->render('index');
 		}
 
-		public function view(){
+		public function view() {
 			if (!isset($this->request->params['slug'])) {
 				$this->notice('invalid');
 			}
@@ -128,7 +128,7 @@
 				)
 			);
 
-			if(empty($product)){
+			if(empty($product)) {
 				$this->notice('invalid');
 			}
 
@@ -139,7 +139,7 @@
 			);
 
 			$eventData = $this->Event->trigger('Shop.setupTabs', $tabs);
-			if (isset($eventData)){
+			if (isset($eventData)) {
 			}
 
 			$neighbors = $this->Product->find(
@@ -162,17 +162,17 @@
 			$this->set(compact('product', 'tabs', 'neighbors', 'specials', 'spotlights'));
 		}
 
-		public function admin_dashboard(){
+		public function admin_dashboard() {
 
 		}
 
-		public function admin_index(){
+		public function admin_index() {
 			$conditions = array();
-			if(isset($this->Filter->filter['Product.category_id'])){
+			if(isset($this->Filter->filter['Product.category_id'])) {
 				$category_id  = $this->Filter->filter['Product.category_id'];
 				unset($this->Filter->filter['Product.category_id']);
 			}
-			if(isset($category_id)){
+			if(isset($category_id)) {
 				$conditions = array(
 					'Product.id' => $this->Product->getActiveProducts($category_id, array(0,1))
 				);
@@ -223,7 +223,7 @@
 			$this->set(compact('products','filterOptions'));
 		}
 
-		public function admin_statistics(){
+		public function admin_statistics() {
 			$this->Paginator->settings = array(
 				'fields' => array(
 					'Product.id',
@@ -266,7 +266,7 @@
 			$this->set(compact('products','filterOptions'));
 		}
 
-		public function admin_add(){
+		public function admin_add() {
 			parent::admin_add();
 
 			$shopCategories = $this->Product->ShopCategory->generateTreeList(null, null, null, '_');
@@ -277,7 +277,7 @@
 			$this->set(compact('shopCategories', 'units', 'suppliers', 'shopBranches', 'images'));
 		}
 
-		public function admin_edit($id = null){
+		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
 			$units          = $this->Product->Unit->find('list');

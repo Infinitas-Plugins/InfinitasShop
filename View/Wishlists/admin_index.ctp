@@ -31,8 +31,8 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    $this->Paginator->sort(__('User'), 'User.name'),
-                    $this->Paginator->sort(__('Product'), 'Product.name'),
+                    $this->Paginator->sort('User.name', __d('shop', 'User')),
+                    $this->Paginator->sort('Product.name', __d('shop', 'Product')),
                     $this->Paginator->sort('price'),
                     $this->Paginator->sort('created') => array(
                         'style' => 'width:100px;'
@@ -44,7 +44,7 @@
             );
 
             $i = 0;
-            foreach ($wishlists as $wishlist){
+            foreach ($wishlists as $wishlist) {
                 ?>
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($wishlist); ?>&nbsp;</td>
@@ -59,7 +59,7 @@
 										$wishlist['User']['id']
 									)
 								);
-							?>
+							?>&nbsp;
 						</td>
 						<td>
 							<?php
@@ -72,16 +72,16 @@
 										$wishlist['Product']['id']
 									)
 								);
-							?>
+							?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Shop->currency($wishlist['Wishlist']['price']); ?>
+							<?php echo $this->Shop->currency($wishlist['Wishlist']['price']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($wishlist['Wishlist']['created']); ?>
+							<?php echo $this->Time->niceShort($wishlist['Wishlist']['created']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->timeAgoInWords($wishlist['Wishlist']['deleted_date']); ?>
+							<?php echo $this->Time->timeAgoInWords($wishlist['Wishlist']['deleted_date']); ?>&nbsp;
 						</td>
                 	</tr>
                 <?php

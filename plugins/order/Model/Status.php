@@ -1,8 +1,8 @@
 <?php
 	class Status extends OrderAppModel {
-		public function getFirst(){
+		public function getFirst() {
 			$status = Cache::read('status_first', 'orders');
-			if($status !== false){
+			if($status !== false) {
 				return $status;
 			}
 
@@ -16,7 +16,7 @@
 			);
 
 			$status_id = false;
-			if(isset($status['Status']['id'])){
+			if(isset($status['Status']['id'])) {
 				$status_id = $status['Status']['id'];
 			}
 
@@ -25,21 +25,21 @@
 			return $status_id;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'orders');
 			$files = $Folder->read();
 
-			foreach($files[1] as $file){
-				if(strstr($file, 'status_') != false){
+			foreach($files[1] as $file) {
+				if(strstr($file, 'status_') != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

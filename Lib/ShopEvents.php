@@ -1,6 +1,20 @@
 <?php
-	final class ShopEvents extends AppEvents {		
-		public function onSetupCache(){
+	final class ShopEvents extends AppEvents {	
+		public function onPluginRollCall() {
+			return array(
+				'name' => 'Shop',
+				'description' => 'Online eCommerce',
+				'icon' => '/shop/img/icon.png',
+				'author' => 'Infinitas',
+				'dashboard' => array(
+					'plugin' => 'shop',
+					'controller' => 'shop',
+					'action' => 'dashboard'
+				)
+			);
+		}
+		
+		public function onSetupCache() {
 			return array(
 				'name' => 'shop',
 				'config' => array(
@@ -13,8 +27,8 @@
 			);
 		}
 
-		public function onSlugUrl($event, $data){
-			switch($data['type']){
+		public function onSlugUrl($event, $data) {
+			switch($data['type']) {
 				case 'products':
 					return array(
 						'plugin' => 'shop',
@@ -37,36 +51,62 @@
 			} // switch
 		}
 
-		public function onSetupConfigEnd($event){
-			Configure::load('Shop.config');
-		}
-
-		public function onSetupThemeLayout($event, $data){
-			if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index'){
+		public function onSetupThemeLayout($event, $data) {
+			if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index') {
 				//return 'checkout';
 			}
 		}
 
-		public function onSetupTabs($event, $data){
+		public function onSetupTabs($event, $data) {
 			echo 'yey: shop event';
 			exit;
 		}
 
-		public function NOonUserLogin($event, $data) {
-			if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true){
-				CakeSession::delete('Cart');
-			}
+		public function onUserLogin($event, $data) {
+			try {
+				if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true) {
+					CakeSession::delete('Cart');
+				}
 
-			if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true){
-				CakeSession::delete('Wishlist');
+				if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true) {
+					CakeSession::delete('Wishlist');
+				}
+			}
+			
+			catch(Exception $e) {
+				
 			}
 		}
 
-		public function onRequireHelpersToLoad(){
-			return 'Shop.Shop';
+		public function onRequireHelpersToLoad() {
+			return array(
+				'Shop.Shop'
+			);
 		}
 
-		public function onRequireComponentsToLoad(){
-			return 'Libs.Voucher';
+		public function onRequireComponentsToLoad() {
+			return array(
+				//'Libs.Voucher'
+			);
+		}
+		
+		public function onRequireCssToLoad($event, $data = null) {
+			if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
+				return;
+			}
+			
+			return array(
+				'Shop.shop'
+			);
+		}
+		
+		public function onRequireJavascriptToLoad($event, $data = null) {
+			if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
+				return;
+			}
+			
+			return array(
+				'Shop.shop'
+			);
 		}
 	}

@@ -10,41 +10,15 @@
 			'Image.image' => 'ASC'
 		);
 
-		public $actsAs = array(
-	        'MeioUpload.MeioUpload' => array(
-	        	'image' => array(
-		        	'dir' => 'img{DS}content{DS}shop{DS}global',
-		        	'create_directory' => true,
-		        	'allowed_mime' => array(
-			        	'image/jpeg',
-			        	'image/pjpeg',
-			        	'image/png'
-					),
-					'allowed_ext' => array(
-						'.jpg',
-						'.jpeg',
-						'.png'
-					),
-					'validations' => array(
-						'Empty' => array(
-						)
-					),
-					'Empty' => array(
-						'check' => false
-					)
-				)
-	        )
-		);
-
 		public $hasMany = array(
 			'Category' => array(
 				'className' => 'Shop.ShopCategory'
 			)
 		);
 
-		public function getImagePaths(){
+		public function getImagePaths() {
 			$images = Cache::read('images', 'shop');
-			if($images !== false){
+			if($images !== false) {
 				return $images;
 			}
 
@@ -63,28 +37,28 @@
 			return $images;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
 			Cache::delete('images', 'shop');
 
-			foreach($files[1] as $file){
+			foreach($files[1] as $file) {
 				$shouldDelete =
 					strstr($file, 'products') ||
 					strstr($file, 'specials') ||
 					strstr($file, 'spotlights');
 
-				if($shouldDelete != false){
+				if($shouldDelete != false) {
 					Cache::delete($file, 'shop');
 				}
 			}

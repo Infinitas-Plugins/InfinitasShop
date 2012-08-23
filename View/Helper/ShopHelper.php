@@ -5,18 +5,18 @@
 			'Libs.Wysiwyg', 'Libs.Image'
 		);
 
-		public function currency($amount = 0, $currency = null){
-			if(!$currency){
+		public function currency($amount = 0, $currency = null) {
+			if(!$currency) {
 				$currency = Configure::read('Currency.unit');
 			}
 
 			return $this->Number->currency($amount, $currency);
 		}
 
-		public function calculateSpecial($product = array(), $special = null, $toCurrency = true){
-			if(!$special){
-				if(!isset($product['Special']) || empty($product['Special'])){
-					if ($toCurrency){
+		public function calculateSpecial($product = array(), $special = null, $toCurrency = true) {
+			if(!$special) {
+				if(!isset($product['Special']) || empty($product['Special'])) {
+					if ($toCurrency) {
 						return $this->currency($product['price']);
 					}
 					return $product['price'];
@@ -28,55 +28,55 @@
 			$special = isset($special[0]) ? $special[0] : $special;
 			$newPrice = $product['price'];
 
-			if(isset($special['discount']) && (int)$special['discount'] > 0){
+			if(isset($special['discount']) && (int)$special['discount'] > 0) {
 				$newPrice = $product['price'] - (($product['price'] / 100) * $special['discount']);
 			}
 
-			else if(isset($special['amount']) && (int)$special['amount'] > 0){
+			else if(isset($special['amount']) && (int)$special['amount'] > 0) {
 				$newPrice = $product['price'] - $special['amount'];
 			}
 
-			if ((bool)$toCurrency){
+			if ((bool)$toCurrency) {
 				return $this->currency($newPrice);
 			}
 			return $newPrice;
 		}
 
-		public function calculateMargin($cost = 0, $sell = 0, $toCurrency = true){
-			if($cost == 0 || $sell == 0){
+		public function calculateMargin($cost = 0, $sell = 0, $toCurrency = true) {
+			if($cost == 0 || $sell == 0) {
 				return __('N/a');
 			}
 
 			$margin = ($this->calculateProfit($cost, $sell, false)/$sell)*100;
 
-			if($toCurrency){
+			if($toCurrency) {
 				return $this->Number->toPercentage($margin);
 			}
 
 			return $margin;
 		}
 
-		public function calculateProfit($cost = 0, $sell = 0, $toCurrency = true){
-			if($cost = 0 || $sell =0){
+		public function calculateProfit($cost = 0, $sell = 0, $toCurrency = true) {
+			if($cost = 0 || $sell =0) {
 				return __('N/a');
 			}
 
 			$profit = $sell - $cost;
 
-			if($toCurrency){
+			if($toCurrency) {
 				return $this->currency($profit);
 			}
 
 			return $profit;
 		}
 
-		public function breakdown($product = null, $special = array()){
-			if(!$product){
+		public function breakdown($product = null, $special = array()) {
+			if(!$product) {
 				return __('No information available');
 			}
 
 			$price = $product['price'];
-			if(!empty($special)){
+			if(!empty($special)) {
 				$price = $this->calculateSpecial($product, $special, false);
 			}
 
@@ -91,16 +91,16 @@
 			);
 		}
 
-		public function getImage($data, $params = array('height' => '35px'), $link = false){
-			if(isset($data['Image']['image'])){
+		public function getImage($data, $params = array('height' => '35px'), $link = false) {
+			if(isset($data['Image']['image'])) {
 				$img = $data['Image']['image'];
 			}
 
-			else if(isset($data['Product']['Image']['image'])){
+			else if(isset($data['Product']['Image']['image'])) {
 				$img = $data['Product']['Image']['image'];
 			}
 
-			else if(isset($data['ShopCategory']['Image']['image'])){
+			else if(isset($data['ShopCategory']['Image']['image'])) {
 				$img = $data['ShopCategory']['Image']['image'];
 			}
 
@@ -108,7 +108,7 @@
 				$img = Configure::read('Shop.default_image');
 			}
 
-			if($link){
+			if($link) {
 				$params['url'] = '../../img/content/shop/global/'.$img;
 			}
 
@@ -118,24 +118,24 @@
 			);
 		}
 
-		public function isSpecial($product){
-			if(isset($product['Special']) && !empty($product['Special'])){
+		public function isSpecial($product) {
+			if(isset($product['Special']) && !empty($product['Special'])) {
 				return true;
 			}
 
 			return false;
 		}
 
-		public function isFeatured($product){
-			if(isset($product['Spotlight']) && !empty($product['Spotlight'])){
+		public function isFeatured($product) {
+			if(isset($product['Spotlight']) && !empty($product['Spotlight'])) {
 				return true;
 			}
 
 			return false;
 		}
 
-		public function overlay($type = 'isSpecial'){
-			if(!isset($this->Html)){
+		public function overlay($type = 'isSpecial') {
+			if(!isset($this->Html)) {
 				$this->Html = new HtmlHelper();
 			}
 			return '<span class="'.(string)$type.'">'.
@@ -149,16 +149,16 @@
 			).'</span>';
 		}
 
-		public function cartActions($cart = null){
-			if(!$cart){
+		public function cartActions($cart = null) {
+			if(!$cart) {
 				$this->errors[] = 'You must pass a record in';
 				return false;
 			}
 
 			$link = '';
 
-			if(isset($cart['Cart']['product_id'])){
-				if(isset($cart['Cart']['quantity']) && $cart['Cart']['quantity'] > 1){
+			if(isset($cart['Cart']['product_id'])) {
+				if(isset($cart['Cart']['quantity']) && $cart['Cart']['quantity'] > 1) {
 					$link .= $this->Html->link(
 						$this->Html->image(
 							$this->Image->getRelativePath('actions', 'arrow-down'),
@@ -229,7 +229,7 @@
 			}
 		}
 
-		public function wishlistActions($wishlist){
+		public function wishlistActions($wishlist) {
 			return
 				$this->Html->link(
 					$this->Html->image(
@@ -288,8 +288,8 @@
 		 *
 		 * @param $number int
 		 */
-		public function orderNumber($number = null){
-			if(!$number){
+		public function orderNumber($number = null) {
+			if(!$number) {
 				return __('Error!');
 			}
 			return $this->orderNumber['prefix'].str_pad($number, $this->orderNumber['count'], $this->orderNumber['padding'], STR_PAD_LEFT).$this->orderNumber['suffix'];

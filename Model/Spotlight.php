@@ -67,11 +67,11 @@
 			),
 		);
 
-		public function getSpotlights($limit = 10){
+		public function getSpotlights($limit = 10) {
 			$cacheName = cacheName('spotlights', $limit);
 			$spotlights = Cache::read($cacheName, 'shop');
 
-			if($spotlights !== false){
+			if($spotlights !== false) {
 				return $spotlights;
 			}
 
@@ -107,21 +107,21 @@
 			return $spotlights;
 		}
 
-		public function afterSave($created){
+		public function afterSave($created) {
 			return $this->dataChanged('afterSave');
 		}
 
-		public function afterDelete(){
+		public function afterDelete() {
 			return $this->dataChanged('afterDelete');
 		}
 
-		public function dataChanged($from){
+		public function dataChanged($from) {
 			App::import('Folder');
 			$Folder = new Folder(CACHE . 'shop');
 			$files = $Folder->read();
 
-			foreach($files[1] as $file){
-				if(strstr($file, 'spotlights') != false){
+			foreach($files[1] as $file) {
+				if(strstr($file, 'spotlights') != false) {
 					Cache::delete($file, 'shop');
 				}
 			}
