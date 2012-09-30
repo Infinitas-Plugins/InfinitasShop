@@ -9,10 +9,10 @@ class CartFixture extends CakeTestFixture {
 	public $name = 'Cart';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 200, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'user_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'user_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
 		'price' => array('type' => 'float', 'null' => false, 'default' => '0'),
 		'quantity' => array('type' => 'integer', 'null' => false, 'default' => '1'),
 		'deleted' => array('type' => 'integer', 'null' => false, 'default' => '0'),

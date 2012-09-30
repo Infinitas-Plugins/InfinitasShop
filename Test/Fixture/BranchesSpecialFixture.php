@@ -9,9 +9,9 @@ class BranchesSpecialFixture extends CakeTestFixture {
 	public $name = 'BranchesSpecial';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'branch_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'special_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'branch_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
+		'special_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

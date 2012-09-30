@@ -4,11 +4,11 @@ class ShopProductFixture extends CakeTestFixture {
 	public $name = 'ShopProduct';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'description' => array('type' => 'text', 'null' => false, 'default' => NULL),
-		'unit_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'unit_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'cost' => array('type' => 'float', 'null' => false, 'default' => '0'),
 		'retail' => array('type' => 'float', 'null' => false, 'default' => '0'),
 		'price' => array('type' => 'float', 'null' => false, 'default' => NULL),
@@ -16,7 +16,7 @@ class ShopProductFixture extends CakeTestFixture {
 		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'rating' => array('type' => 'float', 'null' => true, 'default' => '0'),
 		'rating_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'supplier_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
+		'supplier_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),

@@ -4,7 +4,7 @@ class ShopImageFixture extends CakeTestFixture {
 	public $name = 'ShopImage';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'ext' => array('type' => 'string', 'null' => false, 'default' => 'jpg', 'length' => 4),
 		'width' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'height' => array('type' => 'integer', 'null' => false, 'default' => NULL),

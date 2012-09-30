@@ -4,9 +4,9 @@ class ShopSpotlightFixture extends CakeTestFixture {
 	public $name = 'ShopSpotlight';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),

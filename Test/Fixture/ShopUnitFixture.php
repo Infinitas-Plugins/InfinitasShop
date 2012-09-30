@@ -4,7 +4,7 @@ class ShopUnitFixture extends CakeTestFixture {
 	public $name = 'ShopUnit';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
 		'description' => array('type' => 'text', 'null' => false, 'default' => NULL),

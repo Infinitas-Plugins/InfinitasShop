@@ -4,10 +4,10 @@ class ShopSupplierFixture extends CakeTestFixture {
 	public $name = 'ShopSupplier';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
-		'address_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'address_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'email' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
 		'phone' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),
 		'fax' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),

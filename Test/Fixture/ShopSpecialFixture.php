@@ -4,9 +4,9 @@ class ShopSpecialFixture extends CakeTestFixture {
 	public $name = 'ShopSpecial';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
 		'discount' => array('type' => 'float', 'null' => true, 'default' => NULL),
 		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),

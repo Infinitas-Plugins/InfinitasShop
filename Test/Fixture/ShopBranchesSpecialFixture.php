@@ -4,9 +4,9 @@ class ShopBranchesSpecialFixture extends CakeTestFixture {
 	public $name = 'ShopBranchesSpecial';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'branch_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'special_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
+		'branch_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
+		'special_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);

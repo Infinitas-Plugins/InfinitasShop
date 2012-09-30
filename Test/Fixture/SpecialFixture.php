@@ -9,9 +9,9 @@ class SpecialFixture extends CakeTestFixture {
 	public $name = 'Special';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36),
 		'discount' => array('type' => 'float', 'null' => true, 'default' => null),
 		'amount' => array('type' => 'float', 'null' => true, 'default' => null),
 		'start_date' => array('type' => 'date', 'null' => false, 'default' => null),

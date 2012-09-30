@@ -4,9 +4,9 @@ class ShopCategoriesProductFixture extends CakeTestFixture {
 	public $name = 'ShopCategoriesProduct';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'category_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
+		'category_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);

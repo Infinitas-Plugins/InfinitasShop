@@ -9,17 +9,17 @@ class ShopCategoryFixture extends CakeTestFixture {
 	public $name = 'ShopCategory';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 45, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'description' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'keywords' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36),
 		'product_count' => array('type' => 'integer', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'lft' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'rght' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'parent_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(

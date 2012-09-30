@@ -9,9 +9,9 @@ class SpotlightFixture extends CakeTestFixture {
 	public $name = 'Spotlight';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => null),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36),
 		'start_date' => array('type' => 'date', 'null' => false, 'default' => null),
 		'end_date' => array('type' => 'date', 'null' => false, 'default' => null),
 		'start_time' => array('type' => 'time', 'null' => false, 'default' => null),

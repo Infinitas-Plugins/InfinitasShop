@@ -4,17 +4,17 @@ class ShopShopCategoryFixture extends CakeTestFixture {
 	public $name = 'ShopShopCategory';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
 		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
 		'description' => array('type' => 'string', 'null' => true, 'default' => NULL),
 		'keywords' => array('type' => 'string', 'null' => true, 'default' => NULL),
-		'image_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
+		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
 		'product_count' => array('type' => 'integer', 'null' => true, 'default' => '0'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'lft' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'rght' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'parent_id' => array('type' => 'integer', 'null' => true, 'default' => NULL),
+		'parent_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
 		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),

@@ -4,7 +4,7 @@ class OrderStatusFixture extends CakeTestFixture {
 	public $name = 'OrderStatus';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 50),
 		'description' => array('type' => 'text', 'null' => false, 'default' => NULL),
 		'ordering' => array('type' => 'integer', 'null' => false, 'default' => NULL),

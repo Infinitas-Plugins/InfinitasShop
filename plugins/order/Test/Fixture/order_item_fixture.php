@@ -4,12 +4,12 @@ class OrderItemFixture extends CakeTestFixture {
 	public $name = 'OrderItem';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
 		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 200),
-		'product_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'price' => array('type' => 'float', 'null' => false, 'default' => '0'),
 		'quantity' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-		'order_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'order_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),

@@ -4,9 +4,9 @@ class OrderOrderFixture extends CakeTestFixture {
 	public $name = 'OrderOrder';
 
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
-		'user_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
-		'address_id' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
+		'user_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
+		'address_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'special_instructions' => array('type' => 'text', 'null' => false, 'default' => NULL),
 		'payment_method' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 50),
 		'shipping_method' => array('type' => 'string', 'null' => false, 'default' => '0', 'length' => 50),
@@ -14,7 +14,7 @@ class OrderOrderFixture extends CakeTestFixture {
 		'item_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'total' => array('type' => 'float', 'null' => false, 'default' => NULL),
 		'shipping' => array('type' => 'float', 'null' => false, 'default' => NULL),
-		'status_id' => array('type' => 'integer', 'null' => false, 'default' => '1'),
+		'status_id' => array('type' => 'string', 'null' => false, 'default' => '1', 'length' => 36),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
