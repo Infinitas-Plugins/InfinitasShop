@@ -1,18 +1,14 @@
 <?php
-	class Wishlist extends ShopAppModel{
-		public $name = 'Wishlist';
-
+	class ShopWishlist extends ShopAppModel {
 		/**
 		 * sub_total is the line total
 		 * @var unknown_type
 		 */
-		public $virtualFields = array(
-			'sub_total' => 'Wishlist.quantity * Wishlist.price'
-		);
+		public $virtualFields = array();
 
 		public $belongsTo = array(
 			'Product' => array(
-				'className' => 'Shop.Product',
+				'className' => 'Shop.ShopProduct',
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -28,6 +24,14 @@
 			)
 		);
 
+		public function __construct($id = false, $table = null, $ds = null) {
+			parent::__construct($id, $table, $ds);
+
+			$this->virtualFields = array(
+				'sub_total' => sprintf('%s.quantity * %s.price', $this->alias, $this->alias)
+			);
+		}
+
 		public function getWishlistData($user_id = null) {
 			if((int)$user_id > 0) {
 				$cacheName = cacheName('wishlist', $user_id);
@@ -40,7 +44,7 @@
 					'all',
 					array(
 						'conditions' => array(
-							'Wishlist.user_id' => $user_id
+							$this->alais . '.user_id' => $user_id
 						),
 						'contain' => array(
 							'User',
@@ -54,20 +58,8 @@
 				return $wishlistData;
 			}
 
-			$wishlistData = CakeSession::read('Wishlist.TempWishlist');
+			$wishlistData = CakeSession::read($this->alais . '.TempWishlist');
 
 			return (array)$wishlistData;
-		}
-
-		public function afterSave($created) {
-			return $this->dataChanged('afterSave');
-		}
-
-		public function afterDelete() {
-			return $this->dataChanged('afterDelete');
-		}
-
-		public function dataChanged($from) {
-			return Cache::delete(cacheName('wishlist', AuthComponent::user('id')), 'shop');
 		}
 	}

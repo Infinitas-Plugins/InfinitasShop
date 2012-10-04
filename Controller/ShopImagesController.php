@@ -1,16 +1,16 @@
 <?php
-	class ImagesController extends ShopAppController {
+	class ShopImagesController extends ShopAppController {
 		/**
-		 * 
+		 *
 		 */
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Image.id',
-					'Image.image',
-					'Image.ext',
-					'Image.width',
-					'Image.height',
+					$this->modelClass . '.id',
+					$this->modelClass . '.image',
+					$this->modelClass . '.ext',
+					$this->modelClass . '.width',
+					$this->modelClass . '.height',
 				),
 				'contain' => false,
 				'limit' => 24

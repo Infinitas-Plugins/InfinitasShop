@@ -1,8 +1,8 @@
 <?php
-	class Supplier extends ShopAppModel {
+	class ShopSupplier extends ShopAppModel {
 		public $hasMany = array(
 			'Product' => array(
-				'className' => 'Shop.Product'
+				'className' => 'Shop.ShopProduct'
 			)
 		);
 

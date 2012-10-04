@@ -1,10 +1,10 @@
 <?php
-	class Product extends ShopAppModel {
+	class ShopProduct extends ShopAppModel {
 		public $lockable = true;
 
 		public $belongsTo = array(
 			'Image' => array(
-				'className' => 'Shop.Image',
+				'className' => 'Shop.ShopImage',
 				'fields' => array(
 					'Image.id',
 					'Image.image',
@@ -13,7 +13,7 @@
 				)
 			),
 			'ShopUnit' => array(
-				'className' => 'Shop.ShopUnit',
+				'className' => 'Shop.ShopShopUnit',
 				'counterCache' =>  true,
 				'fields' => array(
 					'ShopUnit.id',
@@ -23,7 +23,7 @@
 				)
 			),
 			'Supplier' => array(
-				'className' => 'Shop.Supplier',
+				'className' => 'Shop.ShopSupplier',
 				'counterCache' =>  true,
 				'fields' => array(
 					'Supplier.id',
@@ -35,18 +35,18 @@
 
 		public $hasMany = array(
 			'Special' => array(
-				'className' => 'Shop.Special'
+				'className' => 'Shop.ShopSpecial'
 			),
 			'Spotlight' => array(
-				'className' => 'Shop.Spotlight'
+				'className' => 'Shop.ShopSpotlight'
 			)
 		);
 
 		public $hasAndBelongsToMany = array(
 			'ProductImage' => array(
-				'className' => 'Shop.Image',
-				'foreignKey' => 'image_id',
-				'associationForeignKey' => 'product_id',
+				'className' => 'Shop.ShopImage',
+				'foreignKey' => 'shop_image_id',
+				'associationForeignKey' => 'shop_product_id',
 				'with' => 'Shop.ImagesProduct',
 				'unique' => true,
 				'conditions' => '',
@@ -65,7 +65,7 @@
 			),
 			'ShopCategory' => array(
 				'className' => 'Shop.ShopCategory',
-				'foreignKey' => 'category_id',
+				'foreignKey' => 'shop_category_id',
 				'associationForeignKey' => 'product_id',
 				'with' => 'Shop.CategoriesProduct',
 				'unique' => true,
@@ -87,7 +87,7 @@
 			),
 			'ShopBranch' => array(
 				'className' => 'Shop.ShopBranch',
-				'foreignKey' => 'branch_id',
+				'foreignKey' => 'shop_branch_id',
 				'associationForeignKey' => 'product_id',
 				'with' => 'Shop.BranchesProduct',
 				'unique' => true,
@@ -103,8 +103,8 @@
 				'insertQuery' => ''
 			),
 			'Stock' => array(
-				'className' => 'Shop.Stock',
-				'foreignKey' => 'branch_id',
+				'className' => 'Shop.ShopStock',
+				'foreignKey' => 'shop_branch_id',
 				'associationForeignKey' => 'stock_id',
 				'with' => 'Shop.Stock',
 				'unique' => true,
@@ -135,19 +135,19 @@
 				'all',
 				array(
 					'fields' => array(
-						'Product.id',
-						'Product.name',
-						'Product.slug',
-						'Product.cost',
-						'Product.price',
-						'Product.image_id',
+						$this->alais . '.id',
+						$this->alais . '.name',
+						$this->alais . '.slug',
+						$this->alais . '.cost',
+						$this->alais . '.price',
+						$this->alais . '.shop_image_id',
 					),
 					'conditions' => array(
-						'Product.id' => $this->getActiveProducts()
+						$this->alais . '.id' => $this->getActiveProducts()
 					),
 					'limit' => (int)$limit,
 					'order' => array(
-						'Product.sales' => 'DESC'
+						$this->alais . '.sales' => 'DESC'
 					),
 					'contain' => array(
 						'ShopCategory',
@@ -175,19 +175,19 @@
 				'all',
 				array(
 					'fields' => array(
-						'Product.id',
-						'Product.name',
-						'Product.slug',
-						'Product.cost',
-						'Product.price',
-						'Product.image_id',
+						$this->alais . '.id',
+						$this->alais . '.name',
+						$this->alais . '.slug',
+						$this->alais . '.cost',
+						$this->alais . '.price',
+						$this->alais . '.shop_image_id',
 					),
 					'conditions' => array(
-						'Product.id' => $this->getActiveProducts()
+						$this->alais . '.id' => $this->getActiveProducts()
 					),
 					'limit' => (int)$limit,
 					'order' => array(
-						'Product.views' => 'DESC'
+						$this->alais . '.views' => 'DESC'
 					),
 					'contain' => array(
 						'ShopCategory',
@@ -215,19 +215,19 @@
 				'all',
 				array(
 					'fields' => array(
-						'Product.id',
-						'Product.name',
-						'Product.slug',
-						'Product.cost',
-						'Product.price',
-						'Product.image_id',
+						$this->alais . '.id',
+						$this->alais . '.name',
+						$this->alais . '.slug',
+						$this->alais . '.cost',
+						$this->alais . '.price',
+						$this->alais . '.shop_image_id',
 					),
 					'conditions' => array(
-						'Product.id' => $this->getActiveProducts()
+						$this->alais . '.id' => $this->getActiveProducts()
 					),
 					'limit' => (int)$limit,
 					'order' => array(
-						'Product.created' => 'DESC'
+						$this->alais . '.created' => 'DESC'
 					),
 					'contain' => array(
 						'ShopCategory',
@@ -274,10 +274,10 @@
 					'contain' => array(
 						'Product' => array(
 							'fields' => array(
-								'Product.id', 'Product.id'
+								$this->alais . '.id', $this->alais . '.id'
 							),
 							'conditions' => array(
-								'Product.active' => $categoryStatus
+								$this->alais . '.active' => $categoryStatus
 							)
 						)
 					)
@@ -289,27 +289,5 @@
 			Cache::write($cacheName, $products, 'shop');
 
 			return $products;
-		}
-
-		public function afterSave($created) {
-			return $this->dataChanged('afterSave');
-		}
-
-		public function afterDelete() {
-			return $this->dataChanged('afterDelete');
-		}
-
-		public function dataChanged($from) {
-			App::import('Folder');
-			$Folder = new Folder(CACHE . 'shop');
-			$files = $Folder->read();
-
-			foreach($files[1] as $file) {
-				if(strstr($file, 'products_') != false) {
-					Cache::delete($file, 'shop');
-				}
-			}
-
-			return true;
 		}
 	}

@@ -1,7 +1,5 @@
 <?php
-	class CartsController extends ShopAppController{
-		public $name = 'Carts';
-
+	class ShopCartsController extends ShopAppController {
 		public function index() {
 			$userId = $this->Auth->user('id');
 
@@ -28,7 +26,7 @@
 				);
 			}
 
-			$carts = $this->Cart->getCartData($userId);
+			$carts = $this->{$this->modelClass}->getCartData($userId);
 
 			if(empty($carts)) {
 				$this->notice(
@@ -54,7 +52,7 @@
 			$amounts['vat']        = Configure::read('Shop.vat_rate') > 0 ? ($amounts['total_excl'] / 100) * (int)Configure::read('Shop.vat_rate') : 0;
 			$amounts['total_due']  = $amounts['total_excl'] + $amounts['vat'];
 
-			$this->set(compact('addresses', 'carts', 'amounts'));
+			$this->set(compact('addresses', 'shopCarts', 'amounts'));
 		}
 
 		public function adjust() {
@@ -66,19 +64,19 @@
 				$this->request->params['named']['quantity'] = 1;
 			}
 
-			$product = $this->Cart->Product->find(
+			$product = $this->{$this->modelClass}->Product->find(
 				'first',
 				array(
 					'conditions' => array(
-						'Product.id' => $this->request->params['named']['product_id']
+						$this->modelClass . '.id' => $this->request->params['named']['product_id']
 					),
 					'fields' => array(
-						'Product.id',
-						'Product.name',
-						'Product.slug',
-						'Product.price',
-						'Product.active',
-						'Product.added_to_cart'
+						$this->modelClass . '.id',
+						$this->modelClass . '.name',
+						$this->modelClass . '.slug',
+						$this->modelClass . '.price',
+						$this->modelClass . '.active',
+						$this->modelClass . '.added_to_cart'
 					),
 					'contain' => array(
 						'Special'
@@ -95,15 +93,15 @@
 			}
 
 			if($this->Auth->user('id')) {
-				$this->Shop->dbCartSave($this->Cart, $product);
+				$this->Shop->dbCartSave($this->{$this->modelClass}, $product);
 			}
 
-			$this->Shop->sessionCartSave($this->Cart, $product);
+			$this->Shop->sessionCartSave($this->{$this->modelClass}, $product);
 		}
 
 		public function change_shipping_method() {
-			if(isset($this->data['Cart']['shipping_method']) && !empty($this->data['Cart']['shipping_method'])) {
-				$this->Session->write('Shop.shipping_method', $this->data['Cart']['shipping_method']);
+			if(isset($this->data[$this->modelClass]['shipping_method']) && !empty($this->data[$this->modelClass]['shipping_method'])) {
+				$this->Session->write('Shop.shipping_method', $this->data[$this->modelClass]['shipping_method']);
 
 				$this->notice(
 					__d('shop', 'Shipping method updated'),
@@ -127,18 +125,18 @@
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Cart.id',
-					'Cart.user_id',
-					'Cart.product_id',
-					'Cart.price',
-					'Cart.quantity',
+					$this->modelClass . '.id',
+					$this->modelClass . '.user_id',
+					$this->modelClass . '.product_id',
+					$this->modelClass . '.price',
+					$this->modelClass . '.quantity',
 					'sub_total',
-					'Cart.created',
-					'Cart.deleted',
-					'Cart.deleted_date'
+					$this->modelClass . '.created',
+					$this->modelClass . '.deleted',
+					$this->modelClass . '.deleted_date'
 				),
 				'conditions' => array(
-					'Cart.deleted' => 1
+					$this->modelClass . '.deleted' => 1
 				),
 				'contain' => array(
 					'User',
@@ -156,9 +154,9 @@
 
 			$filterOptions = $this->Filter->filterOptions;
 			$filterOptions['fields'] = array(
-				'user_id' => $this->Cart->User->find('list'),
-				'product_id' => $this->Cart->Product->find('list'),
+				'user_id' => $this->{$this->modelClass}->User->find('list'),
+				'product_id' => $this->{$this->modelClass}->Product->find('list'),
 			);
-			$this->set(compact('carts','filterOptions'));
+			$this->set(compact('shopCarts','filterOptions'));
 		}
 	}

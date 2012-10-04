@@ -1,5 +1,5 @@
 <?php
-	class Spotlight extends ShopAppModel {
+	class ShopSpotlight extends ShopAppModel {
 		public $virtualFields = array(
 			'start' => 'CONCAT(Spotlight.start_date, " ", Spotlight.start_time)',
 			'end'   => 'CONCAT(Spotlight.end_date, " ", Spotlight.end_time)'
@@ -11,8 +11,8 @@
 
 		public $belongsTo = array(
 			'Image' => array(
-				'className' => 'Shop.Image',
-				'foreignKey' => 'image_id',
+				'className' => 'Shop.ShopImage',
+				'foreignKey' => 'shop_image_id',
 				'fields' => array(
 					'Image.id',
 					'Image.image',
@@ -25,8 +25,8 @@
 				)
 			),
 			'Product' => array(
-				'className' => 'Shop.Product',
-				'foreignKey' => 'product_id',
+				'className' => 'Shop.ShopProduct',
+				'foreignKey' => 'shop_product_id',
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -49,7 +49,7 @@
 		public $hasAndBelongsToMany = array(
 			'ShopBranch' => array(
 				'className' => 'Shop.ShopBranch',
-				'foreignKey' => 'branch_id',
+				'foreignKey' => 'shop_branch_id',
 				'associationForeignKey' => 'spotlight_id',
 				'with' => 'Shop.BranchesSpotlight',
 				'unique' => true,
@@ -79,13 +79,13 @@
 				'all',
 				array(
 					'fields' => array(
-						'Spotlight.id',
-						'Spotlight.image_id',
-						'Spotlight.start_date',
-						'Spotlight.end_date'
+						$this->alais . '.id',
+						$this->alais . '.shop_image_id',
+						$this->alais . '.start_date',
+						$this->alais . '.end_date'
 					),
 					'conditions' => array(
-						'Spotlight.active' => 1,
+						$this->alais . '.active' => 1,
 						'and' => array(
 							'start <= ' => date('Y-m-d H:i:s'),
 							'end >= ' => date('Y-m-d H:i:s')
@@ -105,27 +105,5 @@
 			Cache::write($cacheName, $spotlights, 'shop');
 
 			return $spotlights;
-		}
-
-		public function afterSave($created) {
-			return $this->dataChanged('afterSave');
-		}
-
-		public function afterDelete() {
-			return $this->dataChanged('afterDelete');
-		}
-
-		public function dataChanged($from) {
-			App::import('Folder');
-			$Folder = new Folder(CACHE . 'shop');
-			$files = $Folder->read();
-
-			foreach($files[1] as $file) {
-				if(strstr($file, 'spotlights') != false) {
-					Cache::delete($file, 'shop');
-				}
-			}
-
-			return true;
 		}
 	}

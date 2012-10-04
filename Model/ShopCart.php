@@ -1,5 +1,5 @@
 <?php
-	class Cart extends ShopAppModel {
+	class ShopCart extends ShopAppModel {
 		/**
 		 * sub_total is the line total
 		 * @var unknown_type
@@ -10,7 +10,7 @@
 
 		public $belongsTo = array(
 			'Product' => array(
-				'className' => 'Shop.Product',
+				'className' => 'Shop.ShopProduct',
 				'fields' => array(
 					'Product.id',
 					'Product.name',
@@ -75,19 +75,5 @@
 				$this->dataChanged('afterDelete');
 			}
 			return $status;
-		}
-
-		public function afterSave($created) {
-			return $this->dataChanged('afterSave');
-		}
-
-		public function afterDelete() {
-			return $this->dataChanged('afterDelete');
-		}
-
-		public function dataChanged($from) {
-			Cache::delete(cacheName('cart', AuthComponent::user('id')), 'shop');
-
-			return true;
 		}
 	}

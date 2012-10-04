@@ -27,13 +27,13 @@
 				'name' => __d('shop', 'Branches'),
 				'description' => __d('shop', 'Manage your branches'),
 				'icon' => '/shop/img/icons/branches.png',
-				'dashboard' => array('controller' => 'branches', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_branches', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Products'),
 				'description' => __d('shop', 'Manage your products'),
 				'icon' => '/shop/img/icons/products.png',
-				'dashboard' => array('controller' => 'products', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_products', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Categories'),
@@ -45,13 +45,13 @@
 				'name' => __d('shop', 'Suppliers'),
 				'description' => __d('shop', 'Manage suppliers'),
 				'icon' => '/shop/img/icons/suppliers.png',
-				'dashboard' => array('controller' => 'suppliers', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_suppliers', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Units'),
 				'description' => __d('shop', 'Manage product units'),
 				'icon' => '/shop/img/icons/units.png',
-				'dashboard' => array('controller' => 'units', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_units', 'action' => 'index')
 			),
 		),
 		'manage' => array(
@@ -59,25 +59,25 @@
 				'name' => __d('shop', 'Specials'),
 				'description' => __d('shop', 'Manage product specials'),
 				'icon' => '/shop/img/icons/specials.png',
-				'dashboard' => array('controller' => 'specials', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_specials', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Featured'),
 				'description' => __d('shop', 'Manage spotlight products'),
 				'icon' => '/shop/img/icons/featured.png',
-				'dashboard' => array('controller' => 'spotlights', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_spotlights', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Stock'),
 				'description' => __d('shop', 'Manage product stock'),
 				'icon' => '/shop/img/icons/stock.png',
-				'dashboard' => array('controller' => 'stocks', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_stocks', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Cart'),
 				'description' => __d('shop', 'View user carts'),
 				'icon' => '/shop/img/icons/cart.png',
-				'dashboard' => array('controller' => 'carts', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_carts', 'action' => 'index')
 			),
 		)
 	);
@@ -97,6 +97,6 @@
 
 	echo $this->ModuleLoader->loadDirect('ViewCounter.popular_items',
 		array(
-			'model' => 'Shop.Product'
+			'model' => 'Shop.ShopProduct'
 		)
 	);

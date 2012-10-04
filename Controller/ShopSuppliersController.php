@@ -1,18 +1,18 @@
 <?php
-	class SuppliersController extends ShopAppController {
+	class ShopSuppliersController extends ShopAppController {
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Supplier.id',
-					'Supplier.name',
-					'Supplier.slug',
-					'Supplier.phone',
-					'Supplier.fax',
-					'Supplier.logo',
-					'Supplier.product_count',
-					'Supplier.terms',
-					'Supplier.active',
-					'Supplier.modified'
+					$this->modelClass . '.id',
+					$this->modelClass . '.name',
+					$this->modelClass . '.slug',
+					$this->modelClass . '.phone',
+					$this->modelClass . '.fax',
+					$this->modelClass . '.logo',
+					$this->modelClass . '.product_count',
+					$this->modelClass . '.terms',
+					$this->modelClass . '.active',
+					$this->modelClass . '.modified'
 				),
 				'contain' => false
 			);
@@ -28,20 +28,20 @@
 				'terms' => (array)Configure::read('Shop.payment_terms'),
 				'active' => (array)Configure::read('CORE.active_options')
 			);
-			$this->set(compact('suppliers','filterOptions'));
+			$this->set(compact('suppliers', 'filterOptions'));
 		}
 
 		public function admin_add() {
 			parent::admin_add();
 
-			$addresses = $this->Supplier->Address->find('list');
+			$addresses = $this->{$this->modelClass}->Address->find('list');
 			$this->set(compact('addresses'));
 		}
 
 		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
-			$addresses = $this->Supplier->Address->find('list');
+			$addresses = $this->{$this->modelClass}->Address->find('list');
 			$this->set(compact('addresses'));
 		}
 	}

@@ -61,9 +61,9 @@
 		public $hasAndBelongsToMany = array(
 			'ShopCategory' => array(
 				'className' => 'Shop.ShopCategory',
-				'foreignKey' => 'category_id',
+				'foreignKey' => 'shop_category_id',
 				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.BranchesCategory',
+				'with' => 'Shop.ShopBranchesCategory',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
@@ -78,16 +78,16 @@
 				'insertQuery' => ''
 			),
 			'Product' => array(
-				'className' => 'Shop.Product',
-				'foreignKey' => 'product_id',
+				'className' => 'Shop.ShopProduct',
+				'foreignKey' => 'sho_product_id',
 				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.BranchesProduct',
+				'with' => 'Shop.ShopBranchesProduct',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
-					'Product.id',
-					'Product.name',
-					'Product.cost'
+					'ShopProduct.id',
+					'ShopProduct.name',
+					'ShopProduct.cost'
 				),
 				'order' => '',
 				'limit' => '',
@@ -97,17 +97,17 @@
 				'insertQuery' => ''
 			),
 			'Stock' => array(
-				'className' => 'Shop.Stock',
-				'foreignKey' => 'stock_id',
+				'className' => 'Shop.ShopStock',
+				'foreignKey' => 'shop_stock_id',
 				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.Stock',
+				'with' => 'Shop.ShopStock',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
-					'Stock.id',
-					'Stock.branch_id',
-					'Stock.branch_id',
-					'Stock.stock',
+					'ShopStock.id',
+					'ShopStock.branch_id',
+					'ShopStock.branch_id',
+					'ShopStock.stock',
 				),
 				'order' => '',
 				'limit' => '',
@@ -117,22 +117,22 @@
 				'insertQuery' => ''
 			),
 			'Special' => array(
-				'className' => 'Shop.Special',
-				'foreignKey' => 'special_id',
+				'className' => 'Shop.ShopSpecial',
+				'foreignKey' => 'shop_special_id',
 				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.BranchesSpecial',
+				'with' => 'Shop.ShopBranchesSpecial',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
-					'Special.id',
-					'Special.product_id',
-					'Special.image_id',
-					'Special.discount',
-					'Special.amount',
-					'Special.start_date',
-					'Special.end_date',
-					'Special.start_time',
-					'Special.end_time'
+					'ShopSpecial.id',
+					'ShopSpecial.product_id',
+					'ShopSpecial.image_id',
+					'ShopSpecial.discount',
+					'ShopSpecial.amount',
+					'ShopSpecial.start_date',
+					'ShopSpecial.end_date',
+					'ShopSpecial.start_time',
+					'ShopSpecial.end_time'
 				),
 				'order' => '',
 				'limit' => '',
@@ -142,20 +142,20 @@
 				'insertQuery' => ''
 			),
 			'Spotlight' => array(
-				'className' => 'Shop.Spotlight',
-				'foreignKey' => 'spotlight_id',
+				'className' => 'Shop.ShopSpotlight',
+				'foreignKey' => 'shop_spotlight_id',
 				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.BranchesSpotlight',
+				'with' => 'Shop.ShopBranchesSpotlight',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
-					'Spotlight.id',
-					'Spotlight.product_id',
-					'Spotlight.image_id',
-					'Spotlight.start_date',
-					'Spotlight.end_date',
-					'Spotlight.start_time',
-					'Spotlight.end_time'
+					'ShopSpotlight.id',
+					'ShopSpotlight.product_id',
+					'ShopSpotlight.image_id',
+					'ShopSpotlight.start_date',
+					'ShopSpotlight.end_date',
+					'ShopSpotlight.start_time',
+					'ShopSpotlight.end_time'
 				),
 				'order' => '',
 				'limit' => '',
@@ -220,8 +220,8 @@
 				'list',
 				array(
 					'fields' => array(
-						'ShopBranch.branch_id',
-						'ShopBranch.branch_id'
+						$this->alais . '.branch_id',
+						$this->alais . '.branch_id'
 					)
 				)
 			);
@@ -254,7 +254,7 @@
 				);
 
 				$query['joins'] = array(
-					$this->autoJoinModel('Shop.BranchDetail')
+					$this->autoJoinModel('Shop.ShopBranchDetail')
 				);
 
 				return $query;
@@ -272,8 +272,8 @@
 				'list',
 				array(
 					'fields' => array(
-						'ShopBranch.branch_id',
-						'ShopBranch.branch_id'
+						$this->alais . '.branch_id',
+						$this->alais . '.branch_id'
 					)
 				)
 			);

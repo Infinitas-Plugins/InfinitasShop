@@ -1,13 +1,13 @@
 <?php
-	class WishlistsController extends ShopAppController {
+	class ShopWishlistsController extends ShopAppController {
 		public function index() {
 			$userId = $this->Auth->user('id');
 			if($userId) {
-				$wishlists = $this->Wishlist->find(
+				$wishlists = $this->{$this->modelClass}->find(
 					'all',
 					array(
 						'conditions' => array(
-							'Wishlist.user_id' => $userId
+							$this->modelClass . '.user_id' => $userId
 						),
 						'contain' => array(
 							'Product'
@@ -38,7 +38,7 @@
 
 			$this->request->params['named']['quantity'] = 0;
 
-			$product = $this->Wishlist->Product->find(
+			$product = $this->{$this->modelClass}->Product->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -67,10 +67,10 @@
 			}
 
 			if($userId = $this->Auth->user('id') > 0) {
-				$this->Shop->dbCartSave($this->Wishlist, $product);
+				$this->Shop->dbCartSave($this->{$this->modelClass}, $product);
 			}
 
-			$this->Shop->sessionCartSave($this->Wishlist, $product);
+			$this->Shop->sessionCartSave($this->{$this->modelClass}, $product);
 		}
 
 		public function move($product_id = null) {
@@ -78,7 +78,7 @@
 				$this->notice('invalid');
 			}
 
-			$product = $this->Wishlist->Product->find(
+			$product = $this->{$this->modelClass}->Product->find(
 				'first',
 				array(
 					'conditions' => array(
@@ -108,14 +108,14 @@
 
 			$userId = $this->Auth->user('id');
 			if($userId) {
-				$this->Wishlist->enableSoftDeletable('delete', false);
+				$this->{$this->modelClass}->enableSoftDeletable('delete', false);
 
 				$deleteConditions = array(
-					'Wishlist.user_id' => $userId,
-					'Wishlist.product_id' => $product_id
+					$this->modelClass . '.user_id' => $userId,
+					$this->modelClass . '.product_id' => $product_id
 				);
 
-				if(!$this->Wishlist->deleteAll($deleteConditions)) {
+				if(!$this->{$this->modelClass}->deleteAll($deleteConditions)) {
 					$this->notice(
 						__d('shop', 'There was a problem moving the product'),
 						array(
@@ -129,11 +129,11 @@
 			else{
 				$wishlists = $this->Session->read('Wishlist.TempWishlist');
 				foreach($wishlists as &$wishlist) {
-					if($wishlist['Wishlist']['product_id'] == $product_id) {
+					if($wishlist[$this->modelClass]['product_id'] == $product_id) {
 						unset($wishlist);
 					}
 				}
-				$this->Session->write('Wishlist.TempWishlist', $wishlists);
+				$this->Session->write($this->modelClass . '.TempWishlist', $wishlists);
 
 
 				$this->Shop->sessionCartSave($Cart, $product);
@@ -143,16 +143,16 @@
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Wishlist.id',
-					'Wishlist.user_id',
-					'Wishlist.product_id',
-					'Wishlist.price',
-					'Wishlist.created',
-					'Wishlist.deleted',
-					'Wishlist.deleted_date'
+					$this->modelClass . '.id',
+					$this->modelClass . '.user_id',
+					$this->modelClass . '.product_id',
+					$this->modelClass . '.price',
+					$this->modelClass . '.created',
+					$this->modelClass . '.deleted',
+					$this->modelClass . '.deleted_date'
 				),
 				'conditions' => array(
-					'Wishlist.deleted' => 1
+					$this->modelClass . '.deleted' => 1
 				),
 				'contain' => array(
 					'User',
@@ -170,9 +170,9 @@
 
 			$filterOptions = $this->Filter->filterOptions;
 			$filterOptions['fields'] = array(
-				'user_id' => $this->Wishlist->User->find('list'),
-				'product_id' => $this->Wishlist->Product->find('list'),
+				'user_id' => $this->{$this->modelClass}->User->find('list'),
+				'product_id' => $this->{$this->modelClass}->Product->find('list'),
 			);
-			$this->set(compact('wishlists','filterOptions'));
+			$this->set(compact('wishlists', 'filterOptions'));
 		}
 	}

@@ -1,17 +1,17 @@
 <?php
-	class SpecialsController extends ShopAppController {
+	class ShopSpecialsController extends ShopAppController {
 		public function index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Special.id',
-					'Special.image_id',
-					'Special.amount',
-					'Special.active',
-					'Special.start_date',
-					'Special.end_date'
+					$this->modelClass . '.id',
+					$this->modelClass . '.image_id',
+					$this->modelClass . '.amount',
+					$this->modelClass . '.active',
+					$this->modelClass . '.start_date',
+					$this->modelClass . '.end_date'
 				),
 				'conditions' => array(
-					'Special.active' => 1,
+					$this->modelClass . '.active' => 1,
 					'and' => array(
 						'start <= ' => date('Y-m-d H:i:s'),
 						'end >= '   => date('Y-m-d H:i:s')
@@ -28,24 +28,24 @@
 
 			$specials = $this->Paginator->paginate('Special');
 
-			$spotlights = $this->Special->Product->Spotlight->getSpotlights(5);
+			$spotlights = $this->{$this->modelClass}->Product->Spotlight->getSpotlights(5);
 			$this->set(compact('specials', 'spotlights'));
 		}
 
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Special.id',
-					'Special.product_id',
-					'Special.image_id',
-					'Special.discount',
-					'Special.amount',
-					'Special.start_date',
-					'Special.end_date',
-					'Special.start_time',
-					'Special.end_time',
-					'Special.active',
-					'Special.modified',
+					$this->modelClass . '.id',
+					$this->modelClass . '.product_id',
+					$this->modelClass . '.image_id',
+					$this->modelClass . '.discount',
+					$this->modelClass . '.amount',
+					$this->modelClass . '.start_date',
+					$this->modelClass . '.end_date',
+					$this->modelClass . '.start_time',
+					$this->modelClass . '.end_time',
+					$this->modelClass . '.active',
+					$this->modelClass . '.modified',
 				),
 				'contain' => array(
 					'Product' => array(
@@ -62,7 +62,7 @@
 
 			$filterOptions = $this->Filter->filterOptions;
 			$filterOptions['fields'] = array(
-				'product_id' => $this->Special->Product->find('list'),
+				'product_id' => $this->{$this->modelClass}->Product->find('list'),
 				'active' => (array)Configure::read('CORE.active_options')
 			);
 			$this->set(compact('specials','filterOptions'));
@@ -71,11 +71,11 @@
 		public function admin_add() {
 			parent::admin_add();
 
-			$shopBranches = $this->Special->ShopBranch->getList();
-			$products = $this->Special->Product->find('list');
-			$images = $this->Special->Image->getImagePaths();
+			$shopBranches = $this->{$this->modelClass}->ShopBranch->getList();
+			$products = $this->{$this->modelClass}->Product->find('list');
+			$images = $this->{$this->modelClass}->Image->getImagePaths();
 
-			$maxPrice = $this->Special->Product->find(
+			$maxPrice = $this->{$this->modelClass}->Product->find(
 				'all',
 				array(
 					'fields' => array(
@@ -88,7 +88,7 @@
 			);
 			$maxPrice = isset($maxPrice[0]['Product']['price']) ? $maxPrice[0]['Product']['price'] : 1000;
 
-			$minPrice = $this->Special->Product->find(
+			$minPrice = $this->{$this->modelClass}->Product->find(
 				'all',
 				array(
 					'fields' => array(
@@ -107,16 +107,16 @@
 		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
-			$shopBranches = $this->Special->ShopBranch->getList();
-			$products = $this->Special->Product->find('list');
-			$images = $this->Special->Image->getImagePaths();
+			$shopBranches = $this->{$this->modelClass}->ShopBranch->getList();
+			$products = $this->{$this->modelClass}->Product->find('list');
+			$images = $this->{$this->modelClass}->Image->getImagePaths();
 			$this->set(compact('shopBranches', 'products', 'images'));
 		}
 
 		public function admin_getPrices() {
 			$this->set(
 				'json',
-				$this->Special->Product->find(
+				$this->{$this->modelClass}->Product->find(
 					'first',
 					array(
 						'conditions' => array(

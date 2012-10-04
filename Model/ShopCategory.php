@@ -1,8 +1,6 @@
 <?php
 	class ShopCategory extends ShopAppModel {
-		public $order = array(
-			'ShopCategory.lft' => 'ASC'
-		);
+		public $order = array();
 
 		public $belongsTo = array(
 			'Parent' => array(
@@ -22,33 +20,33 @@
 				)
 			),
 			'Image' => array(
-				'className' => 'Shop.Image',
-				'foreignKey' => 'image_id',
+				'className' => 'Shop.ShopImage',
+				'foreignKey' => 'shop_image_id',
 				'fields' => array(
-					'Image.id',
-					'Image.image',
-					'Image.width',
-					'Image.height'
+					'ShopImage.id',
+					'ShopImage.image',
+					'ShopImage.width',
+					'ShopImage.height'
 				),
 				'conditions' => array(),
 				'order' => array(
-					'Image.image' => 'ASC'
+					'ShopImage.image' => 'ASC'
 				)
 			)
 		);
 
 		public $hasAndBelongsToMany = array(
 			'Product' => array(
-				'className' => 'Shop.Product',
-				'foreignKey' => 'product_id',
+				'className' => 'Shop.ShopProduct',
+				'foreignKey' => 'shop_product_id',
 				'associationForeignKey' => 'category_id',
-				'with' => 'Shop.CategoriesProduct',
+				'with' => 'Shop.ShopCategoriesProduct',
 				'unique' => true,
 				'conditions' => '',
 				'fields' => array(
-					'Product.id',
-					'Product.name',
-					'Product.cost'
+					'ShopProduct.id',
+					'ShopProduct.name',
+					'ShopProduct.cost'
 				),
 				'order' => '',
 				'limit' => '',
@@ -58,7 +56,7 @@
 				'insertQuery' => ''
 			),
 			'ShopBranch' => array(
-				'className' => 'Shop.ShopBranch',
+				'className' => 'Shop.ShopShopBranch',
 				'foreignKey' => 'branch_id',
 				'associationForeignKey' => 'category_id',
 				'with' => 'Shop.BranchesCategory',
@@ -77,14 +75,22 @@
 			),
 		);
 
+		public function __construct($id = false, $table = null, $ds = null) {
+			parent::__construct($id, $table, $ds);
+
+			$this->order = array(
+				$this->alais . '.lft' => 'ASC'
+			);
+		}
+
 		public function getCategories($category_id = null) {
 			$conditions = array(
-				'ShopCategory.parent_id IS NULL'
+				$this->alais . '.parent_id IS NULL'
 			);
 
 			if((int)$category_id > 0) {
 				$conditions = array(
-					'ShopCategory.parent_id' => $category_id
+					$this->alais . '.parent_id' => $category_id
 				);
 			}
 
@@ -101,11 +107,11 @@
 						$conditions
 					),
 					'fields' => array(
-						'ShopCategory.id',
-						'ShopCategory.parent_id',
-						'ShopCategory.name',
-						'ShopCategory.slug',
-						'ShopCategory.product_count'
+						$this->alais . '.id',
+						$this->alais . '.parent_id',
+						$this->alais . '.name',
+						$this->alais . '.slug',
+						$this->alais . '.product_count'
 					)
 				)
 			);
@@ -126,10 +132,10 @@
 				'list',
 				array(
 					'fields' => array(
-						'ShopCategory.id','ShopCategory.id'
+						$this->alais . '.id',$this->alais . '.id'
 					),
 					'conditions' => array(
-						'ShopCategory.active' => 1
+						$this->alais . '.active' => 1
 					)
 				)
 			);
@@ -137,27 +143,5 @@
 			Cache::write($cacheName, $category_ids, 'shop');
 
 			return $category_ids;
-		}
-
-		public function afterSave($created) {
-			return $this->dataChanged('afterSave');
-		}
-
-		public function afterDelete() {
-			return $this->dataChanged('afterDelete');
-		}
-
-		public function dataChanged($from) {
-			App::import('Folder');
-			$Folder = new Folder(CACHE . 'shop');
-			$files = $Folder->read();
-
-			foreach($files[1] as $file) {
-				if(strstr($file, 'categories_') != false) {
-					Cache::delete($file, 'shop');
-				}
-			}
-
-			return true;
 		}
 	}
