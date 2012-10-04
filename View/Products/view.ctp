@@ -13,15 +13,15 @@
 				}
 
 			?>
-			<tr><th><?php echo __d('shop', 'Price'); ?>:</th><td class="<?php echo $class; ?>"><?php echo $this->Shop->currency($product['Product']['price']), ' ', $product['Unit']['symbol']; ?></td></tr>
+			<tr><th><?php echo __d('shop', 'Price'); ?>:</th><td class="<?php echo $class; ?>"><?php echo $this->Shop->currency($product['Product']['price']), ' ', $product['ShopUnit']['symbol']; ?></td></tr>
 			<?php
 				if($isSpecial) {
 					?>
-						<tr><th><?php echo __d('shop', 'Sale Price'); ?>:</th><td><?php echo $this->Shop->calculateSpecial($product['Product'], $product['Special']), ' ', $product['Unit']['symbol']; ?></td></tr>
+						<tr><th><?php echo __d('shop', 'Sale Price'); ?>:</th><td><?php echo $this->Shop->calculateSpecial($product['Product'], $product['Special']), ' ', $product['ShopUnit']['symbol']; ?></td></tr>
 					<?php
 				}
 			?>
-			<tr><th><?php echo __d('shop', 'Sales Unit'); ?>:</th><td><?php echo $product['Unit']['name']; ?></td></tr>
+			<tr><th><?php echo __d('shop', 'Sales Unit'); ?>:</th><td><?php echo $product['ShopUnit']['name']; ?></td></tr>
 			<tr><th><?php echo __d('shop', 'Supplier'); ?>:</th><td><?php echo $product['Supplier']['name']; ?></td></tr>
 			<tr><th><?php echo __d('shop', 'Rating'); ?>:</th><td><?php echo sprintf(__d('shop', '%s out of %s'), $product['Product']['rating'], $product['Product']['rating_count']); ?></td></tr>
 			<tr><th><?php echo __d('shop', 'Viewed'); ?>:</th><td><?php echo sprintf(__d('shop', '%s times'), $product['Product']['views']); ?></td></tr>

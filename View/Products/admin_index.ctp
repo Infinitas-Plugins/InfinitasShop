@@ -47,7 +47,7 @@
                     $this->Paginator->sort('name'),
                     $this->Paginator->sort('ShopCategory.name', __d('shop', 'Category')),
                     $this->Paginator->sort('ShopBranch.name', __d('shop', 'Branch')),
-                    $this->Paginator->sort('Unit.name', __d('shop', 'Unit')) => array(
+                    $this->Paginator->sort('ShopUnit.name', __d('shop', 'ShopUnit')) => array(
                         'style' => 'width:75px;'
                     ),
                     $this->Paginator->sort('price') => array(
@@ -89,7 +89,7 @@
 							<?php echo $this->Text->toList(Set::extract('/BranchDetail/name', $product['ShopBranch'])); ?>
 						</td>
 						<td>
-                			<?php echo $this->Html->link($product['Unit']['name'], array('action' => 'edit', $product['Unit']['id'])); ?>&nbsp;
+                			<?php echo $this->Html->link($product['ShopUnit']['name'], array('action' => 'edit', $product['ShopUnit']['id'])); ?>&nbsp;
 						</td>
 						<td title="<?php echo $this->Shop->breakdown($product['Product'], $product['Special']); ?>">
 							<?php echo $this->Shop->calculateSpecial($product['Product'], $product['Special']); ?>

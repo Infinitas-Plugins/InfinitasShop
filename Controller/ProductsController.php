@@ -121,7 +121,7 @@
 						'Spotlight' => array(
 							'Image'
 						),
-						'Unit',
+						'ShopUnit',
 						'Supplier',
 						'ShopBranch'
 					)
@@ -189,13 +189,13 @@
 					'Product.price',
 					'Product.modified',
 					'Product.supplier_id',
-					'Product.unit_id',
+					'Product.shop_unit_id',
 					'Product.image_id'
 				),
 				'conditions' => $conditions,
 				'contain' => array(
 					'Image',
-					'Unit',
+					'ShopUnit',
 					'Supplier',
 					'ShopCategory',
 					'ShopBranch' => array(
@@ -217,7 +217,7 @@
 				'name',
 				'category_id' => $this->Product->ShopCategory->generateTreeList(null, null, null, '_'),
 				'supplier_id' => $this->Product->Supplier->find('list'),
-				'unit_id' => $this->Product->Unit->find('list'),
+				'shop_unit_id' => $this->Product->ShopUnit->find('list'),
 				'active' => (array)Configure::read('CORE.active_options')
 			);
 			$this->set(compact('products','filterOptions'));
@@ -235,7 +235,7 @@
 					'Product.sales',
 					'Product.modified',
 					'Product.supplier_id',
-					'Product.unit_id',
+					'Product.shop_unit_id',
 					'Product.image_id',
 					'Product.added_to_cart',
 					'Product.added_to_wishlist'
@@ -260,7 +260,7 @@
 				'name',
 				'category_id' => $this->Product->ShopCategory->generateTreeList(null, null, null, '_'),
 				'supplier_id' => $this->Product->Supplier->find('list'),
-				'unit_id' => $this->Product->Unit->find('list'),
+				'shop_unit_id' => $this->Product->ShopUnit->find('list'),
 				'active' => (array)Configure::read('CORE.active_options')
 			);
 			$this->set(compact('products','filterOptions'));
@@ -270,7 +270,7 @@
 			parent::admin_add();
 
 			$shopCategories = $this->Product->ShopCategory->generateTreeList(null, null, null, '_');
-			$units = $this->Product->Unit->find('list');
+			$units = $this->Product->ShopUnit->find('list');
 			$suppliers = $this->Product->Supplier->find('list');
 			$shopBranches = $this->Product->ShopBranch->getList();
 			$images = $this->Product->Image->getImagePaths();
@@ -280,7 +280,7 @@
 		public function admin_edit($id = null) {
 			parent::admin_edit($id);
 
-			$units          = $this->Product->Unit->find('list');
+			$units          = $this->Product->ShopUnit->find('list');
 			$suppliers      = $this->Product->Supplier->find('list');
 			$images         = $this->Product->Image->getImagePaths();
 			$shopBranches   = $this->Product->ShopBranch->getList();

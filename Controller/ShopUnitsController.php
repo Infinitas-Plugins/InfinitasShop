@@ -1,16 +1,16 @@
 <?php
-	class UnitsController extends ShopAppController {
+	class ShopUnitsController extends ShopAppController {
 		public function admin_index() {
 			$this->Paginator->settings = array(
 				'fields' => array(
-					'Unit.id',
-					'Unit.name',
-					'Unit.slug',
-					'Unit.symbol',
-					'Unit.description',
-					'Unit.product_count',
-					'Unit.active',
-					'Unit.modified',
+					$this->modelClass . 'id',
+					$this->modelClass . 'name',
+					$this->modelClass . 'slug',
+					$this->modelClass . 'symbol',
+					$this->modelClass . 'description',
+					$this->modelClass . 'product_count',
+					$this->modelClass . 'active',
+					$this->modelClass . 'modified',
 				),
 				'contain' => false
 			);

@@ -40,7 +40,7 @@
 						echo $this->Form->input('cost', array('before' => Configure::read('Currency.unit'),'title' => __d('shop', 'Cost :: This is the price that you pay for the item')));
 						echo $this->Form->input('retail', array('before' => Configure::read('Currency.unit'), 'title' => __d('shop', 'Retail :: This is the going rate of the item in other stores')));
 						echo $this->Form->input('price', array('before' => Configure::read('Currency.unit'), 'title' => __d('shop', 'Price :: This is your selling price')));
-						echo $this->Form->input('unit_id', array('title' => __d('shop', 'Unit :: The unit that the product is sold in [eg: ounces]')));
+						echo $this->Form->input('shop_unit_id', array('title' => __d('shop', 'Unit :: The unit that the product is sold in [eg: ounces]')));
 
 						?><h2><?php echo __d('shop', 'Categories'); ?></h2><?php
 						echo $this->Form->input('ShopCategory', array('label' => false, 'multiple' =>  'checkbox', 'style' => 'clear:both;'));

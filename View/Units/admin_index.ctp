@@ -18,7 +18,7 @@
      * @since         0.5a
      */
 
-    echo $this->Form->create('Unit', array('url' => array('action' => 'mass')));
+    echo $this->Form->create(false, array('url' => array('action' => 'mass')));
 
     $massActions = $this->Infinitas->massActionButtons(
         array(
@@ -61,19 +61,19 @@
                 	<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
                         <td><?php echo $this->Infinitas->massActionCheckBox($unit); ?>&nbsp;</td>
                 		<td>
-                			<?php echo $this->Html->link($unit['Unit']['name'], array('action' => 'edit', $unit['Unit']['id']), array('title' => __d('shop', 'Description').' :: '.$unit['Unit']['description'])); ?>&nbsp;
+                			<?php echo $this->Html->link($unit['ShopUnit']['name'], array('action' => 'edit', $unit['ShopUnit']['id']), array('title' => __d('shop', 'Description').' :: '.$unit['ShopUnit']['description'])); ?>&nbsp;
                 		</td>
 						<td>
-							<?php echo $unit['Unit']['symbol']; ?>
+							<?php echo $unit['ShopUnit']['symbol']; ?>
 						</td>
 						<td>
-							<?php echo $unit['Unit']['product_count']; ?>
+							<?php echo $unit['ShopUnit']['product_count']; ?>
 						</td>
 						<td>
-							<?php echo $this->Infinitas->date($unit['Unit']['modified']); ?>
+							<?php echo $this->Infinitas->date($unit['ShopUnit']['modified']); ?>
 						</td>
                 		<td>
-                			<?php echo $this->Infinitas->status($unit['Unit']['active']); ?>&nbsp;
+                			<?php echo $this->Infinitas->status($unit['ShopUnit']['active']); ?>&nbsp;
                 		</td>
                 	</tr>
                 <?php

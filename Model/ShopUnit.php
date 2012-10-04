@@ -1,5 +1,5 @@
 <?php
-	class Unit extends ShopAppModel{
+	class ShopUnit extends ShopAppModel{
 		public $hasMany = array(
 			'Product' => array(
 				'className' => 'Shop.Product'

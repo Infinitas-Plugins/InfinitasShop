@@ -12,14 +12,14 @@
 					'Image.height'
 				)
 			),
-			'Unit' => array(
-				'className' => 'Shop.Unit',
+			'ShopUnit' => array(
+				'className' => 'Shop.ShopUnit',
 				'counterCache' =>  true,
 				'fields' => array(
-					'Unit.id',
-					'Unit.name',
-					'Unit.symbol',
-					'Unit.description'
+					'ShopUnit.id',
+					'ShopUnit.name',
+					'ShopUnit.symbol',
+					'ShopUnit.description'
 				)
 			),
 			'Supplier' => array(

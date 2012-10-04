@@ -18,14 +18,14 @@
      * @since 0.8a
      */
 
-    echo $this->Form->create('Unit', array('type' => 'file'));
+    echo $this->Form->create(false, array('type' => 'file'));
         echo $this->Infinitas->adminEditHead();
         	?>
 				<div class="data">
 					<?php
 						echo $this->Form->input('id');
 						echo $this->Form->input('name', array('class' => 'title'));
-						echo $this->Shop->wysiwyg('Unit.description');
+						echo $this->Shop->wysiwyg('ShopUnit.description');
 					?>
 				</div>
 				<div class="config">

@@ -4,7 +4,7 @@
 	 *
 	 * Auto generated database update
 	 */
-	 
+
 	class R4fb16c00b2904daa930249406318cd70 extends CakeRelease {
 
 	/**
@@ -274,7 +274,7 @@
 		),
 		);
 
-	
+
 	/**
 	* Before migration callback
 	*
