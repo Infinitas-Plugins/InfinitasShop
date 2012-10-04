@@ -82,7 +82,7 @@
                 			?>
                 		</td>
 						<td>
-							<?php echo $this->Time->niceShort($status['Status']['modified']); ?>
+							<?php echo $this->Infinitas->date($status['Status']['modified']); ?>
 						</td>
                 	</tr>
                 <?php

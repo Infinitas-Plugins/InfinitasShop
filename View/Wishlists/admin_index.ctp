@@ -78,7 +78,7 @@
 							<?php echo $this->Shop->currency($wishlist['Wishlist']['price']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($wishlist['Wishlist']['created']); ?>&nbsp;
+							<?php echo $this->Infinitas->date($wishlist['Wishlist']['created']); ?>&nbsp;
 						</td>
 						<td>
 							<?php echo $this->Time->timeAgoInWords($wishlist['Wishlist']['deleted_date']); ?>&nbsp;

@@ -37,7 +37,7 @@
         			<dt><?php echo __d('shop', 'Status'); ?></dt>
         				<dd><?php echo $order['Status']['name']; ?></dd>
         			<dt><?php echo __d('shop', 'Ordered'); ?></dt>
-        				<dd title="<?php echo $order['Order']['created']; ?>"><?php echo $this->Time->niceShort($order['Order']['created']); ?></dd>
+        				<dd title="<?php echo $order['Order']['created']; ?>"><?php echo $this->Infinitas->date($order['Order']['created']); ?></dd>
         			<dt><?php echo __d('shop', 'Special Info'); ?></dt>
         				<dd><?php echo $order['Order']['special_instructions']; ?></dd>
 				</dl>
@@ -122,7 +122,7 @@
 								<?php echo $this->Shop->currency($payment['amount']); ?>
 							</td>
 							<td>
-								<?php echo $this->Time->niceShort($payment['created']); ?>
+								<?php echo $this->Infinitas->date($payment['created']); ?>
 							</td>
 	                	</tr>
 	                <?php

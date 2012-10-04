@@ -86,7 +86,7 @@
 							<?php echo $this->Shop->currency($cart['Cart']['sub_total']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($cart['Cart']['created']); ?>
+							<?php echo $this->Infinitas->date($cart['Cart']['created']); ?>
 						</td>
 						<td>
 							<?php echo $this->Time->timeAgoInWords($cart['Cart']['deleted_date']); ?>

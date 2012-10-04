@@ -98,7 +98,7 @@
 							<?php echo $product['Product']['sales']; ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($product['Product']['modified']); ?>
+							<?php echo $this->Infinitas->date($product['Product']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($product['Product']['active']); ?>&nbsp;

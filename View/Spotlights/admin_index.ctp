@@ -75,13 +75,13 @@
 							<?php echo $this->Shop->calculateSpecial($spotlight['Product'], $spotlight['Product']['Special']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['start_date'].' '.$spotlight['Spotlight']['start_time']); ?>&nbsp;
+							<?php echo $this->Infinitas->date($spotlight['Spotlight']['start_date'].' '.$spotlight['Spotlight']['start_time']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['end_date'].' '.$spotlight['Spotlight']['end_time']); ?>&nbsp;
+							<?php echo $this->Infinitas->date($spotlight['Spotlight']['end_date'].' '.$spotlight['Spotlight']['end_time']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($spotlight['Spotlight']['modified']); ?>&nbsp;
+							<?php echo $this->Infinitas->date($spotlight['Spotlight']['modified']); ?>&nbsp;
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($spotlight['Spotlight']['active']); ?>&nbsp;

@@ -98,7 +98,7 @@
                 			<?php echo $this->Html->link($product['Supplier']['name'], array('action' => 'edit', $product['Supplier']['id'])); ?>&nbsp;
                 		</td>
 						<td>
-							<?php echo $this->Time->niceShort($product['Product']['modified']); ?>
+							<?php echo $this->Infinitas->date($product['Product']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($product['Product']['active']); ?>&nbsp;

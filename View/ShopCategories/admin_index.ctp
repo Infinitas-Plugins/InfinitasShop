@@ -90,7 +90,7 @@
 							<?php echo $this->Text->toList(Set::extract('/BranchDetail/name', $category['ShopBranch'])); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($category['ShopCategory']['modified']); ?>
+							<?php echo $this->Infinitas->date($category['ShopCategory']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->treeOrdering($category['ShopCategory']); ?>&nbsp;

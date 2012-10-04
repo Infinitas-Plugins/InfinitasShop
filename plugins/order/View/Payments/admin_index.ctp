@@ -84,7 +84,7 @@
 							<?php echo $this->Shop->currency($payment['Payment']['amount']); ?>&nbsp;
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($payment['Payment']['created']); ?>
+							<?php echo $this->Infinitas->date($payment['Payment']['created']); ?>
 						</td>
                 	</tr>
                 <?php

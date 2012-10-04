@@ -83,13 +83,13 @@
 							<?php echo $this->Shop->calculateSpecial($special['Product'], $special['Special']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($special['Special']['start_date'].' '.$special['Special']['start_time']); ?>
+							<?php echo $this->Infinitas->date($special['Special']['start_date'].' '.$special['Special']['start_time']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($special['Special']['end_date'].' '.$special['Special']['end_time']); ?>
+							<?php echo $this->Infinitas->date($special['Special']['end_date'].' '.$special['Special']['end_time']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($special['Special']['modified']); ?>
+							<?php echo $this->Infinitas->date($special['Special']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($special['Special']['active']); ?>&nbsp;

@@ -95,7 +95,7 @@
 							<?php echo Inflector::humanize($supplier['Supplier']['terms']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($supplier['Supplier']['modified']); ?>
+							<?php echo $this->Infinitas->date($supplier['Supplier']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($supplier['Supplier']['active']); ?>&nbsp;

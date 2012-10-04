@@ -96,10 +96,10 @@
 							<?php echo $this->Shop->currency($item['Item']['sub_total']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($item['Item']['modified']); ?>
+							<?php echo $this->Infinitas->date($item['Item']['modified']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($item['Item']['created']); ?>
+							<?php echo $this->Infinitas->date($item['Item']['created']); ?>
 						</td>
                 	</tr>
                 <?php

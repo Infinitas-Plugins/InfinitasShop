@@ -70,7 +70,7 @@
 							<?php echo $unit['Unit']['product_count']; ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($unit['Unit']['modified']); ?>
+							<?php echo $this->Infinitas->date($unit['Unit']['modified']); ?>
 						</td>
                 		<td>
                 			<?php echo $this->Infinitas->status($unit['Unit']['active']); ?>&nbsp;

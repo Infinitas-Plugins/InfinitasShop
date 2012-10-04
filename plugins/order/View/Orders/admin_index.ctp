@@ -111,10 +111,10 @@
 							?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($order['Order']['modified']); ?>
+							<?php echo $this->Infinitas->date($order['Order']['modified']); ?>
 						</td>
 						<td>
-							<?php echo $this->Time->niceShort($order['Order']['created']); ?>
+							<?php echo $this->Infinitas->date($order['Order']['created']); ?>
 						</td>
                 	</tr>
                 <?php
