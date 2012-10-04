@@ -160,8 +160,9 @@
 			if(isset($cart['Cart']['product_id'])) {
 				if(isset($cart['Cart']['quantity']) && $cart['Cart']['quantity'] > 1) {
 					$link .= $this->Html->link(
-						$this->Html->image(
-							$this->Image->getRelativePath('actions', 'arrow-down'),
+						$this->Image->image(
+							'actions',
+							'arrow-down',
 							array(
 								'alt' => __('Less'),
 								'title' => __('Less'),
@@ -183,8 +184,9 @@
 				}
 
 				$link .= $this->Html->link(
-					$this->Html->image(
-						$this->Image->getRelativePath('actions', 'arrow-up'),
+					$this->Image->image(
+						'actions',
+						'arrow-up',
 						array(
 							'alt' => __('More'),
 							'title' => __('More'),
@@ -205,8 +207,9 @@
 				);
 
 				$link .= $this->Html->link(
-					$this->Html->image(
-						$this->Image->getRelativePath('actions', 'trash'),
+					$this->Image->image(
+						'actions',
+						'trash',
 						array(
 							'alt' => __('Remove'),
 							'title' => __('Remove'),
@@ -232,8 +235,9 @@
 		public function wishlistActions($wishlist) {
 			return
 				$this->Html->link(
-					$this->Html->image(
-						$this->Image->getRelativePath('actions', 'arrow-right'),
+					$this->Image->image(
+						'actions',
+						'arrow-right',
 						array(
 							'alt' => __('Add to cart'),
 							'title' => __('Add to cart'),
@@ -251,8 +255,9 @@
 					)
 				).
 				$this->Html->link(
-					$this->Html->image(
-						$this->Image->getRelativePath('actions', 'trash'),
+					$this->Image->image(
+						'actions',
+						'trash',
 						array(
 							'alt' => __('Remove'),
 							'title' => __('Remove'),
