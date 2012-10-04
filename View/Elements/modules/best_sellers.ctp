@@ -4,7 +4,7 @@
 	}
 ?>
 <div class="header">
-	<h2><?php echo __('Best Sellers'); ?></h2>
+	<h2><?php echo __d('shop', 'Best Sellers'); ?></h2>
 </div>
         <?php
 			foreach($bestSellers as $product) {

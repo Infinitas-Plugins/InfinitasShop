@@ -4,7 +4,7 @@
 		'controller' => 'categories',
 		'action' => 'index'
 	);
-	$back['category'] = __('Index');
+	$back['category'] = __d('shop', 'Index');
 	if(!empty($currentCategory['ShopCategory']['id'])) {
 		$currentCategory['ShopCategory']['plugin'] = 'shop';
 		$currentCategory['ShopCategory']['controller'] = 'categories';
@@ -17,7 +17,7 @@
 	}
 
 	echo $this->Html->link(
-		sprintf(__('Back to %s'), $back['category']),
+		sprintf(__d('shop', 'Back to %s'), $back['category']),
 		$back['url'],
 		array(
 			'class' => 'categoryBack'
@@ -25,10 +25,10 @@
 	);
 
 	if(!empty($categories)) {
-		$categoryName = isset($currentCategory['ShopCategory']['name']) ? $currentCategory['ShopCategory']['name'] : __('All Categories');
+		$categoryName = isset($currentCategory['ShopCategory']['name']) ? $currentCategory['ShopCategory']['name'] : __d('shop', 'All Categories');
 		?>
 			<div>
-				<h2 class="fade"><?php echo sprintf('%s (%s)',__('Categories'), $categoryName); ?></h2><?php
+				<h2 class="fade"><?php echo sprintf('%s (%s)',__d('shop', 'Categories'), $categoryName); ?></h2><?php
 				foreach($categories as $category) {
 					echo $this->element('category', array('plugin' => 'shop', 'category' => $category));
 				} ?>
@@ -38,7 +38,7 @@
 	if(!empty($products)) {
 		?>
 			<div>
-				<h2 class="fade"><?php echo __('Products'); ?></h2><?php
+				<h2 class="fade"><?php echo __d('shop', 'Products'); ?></h2><?php
 					foreach($products as $product) {
 						echo $this->element('product', array('plugin' => 'shop', 'product' => $product));
 					}
@@ -46,7 +46,7 @@
 					$slug = isset($product['ShopCategory'][0]['slug']) ? $product['ShopCategory'][0]['slug'] : 'missing-category';
 					$id   = isset($product['ShopCategory'][0]['id']) ? $product['ShopCategory'][0]['id'] : 'missing-category';
 			    	echo $this->Html->link(
-			    		'('.__('See all').')',
+			    		'('.__d('shop', 'See all').')',
 			    		array(
 			    			'plugin' => 'shop',
 			    			'controller' => 'products',

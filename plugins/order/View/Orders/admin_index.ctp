@@ -38,11 +38,11 @@
                         'style' => 'width:25px;'
                     ),
                     $this->Paginator->sort('id'),
-                    $this->Paginator->sort(__('User'), 'User.name'),
+                    $this->Paginator->sort(__d('shop', 'User'), 'User.name'),
                     $this->Paginator->sort('payment_method'),
                     $this->Paginator->sort('shipping_method'),
                     $this->Paginator->sort('tracking_number'),
-                    $this->Paginator->sort(__('Items'), 'item_count'),
+                    $this->Paginator->sort(__d('shop', 'Items'), 'item_count'),
                     $this->Paginator->sort('status_id'),
                     $this->Paginator->sort('modified') => array(
                         'style' => 'width:100px;'

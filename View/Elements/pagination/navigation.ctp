@@ -23,14 +23,14 @@
 		!isset($this->Paginator->params['paging'][key($this->Paginator->params['paging'])]['count']) ||
 		$this->Paginator->params['paging'][key($this->Paginator->params['paging'])]['count'] == 0 )
 	{
-		echo '<p class="empty">', __(Configure::read('Pagination.nothing_found_message')), '</p>';
+		echo '<p class="empty">', __d('shop', Configure::read('Pagination.nothing_found_message')), '</p>';
 		return true;
 	}
 ?>
 <div id="showMore" class="showMore">
 	<?php
 		echo $this->Paginator->next(
-			__('More'),
+			__d('shop', 'More'),
 			array(
 				'escape' => false,
 				'tag' => 'span',

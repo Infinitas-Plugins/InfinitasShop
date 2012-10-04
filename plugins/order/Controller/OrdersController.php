@@ -36,7 +36,7 @@
 			$user_id = $this->Auth->user('id');
 			if($user_id < 1) {
 				$this->notice(
-					__('You need to be logged in to checkout'),
+					__d('shop', 'You need to be logged in to checkout'),
 					array(
 						'redirect' => array('plugin' => 'shop', 'controller' => 'carts', 'action' => 'index')
 					)
@@ -46,7 +46,7 @@
 			$cartItems = ClassRegistry::init('Shop.Cart')->getCartData($user_id);
 			if(empty($cartItems)) {
 				$this->notice(
-					__('You dont have any products'),
+					__d('shop', 'You dont have any products'),
 					array(
 						'redirect' => array('plugin' => 'shop', 'controller' => 'products', 'action' => 'dashboard')
 					)
@@ -69,13 +69,13 @@
 			if($this->Order->saveAll($this->data)) {
 				ClassRegistry::init('Shop.Cart')->clearCart($user_id);
 				$this->notice(
-					__('Your order has been completed and now requires payment'),
+					__d('shop', 'Your order has been completed and now requires payment'),
 					array('action' => 'pay')
 				);
 			}
 
 			$this->notice(
-				__('Your order has been completed and now requires payment'),
+				__d('shop', 'Your order has been completed and now requires payment'),
 				array('action' => 'pay')
 			);
 		}
@@ -84,7 +84,7 @@
 			$orders = $this->Order->getPendingOrders($this->Auth->user('id'));
 			if(empty($orders)) {
 				$this->notice(
-					__('It seems you do not have any orders that require payment'),
+					__d('shop', 'It seems you do not have any orders that require payment'),
 					array(
 						'redirect' => true
 					)
@@ -124,7 +124,7 @@
                 // @todo send email here about the payment
 
                 $this->notice(
-					__( 'Payment has been credited and items are now being processed'),
+					__d('shop',  'Payment has been credited and items are now being processed'),
 					array(
 						'redirect' => array('plugin' => 'sales', 'controller' => 'orders', 'action' => 'view', $this->request->params['url']['Extra1'])
 					)
@@ -132,7 +132,7 @@
             }
 
 			$this->notice(
-				__('There was a problem with the payment, please contact admin'),
+				__d('shop', 'There was a problem with the payment, please contact admin'),
 				array(
 					'redirect' => array( 'plugin' => 'sales', 'controller' => 'orders')
 				)

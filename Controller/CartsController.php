@@ -7,7 +7,7 @@
 
 			if(!$userId) {
 				$this->notice(
-					__('You must be logged in to checkout'),
+					__d('shop', 'You must be logged in to checkout'),
 					array(
 						'redirect' => array(
 							'plugin' => 'users',
@@ -21,7 +21,7 @@
 			$addresses = ClassRegistry::init('Management.Address')->getAddressByUser($userId);
 			if(empty($addresses)) {
 				$this->notice(
-					__('Please setup your address before checking out'),
+					__d('shop', 'Please setup your address before checking out'),
 					array(
 						'redirect' => array('plugin' => 'management', 'controller' => 'addresses', 'action' => 'add')
 					)
@@ -32,7 +32,7 @@
 
 			if(empty($carts)) {
 				$this->notice(
-					__('Your cart is empty'),
+					__d('shop', 'Your cart is empty'),
 					array(
 						'redirect' => array('plugin' => 'shop', 'controller' => 'product', 'action' => 'dashboard')
 					)
@@ -106,7 +106,7 @@
 				$this->Session->write('Shop.shipping_method', $this->data['Cart']['shipping_method']);
 
 				$this->notice(
-					__('Shipping method updated'),
+					__d('shop', 'Shipping method updated'),
 					array(
 						'redirect' => true
 					)
@@ -116,7 +116,7 @@
 			$methods = $this->Session->read('Shop.shipping_methods');
 			if(count($methods) < 2) {
 				$this->notice(
-					__('There are no other options at this time'),
+					__d('shop', 'There are no other options at this time'),
 					array(
 						'redirect' => true
 					)

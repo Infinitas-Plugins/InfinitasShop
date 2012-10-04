@@ -24,7 +24,7 @@
 		<div style="width:50%; float:left;">
 			<?php
 				echo $this->Form->input('ShopBranch.id');
-				echo $this->Form->input('ShopBranch.branch_id', array('label' => __('Branch'), 'options' => $branchDetails));
+				echo $this->Form->input('ShopBranch.branch_id', array('label' => __d('shop', 'Branch'), 'options' => $branchDetails));
 				echo $this->Form->input('ShopBranch.manager_id');
 				echo $this->Form->input('ShopBranch.active');
 			?>

@@ -18,7 +18,7 @@
      * @since         0.5a
      */
 ?>
-<h2 class="fade"><?php echo __('My Orders'); ?></h2>
+<h2 class="fade"><?php echo __d('shop', 'My Orders'); ?></h2>
 <div class="table">
     <table class="listing" cellpadding="0" cellspacing="0">
         <?php
@@ -28,7 +28,7 @@
                     $this->Paginator->sort('payment_method'),
                     $this->Paginator->sort('shipping_method'),
                     $this->Paginator->sort('tracking_number'),
-                    $this->Paginator->sort(__('Items'), 'item_count'),
+                    $this->Paginator->sort(__d('shop', 'Items'), 'item_count'),
                     $this->Paginator->sort('status_id'),
                     $this->Paginator->sort('created') => array(
                         'style' => 'width:100px;'
@@ -59,7 +59,7 @@
 									echo $order['Order']['payment_method'];
 								}
 								else{
-									echo __('Not Paid');
+									echo __d('shop', 'Not Paid');
 								}
 							?>
 						</td>
@@ -68,7 +68,7 @@
 						</td>
 						<td>
 							<?php
-								echo !empty($order['Order']['tracking_number']) ? $order['Order']['tracking_number'] : __('Not Shipped');
+								echo !empty($order['Order']['tracking_number']) ? $order['Order']['tracking_number'] : __d('shop', 'Not Shipped');
 							?>
 						</td>
 						<td>

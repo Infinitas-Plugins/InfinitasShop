@@ -46,7 +46,7 @@
                     ),
                     $this->Paginator->sort('name'),
                     $this->Paginator->sort('parent_id'),
-                    __('Branches'),
+                    __d('shop', 'Branches'),
                     $this->Paginator->sort('modified') => array(
                         'style' => 'width:75px;'
                     ),
@@ -82,7 +82,7 @@
                 					echo $this->Html->link($category['Parent']['name'], array('action' => 'edit', $category['Parent']['id']));
                 				}
                 				else{
-									echo __('Root Category');
+									echo __d('shop', 'Root Category');
                 				}
                 			?>&nbsp;
                 		</td>

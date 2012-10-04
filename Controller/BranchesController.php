@@ -79,7 +79,7 @@
 			$branchDetails = $this->ShopBranch->_getAvailableBranches();
 			if (empty($branchDetails)) {
 				$this->notice(
-					__('Current branches are setup, add more in contacts first'),
+					__d('shop', 'Current branches are setup, add more in contacts first'),
 					array(
 						'redirect' => true
 					)

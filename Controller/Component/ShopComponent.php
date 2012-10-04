@@ -16,7 +16,7 @@
 					if($data[$Model->alias]['product_id'] == $this->Controller->params['named']['product_id']) {
 						if($data[$Model->alias]['quantity'] == 0) {
 							unset($data);
-							$message = __('Product was removed from the '.$Model->alias);
+							$message = __d('shop', 'Product was removed from the '.$Model->alias);
 							$done = true;
 						}
 						
@@ -25,7 +25,7 @@
 							$data[$Model->alias]['price']     = $product['Product']['price'];
 							$data[$Model->alias]['name']      = $product['Product']['name'];
 							$data[$Model->alias]['sub_total'] = $product['Product']['price'] * $data[$Model->alias]['quantity'];
-							$message = __('Your '.$Model->alias.' was updated');
+							$message = __d('shop', 'Your '.$Model->alias.' was updated');
 							$done = true;
 						}
 					}
@@ -59,7 +59,7 @@
 
 			$this->_updateAddCount($product['Product']);
 			$this->Controller->notice(
-				__('The product was added to your '.$Model->alias),
+				__d('shop', 'The product was added to your '.$Model->alias),
 				array(
 					'redirect' => true
 				)
@@ -79,10 +79,10 @@
 			);
 
 			if(!empty($currentCart)) {
-				$message = __('Something went wrong');
+				$message = __d('shop', 'Something went wrong');
 				if($this->Controller->params['named']['quantity'] == 0) {
 					if(isset($currentCart[$Model->alias]['id']) && $Model->delete($currentCart[$Model->alias]['id'])) {
-						$message = __('Product was removed from the '.$Model->alias);
+						$message = __d('shop', 'Product was removed from the '.$Model->alias);
 					}
 				}
 				
@@ -94,7 +94,7 @@
 					$currentCart[$Model->alias]['name'] = $product['Product']['name'];
 
 					if($Model->save($currentCart)) {
-						$message = __('Your '.$Model->alias.' was updated');
+						$message = __d('shop', 'Your '.$Model->alias.' was updated');
 					}
 				}
 
@@ -118,7 +118,7 @@
 			if($Model->save($cart)) {
 				$this->_updateAddCount($Model, $product['Product']);
 				$this->Controller->notice(
-					__('The product was added to your '.$Model->alias),
+					__d('shop', 'The product was added to your '.$Model->alias),
 					array(
 						'redirect' => true
 					)

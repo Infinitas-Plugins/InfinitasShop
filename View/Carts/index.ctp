@@ -21,25 +21,25 @@
     echo $this->Form->create('Cart', array('url' => array('plugin' => 'order', 'controller' => 'orders', 'action' => 'checkout')));
 ?>
 <div class="table checkout">
-	<h2 class="fade"><?php echo __('Checkout'); ?></h2>
+	<h2 class="fade"><?php echo __d('shop', 'Checkout'); ?></h2>
     <table class="listing" cellpadding="0" cellspacing="0">
         <?php
             echo $this->Infinitas->adminTableHeader(
                 array(
-                    __('Product'),
-                    __('Quantity') => array(
+                    __d('shop', 'Product'),
+                    __d('shop', 'Quantity') => array(
                         'style' => 'width:75px;'
                     ),
-                    __('Price') => array(
+                    __d('shop', 'Price') => array(
                         'style' => 'width:100px;'
                     ),
-                    __('Sub Total') => array(
+                    __d('shop', 'Sub Total') => array(
                         'style' => 'width:100px;'
                     ),
-                    __('Added') => array(
+                    __d('shop', 'Added') => array(
                         'style' => 'width:150px;'
                     ),
-                    __('Actions') => array(
+                    __d('shop', 'Actions') => array(
                         'style' => 'width:100px;'
                     )
                 ),
@@ -83,7 +83,7 @@
             }
         ?>
         <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
-			<th><?php echo __('Sub total');?>&nbsp;</th>
+			<th><?php echo __d('shop', 'Sub total');?>&nbsp;</th>
 			<th>&nbsp;</th>
 			<th>&nbsp;</th>
 			<th><?php echo $this->Shop->currency($amounts['sub_total']); ?>&nbsp;</th>
@@ -91,8 +91,8 @@
 			<th>&nbsp;</th>
         </tr>
         <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
-			<td><?php echo sprintf('%s (%s)', __('Shipping'), __(Inflector::humanize($this->Session->read('Shop.shipping_method'))));?>&nbsp;</td>
-			<td colspan="2"><?php echo $this->Html->link(__('Change Shipping method'), array('action' => 'change_shipping_method'));?></td>
+			<td><?php echo sprintf('%s (%s)', __d('shop', 'Shipping'), __d('shop', Inflector::humanize($this->Session->read('Shop.shipping_method'))));?>&nbsp;</td>
+			<td colspan="2"><?php echo $this->Html->link(__d('shop', 'Change Shipping method'), array('action' => 'change_shipping_method'));?></td>
 			<td><?php echo $this->Shop->currency($amounts['shipping']); ?>&nbsp;</td>
 			<td>&nbsp;</td>
 			<td>&nbsp;</td>
@@ -101,10 +101,10 @@
         	if($amounts['vat'] > 0) {
         		?>
 			        <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
-						<td><?php echo __('Tax');?>&nbsp;</td>
+						<td><?php echo __d('shop', 'Tax');?>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td><?php echo sprintf(__('%s @%s'), $this->Shop->currency($amounts['vat']), $this->Number->toPercentage((int)Configure::read('Shop.vat_rate'))); ?>&nbsp;</td>
+						<td><?php echo sprintf(__d('shop', '%s @%s'), $this->Shop->currency($amounts['vat']), $this->Number->toPercentage((int)Configure::read('Shop.vat_rate'))); ?>&nbsp;</td>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
 			        </tr>
@@ -112,7 +112,7 @@
         	}
         ?>
         <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
-			<th><?php echo __('Total Due');?>&nbsp;</th>
+			<th><?php echo __d('shop', 'Total Due');?>&nbsp;</th>
 			<th>&nbsp;</th>
 			<th>&nbsp;</th>
 			<th><?php echo $this->Shop->currency($amounts['total_due']); ?>&nbsp;</th>
@@ -122,10 +122,10 @@
         <tr class="<?php echo $this->Infinitas->rowClass('even'); ?>">
 			<td>
 				<?php
-					echo sprintf('%s %s', __('Ship to'), $this->Form->input('Order.address_id', array('div' => false, 'label' => false)));
+					echo sprintf('%s %s', __d('shop', 'Ship to'), $this->Form->input('Order.address_id', array('div' => false, 'label' => false)));
 				?>&nbsp;
 			</td>
-			<td colspan="5"><?php echo $this->Html->link(__('Add address'), array('plugin' => 'management', 'controller' => 'addresses', 'action' => 'add'));?></td>
+			<td colspan="5"><?php echo $this->Html->link(__d('shop', 'Add address'), array('plugin' => 'management', 'controller' => 'addresses', 'action' => 'add'));?></td>
         </tr>
     </table>
     <?php

@@ -1,5 +1,5 @@
 <div class="centerModule">
-	<h2 class="fade"><?php echo __('On Special'); ?></h2>
+	<h2 class="fade"><?php echo __d('shop', 'On Special'); ?></h2>
 	<?php
 		if(!isset($specials)) {
 			$specials = Cache::read('specials', 'shop');
@@ -15,7 +15,7 @@
 
 	    if($this->request->params['controller'] != 'specials') {
 	    	echo $this->Html->link(
-	    		'('.__('See all').')',
+	    		'('.__d('shop', 'See all').')',
 	    		array(
 	    			'plugin' => 'shop',
 	    			'controller' => 'specials',

@@ -82,7 +82,7 @@
 									);
 								}
 								else{
-									echo sprintf('%s (%s)', $item['Item']['name'], __('Discontinued'));
+									echo sprintf('%s (%s)', $item['Item']['name'], __d('shop', 'Discontinued'));
 								}
 							?>
 						</td>

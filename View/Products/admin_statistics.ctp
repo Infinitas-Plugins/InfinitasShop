@@ -37,7 +37,7 @@
                         'class' => 'first',
                         'style' => 'width:25px;'
                     ),
-                    __('Image') => array(
+                    __d('shop', 'Image') => array(
                         'style' => 'width:100px;'
                     ),
                     $this->Paginator->sort('name'),

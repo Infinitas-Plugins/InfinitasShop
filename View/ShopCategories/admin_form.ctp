@@ -30,15 +30,15 @@
 				</div>
 				<div class="config">
 					<?php
-        					?><h2><?php echo __('Config'); ?></h2><?php
+        					?><h2><?php echo __d('shop', 'Config'); ?></h2><?php
 							echo $this->Form->input('keywords');
-							echo $this->Form->input('parent_id', array('empty' => __('Root Category')));
+							echo $this->Form->input('parent_id', array('empty' => __d('shop', 'Root Category')));
 							echo $this->Form->input('ShopBranch');
 							echo $this->Form->input('active');
 
-        					?><h2><?php echo __('Image'); ?></h2><?php
-							echo $this->Form->input('Image.image', array('label' => __('New image'), 'type' => 'file'));
-							echo $this->Form->input('image_id', array('label' => __('Exsisting image'), 'empty' => __(Configure::read('Website.empty_select'))));
+        					?><h2><?php echo __d('shop', 'Image'); ?></h2><?php
+							echo $this->Form->input('Image.image', array('label' => __d('shop', 'New image'), 'type' => 'file'));
+							echo $this->Form->input('image_id', array('label' => __d('shop', 'Exsisting image'), 'empty' => __d('shop', Configure::read('Website.empty_select'))));
         				
 					?>
 				</div>

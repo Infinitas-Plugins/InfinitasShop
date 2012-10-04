@@ -24,7 +24,7 @@
 <div class="slideNavigation"></div>
 <?php
     echo $this->Html->link(
-    	'('.__('See all').')',
+    	'('.__d('shop', 'See all').')',
     	array(
     		'plugin' => 'shop',
     		'controller' => 'spotlights',

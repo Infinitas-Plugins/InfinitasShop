@@ -65,8 +65,8 @@
 							'product_id' => $product['Product']['id'],
 							'quantity' => 1
 						),
-						'title' => __('Add to cart'),
-						'alt' => __('Add to cart'),
+						'title' => __d('shop', 'Add to cart'),
+						'alt' => __d('shop', 'Add to cart'),
 					)
 				);
 	    	?>
@@ -86,8 +86,8 @@
 							'product_id' => $product['Product']['id'],
 							'quantity' => 1
 						),
-						'title' => __('Add to wishlist'),
-						'alt' => __('Add to wishlist'),
+						'title' => __d('shop', 'Add to wishlist'),
+						'alt' => __d('shop', 'Add to wishlist'),
 					)
 				);
 	    	?>

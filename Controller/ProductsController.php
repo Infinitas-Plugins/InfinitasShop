@@ -47,7 +47,7 @@
 		public function search() {
 			if(!isset($this->data['Search']['search'])) {
 				$this->notice(
-					__('Please enter your search term'),
+					__d('shop', 'Please enter your search term'),
 					array(
 						'redirect' => true
 					)

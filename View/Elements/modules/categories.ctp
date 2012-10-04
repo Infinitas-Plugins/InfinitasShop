@@ -5,7 +5,7 @@
 		}
 
 		if($categories === false) {
-			echo __('No categories setup');
+			echo __d('shop', 'No categories setup');
 		}
 		else{
 			$out = '<ul>';
@@ -25,7 +25,7 @@
 
 			echo $out,
 			$this->Html->link(
-				__('All Categories'),
+				__d('shop', 'All Categories'),
 				array(
 					'plugin' => 'shop',
 					'controller' => 'categories',
@@ -36,7 +36,7 @@
 				)
 			),'<br/>',
 			$this->Html->link(
-				__('All Products'),
+				__d('shop', 'All Products'),
 				array(
 					'plugin' => 'shop',
 					'controller' => 'products',
@@ -47,7 +47,7 @@
 				)
 			),'<br/>',
 			$this->Html->link(
-				__('All Specials'),
+				__d('shop', 'All Specials'),
 				array(
 					'plugin' => 'shop',
 					'controller' => 'specials',
@@ -58,7 +58,7 @@
 				)
 			),'<br/>',
 			$this->Html->link(
-				__('All Spotlights'),
+				__d('shop', 'All Spotlights'),
 				array(
 					'plugin' => 'shop',
 					'controller' => 'spotlights',

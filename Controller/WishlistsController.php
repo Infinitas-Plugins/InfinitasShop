@@ -21,7 +21,7 @@
 
 			if(empty($wishlists)) {
 				$this->notice(
-					__('Your wishlist is empty'),
+					__d('shop', 'Your wishlist is empty'),
 					array(
 						'redirect' => array('controller' => 'products', 'action' => 'index')
 					)
@@ -117,7 +117,7 @@
 
 				if(!$this->Wishlist->deleteAll($deleteConditions)) {
 					$this->notice(
-						__('There was a problem moving the product'),
+						__d('shop', 'There was a problem moving the product'),
 						array(
 							'redirect' => true
 						)

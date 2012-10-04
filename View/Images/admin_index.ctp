@@ -32,10 +32,10 @@
 ?>
 <div class="table">
 	<?php
-		echo $this->Form->input('all', array('label' => __('Select all'), 'type' => 'checkbox'));
+		echo $this->Form->input('all', array('label' => __d('shop', 'Select all'), 'type' => 'checkbox'));
 		foreach ($images as $image) {
 			?>
-				<div title="<?php echo __('File'), ' :: ', $image['Image']['image']; ?>"class="image">
+				<div title="<?php echo __d('shop', 'File'), ' :: ', $image['Image']['image']; ?>"class="image">
 					<?php
 						echo $this->Html->image(
 							'content/shop/global/'.$image['Image']['image'],
@@ -46,9 +46,9 @@
 						);
 					?>
 					<div class="name"><?php echo $this->Html->link($this->Text->truncate($image['Image']['image'], 20), array('action' => 'edit', $image['Image']['id'])); ?></div>
-					<div class="width"><span><?php echo __('Width'), ':</span>', $image['Image']['width'], 'px'; ?></div>
-					<div class="height"><span><?php echo __('Height'), ':</span>', $image['Image']['height'], 'px'; ?></div>
-					<div class="ext"><span><?php echo __('Ext'), ':</span>', $image['Image']['ext']; ?></div>
+					<div class="width"><span><?php echo __d('shop', 'Width'), ':</span>', $image['Image']['width'], 'px'; ?></div>
+					<div class="height"><span><?php echo __d('shop', 'Height'), ':</span>', $image['Image']['height'], 'px'; ?></div>
+					<div class="ext"><span><?php echo __d('shop', 'Ext'), ':</span>', $image['Image']['ext']; ?></div>
 					<div class="check"><?php echo $this->Infinitas->massActionCheckBox($image); ?></div>
 				</div>
 			<?php

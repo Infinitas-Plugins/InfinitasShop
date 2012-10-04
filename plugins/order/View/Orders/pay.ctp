@@ -1,26 +1,26 @@
-<p><?php echo __('Below are your orders that are still awating payment, to complete the checkout proccess select your payment gateway from the list next to your order.')?></p>
+<p><?php echo __d('shop', 'Below are your orders that are still awating payment, to complete the checkout proccess select your payment gateway from the list next to your order.')?></p>
 <div class="table payments">
-	<h2 class="fade"><?php echo __('Orders pending payments'); ?></h2>
+	<h2 class="fade"><?php echo __d('shop', 'Orders pending payments'); ?></h2>
     <table class="listing" cellpadding="0" cellspacing="0">
         <?php
             echo $this->Infinitas->adminTableHeader(
                 array(
-                    __('Order') => array(
+                    __d('shop', 'Order') => array(
                         'style' => 'width:90px;'
                     ),
-                    __('Items') => array(
+                    __d('shop', 'Items') => array(
                         'style' => 'width:100px;'
                     ),
-                    __('Status') => array(
+                    __d('shop', 'Status') => array(
                         'style' => 'width:75px;'
                     ),
-                    __('Total') => array(
+                    __d('shop', 'Total') => array(
                         'style' => 'width:125px;'
                     ),
-                    __('Created') => array(
+                    __d('shop', 'Created') => array(
                         'style' => 'width:150px;'
                     ),
-                    __('Pay')
+                    __d('shop', 'Pay')
                 ),
                 false
             );

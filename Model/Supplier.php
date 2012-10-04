@@ -19,17 +19,17 @@
 				'name' => array(
 					'notEmpty' => array(
 						'rule' => 'notEmpty',
-						'message' => __('Please enter the suppliers name')
+						'message' => __d('shop', 'Please enter the suppliers name')
 					),
 					'isUnique' => array(
 						'rule' => 'isUnique',
-						'message' => __('That supplier already exsits')
+						'message' => __d('shop', 'That supplier already exsits')
 					)
 				),
 				'email' => array(
 					'email' => array(
 						'rule' => array('email', true),
-						'message' => __('Please enter a valid email address')
+						'message' => __d('shop', 'Please enter a valid email address')
 					)
 				)
 			);

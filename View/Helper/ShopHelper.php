@@ -44,7 +44,7 @@
 
 		public function calculateMargin($cost = 0, $sell = 0, $toCurrency = true) {
 			if($cost == 0 || $sell == 0) {
-				return __('N/a');
+				return __d('shop', 'N/a');
 			}
 
 			$margin = ($this->calculateProfit($cost, $sell, false)/$sell)*100;
@@ -58,7 +58,7 @@
 
 		public function calculateProfit($cost = 0, $sell = 0, $toCurrency = true) {
 			if($cost = 0 || $sell =0) {
-				return __('N/a');
+				return __d('shop', 'N/a');
 			}
 
 			$profit = $sell - $cost;
@@ -72,7 +72,7 @@
 
 		public function breakdown($product = null, $special = array()) {
 			if(!$product) {
-				return __('No information available');
+				return __d('shop', 'No information available');
 			}
 
 			$price = $product['price'];
@@ -81,8 +81,8 @@
 			}
 
 
-			return __('Breakdown').' :: '.sprintf(
-				__('Retail: %s<br/>Cost: %s vs Price: %s<br/>Margin: %s vs Profit: %s'),
+			return __d('shop', 'Breakdown').' :: '.sprintf(
+				__d('shop', 'Retail: %s<br/>Cost: %s vs Price: %s<br/>Margin: %s vs Profit: %s'),
 				$this->currency($product['retail']),
 				$this->currency($product['cost']),
 				$this->currency($price),
@@ -144,7 +144,7 @@
 				array(
 					'width' => '32px',
 					'height' => '32px',
-					'alt' => __(Inflector::humanize($type))
+					'alt' => __d('shop', Inflector::humanize($type))
 				)
 			).'</span>';
 		}
@@ -164,8 +164,8 @@
 							'actions',
 							'arrow-down',
 							array(
-								'alt' => __('Less'),
-								'title' => __('Less'),
+								'alt' => __d('shop', 'Less'),
+								'title' => __d('shop', 'Less'),
 								'width' => '16px',
 								'class' => 'arrow-down'
 							)
@@ -188,8 +188,8 @@
 						'actions',
 						'arrow-up',
 						array(
-							'alt' => __('More'),
-							'title' => __('More'),
+							'alt' => __d('shop', 'More'),
+							'title' => __d('shop', 'More'),
 							'width' => '16px',
 							'class' => 'arrow-up'
 						)
@@ -211,8 +211,8 @@
 						'actions',
 						'trash',
 						array(
-							'alt' => __('Remove'),
-							'title' => __('Remove'),
+							'alt' => __d('shop', 'Remove'),
+							'title' => __d('shop', 'Remove'),
 							'width' => '16px'
 						)
 					),
@@ -239,8 +239,8 @@
 						'actions',
 						'arrow-right',
 						array(
-							'alt' => __('Add to cart'),
-							'title' => __('Add to cart'),
+							'alt' => __d('shop', 'Add to cart'),
+							'title' => __d('shop', 'Add to cart'),
 							'width' => '16px'
 						)
 					),
@@ -259,8 +259,8 @@
 						'actions',
 						'trash',
 						array(
-							'alt' => __('Remove'),
-							'title' => __('Remove'),
+							'alt' => __d('shop', 'Remove'),
+							'title' => __d('shop', 'Remove'),
 							'width' => '16px'
 						)
 					),
@@ -295,7 +295,7 @@
 		 */
 		public function orderNumber($number = null) {
 			if(!$number) {
-				return __('Error!');
+				return __d('shop', 'Error!');
 			}
 			return $this->orderNumber['prefix'].str_pad($number, $this->orderNumber['count'], $this->orderNumber['padding'], STR_PAD_LEFT).$this->orderNumber['suffix'];
 		}

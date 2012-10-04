@@ -21,19 +21,19 @@
     echo $this->Form->create('Wishlist', array('url' => array('action' => 'mass')));
 ?>
 <div class="table checkout">
-	<h2 class="fade"><?php echo __('Wishlist'); ?></h2>
+	<h2 class="fade"><?php echo __d('shop', 'Wishlist'); ?></h2>
     <table class="listing" cellpadding="0" cellspacing="0">
         <?php
             echo $this->Infinitas->adminTableHeader(
                 array(
-                    __('Product'),
-                    __('Price') => array(
+                    __d('shop', 'Product'),
+                    __d('shop', 'Price') => array(
                         'style' => 'width:100px;'
                     ),
-                    __('Added') => array(
+                    __d('shop', 'Added') => array(
                         'style' => 'width:150px;'
                     ),
-                    __('Actions') => array(
+                    __d('shop', 'Actions') => array(
                         'style' => 'width:100px;'
                     )
                 ),

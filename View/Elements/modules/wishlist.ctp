@@ -10,14 +10,14 @@
 		}
 
 		if(empty($usersWishlist)) {
-			echo __('Your wishlist is empty');
+			echo __d('shop', 'Your wishlist is empty');
 		}
 		else{
 			?>
 				<table>
 					<tr>
-						<th><?php echo __('Product' ) ?></th>
-						<th style="width:50px;"><?php echo __('Price' ) ?></th>
+						<th><?php echo __d('shop', 'Product' ) ?></th>
+						<th style="width:50px;"><?php echo __d('shop', 'Price' ) ?></th>
 					</tr>
 					<?php
 						foreach((array)$usersWishlist as $wishlistItem) {
@@ -43,7 +43,7 @@
 							<?php
 								if(AuthComponent::user('id') > 0) {
 									echo $this->Html->link(
-										__('Manage'),
+										__d('shop', 'Manage'),
 										array(
 											'plugin' => 'shop',
 											'controller' => 'wishlists',
@@ -52,7 +52,7 @@
 									);
 								}
 								else{
-									echo __('You must be logged in to manage your wishlist');
+									echo __d('shop', 'You must be logged in to manage your wishlist');
 								}
 							?>&nbsp;
 						</td>

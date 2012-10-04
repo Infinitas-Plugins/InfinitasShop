@@ -22,39 +22,39 @@
         echo $this->Infinitas->adminEditHead($this, array('cancel'));
         	?>
         		<dl>
-        			<dt><?php echo __('Order Number'); ?></dt>
+        			<dt><?php echo __d('shop', 'Order Number'); ?></dt>
         				<dd><?php echo $this->Shop->orderNumber($order['Order']['id']); ?></dd>
-        			<dt><?php echo __('Shipping'); ?></dt>
+        			<dt><?php echo __d('shop', 'Shipping'); ?></dt>
         				<dd><?php echo $this->Shop->currency($order['Order']['shipping']);?></dd>
-        			<dt><?php echo __('Total Value'); ?></dt>
+        			<dt><?php echo __d('shop', 'Total Value'); ?></dt>
         				<dd><?php echo $this->Shop->currency($order['Order']['grand_total']);?></dd>
-        			<dt><?php echo __('Total Items'); ?></dt>
+        			<dt><?php echo __d('shop', 'Total Items'); ?></dt>
         				<dd><?php echo count($order['Item']); ?></dd>
-        			<dt><?php echo __('Payment method'); ?></dt>
+        			<dt><?php echo __d('shop', 'Payment method'); ?></dt>
         				<dd><?php echo Inflector::humanize($order['Order']['payment_method']); ?></dd>
-        			<dt><?php echo __('Shipping method'); ?></dt>
+        			<dt><?php echo __d('shop', 'Shipping method'); ?></dt>
         				<dd><?php echo Inflector::humanize($order['Order']['shipping_method']); ?></dd>
-        			<dt><?php echo __('Status'); ?></dt>
+        			<dt><?php echo __d('shop', 'Status'); ?></dt>
         				<dd><?php echo $order['Status']['name']; ?></dd>
-        			<dt><?php echo __('Ordered'); ?></dt>
+        			<dt><?php echo __d('shop', 'Ordered'); ?></dt>
         				<dd title="<?php echo $order['Order']['created']; ?>"><?php echo $this->Time->niceShort($order['Order']['created']); ?></dd>
-        			<dt><?php echo __('Special Info'); ?></dt>
+        			<dt><?php echo __d('shop', 'Special Info'); ?></dt>
         				<dd><?php echo $order['Order']['special_instructions']; ?></dd>
 				</dl>
 	<div class="table">
-		<h2><?php echo __('Items Ordered'); ?></h2>
+		<h2><?php echo __d('shop', 'Items Ordered'); ?></h2>
 	    <table class="listing" cellpadding="0" cellspacing="0">
 	        <?php
 	            echo $this->Infinitas->adminTableHeader(
 	                array(
-	                    __('Product'),
-	                    __('Quantity') => array(
+	                    __d('shop', 'Product'),
+	                    __d('shop', 'Quantity') => array(
 	                    	'style' => 'width: 100px;'
 	                    ),
-	                    __('Price') => array(
+	                    __d('shop', 'Price') => array(
 	                    	'style' => 'width: 100px;'
 	                    ),
-	                    __('Sub total') => array(
+	                    __d('shop', 'Sub total') => array(
 	                    	'style' => 'width: 100px;'
 	                    )
 	                ),
@@ -78,7 +78,7 @@
 										);
 									}
 									else{
-										echo sprintf('%s) %s (%s)', $item['product_id'], $item['name'], __('Discontinued'));
+										echo sprintf('%s) %s (%s)', $item['product_id'], $item['name'], __d('shop', 'Discontinued'));
 									}
 								?>
 							</td>
@@ -96,16 +96,16 @@
 	            }
 			?>
     	</table>
-		<h2><?php echo __('Payments made'); ?></h2>
+		<h2><?php echo __d('shop', 'Payments made'); ?></h2>
 	    <table class="listing" cellpadding="0" cellspacing="0">
 			<?php
 	            echo $this->Infinitas->adminTableHeader(
 	                array(
-	                    __('Method'),
-	                    __('Amount') => array(
+	                    __d('shop', 'Method'),
+	                    __d('shop', 'Amount') => array(
 	                    	'style' => 'width: 100px;'
 	                    ),
-	                    __('Created') => array(
+	                    __d('shop', 'Created') => array(
 	                    	'style' => 'width: 100px;'
 	                    )
 	                ),

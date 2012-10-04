@@ -29,7 +29,7 @@
 				</div>
 				<div class="config">
 					<?php
-        					echo __('No config');
+        					echo __d('shop', 'No config');
 					?>
 				</div>
 				<div class="clr">&nbsp;</div>

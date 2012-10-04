@@ -23,8 +23,8 @@
 				<div class="data">
 					<?php
 				        echo $this->Form->input('id');
-				        echo $this->Form->input('branch_id', array('empty' => __(Configure::read('Website.empty_select'))));
-				        echo $this->Form->input('product_id', array('empty' => __(Configure::read('Website.empty_select'))));
+				        echo $this->Form->input('branch_id', array('empty' => __d('shop', Configure::read('Website.empty_select'))));
+				        echo $this->Form->input('product_id', array('empty' => __d('shop', Configure::read('Website.empty_select'))));
 				    ?>
 				</div>
 				<div class="config">

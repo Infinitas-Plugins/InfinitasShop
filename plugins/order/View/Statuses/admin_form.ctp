@@ -29,8 +29,8 @@
 			</div>
 			<div class="config">
 				<?php
-						?><h2><?php echo __('Config'); ?></h2><?php
-						echo __('There are no config options available');
+						?><h2><?php echo __d('shop', 'Config'); ?></h2><?php
+						echo __d('shop', 'There are no config options available');
 				?>
 			</div><?php
     echo $this->Form->end();

@@ -25,7 +25,7 @@
 					<?php
 						echo $this->Form->input('id');
 						echo $this->Form->input('name', array('class' => 'title'));
-						echo $this->Form->input('address_id', array('empty' => __(Configure::read('Website.empty_select'))));
+						echo $this->Form->input('address_id', array('empty' => __d('shop', Configure::read('Website.empty_select'))));
 						echo $this->Form->input('email');
 						echo $this->Form->input('phone');
 						echo $this->Form->input('fax');
@@ -34,7 +34,7 @@
 				<div class="config">
 					<?php
 							echo $this->Form->input('logo', array('type' => 'file'));
-							echo $this->Form->input('terms', array('empty' => __(Configure::read('Website.empty_select')), 'options' => (array)Configure::read('Shop.payment_terms')));
+							echo $this->Form->input('terms', array('empty' => __d('shop', Configure::read('Website.empty_select')), 'options' => (array)Configure::read('Shop.payment_terms')));
 							echo $this->Form->input('active');
 					?>
 				</div>

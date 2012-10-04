@@ -28,10 +28,10 @@
 				</div>
 				<div class="config">
 					<?php
-        					?><h2><?php echo __('config'); ?></h2><?php
+        					?><h2><?php echo __d('shop', 'config'); ?></h2><?php
         					echo $this->Form->input('order_id');
         					echo $this->Form->input('user_id');
-        					echo $this->Form->input('payment_method', array('value' => __('Bank transfer')));
+        					echo $this->Form->input('payment_method', array('value' => __d('shop', 'Bank transfer')));
 					?>
 				</div>
 				<div class="clr">&nbsp;</div>

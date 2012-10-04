@@ -18,19 +18,19 @@
      * @since         0.5a
      */
 ?>
-<h2 class="fade"><?php echo __('My Addresses'); ?></h2>
+<h2 class="fade"><?php echo __d('shop', 'My Addresses'); ?></h2>
 <div class="table">
     <table class="listing" cellpadding="0" cellspacing="0">
         <?php
             echo $this->Infinitas->adminTableHeader(
                 array(
-                    __('Name'),
-                    __('Country'),
-                    __('Province'),
-                    __('City'),
-                    __('Street'),
-                    __('Postal'),
-                    __('modified')
+                    __d('shop', 'Name'),
+                    __d('shop', 'Country'),
+                    __d('shop', 'Province'),
+                    __d('shop', 'City'),
+                    __d('shop', 'Street'),
+                    __d('shop', 'Postal'),
+                    __d('shop', 'modified')
                 ),
                 false
             );

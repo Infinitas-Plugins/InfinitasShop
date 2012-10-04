@@ -12,7 +12,7 @@
 		<?php
 	}
 ?>
-<h2 class="fade"><?php echo __('All Products'); ?></h2>
+<h2 class="fade"><?php echo __d('shop', 'All Products'); ?></h2>
 	<div class="list">
 		<?php
 			foreach($products as $product) {

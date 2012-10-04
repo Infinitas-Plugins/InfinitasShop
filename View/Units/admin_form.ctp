@@ -30,7 +30,7 @@
 				</div>
 				<div class="config">
 					<?php
-        					?><h2><?php echo __('config'); ?></h2><?php
+        					?><h2><?php echo __d('shop', 'config'); ?></h2><?php
 							echo $this->Form->input('symbol');
 							echo $this->Form->input('active');
 					?>
