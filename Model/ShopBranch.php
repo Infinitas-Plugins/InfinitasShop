@@ -29,6 +29,10 @@
 			1 // admin
 		);
 
+		public $findMethods = array(
+			'managers' => true
+		);
+
 		public $belongsTo = array(
 			'BranchDetail' => array(
 				'className' => 'Contact.Branch',
@@ -161,6 +165,13 @@
 			)
 		);
 
+		/**
+		 * @brief overload the constructor to add validation with translations
+		 *
+		 * @param type $id
+		 * @param type $table
+		 * @param type $ds
+		 */
 		public function __construct($id = false, $table = null, $ds = null) {
 			parent::__construct($id, $table, $ds);
 
@@ -168,7 +179,7 @@
 				'branch_id' => array(
 					'isUnique' => array(
 						'rule' => 'isUnique',
-						'message' => __('That Branch is already setup')
+						'message' => __d('shop', 'That Branch is already setup')
 					)
 				)
 			);
@@ -179,21 +190,21 @@
 		 *
 		 * @return list of users.
 		 */
-		public function getManagers() {
-			$managers = $this->Manager->find(
-				'list',
-				array(
-					'fields' => array(
-						'Manager.id',
-						'Manager.username'
-					),
-					'conditions' => array(
-						'Manager.group_id' => $this->managerGroups
-					)
-				)
-			);
+		protected function _findManagers($state, array $query, array $results = array()) {
+			if($state == 'before') {
+				$query['fields'] = array(
+					$this->Manager->alias . '.' . $this->primaryKey,
+					$this->Manager->alias . '.' . $this->displayField
+				);
 
-			return $managers;
+				return $query;
+			}
+
+			return Hash::combine(
+				$results,
+				'{n}' . $this->Manager->alias . '.' . $this->primaryKey,
+				'{n}' . $this->Manager->alias . '.' . $this->displayField
+			);
 		}
 
 		/**

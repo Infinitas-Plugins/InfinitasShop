@@ -59,7 +59,7 @@
 			parent::admin_add();
 
 			$branchDetails = $this->_checkCanAddEdit();
-			$managers = $this->ShopBranch->getManagers();
+			$managers = $this->ShopBranch->find('managers');
 			$this->set(compact('branchDetails', 'managers'));
 		}
 
@@ -67,7 +67,7 @@
 			parent::admin_add($id);
 
 			$branchDetails = $this->ShopBranch->BranchDetail->find('list');
-			$managers = $this->ShopBranch->getManagers();
+			$managers = $this->ShopBranch->find('managers');
 			$this->set(compact('branchDetails', 'managers'));
 
 			if ($id && empty($this->data)) {
