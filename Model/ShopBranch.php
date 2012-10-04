@@ -30,7 +30,8 @@
 		);
 
 		public $findMethods = array(
-			'managers' => true
+			'managers' => true,
+			'branchList' => true
 		);
 
 		public $belongsTo = array(
@@ -237,29 +238,33 @@
 			return $branchDetails;
 		}
 
-		public function branchList() {
-			$branches = $this->find(
-				'all',
-				array(
-					'fields' => array(
-						'ShopBranch.id'
-					),
-					'contain' => array(
-						'BranchDetail' => array(
-							'fields' => array(
-								'BranchDetail.name'
-							)
-						)
-					)
-				)
-			);
+		/**
+		 * @brief get a list of branches
+		 *
+		 * @param type $state
+		 * @param array $query
+		 * @param array $results
+		 * @return type
+		 */
+		protected function _findBranchList($state, array $query, array $results = array()) {
+			if($state == 'before') {
+				$query['fields'] = array(
+					$this->alias . '.' . $this->primaryKey,
+					$this->BranchDetail->alias . '.' . $this->BranchDetail->displayName
+				);
 
-			$list = array();
-			foreach($branches as $branch) {
-				$list[$branch['ShopBranch']['id']] = $branch['BranchDetail']['name'];
+				$query['joins'] = array(
+					$this->autoJoinModel('Shop.BranchDetail')
+				);
+
+				return $query;
 			}
 
-			return $list;
+			return Hash::combine(
+				$results,
+				'{n}' . $this->alias . '.' . $this->primaryKey,
+				'{n}' . $this->BranchDetail->alias . '.' . $this->BranchDetail->displayField
+			);
 		}
 
 		public function getList() {

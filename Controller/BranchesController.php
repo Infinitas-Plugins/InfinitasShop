@@ -20,7 +20,7 @@
 	 * Redistributions of files must retain the above copyright notice.
 	 */
 
-	class BranchesController extends ShopAppController{
+	class BranchesController extends ShopAppController {
 		public $uses = array('Shop.ShopBranch');
 
 		public function admin_index() {
