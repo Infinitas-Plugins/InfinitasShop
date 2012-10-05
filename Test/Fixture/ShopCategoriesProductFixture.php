@@ -1,32 +1,83 @@
 <?php
-/* ShopCategoriesProduct Fixture generated on: 2010-08-17 14:08:53 : 1282055213 */
+/**
+ * ShopCategoriesProductFixture
+ *
+ */
 class ShopCategoriesProductFixture extends CakeTestFixture {
-	public $name = 'ShopCategoriesProduct';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'category_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'shop_category_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'fk_shop_categories_products_shop_categories1' => array('column' => 'shop_category_id', 'unique' => 0),
+			'fk_shop_categories_products_shop_products1' => array('column' => 'shop_product_id', 'unique' => 0)
+		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
-			'id' => 12,
-			'category_id' => 1,
-			'product_id' => 10
+			'id' => 1,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'active'
 		),
 		array(
-			'id' => 13,
-			'category_id' => 2,
-			'product_id' => 3
+			'id' => 2,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'inactive'
 		),
 		array(
-			'id' => 14,
-			'category_id' => 3,
-			'product_id' => 3
+			'id' => 3,
+			'shop_category_id' => 'inactive',
+			'shop_product_id' => 'inactive-category'
+		),
+		array(
+			'id' => 4,
+			'shop_category_id' => 'inactive-parent',
+			'shop_product_id' => 'inactive-parent-category'
+		),
+		array(
+			'id' => 5,
+			'shop_category_id' => 'another',
+			'shop_product_id' => 'multi-category'
+		),
+		array(
+			'id' => 6,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'multi-category'
+		),
+		array(
+			'id' => 7,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'multi-category-mixed-state'
+		),
+		array(
+			'id' => 8,
+			'shop_category_id' => 'inactive',
+			'shop_product_id' => 'multi-category-mixed-state'
+		),
+		array(
+			'id' => 9,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'multi-category-parent-inactive'
+		),
+		array(
+			'id' => 10,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'inactive-parent'
 		),
 	);
+
 }
-?>

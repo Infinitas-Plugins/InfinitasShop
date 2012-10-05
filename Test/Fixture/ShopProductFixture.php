@@ -1,108 +1,156 @@
 <?php
-/* ShopProduct Fixture generated on: 2010-08-17 14:08:00 : 1282055220 */
+/**
+ * ShopProductFixture
+ *
+ */
 class ShopProductFixture extends CakeTestFixture {
-	public $name = 'ShopProduct';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 45),
-		'slug' => array('type' => 'string', 'null' => false, 'default' => NULL),
-		'description' => array('type' => 'text', 'null' => false, 'default' => NULL),
-		'shop_unit_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'cost' => array('type' => 'float', 'null' => false, 'default' => '0'),
-		'retail' => array('type' => 'float', 'null' => false, 'default' => '0'),
-		'price' => array('type' => 'float', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'slug' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'description' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'specifications' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL),
+		'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'rating' => array('type' => 'float', 'null' => true, 'default' => '0'),
 		'rating_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'supplier_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
-		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'views' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'added_to_cart' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'added_to_wishlist' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'specifications' => array('type' => 'text', 'null' => false, 'default' => NULL),
 		'sales' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'shop_supplier_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'key' => 'index'),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'fk_shop_products_shop_suppliers1' => array('column' => 'shop_supplier_id', 'unique' => 0),
+			'fk_shop_products_shop_images1' => array('column' => 'shop_image_id', 'unique' => 0)
+		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
-			'id' => 1,
-			'name' => 'just a spotlight',
-			'slug' => 'just-a-spotlight',
-			'description' => '<p>\r\n	abcsadf</p>',
-			'shop_unit_id' => 2,
-			'cost' => 100,
-			'retail' => 150,
-			'price' => 125,
+			'id' => 'active',
+			'name' => 'active',
+			'slug' => 'active',
+			'description' => 'active desc',
+			'specifications' => 'active specs',
 			'active' => 1,
-			'image_id' => '5',
-			'rating' => 3,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
 			'rating_count' => 1,
-			'supplier_id' => 1,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-04-30 00:02:21',
-			'modified' => '2010-05-17 01:57:28',
-			'views' => 90,
-			'added_to_cart' => 6,
-			'added_to_wishlist' => 3,
-			'specifications' => '<p>\r\n	sdf</p>',
-			'sales' => 1
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
 		),
 		array(
-			'id' => 2,
-			'name' => 'some cool product ',
-			'slug' => 'some-cool-product',
-			'description' => '<p>\r\n	We first define a default image for the $active variable, which interestingly enough needs to be the last image on the stack. This is because through absolute positioning, the last image appears on top, and we need to start with it if we want to avoid any flicker.</p>\r\n<p>\r\n	For the loop it is pretty simple: all we have to do is point the $next variable to the first image once it has gotten to the end of the line.</p>\r\n<p>\r\n	If you want to improve this function, try setting the animation speed with a variable so the main slideshow function can be thrown into the core and left alone. Also, this slideshow is easily converted to support DIV&rsquo;s instead of IMG&rsquo;s&mdash;try programming a slideshow with more content.</p>\r\n<p>\r\n	Now for a challenge: the gallery flickers when the images first load, but it can be fixed without touching the JS or markup at all. Bonus points to whoever figures it out and posts a comment.</p>',
-			'shop_unit_id' => 2,
-			'cost' => 50,
-			'retail' => 200,
-			'price' => 150,
-			'active' => 1,
-			'image_id' => '11',
-			'rating' => 0,
-			'rating_count' => 0,
-			'supplier_id' => 1,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-04 00:59:20',
-			'modified' => '2010-05-17 01:58:19',
-			'views' => 172,
-			'added_to_cart' => 3,
-			'added_to_wishlist' => 1,
-			'specifications' => '<p>\r\n	&nbsp;</p>',
-			'sales' => 1
+			'id' => 'inactive',
+			'name' => 'inactive',
+			'slug' => 'inactive-slug',
+			'description' => 'inactive desc',
+			'specifications' => 'inactive specs',
+			'active' => 0,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
 		),
 		array(
-			'id' => 3,
-			'name' => 'product with a subcategory',
-			'slug' => 'product-with-a-subcategory',
-			'description' => '<p>\r\n	blaa blaa blaa</p>\r\n<p>\r\n	and lots of images</p>',
-			'shop_unit_id' => 1,
-			'cost' => 123,
-			'retail' => 321,
-			'price' => 231,
+			'id' => 'inactive-category',
+			'name' => 'inactive-category',
+			'slug' => 'inactive-category',
+			'description' => 'inactive-category desc',
+			'specifications' => 'inactive-category specs',
 			'active' => 1,
-			'image_id' => '13',
-			'rating' => 4,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
 			'rating_count' => 1,
-			'supplier_id' => 1,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-07 19:30:17',
-			'modified' => '2010-05-17 01:58:40',
-			'views' => 106,
-			'added_to_cart' => 1,
-			'added_to_wishlist' => 1,
-			'specifications' => '<p>\r\n	&nbsp;</p>',
-			'sales' => 1
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
 		),
+		array(
+			'id' => 'inactive-parent-category',
+			'name' => 'inactive-parent-category',
+			'slug' => 'inactive-parent-category',
+			'description' => 'inactive-parent-category desc',
+			'specifications' => 'inactive-parent-category specs',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		),
+		array(
+			'id' => 'multi-category',
+			'name' => 'multi-category',
+			'slug' => 'multi-category',
+			'description' => 'multi-category desc',
+			'specifications' => 'multi-category specs',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		),
+		array(
+			'id' => 'multi-category-mixed-state',
+			'name' => 'multi-category-mixed-state',
+			'slug' => 'multi-category-mixed-state',
+			'description' => 'multi-category-mixed-state desc',
+			'specifications' => 'multi-category-mixed-state specs',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		),
+		array(
+			'id' => 'multi-category-parent-inactive',
+			'name' => 'multi-category-parent-inactive',
+			'slug' => 'multi-category-parent-inactive',
+			'description' => 'multi-category-parent-inactive desc',
+			'specifications' => 'multi-category-parent-inactive specs',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		)
 	);
+
 }
-?>
