@@ -16,7 +16,14 @@ class ShopBranch extends ShopAppModel {
  */
 	public $validate = array();
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * @brief custom find methods
+ *
+ * @var array
+ */
+	public $findMethods = array(
+		'defaultBranchId' => true
+	);
 
 /**
  * belongsTo associations
@@ -106,6 +113,38 @@ class ShopBranch extends ShopAppModel {
 				),
 			),
 		);
+	}
+
+/**
+ * @brief get the default branch in use
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return string
+ *
+ * @throws ShopBranchNotConfiguredException
+ * @throws ShopBranchMultipleConfiguredException
+ */
+	protected function _findDefaultBranchId($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['fields'] = array(
+				$this->alias . '.' . $this->primaryKey
+			);
+
+			return $query;
+		}
+
+		if(count($results) === 1) {
+			return $results[0][$this->alias][$this->primaryKey];
+		}
+
+		if(count($results) === 0) {
+			throw new ShopBranchNotConfiguredException();
+		}
+
+		throw new ShopBranchMultipleConfiguredException();
 	}
 
 }

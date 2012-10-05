@@ -270,8 +270,6 @@ class ShopProduct extends ShopAppModel {
 				),
 			),
 		);
-
-		$this->virtualFields['total_stock'] = $this->ShopBranchStock->virtualFields['total_stock'];
 	}
 
 /**
@@ -285,6 +283,8 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
 		if($state == 'before') {
+
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 			if(empty($query[0])) {
 				throw new InvalidArgumentException('No product selected');
 			}

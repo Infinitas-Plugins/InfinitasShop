@@ -22,6 +22,7 @@ class ShopBranchTest extends CakeTestCase {
 		'plugin.users.user',
 		'plugin.users.group',
 		'plugin.view_counter.view_counter_view',
+		'plugin.management.ticket'
 	);
 
 /**
@@ -46,7 +47,38 @@ class ShopBranchTest extends CakeTestCase {
 		parent::tearDown();
 	}
 
-	public function testSomething() {
+/**
+ * @brief test no default branch
+ *
+ * @expectedException ShopBranchNotConfiguredException
+ */
+	public function testDefaultBranchIdNon() {
+		$this->assertTrue($this->{$this->modelClass}->query('TRUNCATE ' . $this->{$this->modelClass}->fullTableName()));
+		$this->assertTrue($this->{$this->modelClass}->find('count') === 0);
+		$this->{$this->modelClass}->find('defaultBranchId');
+	}
+
+/**
+ * @brief test multiple branches available
+ *
+ * @expectedException ShopBranchMultipleConfiguredException
+ */
+	public function testDefaultBranchIdMany() {
+		$this->assertTrue($this->{$this->modelClass}->find('count') >= 2);
+		$this->{$this->modelClass}->find('defaultBranchId');
+	}
+
+/**
+ * @brief test single branch in use
+ */
+	public function testDefaultBranchIdOne() {
+		$this->assertTrue($this->{$this->modelClass}->deleteAll(array($this->modelClass . '.id !=' => 'branch-1')));
+
+		$expected = 'branch-1';
+		$result = $this->{$this->modelClass}->find('defaultBranchId');
+		$this->assertEquals($expected, $result);
+
+		$this->assertTrue($this->{$this->modelClass}->find('count') === 1);
 	}
 
 }

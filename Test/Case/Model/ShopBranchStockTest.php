@@ -43,6 +43,38 @@ class ShopBranchStockTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test validation rules
+ *
+ * @dataProvider validationDataProvider
+ */
+	public function testValidation($data, $expected) {
+		$result = $this->{$this->modelClass}->save($data);
+		$this->assertEquals($expected['saveResult'], $result);
+
+		$result = $this->{$this->modelClass}->validationErrors;
+		$this->assertEquals($expected['validationErrors'], $result);
+	}
+
+/**
+ * @brief validation rules data provider
+ *
+ * @return array
+ */
+	public function validationDataProvider() {
+		return array(
+			array(
+				array(
+
+				),
+				array(
+					'saveResult' => false,
+					'validationErrors' => array()
+				)
+			)
+		);
+	}
+
+/**
  * @brief test find productStock exceptions
  *
  * @expectedException InvalidArgumentException
@@ -214,6 +246,361 @@ class ShopBranchStockTest extends CakeTestCase {
 				),
 				array(
 					'active' => true
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test updating the stock count
+ */
+	public function testUpdateStock() {
+		$data = array(
+			'shop_branch_id' => 'branch-1',
+			'shop_product_id' => 'active',
+			'change' => 10
+		);
+		$this->assertEquals(10, $this->{$this->modelClass}->find('totalProductStock', $data));
+		$this->assertTrue($this->{$this->modelClass}->updateStock(array($data)));
+		$this->assertEquals(20, $this->{$this->modelClass}->find('totalProductStock', $data));
+
+		$data['change'] = -5;
+		$this->assertTrue($this->{$this->modelClass}->updateStock(array($data)));
+		$this->assertEquals(15, $this->{$this->modelClass}->find('totalProductStock', $data));
+
+	}
+
+/**
+ * @brief test exceptions when not passing the correct data
+ *
+ * @expectedException InvalidArgumentException
+ *
+ * @dataProvider addRemoveStockExceptionDataProvider
+ */
+	public function testAddRemoveStockException($data) {
+		$this->{$this->modelClass}->{$data['method']}($data['data']);
+	}
+
+	public function addRemoveStockExceptionDataProvider() {
+		return array(
+			'add-no-product' => array(
+				array(
+					'method' => 'addStock',
+					'data' => array(
+						'shop_branch_id' => 'branch-1',
+						'change' => 10,
+					)
+				)
+			),
+			'add-no-branch' => array(
+				array(
+					'method' => 'addStock',
+					'data' => array(
+						'shop_product_id' => 'active',
+						'change' => 10,
+					)
+				)
+			),
+			'remove-no-product' => array(
+				array(
+					'method' => 'addStock',
+					'data' => array(
+						'shop_branch_id' => 'branch-1',
+						'change' => 10,
+					)
+				)
+			),
+			'remove-no-branch' => array(
+				array(
+					'method' => 'addStock',
+					'data' => array(
+						'shop_product_id' => 'active',
+						'change' => 10,
+					)
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test adding new stock recalculates and logs
+ *
+ * @dataProvider addStockDataProvider
+ */
+	public function testAddStock($data, $expected) {
+		$shopBranchStockId = $data['shop_branch_stock_id'];
+		unset($data['shop_branch_stock_id']);
+
+		$conditions = array(
+			'fields' => array($this->modelClass . '.stock'),
+			'conditions' => array($this->modelClass . '.shop_product_id' => 'active'));
+
+		$this->assertTrue($this->{$this->modelClass}->addStock($data));
+		$result = $this->{$this->modelClass}->find('all', $conditions);
+		$this->assertEquals($expected['stock'], $result);
+
+
+		$conditions = array(
+			'fields' => array(
+				'ShopBranchStockLog.change',
+				'ShopBranchStockLog.notes'
+			),
+			'conditions' => array(
+				'ShopBranchStockLog.shop_branch_stock_id' => $shopBranchStockId
+			)
+		);
+		$stock = $this->{$this->modelClass}->ShopBranchStockLog->find('all', $conditions);
+		$this->assertEquals($expected['stock_log'], Hash::extract($stock, '{n}.ShopBranchStockLog'));
+	}
+
+/**
+ * @brief add stock data provider
+ *
+ * @return array
+ */
+	public function addStockDataProvider() {
+		return array(
+			'branch-1' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-1',
+					'change' => 10,
+					'shop_branch_stock_id' => 'branch-stock-1'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '20')),
+						array('ShopBranchStock' => array('stock' => '15'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => 10,
+							'notes' => 'Adding stock'
+						),
+						array(
+							'change' => 5,
+							'notes' => 'Adding some test stock'
+						),
+						array(
+							'change' => 5,
+							'notes' => 'Adding more stock'
+						),
+					)
+				)
+			),
+			'branch-2' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => 5,
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '20'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => 5,
+							'notes' => 'Adding stock'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						),
+					)
+				)
+			),
+			'negative-add' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => -5,
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '20'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => 5,
+							'notes' => 'Adding stock'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						)
+					)
+				)
+			),
+			'custom-message' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => 5,
+					'notes' => 'Yee Haa',
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '20'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => 5,
+							'notes' => 'Yee Haa'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						)
+					)
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test removing stock recalculates and logs
+ *
+ * @dataProvider removeStockDataProvider
+ */
+	public function testRemoveStock($data, $expected) {
+		$shopBranchStockId = $data['shop_branch_stock_id'];
+		unset($data['shop_branch_stock_id']);
+
+		$conditions = array(
+			'fields' => array($this->modelClass . '.stock'),
+			'conditions' => array($this->modelClass . '.shop_product_id' => 'active'));
+
+		$this->assertTrue($this->{$this->modelClass}->removeStock($data));
+		$result = $this->{$this->modelClass}->find('all', $conditions);
+		$this->assertEquals($expected['stock'], $result);
+
+
+		$conditions = array(
+			'fields' => array(
+				'ShopBranchStockLog.change',
+				'ShopBranchStockLog.notes'
+			),
+			'conditions' => array(
+				'ShopBranchStockLog.shop_branch_stock_id' => $shopBranchStockId
+			)
+		);
+		$stock = $this->{$this->modelClass}->ShopBranchStockLog->find('all', $conditions);
+		$this->assertEquals($expected['stock_log'], Hash::extract($stock, '{n}.ShopBranchStockLog'));
+	}
+
+/**
+ * @brief remove stock data provider
+ *
+ * @return array
+ */
+	public function removeStockDataProvider() {
+		return array(
+			'branch-1' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-1',
+					'change' => -10,
+					'shop_branch_stock_id' => 'branch-stock-1'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '0')),
+						array('ShopBranchStock' => array('stock' => '15'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => -10,
+							'notes' => 'Removing stock'
+						),
+						array(
+							'change' => 5,
+							'notes' => 'Adding some test stock'
+						),
+						array(
+							'change' => 5,
+							'notes' => 'Adding more stock'
+						),
+					)
+				)
+			),
+			'branch-2' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => -5,
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '10'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => -5,
+							'notes' => 'Removing stock'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						),
+					)
+				)
+			),
+			'positive-remove' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => 5,
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '10'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => -5,
+							'notes' => 'Removing stock'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						)
+					)
+				)
+			),
+			'custom-message' => array(
+				array(
+					'shop_product_id' => 'active',
+					'shop_branch_id' => 'branch-2',
+					'change' => -5,
+					'notes' => 'Yee Haa',
+					'shop_branch_stock_id' => 'branch-stock-2'
+				),
+				array(
+					'stock' => array(
+						array('ShopBranchStock' => array('stock' => '10')),
+						array('ShopBranchStock' => array('stock' => '10'))
+					),
+					'stock_log' => array(
+						array(
+							'change' => -5,
+							'notes' => 'Yee Haa'
+						),
+						array(
+							'change' => 15,
+							'notes' => 'Initial stock'
+						)
+					)
 				)
 			)
 		);

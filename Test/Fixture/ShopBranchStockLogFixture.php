@@ -30,10 +30,52 @@ class ShopBranchStockLogFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '506ebe18-45fc-41e8-b719-3e626318cd70',
-			'shop_branch_stock_id' => 'Lorem ipsum dolor sit amet',
-			'change' => 1,
-			'notes' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+			'id' => 'stock-log-branch-stock-1a',
+			'shop_branch_stock_id' => 'branch-stock-1',
+			'change' => 5,
+			'notes' => 'Adding some test stock',
+			'created' => '2012-10-05 12:00:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-1b',
+			'shop_branch_stock_id' => 'branch-stock-1',
+			'change' => 5,
+			'notes' => 'Adding more stock',
+			'created' => '2012-10-05 12:01:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-2a',
+			'shop_branch_stock_id' => 'branch-stock-2',
+			'change' => 15,
+			'notes' => 'Initial stock',
+			'created' => '2012-10-05 12:01:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-3a',
+			'shop_branch_stock_id' => 'branch-stock-3',
+			'change' => 9,
+			'notes' => 'Initial stock',
+			'created' => '2012-10-05 12:01:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-3b',
+			'shop_branch_stock_id' => 'branch-stock-3',
+			'change' => -3,
+			'notes' => 'Sale',
+			'created' => '2012-10-05 12:01:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-3c',
+			'shop_branch_stock_id' => 'branch-stock-3',
+			'change' => -3,
+			'notes' => 'Sale',
+			'created' => '2012-10-05 12:01:44'
+		),
+		array(
+			'id' => 'stock-log-branch-stock-3d',
+			'shop_branch_stock_id' => 'branch-stock-3',
+			'change' => -3,
+			'notes' => 'Sale',
 			'created' => '2012-10-05 12:01:44'
 		),
 	);

@@ -10,7 +10,8 @@ App::uses('ShopAppModel', 'Shop.Model');
 class ShopBranchStock extends ShopAppModel {
 	public $findMethods = array(
 		'productStock' => true,
-		'isInStock' => true
+		'isInStock' => true,
+		'totalProductStock' => true
 	);
 
 /**
@@ -27,14 +28,14 @@ class ShopBranchStock extends ShopAppModel {
  */
 	public $belongsTo = array(
 		'ShopBranch' => array(
-			'className' => 'ShopBranch',
+			'className' => 'Shop.ShopBranch',
 			'foreignKey' => 'shop_branch_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
 		'ShopProduct' => array(
-			'className' => 'ShopProduct',
+			'className' => 'Shop.ShopProduct',
 			'foreignKey' => 'shop_product_id',
 			'conditions' => '',
 			'fields' => '',
@@ -49,7 +50,7 @@ class ShopBranchStock extends ShopAppModel {
  */
 	public $hasMany = array(
 		'ShopBranchStockLog' => array(
-			'className' => 'ShopBranchStockLog',
+			'className' => 'Shop.ShopBranchStockLog',
 			'foreignKey' => 'shop_branch_stock_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -63,43 +64,42 @@ class ShopBranchStock extends ShopAppModel {
 		)
 	);
 
+/**
+ * @brief override the construct to add translated validation
+ *
+ * @param type $id
+ * @param type $table
+ * @param type $ds
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
 			'shop_branch_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => array('validateRecordExists'),
+					'message' => __d('shop', 'Specified branch does not exist'),
+					'allowEmpty' => false,
+					'required' => true
 				),
 			),
 			'shop_product_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => array('validateRecordExists'),
+					'message' => __d('shop', 'Specified branch does not exist'),
+					'allowEmpty' => false,
+					'required' => true
 				),
 			),
 			'stock' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'The specified amount should be numeric'),
+					'allowEmpty' => false,
+					'required' => true
 				),
 			),
 		);
-
-		$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
 	}
 
 /**
@@ -170,6 +170,8 @@ class ShopBranchStock extends ShopAppModel {
 				throw new InvalidArgumentException('No product selected');
 			}
 
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
+
 			$query['fields'] = array(
 				$this->alias . '.shop_product_id',
 				'total_stock'
@@ -189,6 +191,152 @@ class ShopBranchStock extends ShopAppModel {
 		});
 
 		return $results;
+	}
+
+/**
+ * @brief add stock to a specific branch
+ *
+ * Required data:
+ *  - shop_branch_id: the branch stock is being added to
+ *  - shop_product_id: the product that is getting new stock
+ *  - change: number of items being added
+ *  - notes: reason for the change, PO, return etc.
+ *
+ * @see ShopBranchStock::_normaliseStock()
+ *
+ * @param array $stock the data being added
+ */
+	public function addStock(array $stock) {
+		$stock = $this->_normaliseStock($stock);
+		if(!$this->ShopBranchStockLog->saveAll($stock)) {
+			return false;
+		}
+		return $this->updateStock($stock);
+	}
+
+/**
+ * @brief remove stock from a specific branch
+ *
+ * Required data:
+ *  - shop_branch_id: the branch stock is being removed from
+ *  - shop_product_id: the product that is having stock reduced
+ *  - change: number of items being removed
+ *  - notes: reason for the change, sale, damage, returned to supplier etc
+ *
+ * @see ShopBranchStock::_normaliseStock()
+ *
+ * @param array $stock the data being added
+ */
+	public function removeStock(array $stock) {
+		$stock = $this->_normaliseStock($stock, false);
+		if(!$this->ShopBranchStockLog->saveAll($stock)) {
+			return false;
+		}
+		return $this->updateStock($stock);
+	}
+
+/**
+ * @brief normalise the stock array for easy handeling
+ *
+ * @param array $stock the stock data
+ * @param boolean $add adding or removing stock
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _normaliseStock(array $stock, $add = true) {
+		if(!is_int(current(array_keys($stock)))) {
+			$stock = array($stock);
+		}
+
+		foreach($stock as $k => $v) {
+			if(empty($v['shop_branch_stock_id'])) {
+				if(empty($v['shop_product_id']) || empty($v['shop_branch_id'])) {
+					unset($stock[$k]);
+					continue;
+				}
+
+				$stock[$k]['shop_branch_stock_id'] = $this->field('id', array(
+					'shop_product_id' => $v['shop_product_id'],
+					'shop_branch_id' => $v['shop_branch_id']
+				));
+
+				if(($add && $stock[$k]['change'] < 0) || (!$add && $stock[$k]['change'] > 0)) {
+					$stock[$k]['change'] = intval($stock[$k]['change']) * -1;
+				}
+			}
+
+			if(empty($v['notes'])) {
+				if($add) {
+					$stock[$k]['notes'] = 'Adding stock';
+				} else {
+					$stock[$k]['notes'] = 'Removing stock';
+				}
+			}
+		}
+
+		if(empty($stock)) {
+			throw new InvalidArgumentException('No stock to update');
+		}
+
+		return $stock;
+	}
+
+/**
+ * @brief update the total stock available for the product / branch combo
+ *
+ * @param array $stock the stock data
+ *
+ * @return boolean
+ */
+	public function updateStock(array $stock) {
+		$saved = true;
+		foreach($stock as $k => $v) {
+			$saved = $saved && $this->updateAll(
+				array($this->alias . '.stock' => $this->find('totalProductStock', $v) + $v['change']),
+				array(
+					$this->alias . '.shop_branch_id' => $v['shop_branch_id'],
+					$this->alias . '.shop_product_id' => $v['shop_product_id'],
+				)
+			);
+		}
+		return $saved;
+	}
+
+/**
+ * @brief find a products total stock count
+ *
+ * @param array $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return int
+ */
+	protected function _findTotalProductStock($state, array $query, array $results = array()) {
+		$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
+
+		if($state == 'before') {
+			if(!empty($query['shop_branch_id'])) {
+				$query['conditions'][$this->alias . '.shop_branch_id'] = $query['shop_branch_id'];
+			}
+
+			if(!empty($query['shop_product_id'])) {
+				$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
+			}
+
+			$query['fields'] = array(
+				'total_stock'
+			);
+
+			return $query;
+		}
+
+		if(!empty($results[0][$this->alias]['total_stock'])) {
+			return $results[0][$this->alias]['total_stock'];
+		}
+
+		return 0;
 	}
 
 }
