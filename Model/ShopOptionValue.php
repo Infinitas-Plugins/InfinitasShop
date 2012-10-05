@@ -67,7 +67,10 @@ class ShopOptionValue extends ShopAppModel {
 				array(
 					$this->alias . '.' . $this->primaryKey,
 					$this->alias . '.' . $this->displayField,
-					$this->alias . '.shop_option_id'
+					$this->alias . '.shop_option_id',
+					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
+					$this->ShopPrice->alias . '.selling',
+					$this->ShopPrice->alias . '.retail',
 				)
 			);
 
@@ -81,6 +84,11 @@ class ShopOptionValue extends ShopAppModel {
 			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
 
 			return $query;
+		}
+		
+		foreach($results as &$result) {
+			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
+			unset($results[$this->ShopPrice->alias]);
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);
