@@ -25,6 +25,7 @@ class ShopPriceTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopPrice = ClassRegistry::init('Shop.ShopPrice');
+		$this->modelClass = $this->ShopPrice->alias;
 	}
 
 /**
@@ -36,6 +37,10 @@ class ShopPriceTest extends CakeTestCase {
 		unset($this->ShopPrice);
 
 		parent::tearDown();
+	}
+
+	public function testSomething() {
+		
 	}
 
 }

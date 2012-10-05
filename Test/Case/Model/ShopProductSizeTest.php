@@ -15,8 +15,8 @@ class ShopProductSizeTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_product_size',
 		'plugin.shop.shop_product',
-		'plugin.shop.view_counter_view',
-		'plugin.shop.shop_unit'
+		'plugin.shop.shop_unit',
+		'plugin.view_counter.view_counter_view',
 	);
 
 /**
@@ -27,6 +27,8 @@ class ShopProductSizeTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopProductSize = ClassRegistry::init('Shop.ShopProductSize');
+
+		$this->modelClass = $this->ShopProductSize->alias;
 	}
 
 /**
@@ -38,6 +40,10 @@ class ShopProductSizeTest extends CakeTestCase {
 		unset($this->ShopProductSize);
 
 		parent::tearDown();
+	}
+
+	public function testSomething() {
+
 	}
 
 }

@@ -16,8 +16,8 @@ class ShopBranchStockTest extends CakeTestCase {
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_branch',
 		'plugin.shop.shop_product',
-		'plugin.shop.view_counter_view',
-		'plugin.shop.shop_branch_stock_log'
+		'plugin.shop.shop_branch_stock_log',
+		'plugin.view_counter.view_counter_view',
 	);
 
 /**
@@ -28,6 +28,7 @@ class ShopBranchStockTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopBranchStock = ClassRegistry::init('Shop.ShopBranchStock');
+		$this->modelClass = $this->ShopBranchStock->alias;
 	}
 
 /**
@@ -39,6 +40,10 @@ class ShopBranchStockTest extends CakeTestCase {
 		unset($this->ShopBranchStock);
 
 		parent::tearDown();
+	}
+
+	public function testSomething() {
+		
 	}
 
 }

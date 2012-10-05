@@ -16,7 +16,7 @@ class ShopCategoriesProductTest extends CakeTestCase {
 		'plugin.shop.shop_categories_product',
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_product',
-		'plugin.shop.view_counter_view'
+		'plugin.view_counter.view_counter_view'
 	);
 
 /**
@@ -27,6 +27,7 @@ class ShopCategoriesProductTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopCategoriesProduct = ClassRegistry::init('Shop.ShopCategoriesProduct');
+		$this->modelClass = $this->ShopCategoriesProduct->alias;
 	}
 
 /**
@@ -38,6 +39,10 @@ class ShopCategoriesProductTest extends CakeTestCase {
 		unset($this->ShopCategoriesProduct);
 
 		parent::tearDown();
+	}
+
+	public function testSomething() {
+		
 	}
 
 }

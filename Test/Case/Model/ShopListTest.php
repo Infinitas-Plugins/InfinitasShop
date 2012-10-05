@@ -15,9 +15,9 @@ class ShopListTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_product',
-		'plugin.shop.view_counter_view',
-		'plugin.shop.user',
-		'plugin.shop.group'
+		'plugin.view_counter.view_counter_view',
+		'plugin.users.user',
+		'plugin.users.group'
 	);
 
 /**
@@ -28,6 +28,7 @@ class ShopListTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopList = ClassRegistry::init('Shop.ShopList');
+		$this->modelClass = $this->ShopList->alias;
 	}
 
 /**
@@ -39,6 +40,10 @@ class ShopListTest extends CakeTestCase {
 		unset($this->ShopList);
 
 		parent::tearDown();
+	}
+
+	public function testSomething() {
+
 	}
 
 }
