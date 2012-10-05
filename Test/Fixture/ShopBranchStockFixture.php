@@ -11,9 +11,9 @@ class ShopBranchStockFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'shop_branch_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
-		'shop_product_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'shop_branch_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
 		'stock' => array('type' => 'integer', 'null' => false, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
@@ -30,10 +30,22 @@ class ShopBranchStockFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'shop_branch_id' => 1,
-			'shop_product_id' => 1,
-			'stock' => 1
+			'id' => 'branch-stock-1',
+			'shop_branch_id' => 'branch-1',
+			'shop_product_id' => 'active',
+			'stock' => 10
+		),
+		array(
+			'id' => 'branch-stock-2',
+			'shop_branch_id' => 'branch-2',
+			'shop_product_id' => 'active',
+			'stock' => 15
+		),
+		array(
+			'id' => 'branch-stock-3',
+			'shop_branch_id' => 'branch-1',
+			'shop_product_id' => 'out-of-stock',
+			'stock' => 0
 		),
 	);
 

@@ -167,6 +167,38 @@ class ShopProductFixture extends CakeTestFixture {
 			'created' => '2012-10-05 01:14:47',
 			'modified' => '2012-10-05 01:14:47'
 		),
+		array(
+			'id' => 'no-stock-added',
+			'name' => 'no-stock-added',
+			'slug' => 'no-stock-added',
+			'description' => 'no-stock-added desc',
+			'specifications' => 'no-stock-added specs',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		),
+		array(
+			'id' => 'out-of-stock',
+			'name' => 'out-of-stock',
+			'slug' => 'out-of-stock',
+			'description' => 'out-of-stock',
+			'specifications' => 'out-of-stock',
+			'active' => 1,
+			'shop_image_id' => 'shop-image-1',
+			'rating' => 1,
+			'rating_count' => 1,
+			'views' => 1,
+			'sales' => 1,
+			'shop_supplier_id' => 'supplier-1',
+			'created' => '2012-10-05 01:14:47',
+			'modified' => '2012-10-05 01:14:47'
+		),
 	);
 
 }

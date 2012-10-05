@@ -270,6 +270,8 @@ class ShopProduct extends ShopAppModel {
 				),
 			),
 		);
+
+		$this->virtualFields['total_stock'] = $this->ShopBranchStock->virtualFields['total_stock'];
 	}
 
 /**
@@ -293,6 +295,7 @@ class ShopProduct extends ShopAppModel {
 					'DISTINCT(ActiveCategory.id)',
 					$this->alias . '.' . $this->primaryKey,
 					$this->alias . '.slug',
+					$this->alias . '.total_stock',
 					$this->alias . '.' . $this->displayField,
 
 					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
@@ -316,6 +319,7 @@ class ShopProduct extends ShopAppModel {
 			$query['joins'] = array_filter($query['joins']);
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
 			$query['joins'][] = $this->autoJoinModel(array(
 				'from' => $this->ShopCategoriesProduct->fullModelName(),
@@ -332,15 +336,14 @@ class ShopProduct extends ShopAppModel {
 		$results = current($results);
 		unset($results['ActiveCategory']);
 
-		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', array(
+		$options = array(
 			'shop_product_id' => $results[$this->alias][$this->primaryKey],
 			'extract' => true
-		));
+		);
 
-		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', array(
-			'shop_product_id' => $results[$this->alias][$this->primaryKey],
-			'extract' => true
-		));
+		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
+		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
+		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
 
 
 

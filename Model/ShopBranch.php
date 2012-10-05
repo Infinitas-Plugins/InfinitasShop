@@ -1,297 +1,111 @@
 <?php
-	/**
-	 * shop branch model
-	 *
-	 * get/set branch data related to the shop.
-	 *
-	 * Copyright (c) 2010 Carl Sutton ( dogmatic69 )
-	 *
-	 * @filesource
-	 * @copyright Copyright (c) 2010 Carl Sutton ( dogmatic69 )
-	 * @link http://www.infinitas-cms.org
-	 * @package shop
-	 * @subpackage shop.models.shopBranch
-	 * @license http://www.opensource.org/licenses/mit-license.php The MIT License
-	 * @since 0.8a
-	 *
-	 * @author Carl Sutton ( dogmatic69 )
-	 *
-	 * Licensed under The MIT License
-	 * Redistributions of files must retain the above copyright notice.
-	 */
+App::uses('ShopAppModel', 'Shop.Model');
+/**
+ * ShopBranch Model
+ *
+ * @property ContactBranch $ContactBranch
+ * @property Manager $Manager
+ * @property ShopBranchStock $ShopBranchStock
+ */
+class ShopBranch extends ShopAppModel {
 
-	class ShopBranch extends ShopAppModel {
-		/**
-		 * group ids of possible managers.
-		 * @var array
-		 */
-		public $managerGroups = array(
-			1 // admin
+/**
+ * Validation rules
+ *
+ * @var array
+ */
+	public $validate = array();
+
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'ContactBranch' => array(
+			'className' => 'Contact.Branch',
+			'foreignKey' => 'contact_branch_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'Manager' => array(
+			'className' => 'Users.User',
+			'foreignKey' => 'manager_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+/**
+ * hasMany associations
+ *
+ * @var array
+ */
+	public $hasMany = array(
+		'ShopBranchStock' => array(
+			'className' => 'Shop.ShopBranchStock',
+			'foreignKey' => 'shop_branch_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		)
+	);
+
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+
+		$this->validate = array(
+			'contact_branch_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+			'manager_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+			'ordering' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
+			'active' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
+			),
 		);
-
-		public $findMethods = array(
-			'managers' => true,
-			'branchList' => true
-		);
-
-		public $belongsTo = array(
-			'BranchDetail' => array(
-				'className' => 'Contact.Branch',
-				'foreignKey' => 'branch_id',
-				'fields' => array(
-					'BranchDetail.id',
-					'BranchDetail.name',
-					'BranchDetail.slug',
-					'BranchDetail.image',
-					'BranchDetail.phone',
-					'BranchDetail.fax',
-					'BranchDetail.address_id'
-				)
-			),
-			'Manager' => array(
-				'className' => 'Users.User',
-				'foreignKey' => 'manager_id',
-				'fields' => array(
-					'Manager.id',
-					'Manager.username'
-				)
-			),
-		);
-
-		public $hasAndBelongsToMany = array(
-			'ShopCategory' => array(
-				'className' => 'Shop.ShopCategory',
-				'foreignKey' => 'shop_category_id',
-				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.ShopBranchesCategory',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopCategory.id',
-					'ShopCategory.name'
-				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
-			),
-			'Product' => array(
-				'className' => 'Shop.ShopProduct',
-				'foreignKey' => 'sho_product_id',
-				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.ShopBranchesProduct',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopProduct.id',
-					'ShopProduct.name',
-					'ShopProduct.cost'
-				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
-			),
-			'Stock' => array(
-				'className' => 'Shop.ShopStock',
-				'foreignKey' => 'shop_stock_id',
-				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.ShopStock',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopStock.id',
-					'ShopStock.branch_id',
-					'ShopStock.branch_id',
-					'ShopStock.stock',
-				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
-			),
-			'Special' => array(
-				'className' => 'Shop.ShopSpecial',
-				'foreignKey' => 'shop_special_id',
-				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.ShopBranchesSpecial',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopSpecial.id',
-					'ShopSpecial.product_id',
-					'ShopSpecial.image_id',
-					'ShopSpecial.discount',
-					'ShopSpecial.amount',
-					'ShopSpecial.start_date',
-					'ShopSpecial.end_date',
-					'ShopSpecial.start_time',
-					'ShopSpecial.end_time'
-				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
-			),
-			'Spotlight' => array(
-				'className' => 'Shop.ShopSpotlight',
-				'foreignKey' => 'shop_spotlight_id',
-				'associationForeignKey' => 'branch_id',
-				'with' => 'Shop.ShopBranchesSpotlight',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopSpotlight.id',
-					'ShopSpotlight.product_id',
-					'ShopSpotlight.image_id',
-					'ShopSpotlight.start_date',
-					'ShopSpotlight.end_date',
-					'ShopSpotlight.start_time',
-					'ShopSpotlight.end_time'
-				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
-			)
-		);
-
-		/**
-		 * @brief overload the constructor to add validation with translations
-		 *
-		 * @param type $id
-		 * @param type $table
-		 * @param type $ds
-		 */
-		public function __construct($id = false, $table = null, $ds = null) {
-			parent::__construct($id, $table, $ds);
-
-			$this->validate = array(
-				'branch_id' => array(
-					'isUnique' => array(
-						'rule' => 'isUnique',
-						'message' => __d('shop', 'That Branch is already setup')
-					)
-				)
-			);
-		}
-
-		/**
-		 * Get people that can be managers of a branch.
-		 *
-		 * @return list of users.
-		 */
-		protected function _findManagers($state, array $query, array $results = array()) {
-			if($state == 'before') {
-				$query['fields'] = array(
-					$this->Manager->alias . '.' . $this->primaryKey,
-					$this->Manager->alias . '.' . $this->displayField
-				);
-
-				return $query;
-			}
-
-			return Hash::combine(
-				$results,
-				'{n}' . $this->Manager->alias . '.' . $this->primaryKey,
-				'{n}' . $this->Manager->alias . '.' . $this->displayField
-			);
-		}
-
-		/**
-		 * Get branches that are not set up
-		 *
-		 * Return a list of branches that can still be added to the shop.
-		 *
-		 * @return empty array or array of available branches
-		 */
-		public function _getAvailableBranches() {
-			$ids = $this->find(
-				'list',
-				array(
-					'fields' => array(
-						$this->alais . '.branch_id',
-						$this->alais . '.branch_id'
-					)
-				)
-			);
-
-			$branchDetails = $this->BranchDetail->find(
-				'list',
-				array(
-					'conditions' => array(
-						'not' => array('BranchDetail.id' => $ids)
-					)
-				)
-			);
-
-			return $branchDetails;
-		}
-
-		/**
-		 * @brief get a list of branches
-		 *
-		 * @param type $state
-		 * @param array $query
-		 * @param array $results
-		 * @return type
-		 */
-		protected function _findBranchList($state, array $query, array $results = array()) {
-			if($state == 'before') {
-				$query['fields'] = array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->BranchDetail->alias . '.' . $this->BranchDetail->displayName
-				);
-
-				$query['joins'] = array(
-					$this->autoJoinModel('Shop.ShopBranchDetail')
-				);
-
-				return $query;
-			}
-
-			return Hash::combine(
-				$results,
-				'{n}' . $this->alias . '.' . $this->primaryKey,
-				'{n}' . $this->BranchDetail->alias . '.' . $this->BranchDetail->displayField
-			);
-		}
-
-		public function getList() {
-			$ids = $this->find(
-				'list',
-				array(
-					'fields' => array(
-						$this->alais . '.branch_id',
-						$this->alais . '.branch_id'
-					)
-				)
-			);
-
-			$branchDetails = $this->BranchDetail->find(
-				'list',
-				array(
-					'conditions' => array(
-						'BranchDetail.id' => $ids
-					)
-				)
-			);
-
-			$return = array();
-			foreach($ids as $id) {
-				$return[$id] = $branchDetails[$id];
-			}
-
-			return $return;
-		}
 	}
+
+}

@@ -67,7 +67,8 @@ class ShopProductTest extends CakeTestCase {
 	/**
  * @brief test inactive products are not found
  *
- * @expectedException CakeException
+ * @expectedException InvalidArgumentException
+ *
  * @dataProvider findProductInactiveDataProvider
  */
 	public function testFindProductInactive($data) {
@@ -109,7 +110,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProduct' => array(
 						'id' => 'active',
 						'slug' => 'active',
-						'name' => 'active'
+						'name' => 'active',
+						'total_stock' => '25'
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -156,7 +158,19 @@ class ShopProductTest extends CakeTestCase {
 								)
 							),
 						)
-					))
+					)),
+					'ShopBranchStock' => array(
+						array(
+							'id' => 'branch-stock-1',
+							'shop_branch_id' => 'branch-1',
+							'stock' => '10'
+						),
+						array(
+							'id' => 'branch-stock-2',
+							'shop_branch_id' => 'branch-2',
+							'stock' => '15'
+						)
+					)
 				)
 			),
 			'multi-category' => array(
@@ -165,7 +179,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProduct' => array(
 						'id' => 'multi-category',
 						'slug' => 'multi-category',
-						'name' => 'multi-category'
+						'name' => 'multi-category',
+						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
 						'id' => 'another',
@@ -181,7 +196,8 @@ class ShopProductTest extends CakeTestCase {
 						'selling' => '6.00000',
 						'retail' => '7.00000'
 					),
-					'ShopOption' => array()
+					'ShopOption' => array(),
+					'ShopBranchStock' => array()
 				)
 			),
 			'mixed-state' => array(
@@ -190,7 +206,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProduct' => array(
 						'id' => 'multi-category-mixed-state',
 						'slug' => 'multi-category-mixed-state',
-						'name' => 'multi-category-mixed-state'
+						'name' => 'multi-category-mixed-state',
+						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -202,7 +219,8 @@ class ShopProductTest extends CakeTestCase {
 						'selling' => '12.00000',
 						'retail' => '15.00000'
 					),
-					'ShopOption' => array()
+					'ShopOption' => array(),
+					'ShopBranchStock' => array()
 				)
 			),
 			'mixed-state-parent-inactive' => array(
@@ -211,7 +229,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProduct' => array(
 						'id' => 'multi-category-parent-inactive',
 						'slug' => 'multi-category-parent-inactive',
-						'name' => 'multi-category-parent-inactive'
+						'name' => 'multi-category-parent-inactive',
+						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -223,7 +242,8 @@ class ShopProductTest extends CakeTestCase {
 						'selling' => '12.00000',
 						'retail' => '15.00000'
 					),
-					'ShopOption' => array()
+					'ShopOption' => array(),
+					'ShopBranchStock' => array()
 				)
 			),
 
@@ -233,7 +253,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProduct' => array(
 						'id' => 'multi-option',
 						'slug' => 'multi-option',
-						'name' => 'multi-option'
+						'name' => 'multi-option',
+						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -302,7 +323,8 @@ class ShopProductTest extends CakeTestCase {
 									'retail' => null
 								)
 							)))
-					)
+					),
+					'ShopBranchStock' => array()
 				)
 			),
 		);
