@@ -78,6 +78,11 @@ class ShopCategoriesProductFixture extends CakeTestFixture {
 			'shop_category_id' => 'active',
 			'shop_product_id' => 'inactive-parent'
 		),
+		array(
+			'id' => 11,
+			'shop_category_id' => 'active',
+			'shop_product_id' => 'multi-option'
+		),
 	);
 
 }

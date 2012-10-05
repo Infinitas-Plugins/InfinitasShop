@@ -59,7 +59,7 @@ class ShopOptionValueTest extends CakeTestCase {
  * @dataProvider findValuesDataProvider
  */
 	public function testFindValues($data, $expected) {
-		$results = $this->{$this->modelClass}->find('values', $data);
+		$results = $this->{$this->modelClass}->find('values', array('shop_option_id' => $data));
 		$this->assertEquals($expected, $results);
 	}
 
@@ -106,6 +106,36 @@ class ShopOptionValueTest extends CakeTestCase {
 						'id' => 'option-colour-red',
 						'name' => 'Red',
 						'shop_option_id' => 'option-colour',
+					),
+				)
+			),
+			'multiple' => array(
+				array('option-size', 'option-colour'),
+				array(
+					array(
+						'id' => 'option-colour-blue',
+						'name' => 'Blue',
+						'shop_option_id' => 'option-colour',
+					),
+					array(
+						'id' => 'option-colour-red',
+						'name' => 'Red',
+						'shop_option_id' => 'option-colour',
+					),
+					array(
+						'id' => 'option-size-large',
+						'name' => 'Large',
+						'shop_option_id' => 'option-size',
+					),
+					array(
+						'id' => 'option-size-medium',
+						'name' => 'Medium',
+						'shop_option_id' => 'option-size',
+					),
+					array(
+						'id' => 'option-size-small',
+						'name' => 'Small',
+						'shop_option_id' => 'option-size',
 					),
 				)
 			)

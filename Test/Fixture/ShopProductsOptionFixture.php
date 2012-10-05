@@ -37,6 +37,20 @@ class ShopProductsOptionFixture extends CakeTestFixture {
 			'created' => '2012-10-05 10:00:32',
 			'modified' => '2012-10-05 10:00:32'
 		),
+		array(
+			'id' => 'multi-option-size',
+			'shop_option_id' => 'option-size',
+			'shop_product_id' => 'multi-option',
+			'created' => '2012-10-05 10:00:32',
+			'modified' => '2012-10-05 10:00:32'
+		),
+		array(
+			'id' => 'multi-option-colour',
+			'shop_option_id' => 'option-colour',
+			'shop_product_id' => 'multi-option',
+			'created' => '2012-10-05 10:00:32',
+			'modified' => '2012-10-05 10:00:32'
+		),
 	);
 
 }

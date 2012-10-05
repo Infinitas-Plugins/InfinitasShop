@@ -25,6 +25,9 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_price',
+		'plugin.shop.shop_products_option',
+		'plugin.shop.shop_option',
+		'plugin.shop.shop_option_value',
 
 		'plugin.view_counter.view_counter_view'
 	);
@@ -117,7 +120,28 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'active',
 						'selling' => '12.00000',
 						'retail' => '15.00000'
-					)
+					),
+					'ShopOption' => array(array(
+						'id' => 'option-size',
+						'name' => 'Size',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-size-large',
+								'name' => 'Large',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-medium',
+								'name' => 'Medium',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-small',
+								'name' => 'Small',
+								'shop_option_id' => 'option-size'
+							),
+						)
+					))
 				)
 			),
 			'multi-category' => array(
@@ -141,7 +165,8 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category',
 						'selling' => '6.00000',
 						'retail' => '7.00000'
-					)
+					),
+					'ShopOption' => array()
 				)
 			),
 			'mixed-state' => array(
@@ -161,7 +186,8 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-mixed-state',
 						'selling' => '12.00000',
 						'retail' => '15.00000'
-					)
+					),
+					'ShopOption' => array()
 				)
 			),
 			'mixed-state-parent-inactive' => array(
@@ -181,9 +207,64 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-parent-inactive',
 						'selling' => '12.00000',
 						'retail' => '15.00000'
+					),
+					'ShopOption' => array()
+				)
+			),
+
+			'multi-option' => array(
+				'multi-option',
+				array(
+					'ShopProduct' => array(
+						'id' => 'multi-option',
+						'slug' => 'multi-option',
+						'name' => 'multi-option'
+					),
+					'ShopCategory' => array(array(
+						'id' => 'active',
+						'name' => 'active',
+						'slug' => 'active'
+					)),
+					'ShopPrice' => array(
+						'id' => 'multi-option',
+						'selling' => '25.00000',
+						'retail' => '30.00000'
+					),
+					'ShopOption' => array(array(
+						'id' => 'option-size',
+						'name' => 'Size',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-size-large',
+								'name' => 'Large',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-medium',
+								'name' => 'Medium',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-small',
+								'name' => 'Small',
+								'shop_option_id' => 'option-size'
+							))), array(
+						'id' => 'option-colour',
+						'name' => 'Colour',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-colour-blue',
+								'name' => 'Blue',
+								'shop_option_id' => 'option-colour'
+							),
+							array(
+								'id' => 'option-colour-red',
+								'name' => 'Red',
+								'shop_option_id' => 'option-colour'
+							)))
 					)
 				)
-			)
+			),
 		);
 	}
 

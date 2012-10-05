@@ -12,6 +12,7 @@
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
+ * @property ShopProductsOption $ShopProductsOption
  */
 class ShopProduct extends ShopAppModel {
 
@@ -158,6 +159,19 @@ class ShopProduct extends ShopAppModel {
 		),
 		'ShopSpotlight' => array(
 			'className' => 'Shop.ShopSpotlight',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopProductsOption' => array(
+			'className' => 'Shop.ShopProductsOption',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -322,6 +336,13 @@ class ShopProduct extends ShopAppModel {
 			'shop_product_id' => $results[$this->alias][$this->primaryKey],
 			'extract' => true
 		));
+
+		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', array(
+			'shop_product_id' => $results[$this->alias][$this->primaryKey],
+			'extract' => true
+		));
+
+
 
 		return $results;
 	}

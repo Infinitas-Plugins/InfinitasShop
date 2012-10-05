@@ -58,7 +58,7 @@ class ShopOptionValue extends ShopAppModel {
  */
 	protected function _findValues($state, array $query, array $results = array()) {
 		if($state == 'before') {
-			if(empty($query[0])) {
+			if(empty($query['shop_option_id'])) {
 				throw new InvalidArgumentException('No option has been specified');
 			}
 
@@ -74,7 +74,7 @@ class ShopOptionValue extends ShopAppModel {
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->alias . '.shop_option_id' => $query[0]
+					$this->alias . '.shop_option_id' => $query['shop_option_id']
 				)
 			);
 

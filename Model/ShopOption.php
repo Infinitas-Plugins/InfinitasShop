@@ -65,7 +65,7 @@ class ShopOption extends ShopAppModel {
  */
 	protected function _findOptions($state, array $query, array $results = array()) {
 		if($state == 'before') {
-			if(empty($query[0])) {
+			if(empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product specified');
 			}
 
@@ -77,7 +77,7 @@ class ShopOption extends ShopAppModel {
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->ShopProductsOption->alias . '.shop_product_id' => $query[0]
+					$this->ShopProductsOption->alias . '.shop_product_id' => $query['shop_product_id']
 				)
 			);
 
@@ -105,10 +105,13 @@ class ShopOption extends ShopAppModel {
 
 	protected function _linkOptionValues(&$results) {
 		$optionIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
-		$options = $this->ShopOptionValue->find('values', $optionIds);
+		$options = $this->ShopOptionValue->find('values', array('shop_option_id' => $optionIds));
 
 		foreach($results as &$result) {
-			$result[$this->alias][$this->ShopOptionValue->alias] = Hash::extract($options, sprintf('{n}[id=/%s/]', $result[$this->alias][$this->primaryKey]));
+			$result[$this->alias][$this->ShopOptionValue->alias] = Hash::extract(
+				$options,
+				sprintf('{n}[id=/%s/]', $result[$this->alias][$this->primaryKey])
+			);
 		}
 
 		return true;

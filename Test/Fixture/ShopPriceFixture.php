@@ -101,6 +101,16 @@ class ShopPriceFixture extends CakeTestFixture {
 			'foreign_key' => 'multi-category-parent-inactive',
 			'created' => '2012-10-05 10:04:09',
 			'modified' => '2012-10-05 10:04:09'
+		),
+		array(
+			'id' => 'multi-option',
+			'cost' => 20,
+			'selling' => 25,
+			'retail' => 30,
+			'model' => 'Shop.ShopProduct',
+			'foreign_key' => 'multi-option',
+			'created' => '2012-10-05 10:04:09',
+			'modified' => '2012-10-05 10:04:09'
 		)
 	);
 

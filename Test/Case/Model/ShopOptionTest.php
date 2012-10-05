@@ -56,7 +56,7 @@ class ShopOptionTest extends CakeTestCase {
  * @dataProvider findOptionsDataProvider
  */
 	public function testFindOptions($data, $expected) {
-		$results = $this->{$this->modelClass}->find('options', $data);
+		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data));
 		$this->assertEquals($expected, $results);
 	}
 
@@ -95,6 +95,117 @@ class ShopOptionTest extends CakeTestCase {
 									'shop_option_id' => 'option-size'
 								)
 							)
+						)
+					)
+				)
+			),
+			array(
+				'multi-option',
+				array(
+					array(
+						'ShopOption' => array(
+							'id' => 'option-size',
+							'name' => 'Size',
+							'ShopOptionValue' => array(
+								array(
+									'id' => 'option-size-large',
+									'name' => 'Large',
+									'shop_option_id' => 'option-size'
+								),
+								array(
+									'id' => 'option-size-medium',
+									'name' => 'Medium',
+									'shop_option_id' => 'option-size'
+								),
+								array(
+									'id' => 'option-size-small',
+									'name' => 'Small',
+									'shop_option_id' => 'option-size'
+								)
+							)
+						)
+					),
+					array(
+						'ShopOption' => array(
+							'id' => 'option-colour',
+							'name' => 'Colour',
+							'ShopOptionValue' => array(
+								array(
+									'id' => 'option-colour-blue',
+									'name' => 'Blue',
+									'shop_option_id' => 'option-colour'
+								),
+								array(
+									'id' => 'option-colour-red',
+									'name' => 'Red',
+									'shop_option_id' => 'option-colour'
+								),
+							)
+						)
+					)
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test finding product options extracted
+ *
+ * @dataProvider productOptionExtractDataProvider
+ */
+	public function testFindOptionsExtracted($data, $expected) {
+		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data, 'extract' => true));
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * @brief extracted options data provider
+ * @return type
+ */
+	public function productOptionExtractDataProvider() {
+		return array(
+			array(
+				'made-up-option',
+				array()
+			),
+			array(
+				'multi-option',
+				array(
+					array(
+						'id' => 'option-size',
+						'name' => 'Size',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-size-large',
+								'name' => 'Large',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-medium',
+								'name' => 'Medium',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-small',
+								'name' => 'Small',
+								'shop_option_id' => 'option-size'
+							)
+						)
+					),
+					array(
+						'id' => 'option-colour',
+						'name' => 'Colour',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-colour-blue',
+								'name' => 'Blue',
+								'shop_option_id' => 'option-colour'
+							),
+							array(
+								'id' => 'option-colour-red',
+								'name' => 'Red',
+								'shop_option_id' => 'option-colour'
+							),
 						)
 					)
 				)
