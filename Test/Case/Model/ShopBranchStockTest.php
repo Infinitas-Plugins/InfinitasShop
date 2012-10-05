@@ -606,4 +606,29 @@ class ShopBranchStockTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * @brief test find total product stock
+ *
+ * @param type $data
+ * @param type $expected
+ *
+ * @dataProvider findTotalProductStockDataProvider
+ */
+	public function testFindTotalProductStock($data, $expected) {
+		$result = $this->{$this->modelClass}->find('totalProductStock', $data);
+		$this->assertEquals($expected, $result);
+	}
+
+	public function findTotalProductStockDataProvider() {
+		return array(
+			'product' => array(array('shop_product_id' => 'active'), 25),
+			'branch' => array(array('shop_branch_id' => 'branch-1'), 10),
+			'product-branch' => array(array('shop_product_id' => 'active', 'shop_branch_id' => 'branch-1'), 10),
+			'product-branch' => array(array('shop_product_id' => 'active', 'shop_branch_id' => 'branch-2'), 15),
+			'madeup-product' => array(array('shop_product_id' => 'madeup'), 0),
+			'madeup-branch' => array(array('shop_branch_id' => 'madeup'), 0),
+			'madeup-product-branch' => array(array('shop_product_id' => 'madeup', 'shop_branch_id' => 'madeup'), 0)
+		);
+	}
+
 }

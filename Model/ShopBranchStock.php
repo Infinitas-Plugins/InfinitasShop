@@ -307,11 +307,11 @@ class ShopBranchStock extends ShopAppModel {
 /**
  * @brief find a products total stock count
  *
- * @param array $state
+ * @param string $state
  * @param array $query
  * @param array $results
  *
- * @return int
+ * @return integer
  */
 	protected function _findTotalProductStock($state, array $query, array $results = array()) {
 		$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
