@@ -38,7 +38,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		array(
 			'id' => 'special-multi-option',
 			'shop_product_id' => 'multi-option',
-			'shop_image_id' => 'image',
+			'shop_image_id' => 'image-special-multi-option',
 			'discount' => 10,
 			'amount' => null,
 			'start_date' => '2012-09-06 00:00:00',
@@ -50,7 +50,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		array(
 			'id' => 'special-active',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => null,
 			'discount' => 15,
 			'amount' => null,
 			'start_date' => '2012-10-06 00:00:00',
@@ -62,7 +62,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		array(
 			'id' => 'special-active-pending',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => 'image-special-active-pending',
 			'discount' => 15,
 			'amount' => null,
 			'start_date' => '2050-10-06 00:00:00',
@@ -74,7 +74,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		array(
 			'id' => 'special-active-expired',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => null,
 			'discount' => 15,
 			'amount' => null,
 			'start_date' => '2010-10-06 00:00:00',

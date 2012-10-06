@@ -43,6 +43,20 @@ class ShopImageFixture extends CakeTestFixture {
 			'modified' => '2012-10-06 15:55:43'
 		),
 		array(
+			'id' => 'image-special-multi-option',
+			'image' => 'image-special-multi-option.png',
+			'ext' => 'png',
+			'created' => '2012-10-06 15:55:43',
+			'modified' => '2012-10-06 15:55:43'
+		),
+		array(
+			'id' => 'image-special-active-pending',
+			'image' => 'image-special-active-pending.png',
+			'ext' => 'png',
+			'created' => '2012-10-06 15:55:43',
+			'modified' => '2012-10-06 15:55:43'
+		),
+		array(
 			'id' => 'image-',
 			'image' => 'image-.png',
 			'ext' => '.png',

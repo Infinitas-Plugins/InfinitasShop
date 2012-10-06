@@ -113,6 +113,8 @@ class ShopSpecial extends ShopAppModel {
 					$this->alias . '.amount',
 					$this->alias . '.start_date',
 					$this->alias . '.end_date',
+					$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+					$this->ShopImage->alias . '.image',
 				)
 			);
 
@@ -124,7 +126,23 @@ class ShopSpecial extends ShopAppModel {
 				)
 			);
 
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel($this->ShopImage->fullModelName())
+				)
+			);
+
 			return $query;
+		}
+
+		if(empty($results)) {
+			return array();
+		}
+
+		foreach($results as &$result) {
+			$result[$this->alias][$this->ShopImage->alias] = $result[$this->ShopImage->alias];
+			unset($result[$this->ShopImage->alias]);
 		}
 
 		if(!empty($query['extract']) && $query['extract']) {

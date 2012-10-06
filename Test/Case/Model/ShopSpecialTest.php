@@ -82,6 +82,10 @@ class ShopSpecialTest extends CakeTestCase {
 							'amount' => null,
 							'start_date' => '2012-09-06 00:00:00',
 							'end_date' => '2050-10-06 23:59:59',
+							'ShopImage' => array(
+								'id' => 'image-special-multi-option',
+								'image' => 'image-special-multi-option.png'
+							)
 						)
 					)
 				)
@@ -97,6 +101,10 @@ class ShopSpecialTest extends CakeTestCase {
 							'amount' => null,
 							'start_date' => '2012-09-06 00:00:00',
 							'end_date' => '2050-10-06 23:59:59',
+							'ShopImage' => array(
+								'id' => 'image-special-multi-option',
+								'image' => 'image-special-multi-option.png'
+							)
 						)
 					)
 				)
@@ -135,6 +143,10 @@ class ShopSpecialTest extends CakeTestCase {
 						'amount' => null,
 						'start_date' => '2012-09-06 00:00:00',
 						'end_date' => '2050-10-06 23:59:59',
+						'ShopImage' => array(
+							'id' => 'image-special-multi-option',
+							'image' => 'image-special-multi-option.png'
+						)
 					)
 				)
 			),
@@ -148,6 +160,10 @@ class ShopSpecialTest extends CakeTestCase {
 						'amount' => null,
 						'start_date' => '2012-09-06 00:00:00',
 						'end_date' => '2050-10-06 23:59:59',
+						'ShopImage' => array(
+							'id' => 'image-special-multi-option',
+							'image' => 'image-special-multi-option.png'
+						)
 					)
 				)
 			)
