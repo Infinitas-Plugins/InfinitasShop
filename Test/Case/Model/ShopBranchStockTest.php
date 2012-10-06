@@ -281,6 +281,11 @@ class ShopBranchStockTest extends CakeTestCase {
 		$this->{$this->modelClass}->{$data['method']}($data['data']);
 	}
 
+/**
+ * @brief add / remove stock exception data provider
+ *
+ * @return array
+ */
 	public function addRemoveStockExceptionDataProvider() {
 		return array(
 			'add-no-product' => array(
@@ -607,6 +612,80 @@ class ShopBranchStockTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test adding / removing with invalid amounts
+ */
+	public function testInvalidStockChange() {
+		$result = $this->{$this->modelClass}->addStock(array(
+			'shop_product_id' => 'active',
+			'shop_branch_id' => 'branch-2',
+			'change' => 'asd'
+		));
+		$this->assertFalse($result);
+
+		$conditions = array(
+			'fields' => array($this->modelClass . '.stock'),
+			'conditions' => array($this->modelClass . '.shop_product_id' => 'active'));
+		$expected = array(
+			array('ShopBranchStock' => array('stock' => '10')),
+			array('ShopBranchStock' => array('stock' => '15'))
+		);
+		$result = $this->{$this->modelClass}->find('all', $conditions);
+		$this->assertEquals($expected, $result);
+
+
+		$conditions = array(
+			'fields' => array(
+				'ShopBranchStockLog.change',
+				'ShopBranchStockLog.notes'
+			),
+			'conditions' => array(
+				'ShopBranchStockLog.shop_branch_stock_id' => 'branch-stock-2'
+			)
+		);
+		$expected = array(array(
+			'change' => 15,
+			'notes' => 'Initial stock'
+		));
+		$results = Hash::extract($this->{$this->modelClass}->ShopBranchStockLog->find('all', $conditions), '{n}.ShopBranchStockLog');
+		$this->assertEquals($expected, $results);
+
+
+		$result = $this->{$this->modelClass}->removeStock(array(
+			'shop_product_id' => 'active',
+			'shop_branch_id' => 'branch-2',
+			'change' => 'asd'
+		));
+		$this->assertFalse($result);
+
+		$conditions = array(
+			'fields' => array($this->modelClass . '.stock'),
+			'conditions' => array($this->modelClass . '.shop_product_id' => 'active'));
+		$expected = array(
+			array('ShopBranchStock' => array('stock' => '10')),
+			array('ShopBranchStock' => array('stock' => '15'))
+		);
+		$result = $this->{$this->modelClass}->find('all', $conditions);
+		$this->assertEquals($expected, $result);
+
+
+		$conditions = array(
+			'fields' => array(
+				'ShopBranchStockLog.change',
+				'ShopBranchStockLog.notes'
+			),
+			'conditions' => array(
+				'ShopBranchStockLog.shop_branch_stock_id' => 'branch-stock-2'
+			)
+		);
+		$expected = array(array(
+			'change' => 15,
+			'notes' => 'Initial stock'
+		));
+		$results = Hash::extract($this->{$this->modelClass}->ShopBranchStockLog->find('all', $conditions), '{n}.ShopBranchStockLog');
+		$this->assertEquals($expected, $results);
+	}
+
+/**
  * @brief test find total product stock
  *
  * @param type $data
@@ -619,6 +698,11 @@ class ShopBranchStockTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * @brief find total product stock data provider
+ *
+ * @return array
+ */
 	public function findTotalProductStockDataProvider() {
 		return array(
 			'product' => array(array('shop_product_id' => 'active'), 25),
