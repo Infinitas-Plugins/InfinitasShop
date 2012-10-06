@@ -13,6 +13,7 @@
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
  * @property ShopProductsOption $ShopProductsOption
+ * @property ShopProductSize $ShopProductSize
  */
 class ShopProduct extends ShopAppModel {
 
@@ -182,6 +183,19 @@ class ShopProduct extends ShopAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'ShopProductSize' => array(
+			'className' => 'Shop.ShopProductSize',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
 
@@ -283,7 +297,6 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
 		if($state == 'before') {
-
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 			if(empty($query[0])) {
 				throw new InvalidArgumentException('No product selected');
@@ -327,6 +340,8 @@ class ShopProduct extends ShopAppModel {
 				'alias' => 'ActiveCategory'
 			));
 
+			$query['limit'] = 1;
+
 			return $query;
 		}
 
@@ -344,6 +359,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
+		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
 
 
 

@@ -28,6 +28,8 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_products_option',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
+		'plugin.shop.shop_unit',
+		'plugin.shop.shop_unit_type',
 
 		'plugin.view_counter.view_counter_view'
 	);
@@ -170,6 +172,30 @@ class ShopProductTest extends CakeTestCase {
 							'shop_branch_id' => 'branch-2',
 							'stock' => '15'
 						)
+					),
+					'ShopProductSize' => array(
+						array(
+							'id' => 'active-product-weight',
+							'value' => '100.000',
+							'symbol' => 'g',
+							'ShopUnit' => array(
+								'id' => 'product-weight',
+								'name' => 'product-weight',
+								'slug' => 'product-weight',
+								'shop_unit_type_id' => 'mass'
+							)
+						),
+						array(
+							'id' => 'active-ship-weight',
+							'value' => '200.000',
+							'symbol' => 'g',
+							'ShopUnit' => array(
+								'id' => 'ship-weight',
+								'name' => 'ship-weight',
+								'slug' => 'ship-weight',
+								'shop_unit_type_id' => 'mass'
+							)
+						)
 					)
 				)
 			),
@@ -197,7 +223,8 @@ class ShopProductTest extends CakeTestCase {
 						'retail' => '7.00000'
 					),
 					'ShopOption' => array(),
-					'ShopBranchStock' => array()
+					'ShopBranchStock' => array(),
+					'ShopProductSize' => array()
 				)
 			),
 			'mixed-state' => array(
@@ -220,7 +247,8 @@ class ShopProductTest extends CakeTestCase {
 						'retail' => '15.00000'
 					),
 					'ShopOption' => array(),
-					'ShopBranchStock' => array()
+					'ShopBranchStock' => array(),
+					'ShopProductSize' => array()
 				)
 			),
 			'mixed-state-parent-inactive' => array(
@@ -243,7 +271,8 @@ class ShopProductTest extends CakeTestCase {
 						'retail' => '15.00000'
 					),
 					'ShopOption' => array(),
-					'ShopBranchStock' => array()
+					'ShopBranchStock' => array(),
+					'ShopProductSize' => array()
 				)
 			),
 
@@ -324,36 +353,10 @@ class ShopProductTest extends CakeTestCase {
 								)
 							)))
 					),
-					'ShopBranchStock' => array()
+					'ShopBranchStock' => array(),
+					'ShopProductSize' => array()
 				)
 			),
-		);
-	}
-
-/**
- * @brief test product options
- *
- * @param type $data
- * @param type $expected
- *
- * @dataProvider productOptionsDataProvider
- */
-	public function atestProductOptions($data, $expected) {
-		$result = $this->{$this->modelClass}->find('product', $data);
-		$this->assertEquals($expected, $result);
-	}
-
-/**
- * @brief data provider for the options test
- *
- * @return array
- */
-	public function productOptionsDataProvider() {
-		return array(
-			array(
-				'',
-				''
-			)
 		);
 	}
 
