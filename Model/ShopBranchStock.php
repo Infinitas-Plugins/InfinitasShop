@@ -251,12 +251,13 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		foreach($stock as $k => $v) {
-			if(empty($v['shop_branch_stock_id'])) {
-				if(empty($v['shop_product_id']) || empty($v['shop_branch_id'])) {
-					unset($stock[$k]);
-					continue;
-				}
+			$skip = (empty($v['shop_product_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
+			if($skip) {
+				unset($stock[$k]);
+				continue;
+			}
 
+			if(empty($v['shop_branch_stock_id'])) {
 				$stock[$k]['shop_branch_stock_id'] = $this->field('id', array(
 					'shop_product_id' => $v['shop_product_id'],
 					'shop_branch_id' => $v['shop_branch_id']
@@ -268,11 +269,7 @@ class ShopBranchStock extends ShopAppModel {
 			}
 
 			if(empty($v['notes'])) {
-				if($add) {
-					$stock[$k]['notes'] = 'Adding stock';
-				} else {
-					$stock[$k]['notes'] = 'Removing stock';
-				}
+				$stock[$k]['notes'] = $add ? 'Adding stock' : 'Removing stock';
 			}
 		}
 
@@ -314,9 +311,9 @@ class ShopBranchStock extends ShopAppModel {
  * @return integer
  */
 	protected function _findTotalProductStock($state, array $query, array $results = array()) {
-		$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
-
 		if($state == 'before') {
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
+			
 			if(!empty($query['shop_branch_id'])) {
 				$query['conditions'][$this->alias . '.shop_branch_id'] = $query['shop_branch_id'];
 			}
