@@ -92,7 +92,8 @@ class ShopCategoryTest extends CakeTestCase {
 					'ShopCategory' => array(
 						'id' => 'active',
 						'name' => 'active',
-						'slug' => 'active'
+						'slug' => 'active',
+						'shop_product_id' => 'active'
 					)
 				))
 			),
@@ -102,7 +103,8 @@ class ShopCategoryTest extends CakeTestCase {
 					'ShopCategory' => array(
 						'id' => 'active',
 						'name' => 'active',
-						'slug' => 'active'
+						'slug' => 'active',
+						'shop_product_id' => 'inactive'
 					)
 				))
 			),
@@ -112,13 +114,15 @@ class ShopCategoryTest extends CakeTestCase {
 					'ShopCategory' => array(
 						'id' => 'another',
 						'name' => 'another',
-						'slug' => 'another'
+						'slug' => 'another',
+						'shop_product_id' => 'multi-category'
 					)
 				), array(
 					'ShopCategory' => array(
 						'id' => 'active',
 						'name' => 'active',
-						'slug' => 'active'
+						'slug' => 'active',
+						'shop_product_id' => 'multi-category'
 					)
 				))
 			),
@@ -128,7 +132,8 @@ class ShopCategoryTest extends CakeTestCase {
 					'ShopCategory' => array(
 						'id' => 'active',
 						'name' => 'active',
-						'slug' => 'active'
+						'slug' => 'active',
+						'shop_product_id' => 'multi-category-parent-inactive'
 					)
 				))
 			),
@@ -138,7 +143,8 @@ class ShopCategoryTest extends CakeTestCase {
 					'ShopCategory' => array(
 						'id' => 'active',
 						'name' => 'active',
-						'slug' => 'active'
+						'slug' => 'active',
+						'shop_product_id' => 'active'
 					)
 				))
 			),
@@ -152,11 +158,13 @@ class ShopCategoryTest extends CakeTestCase {
 		$expected = array(array(
 			'id' => 'another',
 			'name' => 'another',
-			'slug' => 'another'
+			'slug' => 'another',
+			'shop_product_id' => 'multi-category'
 		), array(
 			'id' => 'active',
 			'name' => 'active',
-			'slug' => 'active'
+			'slug' => 'active',
+			'shop_product_id' => 'multi-category'
 		));
 
 		$result = $this->{$this->modelClass}->find('related', array(

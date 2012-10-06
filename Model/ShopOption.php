@@ -69,9 +69,11 @@ class ShopOption extends ShopAppModel {
 				throw new InvalidArgumentException('No product specified');
 			}
 
+			$this->virtualFields['shop_product_id'] = $this->ShopProductsOption->alias . '.shop_product_id';
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
-				$this->alias . '.' . $this->displayField
+				$this->alias . '.' . $this->displayField,
+				'shop_product_id'
 			));
 
 			$query['conditions'] = array_merge(

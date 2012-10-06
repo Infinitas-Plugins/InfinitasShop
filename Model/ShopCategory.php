@@ -167,12 +167,14 @@ class ShopCategory extends ShopAppModel {
 				$query['conditions'][$this->alias . '.active'] = 1;
 			}
 
+			$this->virtualFields['shop_product_id'] = $this->ShopCategoriesProduct->alias . '.shop_product_id';
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
 				array(
 					$this->alias . '.' . $this->primaryKey,
 					$this->alias . '.' . $this->displayField,
-					$this->alias . '.slug'
+					$this->alias . '.slug',
+					'shop_product_id'
 				)
 			);
 

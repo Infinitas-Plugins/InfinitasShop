@@ -37,7 +37,8 @@ class ShopProduct extends ShopAppModel {
  * @var array
  */
 	public $findMethods = array(
-		'product' => true
+		'product' => true,
+		'paginated' => true
 	);
 
 /**
@@ -287,6 +288,84 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
+ * @brief find paginated list of products
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findPaginated($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
+
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
+				array(
+					'DISTINCT(ActiveCategory.id)',
+					$this->alias . '.' . $this->primaryKey,
+					$this->alias . '.slug',
+					$this->alias . '.total_stock',
+					$this->alias . '.' . $this->displayField,
+
+					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
+					$this->ShopPrice->alias . '.selling',
+					$this->ShopPrice->alias . '.retail',
+				)
+			);
+
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				array(
+					$this->alias . '.active' => 1,
+					'ActiveCategory.active' => 1,
+				)
+			);
+
+			$query['joins'] = array_filter($query['joins']);
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopCategoriesProduct->fullModelName(),
+				'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
+				'alias' => 'ActiveCategory'
+			));
+
+			$query['group'] = array_merge(
+				(array)$query['group'],
+				array(
+					$this->alias . '.' . $this->primaryKey
+				)
+			);
+
+			return $query;
+		}
+
+		if(empty($results)) {
+			return array();
+		}
+
+		$options = array(
+			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
+			'extract' => true
+		);
+
+		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
+		$shopOptions = $this->ShopProductsOption->ShopOption->find('options', $options);
+		foreach($results as &$result) {
+			unset($result['ActiveCategory']);
+			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result['ShopCategory'] = Hash::extract($shopCategories, $extractTemplate);
+			$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
+		}
+
+		return $results;
+	}
+
+/**
  * @brief get a single product
  *
  * @param string $state the state of the find
@@ -360,8 +439,6 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
 		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
-
-
 
 		return $results;
 	}
