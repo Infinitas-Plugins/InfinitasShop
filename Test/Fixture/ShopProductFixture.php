@@ -68,8 +68,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-04 01:14:47',
+			'modified' => '2012-10-04 01:14:47'
 		),
 		array(
 			'id' => 'inactive-category',
@@ -84,8 +84,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-04 01:12:47',
+			'modified' => '2012-10-04 01:12:47'
 		),
 		array(
 			'id' => 'inactive-parent-category',
@@ -100,8 +100,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-03 01:14:47',
+			'modified' => '2012-10-03 01:14:47'
 		),
 		array(
 			'id' => 'multi-category',
@@ -116,8 +116,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-03 01:13:47',
+			'modified' => '2012-10-03 01:13:47'
 		),
 		array(
 			'id' => 'multi-category-mixed-state',
@@ -132,8 +132,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-02 01:14:47',
+			'modified' => '2012-10-15 01:14:47'
 		),
 		array(
 			'id' => 'multi-category-parent-inactive',
@@ -148,8 +148,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-02 01:13:47',
+			'modified' => '2012-10-16 01:13:47'
 		),
 		array(
 			'id' => 'multi-option',
@@ -164,8 +164,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-01 01:14:47',
+			'modified' => '2012-10-01 01:14:47'
 		),
 		array(
 			'id' => 'no-stock-added',
@@ -180,8 +180,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-01 01:13:47',
+			'modified' => '2012-10-01 01:13:47'
 		),
 		array(
 			'id' => 'out-of-stock',
@@ -196,8 +196,8 @@ class ShopProductFixture extends CakeTestFixture {
 			'views' => 1,
 			'sales' => 1,
 			'shop_supplier_id' => 'supplier-1',
-			'created' => '2012-10-05 01:14:47',
-			'modified' => '2012-10-05 01:14:47'
+			'created' => '2012-10-01 01:12:47',
+			'modified' => '2012-10-15 01:12:47'
 		),
 	);
 

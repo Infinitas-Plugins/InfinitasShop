@@ -151,6 +151,36 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test find wrapper methods
+ *
+ * @param type $data
+ * @param type $expected
+ */
+	public function testFindWrappers() {
+		$expected = array(
+			'active',
+			'inactive-parent-category',
+			'multi-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+			'multi-option'
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('new'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-category-parent-inactive',
+			'multi-category-mixed-state',
+			'active',
+			'inactive-parent-category',
+			'multi-category',
+			'multi-option'
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('updated'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
  * @brief test when no product is passed
  *
  * @expectedException InvalidArgumentException

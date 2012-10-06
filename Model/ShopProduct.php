@@ -38,7 +38,9 @@ class ShopProduct extends ShopAppModel {
  */
 	public $findMethods = array(
 		'product' => true,
-		'paginated' => true
+		'paginated' => true,
+		'new' => true,
+		'updated' => true
 	);
 
 /**
@@ -285,6 +287,56 @@ class ShopProduct extends ShopAppModel {
 				),
 			),
 		);
+	}
+
+/**
+ * @brief find new products
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on created date
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findNew($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['order'] = array(
+				$this->alias . '.created' => 'desc'
+			);
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
+ * @brief find recently updated products
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findUpdated($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['order'] = array(
+				$this->alias . '.modified' => 'desc'
+			);
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
 	}
 
 /**
