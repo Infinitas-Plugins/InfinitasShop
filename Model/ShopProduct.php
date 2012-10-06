@@ -88,7 +88,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopBranchStock' => array(
 			'className' => 'Shop.ShopBranchStock',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -101,7 +101,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopCategoriesProduct' => array(
 			'className' => 'Shop.ShopCategoriesProduct',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -114,7 +114,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopImagesProduct' => array(
 			'className' => 'Shop.ShopImagesProduct',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -127,46 +127,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopList' => array(
 			'className' => 'Shop.ShopList',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopProductSize' => array(
-			'className' => 'Shop.ShopProductSize',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopSpecial' => array(
-			'className' => 'Shop.ShopSpecial',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopSpotlight' => array(
-			'className' => 'Shop.ShopSpotlight',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -179,7 +140,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopProductsOption' => array(
 			'className' => 'Shop.ShopProductsOption',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -192,7 +153,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopProductSize' => array(
 			'className' => 'Shop.ShopProductSize',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -205,7 +166,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopSpecial' => array(
 			'className' => 'Shop.ShopSpecial',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -218,7 +179,7 @@ class ShopProduct extends ShopAppModel {
 		'ShopSpotlight' => array(
 			'className' => 'Shop.ShopSpotlight',
 			'foreignKey' => 'shop_product_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

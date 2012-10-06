@@ -5,7 +5,7 @@ class ShopSupplierFixture extends CakeTestFixture {
 
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL),
+		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
 		'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
 		'address_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
 		'email' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),

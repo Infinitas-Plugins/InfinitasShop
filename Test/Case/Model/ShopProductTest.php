@@ -16,6 +16,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_image',
 		'plugin.shop.shop_supplier',
+		'plugin.shop.shop_branch',
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_categories_product',
 		'plugin.shop.shop_category',
@@ -31,7 +32,8 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_unit',
 		'plugin.shop.shop_unit_type',
 
-		'plugin.view_counter.view_counter_view'
+		'plugin.view_counter.view_counter_view',
+		'plugin.management.trash'
 	);
 
 /**
@@ -527,6 +529,39 @@ class ShopProductTest extends CakeTestCase {
 				)
 			),
 		);
+	}
+
+/**
+ * @brief test deleting a product removes related data
+ */
+	public function testProductDeleteRelations() {
+		$relations = array(
+			'ShopBranchStock',
+			'ShopCategoriesProduct',
+			'ShopImagesProduct',
+			'ShopList',
+			'ShopProductsOption',
+			'ShopProductSize',
+			'ShopSpotlight',
+			'ShopSpecial'
+		);
+		$this->{$this->modelClass}->Behaviors->disable('Trashable');
+
+		foreach($relations as $relation) {
+			$this->{$this->modelClass}->{$relation}->Behaviors->disable('Trashable');
+		}
+
+		$this->assertTrue($this->{$this->modelClass}->delete('active'));
+		$expected = array();
+
+		foreach($relations as $relation) {
+			$result = $this->{$this->modelClass}->{$relation}->find('list', array(
+				'conditions' => array(
+					$relation . '.shop_product_id' => 'active'
+				)
+			));
+			$this->assertEquals($expected, $result, sprintf('%s relation has not been cleared', $relation));
+		}
 	}
 
 }

@@ -1,32 +1,38 @@
 <?php
-/* ShopImagesProduct Fixture generated on: 2010-08-17 14:08:58 : 1282055218 */
+/**
+ * ShopImagesProductFixture
+ *
+ */
 class ShopImagesProductFixture extends CakeTestFixture {
-	public $name = 'ShopImagesProduct';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'image_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'shop_image_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
+		'shop_product_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'fk_shop_images_products_shop_images' => array('column' => 'shop_image_id', 'unique' => 0),
+			'fk_shop_images_products_shop_products1' => array('column' => 'shop_product_id', 'unique' => 0)
+		),
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
-			'id' => 34,
-			'image_id' => 1,
-			'product_id' => 14
-		),
-		array(
-			'id' => 33,
-			'image_id' => 1,
-			'product_id' => 12
-		),
-		array(
-			'id' => 32,
-			'image_id' => 1,
-			'product_id' => 13
+			'id' => 1,
+			'shop_image_id' => 1,
+			'shop_product_id' => 1
 		),
 	);
+
 }
-?>
