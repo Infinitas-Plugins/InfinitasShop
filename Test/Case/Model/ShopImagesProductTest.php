@@ -16,7 +16,7 @@ class ShopImagesProductTest extends CakeTestCase {
 		'plugin.shop.shop_images_product',
 		'plugin.shop.shop_image',
 		'plugin.shop.shop_product',
-		'plugin.shop.view_counter_view'
+		'plugin.view_counter.view_counter_view'
 	);
 
 /**
@@ -27,6 +27,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopImagesProduct = ClassRegistry::init('Shop.ShopImagesProduct');
+		$this->modelClass = $this->ShopImagesProduct->alias;
 	}
 
 /**
@@ -41,7 +42,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
+
 	}
 
 }
