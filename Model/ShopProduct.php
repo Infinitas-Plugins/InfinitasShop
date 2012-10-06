@@ -376,41 +376,7 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findPaginated($state, array $query, array $results = array()) {
 		if($state == 'before') {
-			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
-
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					'DISTINCT(ActiveCategory.id)',
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.slug',
-					$this->alias . '.total_stock',
-					$this->alias . '.' . $this->displayField,
-
-					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
-					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail',
-				)
-			);
-
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.active' => 1,
-					'ActiveCategory.active' => 1,
-				)
-			);
-
-			$query['joins'] = array_filter($query['joins']);
-
-			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
-			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopCategoriesProduct->fullModelName(),
-				'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
-				'alias' => 'ActiveCategory'
-			));
+			$query = $this->_findBasics($state, $query);
 
 			$query['group'] = array_merge(
 				(array)$query['group'],
@@ -456,10 +422,56 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
 		if($state == 'before') {
-			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 			if(empty($query[0])) {
 				throw new InvalidArgumentException('No product selected');
 			}
+
+			$query = $this->_findBasics($state, $query);
+
+			$query['conditions']['or'] = array(
+				$this->alias . '.' . $this->primaryKey => $query[0],
+				$this->alias . '.slug' => $query[0]
+			);
+
+			$query['limit'] = 1;
+
+			return $query;
+		}
+
+		if(empty($results)) {
+			return array();
+		}
+
+		$results = current($results);
+		unset($results['ActiveCategory']);
+
+		$options = array(
+			'shop_product_id' => $results[$this->alias][$this->primaryKey],
+			'extract' => true
+		);
+
+		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
+		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
+		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
+		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
+		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
+
+		return $results;
+	}
+
+/**
+ * @brief setup the basics for the product finds
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findBasics($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -479,10 +491,6 @@ class ShopProduct extends ShopAppModel {
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					'or' => array(
-						$this->alias . '.' . $this->primaryKey => $query[0],
-						$this->alias . '.slug' => $query[0]
-					),
 					$this->alias . '.active' => 1,
 					'ActiveCategory.active' => 1,
 				)
@@ -499,27 +507,8 @@ class ShopProduct extends ShopAppModel {
 				'alias' => 'ActiveCategory'
 			));
 
-			$query['limit'] = 1;
-
 			return $query;
 		}
-
-		if(empty($results)) {
-			throw new CakeException('Product not found');
-		}
-		$results = current($results);
-		unset($results['ActiveCategory']);
-
-		$options = array(
-			'shop_product_id' => $results[$this->alias][$this->primaryKey],
-			'extract' => true
-		);
-
-		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
-		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
-		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
-		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
-		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
 
 		return $results;
 	}
