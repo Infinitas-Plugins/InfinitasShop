@@ -501,6 +501,9 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.total_stock',
 				$this->alias . '.' . $this->displayField,
 
+				$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+				$this->ShopImage->alias . '.image',
+
 				$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
 				$this->ShopPrice->alias . '.selling',
 				$this->ShopPrice->alias . '.retail',
@@ -517,6 +520,7 @@ class ShopProduct extends ShopAppModel {
 
 		$query['joins'] = array_filter($query['joins']);
 
+		$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
 		$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
 		$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
 		$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());

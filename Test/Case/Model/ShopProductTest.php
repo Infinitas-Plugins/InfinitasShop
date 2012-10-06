@@ -70,6 +70,7 @@ class ShopProductTest extends CakeTestCase {
 		foreach($expected as &$v) {
 			$v = array_merge(
 				array(
+					'ShopImage' => array('id' => null, 'image' => null),
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
 				),
@@ -105,6 +106,10 @@ class ShopProductTest extends CakeTestCase {
 							'slug' => 'active',
 							'name' => 'active',
 							'total_stock' => 25
+						),
+						'ShopImage' => array(
+							'id' => 'image-product-active',
+							'image' => 'image-product-active.png'
 						),
 						'ShopPrice' => array(
 							'id' => 'active',
@@ -244,6 +249,7 @@ class ShopProductTest extends CakeTestCase {
 	public function testFindProduct($data, $expected) {
 		$expected = array_merge(
 			array(
+				'ShopImage' => array('id' => null, 'image' => null),
 				'ShopBranchStock' => array(),
 				'ShopProductSize' => array(),
 				'ShopOption' => array(),
@@ -269,6 +275,10 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'active',
 						'name' => 'active',
 						'total_stock' => '25'
+					),
+					'ShopImage' => array(
+						'id' => 'image-product-active',
+						'image' => 'image-product-active.png'
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -436,6 +446,10 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'multi-option',
 						'name' => 'multi-option',
 						'total_stock' => null
+					),
+					'ShopImage' => array(
+						'id' => 'image-product-multi-option',
+						'image' => 'image-product-multi-option.png'
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
