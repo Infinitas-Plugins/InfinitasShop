@@ -21,14 +21,14 @@ class ShopImagesProduct extends ShopAppModel {
  */
 	public $belongsTo = array(
 		'ShopImage' => array(
-			'className' => 'ShopImage',
+			'className' => 'Shop.ShopImage',
 			'foreignKey' => 'shop_image_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
 		'ShopProduct' => array(
-			'className' => 'ShopProduct',
+			'className' => 'Shop.ShopProduct',
 			'foreignKey' => 'shop_product_id',
 			'conditions' => '',
 			'fields' => '',

@@ -36,7 +36,7 @@ class ShopSpotlightFixture extends CakeTestFixture {
 		array(
 			'id' => 'spotlight-multi-option',
 			'shop_product_id' => 'multi-option',
-			'shop_image_id' => 'image',
+			'shop_image_id' => 'image-spotlight-multi-option',
 			'start_date' => '2012-09-06 00:00:00',
 			'end_date' => '2050-10-06 23:59:59',
 			'active' => 1,
@@ -46,7 +46,7 @@ class ShopSpotlightFixture extends CakeTestFixture {
 		array(
 			'id' => 'spotlight-active',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => null,
 			'start_date' => '2012-10-06 00:00:00',
 			'end_date' => '2050-10-06 23:59:59',
 			'active' => 0,
@@ -56,7 +56,7 @@ class ShopSpotlightFixture extends CakeTestFixture {
 		array(
 			'id' => 'spotlight-active-pending',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => 'image-spotlight-active-pending',
 			'start_date' => '2050-10-06 00:00:00',
 			'end_date' => '2051-10-06 23:59:59',
 			'active' => 1,
@@ -66,7 +66,7 @@ class ShopSpotlightFixture extends CakeTestFixture {
 		array(
 			'id' => 'spotlight-active-expired',
 			'shop_product_id' => 'active',
-			'shop_image_id' => 'image',
+			'shop_image_id' => null,
 			'start_date' => '2010-10-06 00:00:00',
 			'end_date' => '2011-10-06 23:59:59',
 			'active' => 1,
