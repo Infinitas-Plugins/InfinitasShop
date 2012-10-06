@@ -69,6 +69,27 @@ class ShopImageFixture extends CakeTestFixture {
 			'ext' => 'png',
 			'created' => '2012-10-06 15:55:43',
 			'modified' => '2012-10-06 15:55:43'
+		),
+		array(
+			'id' => 'shared-image-1',
+			'image' => 'shared-image-1.png',
+			'ext' => 'png',
+			'created' => '2012-10-06 15:55:43',
+			'modified' => '2012-10-06 15:55:43'
+		),
+		array(
+			'id' => 'shared-image-2',
+			'image' => 'shared-image-2.png',
+			'ext' => 'png',
+			'created' => '2012-10-06 15:55:43',
+			'modified' => '2012-10-06 15:55:43'
+		),
+		array(
+			'id' => 'shared-image-3',
+			'image' => 'shared-image-3.png',
+			'ext' => 'png',
+			'created' => '2012-10-06 15:55:43',
+			'modified' => '2012-10-06 15:55:43'
 		)
 	);
 

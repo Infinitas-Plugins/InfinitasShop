@@ -14,6 +14,10 @@ class ShopImagesProduct extends ShopAppModel {
  */
 	public $validate = array();
 
+	public $findMethods = array(
+		'images' => true
+	);
+
 /**
  * belongsTo associations
  *
@@ -60,5 +64,63 @@ class ShopImagesProduct extends ShopAppModel {
 				),
 			),
 		);
+	}
+
+/**
+ * @brief find related images
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findImages($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query['shop_product_id'])) {
+				throw new InvalidArgumentException('No product selected');
+			}
+
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
+				array(
+					$this->alias . '.shop_product_id',
+					$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+					$this->ShopImage->alias . '.image'
+				)
+			);
+
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				array(
+					$this->alias . '.shop_product_id' => $query['shop_product_id'],
+				)
+			);
+
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel($this->ShopImage->fullModelName())
+				)
+			);
+			return $query;
+		}
+
+		if(empty($results)) {
+			return array();
+		}
+
+		foreach($results as &$result) {
+			$result[$this->ShopImage->alias]['shop_product_id'] = $result[$this->alias]['shop_product_id'];
+			$result = array(
+				$this->ShopImage->alias => $result[$this->ShopImage->alias]
+			);
+		}
+
+		if(isset($query['extract']) && $query['extract']) {
+			return Hash::extract($results, '{n}.' . $this->ShopImage->alias);
+		}
+
+		return $results;
 	}
 }

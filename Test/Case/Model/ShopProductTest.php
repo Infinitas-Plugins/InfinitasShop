@@ -216,48 +216,26 @@ class ShopProductTest extends CakeTestCase {
 		$this->{$this->modelClass}->find('product');
 	}
 
-	/**
- * @brief test inactive products are not found
- *
- * @expectedException InvalidArgumentException
- *
- * @dataProvider findProductInactiveDataProvider
- */
-	public function testFindProductInactive($data) {
-		$this->{$this->modelClass}->find('product', $data);
-	}
-
-/**
- * @brief data provider for finding on inactive products
- *
- * @return arra
- */
-	public function findProductInactiveDataProvider() {
-		return array(
-			array('inactive'),
-			array('inactive-category'),
-			array('inactive-parent'),
-			array('missing-product-does-not-exist')
-		);
-	}
-
 /**
  * @brief test find products
  *
  * @dataProvider findProductDataProvider
  */
 	public function testFindProduct($data, $expected) {
-		$expected = array_merge(
-			array(
-				'ShopImage' => array('id' => null, 'image' => null),
-				'ShopBranchStock' => array(),
-				'ShopProductSize' => array(),
-				'ShopOption' => array(),
-				'ShopSpecial' => array(),
-				'ShopSpotlight' => array(),
-			),
-			$expected
-		);
+		if(!empty($expected)) {
+			$expected = array_merge(
+				array(
+					'ShopImage' => array('id' => null, 'image' => null),
+					'ShopBranchStock' => array(),
+					'ShopProductSize' => array(),
+					'ShopOption' => array(),
+					'ShopSpecial' => array(),
+					'ShopSpotlight' => array(),
+					'ShopImagesProduct' => array()
+				),
+				$expected
+			);
+		}
 		$result = $this->{$this->modelClass}->find('product', $data);
 		$this->assertEquals($expected, $result);
 	}
@@ -267,6 +245,10 @@ class ShopProductTest extends CakeTestCase {
  */
 	public function findProductDataProvider() {
 		return array(
+			'made-up' => array(
+				'made-up',
+				array()
+			),
 			'active' => array(
 				'active',
 				array(
@@ -279,6 +261,18 @@ class ShopProductTest extends CakeTestCase {
 					'ShopImage' => array(
 						'id' => 'image-product-active',
 						'image' => 'image-product-active.png'
+					),
+					'ShopImagesProduct' => array(
+						array(
+							'id' => 'shared-image-1',
+							'image' => 'shared-image-1.png',
+							'shop_product_id' => 'active'
+						),
+						array(
+							'id' => 'shared-image-2',
+							'image' => 'shared-image-2.png',
+							'shop_product_id' => 'active'
+						)
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -390,6 +384,13 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category',
 						'selling' => '6.00000',
 						'retail' => '7.00000'
+					),
+					'ShopImagesProduct' => array(
+						array(
+							'id' => 'shared-image-2',
+							'image' => 'shared-image-2.png',
+							'shop_product_id' => 'multi-category'
+						)
 					)
 				)
 			),

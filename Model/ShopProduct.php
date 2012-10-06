@@ -457,7 +457,7 @@ class ShopProduct extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if(empty($results[0][$this->alias][$this->primaryKey])) {
 			return array();
 		}
 
@@ -475,6 +475,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
 		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
+		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
 
 		return $results;
 	}
