@@ -69,6 +69,7 @@ class ShopProductTest extends CakeTestCase {
 			$v = array_merge(
 				array(
 					'ShopSpecial' => array(),
+					'ShopSpotlight' => array(),
 				),
 				$v
 			);
@@ -191,6 +192,12 @@ class ShopProductTest extends CakeTestCase {
 		);
 		$result = Hash::extract($this->{$this->modelClass}->find('specials'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-option'
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('spotlights'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -237,8 +244,9 @@ class ShopProductTest extends CakeTestCase {
 			array(
 				'ShopBranchStock' => array(),
 				'ShopProductSize' => array(),
-				'ShopSpecial' => array(),
 				'ShopOption' => array(),
+				'ShopSpecial' => array(),
+				'ShopSpotlight' => array(),
 			),
 			$expected
 		);
@@ -504,6 +512,14 @@ class ShopProductTest extends CakeTestCase {
 							'shop_product_id' => 'multi-option',
 							'discount' => 10,
 							'amount' => null,
+							'start_date' => '2012-09-06 00:00:00',
+							'end_date' => '2050-10-06 23:59:59',
+						)
+					),
+					'ShopSpotlight' => array(
+						array(
+							'id' => 'spotlight-multi-option',
+							'shop_product_id' => 'multi-option',
 							'start_date' => '2012-09-06 00:00:00',
 							'end_date' => '2050-10-06 23:59:59',
 						)

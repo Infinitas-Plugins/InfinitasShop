@@ -41,7 +41,8 @@ class ShopProduct extends ShopAppModel {
 		'paginated' => true,
 		'new' => true,
 		'updated' => true,
-		'specials' => true
+		'specials' => true,
+		'spotlights' => true
 	);
 
 /**
@@ -394,6 +395,33 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
+ * @brief find recently updated products
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findSpotlights($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				$this->ShopSpotlight->conditions()
+			);
+			$query['joins'][] = $this->autoJoinModel($this->ShopSpotlight->fullModelName());
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
  * @brief find paginated list of products
  *
  * @param string $state
@@ -428,12 +456,14 @@ class ShopProduct extends ShopAppModel {
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$shopOptions = $this->ShopProductsOption->ShopOption->find('options', $options);
 		$shopSpecials = $this->ShopSpecial->find('specials', $options);
+		$shopSpotlights = $this->ShopSpotlight->find('spotlights', $options);
 		foreach($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result['ShopCategory'] = Hash::extract($shopCategories, $extractTemplate);
 			$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
 			$result['ShopSpecial'] = Hash::extract($shopSpecials, $extractTemplate);
+			$result['ShopSpotlight'] = Hash::extract($shopSpotlights, $extractTemplate);
 		}
 
 		return $results;
@@ -483,6 +513,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
 		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
 		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
+		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 
 		return $results;
 	}

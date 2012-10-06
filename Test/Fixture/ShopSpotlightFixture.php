@@ -11,9 +11,9 @@ class ShopSpotlightFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
-		'shop_product_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
-		'shop_image_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'key' => 'index'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index'),
 		'start_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'end_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'active' => array('type' => 'integer', 'null' => false, 'default' => '1'),
@@ -34,14 +34,44 @@ class ShopSpotlightFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'shop_product_id' => 1,
-			'shop_image_id' => 1,
-			'start_date' => '2012-10-06 12:10:38',
-			'end_date' => '2012-10-06 12:10:38',
+			'id' => 'spotlight-multi-option',
+			'shop_product_id' => 'multi-option',
+			'shop_image_id' => 'image',
+			'start_date' => '2012-09-06 00:00:00',
+			'end_date' => '2050-10-06 23:59:59',
 			'active' => 1,
-			'created' => '2012-10-06 12:10:38',
-			'modified' => '2012-10-06 12:10:38'
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'spotlight-active',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'start_date' => '2012-10-06 00:00:00',
+			'end_date' => '2050-10-06 23:59:59',
+			'active' => 0,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'spotlight-active-pending',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'start_date' => '2050-10-06 00:00:00',
+			'end_date' => '2051-10-06 23:59:59',
+			'active' => 1,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'spotlight-active-expired',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'start_date' => '2010-10-06 00:00:00',
+			'end_date' => '2011-10-06 23:59:59',
+			'active' => 1,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
 		),
 	);
 
