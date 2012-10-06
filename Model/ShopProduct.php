@@ -66,6 +66,13 @@ class ShopProduct extends ShopAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'ShopProductType' => array(
+			'className' => 'Shop.ShopProductType',
+			'foreignKey' => 'shop_product_type_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 

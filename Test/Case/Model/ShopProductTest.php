@@ -26,7 +26,6 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_price',
-		'plugin.shop.shop_products_option',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_unit',

@@ -3,7 +3,8 @@
  * ShopOption Model
  *
  * @property ShopOptionValue $ShopOptionValue
- * @property ShopProductsOption $ShopProductsOption
+ * @property ShopProductsOptionIgnore $ShopProductsOptionIgnore
+ * @property ShopProductTypesOption $ShopProductTypesOption
  */
 class ShopOption extends ShopAppModel {
 
@@ -27,7 +28,7 @@ class ShopOption extends ShopAppModel {
 		'ShopOptionValue' => array(
 			'className' => 'Shop.ShopOptionValue',
 			'foreignKey' => 'shop_option_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -37,10 +38,10 @@ class ShopOption extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'ShopProductsOption' => array(
-			'className' => 'Shop.ShopProductsOption',
+		'ShopProductsOptionIgnore' => array(
+			'className' => 'Shop.ShopProductsOptionIgnore',
 			'foreignKey' => 'shop_option_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -49,7 +50,20 @@ class ShopOption extends ShopAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'ShopProductTypesOption' => array(
+			'className' => 'Shop.ShopProductTypesOption',
+			'foreignKey' => 'shop_option_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 	);
 
 /**

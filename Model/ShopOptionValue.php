@@ -4,6 +4,8 @@
  *
  * @property ShopOption $ShopOption
  * @property ShopPrice $ShopPrice
+ * @property ShopProductsOptionValueIgnore $ShopProductsOptionValueIgnore
+ * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
  */
 class ShopOptionValue extends ShopAppModel {
 
@@ -38,11 +40,40 @@ class ShopOptionValue extends ShopAppModel {
 			'className' => 'Shop.ShopPrice',
 			'foreignKey' => 'foreign_key',
 			'conditions' => array(
-				'ShopPrice.model = "Shop.ShopOptionValue"'
+				'ShopPrice.model' => 'Shop.ShopOptionValue'
 			),
 			'fields' => '',
 			'order' => ''
 		)
+	);
+
+	public $hasMany = array(
+		'ShopProductsOptionValueIgnore' => array(
+			'className' => 'Shop.ShopProductsOptionValueIgnore',
+			'foreignKey' => 'shop_option_value_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopProductsOptionValueOverride' => array(
+			'className' => 'Shop.ShopProductsOptionValueOverride',
+			'foreignKey' => 'shop_option_value_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 	);
 
 /**
@@ -85,7 +116,7 @@ class ShopOptionValue extends ShopAppModel {
 
 			return $query;
 		}
-		
+
 		foreach($results as &$result) {
 			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
 			unset($results[$this->ShopPrice->alias]);

@@ -1,11 +1,11 @@
 <?php
 /**
- * ShopProductsOption Model
+ * ShopProductTypesOption Model
  *
  * @property ShopOption $ShopOption
- * @property ShopProduct $ShopProduct
+ * @property ShopProductType $ShopProductType
  */
-class ShopProductsOption extends ShopAppModel {
+class ShopProductTypesOption extends ShopAppModel {
 
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -23,9 +23,9 @@ class ShopProductsOption extends ShopAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'ShopProduct' => array(
-			'className' => 'Shop.ShopProduct',
-			'foreignKey' => 'shop_product_id',
+		'ShopProductType' => array(
+			'className' => 'Shop.ShopProductType',
+			'foreignKey' => 'shop_product_type_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
