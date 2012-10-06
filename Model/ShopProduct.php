@@ -42,7 +42,9 @@ class ShopProduct extends ShopAppModel {
 		'new' => true,
 		'updated' => true,
 		'specials' => true,
-		'spotlights' => true
+		'spotlights' => true,
+		'mostViewed' => true,
+		'mostPurchased' => true
 	);
 
 /**
@@ -320,6 +322,60 @@ class ShopProduct extends ShopAppModel {
 
 			$query['order'] = array(
 				$this->alias . '.modified' => 'desc'
+			);
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
+ * @brief find most viewed
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on viewed field
+ * and then by newest to give new products a chance to catch up
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findMostViewed($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['order'] = array(
+				$this->alias . '.views' => 'desc',
+				$this->alias . '.created' => 'desc',
+			);
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
+ * @brief find most viewed
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on viewed field
+ * and then by newest to give new products a chance to catch up
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findMostPurchased($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['order'] = array(
+				$this->alias . '.sales' => 'desc',
+				$this->alias . '.created' => 'desc',
 			);
 
 			return $query;

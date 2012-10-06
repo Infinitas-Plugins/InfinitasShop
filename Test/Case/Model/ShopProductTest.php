@@ -205,6 +205,28 @@ class ShopProductTest extends CakeTestCase {
 		);
 		$result = Hash::extract($this->{$this->modelClass}->find('spotlights'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-option',
+			'multi-category',
+			'multi-category-mixed-state',
+			'active',
+			'inactive-parent-category',
+			'multi-category-parent-inactive',
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('mostViewed'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-category',
+			'multi-option',
+			'active',
+			'inactive-parent-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('mostPurchased'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
 	}
 
 /**
