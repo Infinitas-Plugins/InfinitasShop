@@ -17,7 +17,7 @@ class ShopProductFixture extends CakeTestFixture {
 		'description' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'specifications' => array('type' => 'text', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'rating' => array('type' => 'float', 'null' => true, 'default' => '0'),
 		'rating_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'views' => array('type' => 'integer', 'null' => false, 'default' => '0'),
