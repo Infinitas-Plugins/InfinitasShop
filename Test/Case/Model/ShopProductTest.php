@@ -42,7 +42,6 @@ class ShopProductTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopProduct = ClassRegistry::init('Shop.ShopProduct');
-
 		$this->modelClass = 'ShopProduct';
 	}
 
@@ -66,6 +65,14 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findPaginatedDataProvider
  */
 	public function testFindPaginated($data, $expected) {
+		foreach($expected as &$v) {
+			$v = array_merge(
+				array(
+					'ShopSpecial' => array(),
+				),
+				$v
+			);
+		}
 		$result = $this->{$this->modelClass}->find('paginated', $data);
 		$this->assertEquals($expected, $result);
 	}
@@ -220,6 +227,15 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findProductDataProvider
  */
 	public function testFindProduct($data, $expected) {
+		$expected = array_merge(
+			array(
+				'ShopBranchStock' => array(),
+				'ShopProductSize' => array(),
+				'ShopSpecial' => array(),
+				'ShopOption' => array(),
+			),
+			$expected
+		);
 		$result = $this->{$this->modelClass}->find('product', $data);
 		$this->assertEquals($expected, $result);
 	}
@@ -348,10 +364,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category',
 						'selling' => '6.00000',
 						'retail' => '7.00000'
-					),
-					'ShopOption' => array(),
-					'ShopBranchStock' => array(),
-					'ShopProductSize' => array()
+					)
 				)
 			),
 			'mixed-state' => array(
@@ -373,10 +386,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-mixed-state',
 						'selling' => '12.00000',
 						'retail' => '15.00000'
-					),
-					'ShopOption' => array(),
-					'ShopBranchStock' => array(),
-					'ShopProductSize' => array()
+					)
 				)
 			),
 			'mixed-state-parent-inactive' => array(
@@ -398,10 +408,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-parent-inactive',
 						'selling' => '12.00000',
 						'retail' => '15.00000'
-					),
-					'ShopOption' => array(),
-					'ShopBranchStock' => array(),
-					'ShopProductSize' => array()
+					)
 				)
 			),
 
@@ -485,8 +492,16 @@ class ShopProductTest extends CakeTestCase {
 								)
 							)))
 					),
-					'ShopBranchStock' => array(),
-					'ShopProductSize' => array()
+					'ShopSpecial' => array(
+						array(
+							'id' => 'special-multi-option',
+							'shop_product_id' => 'multi-option',
+							'discount' => 10,
+							'amount' => null,
+							'start_date' => '2012-09-06 00:00:00',
+							'end_date' => '2050-10-06 23:59:59',
+						)
+					)
 				)
 			),
 		);

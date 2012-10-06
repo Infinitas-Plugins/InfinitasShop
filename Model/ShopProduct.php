@@ -199,6 +199,32 @@ class ShopProduct extends ShopAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'ShopSpecial' => array(
+			'className' => 'Shop.ShopSpecial',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopSpotlight' => array(
+			'className' => 'Shop.ShopSpotlight',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		)
 	);
 
@@ -407,11 +433,13 @@ class ShopProduct extends ShopAppModel {
 
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$shopOptions = $this->ShopProductsOption->ShopOption->find('options', $options);
+		$shopSpecials = $this->ShopSpecial->find('specials', $options);
 		foreach($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result['ShopCategory'] = Hash::extract($shopCategories, $extractTemplate);
 			$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
+			$result['ShopSpecial'] = Hash::extract($shopSpecials, $extractTemplate);
 		}
 
 		return $results;
@@ -491,6 +519,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopOption'] = $this->ShopProductsOption->ShopOption->find('options', $options);
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
 		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
+		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
 
 		return $results;
 	}

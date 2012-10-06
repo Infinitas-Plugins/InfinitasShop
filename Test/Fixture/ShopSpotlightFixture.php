@@ -1,68 +1,48 @@
 <?php
-/* ShopSpotlight Fixture generated on: 2010-08-17 14:08:11 : 1282055231 */
+/**
+ * ShopSpotlightFixture
+ *
+ */
 class ShopSpotlightFixture extends CakeTestFixture {
-	public $name = 'ShopSpotlight';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
-		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'start_date' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'end_date' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'start_time' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'end_time' => array('type' => 'date', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'shop_product_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'index'),
+		'shop_image_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'key' => 'index'),
+		'start_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'end_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'active' => array('type' => 'integer', 'null' => false, 'default' => '1'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'fk_shop_spotlights_shop_images1' => array('column' => 'shop_image_id', 'unique' => 0),
+			'fk_shop_spotlights_shop_products1' => array('column' => 'shop_product_id', 'unique' => 0)
+		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
 			'id' => 1,
-			'product_id' => 1,
-			'image_id' => 11,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-04-23 18:50:26',
-			'modified' => '2010-05-17 16:15:39',
-			'start_date' => '2010-05-02',
-			'end_date' => '2010-05-23',
-			'start_time' => '0000-00-00',
-			'end_time' => '0000-00-00',
-			'active' => 1
-		),
-		array(
-			'id' => 2,
-			'product_id' => 3,
-			'image_id' => 6,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-17 16:14:59',
-			'modified' => '2010-05-17 16:14:59',
-			'start_date' => '2010-05-16',
-			'end_date' => '2010-05-23',
-			'start_time' => '0000-00-00',
-			'end_time' => '0000-00-00',
-			'active' => 1
-		),
-		array(
-			'id' => 3,
-			'product_id' => 2,
-			'image_id' => 0,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-17 16:47:25',
-			'modified' => '2010-05-17 16:47:25',
-			'start_date' => '2010-05-16',
-			'end_date' => '2010-06-20',
-			'start_time' => '0000-00-00',
-			'end_time' => '0000-00-00',
-			'active' => 1
+			'shop_product_id' => 1,
+			'shop_image_id' => 1,
+			'start_date' => '2012-10-06 12:10:38',
+			'end_date' => '2012-10-06 12:10:38',
+			'active' => 1,
+			'created' => '2012-10-06 12:10:38',
+			'modified' => '2012-10-06 12:10:38'
 		),
 	);
+
 }
-?>

@@ -1,76 +1,88 @@
 <?php
-/* ShopSpecial Fixture generated on: 2010-08-17 14:08:08 : 1282055228 */
+/**
+ * ShopSpecialFixture
+ *
+ */
 class ShopSpecialFixture extends CakeTestFixture {
-	public $name = 'ShopSpecial';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36),
-		'discount' => array('type' => 'float', 'null' => true, 'default' => NULL),
-		'amount' => array('type' => 'float', 'null' => true, 'default' => NULL),
-		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'start_date' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'end_date' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'start_time' => array('type' => 'date', 'null' => false, 'default' => NULL),
-		'end_time' => array('type' => 'date', 'null' => false, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index'),
+		'discount' => array('type' => 'float', 'null' => true, 'default' => null),
+		'amount' => array('type' => 'float', 'null' => true, 'default' => null),
+		'start_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'end_date' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '1'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1),
+			'fk_shop_specials_shop_products1' => array('column' => 'shop_product_id', 'unique' => 0),
+			'fk_shop_specials_shop_images1' => array('column' => 'shop_image_id', 'unique' => 0)
+		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
-			'id' => 2,
-			'product_id' => 2,
-			'image_id' => 13,
-			'discount' => 30.67,
-			'amount' => 46.01,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-04 01:14:34',
-			'modified' => '2010-05-04 01:14:34',
-			'start_date' => '2010-05-01',
-			'end_date' => '2010-05-13',
-			'start_time' => '2001-00-00',
-			'end_time' => '2001-00-00',
-			'active' => 1
-		),
-		array(
-			'id' => 3,
-			'product_id' => 1,
-			'image_id' => 0,
-			'discount' => 0,
-			'amount' => 50,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-11 16:30:06',
-			'modified' => '2010-05-11 16:30:06',
-			'start_date' => '2010-05-10',
-			'end_date' => '2010-05-17',
-			'start_time' => '0000-00-00',
-			'end_time' => '0000-00-00',
-			'active' => 1
-		),
-		array(
-			'id' => 5,
-			'product_id' => 3,
-			'image_id' => 0,
+			'id' => 'special-multi-option',
+			'shop_product_id' => 'multi-option',
+			'shop_image_id' => 'image',
 			'discount' => 10,
-			'amount' => 20,
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-05-11 16:33:55',
-			'modified' => '2010-05-11 16:33:55',
-			'start_date' => '2010-05-10',
-			'end_date' => '2010-05-14',
-			'start_time' => '0000-00-00',
-			'end_time' => '0000-00-00',
-			'active' => 1
+			'amount' => null,
+			'start_date' => '2012-09-06 00:00:00',
+			'end_date' => '2050-10-06 23:59:59',
+			'active' => 1,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'special-active',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'discount' => 15,
+			'amount' => null,
+			'start_date' => '2012-10-06 00:00:00',
+			'end_date' => '2050-10-06 23:59:59',
+			'active' => 0,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'special-active-pending',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'discount' => 15,
+			'amount' => null,
+			'start_date' => '2050-10-06 00:00:00',
+			'end_date' => '2051-10-06 23:59:59',
+			'active' => 1,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
+		),
+		array(
+			'id' => 'special-active-expired',
+			'shop_product_id' => 'active',
+			'shop_image_id' => 'image',
+			'discount' => 15,
+			'amount' => null,
+			'start_date' => '2010-10-06 00:00:00',
+			'end_date' => '2011-10-06 23:59:59',
+			'active' => 1,
+			'created' => '2012-10-06 12:09:58',
+			'modified' => '2012-10-06 12:09:58'
 		),
 	);
+
 }
-?>

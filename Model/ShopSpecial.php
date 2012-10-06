@@ -1,109 +1,127 @@
 <?php
-	class ShopSpecial extends ShopAppModel {
-		public $virtualFields = array(
-			'start' => 'CONCAT(Special.start_date, " ", Special.start_time)',
-			'end'   => 'CONCAT(Special.end_date, " ", Special.end_time)'
-		);
+/**
+ * ShopSpecial Model
+ *
+ * @property ShopProduct $ShopProduct
+ * @property ShopImage $ShopImage
+ */
+class ShopSpecial extends ShopAppModel {
 
-		public $order = array(
-			'end' => 'ASC'
-		);
+/**
+ * Validation rules
+ *
+ * @var array
+ */
+	public $validate = array();
 
-		public $belongsTo = array(
-			'Image' => array(
-				'className' => 'Shop.ShopImage',
-				'foreignKey' => 'shop_image_id',
-				'fields' => array(
-					'Image.id',
-					'Image.image',
-					'Image.width',
-					'Image.height'
+	public $findMethods = array(
+		'specials' => true
+	);
+
+/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'ShopProduct' => array(
+			'className' => 'Shop.ShopProduct',
+			'foreignKey' => 'shop_product_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopImage' => array(
+			'className' => 'Shop.ShopImage',
+			'foreignKey' => 'shop_image_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		)
+	);
+
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+
+		$this->validate = array(
+			'shop_product_id' => array(
+				'numeric' => array(
+					'rule' => array('numeric'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
-				'conditions' => array(),
-				'order' => array(
-					'Image.image' => 'ASC'
-				)
 			),
-			'Product' => array(
-				'className' => 'Shop.ShopProduct',
-				'foreignKey' => 'shop_product_id',
-				'fields' => array(
-					'Product.id',
-					'Product.name',
-					'Product.slug',
-					'Product.description',
-					'Product.image_id',
-					'Product.cost',
-					'Product.retail',
-					'Product.price',
-					'Product.active',
-					'Product.image_id',
+			'start_date' => array(
+				'date' => array(
+					'rule' => array('date'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
-				'conditions' => array(),
-				'order' => array(
-					'Product.name' => 'ASC'
-				)
-			)
-		);
-
-		public $hasAndBelongsToMany = array(
-			'ShopBranch' => array(
-				'className' => 'Shop.ShopBranch',
-				'foreignKey' => 'shop_branch_id',
-				'associationForeignKey' => 'shop_special_id',
-				'with' => 'Shop.BranchesSpecial',
-				'unique' => true,
-				'conditions' => '',
-				'fields' => array(
-					'ShopBranch.id',
-					'ShopBranch.name'
+			),
+			'end_date' => array(
+				'date' => array(
+					'rule' => array('date'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
 				),
-				'order' => '',
-				'limit' => '',
-				'offset' => '',
-				'finderQuery' => '',
-				'deleteQuery' => '',
-				'insertQuery' => ''
+			),
+			'active' => array(
+				'boolean' => array(
+					'rule' => array('boolean'),
+					//'message' => 'Your custom message here',
+					//'allowEmpty' => false,
+					//'required' => false,
+					//'last' => false, // Stop validation after this rule
+					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				),
 			),
 		);
+	}
 
-		public function getSpecials($limit = 10) {
-			$cacheName = cacheName('products_specials', $limit);
-			$specials = Cache::read($cacheName, 'shop');
-			if($specials !== false) {
-				return $specials;
+	protected function _findSpecials($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query['shop_product_id'])) {
+				throw new InvalidArgumentException('No product selected');
 			}
-			$specials = $this->find(
-				'all',
+
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
 				array(
-					'fields' => array(
-						$this->alais . '.id',
-						$this->alais . '.shop_image_id',
-						$this->alais . '.amount',
-						$this->alais . '.active',
-						$this->alais . '.start_date',
-						$this->alais . '.end_date'
-					),
-					'conditions' => array(
-						$this->alais . '.active' => 1,
-						'and' => array(
-							'start <= ' => date('Y-m-d H:i:s'),
-							'end >= ' => date('Y-m-d H:i:s')
-						)
-					),
-					'contain' => array(
-						'Product' => array(
-							'Image',
-							'ShopCategory'
-						),
-						'Image'
-					),
-					'limit' => $limit
+					$this->alias . '.' . $this->primaryKey,
+					$this->alias . '.shop_product_id',
+					$this->alias . '.discount',
+					$this->alias . '.amount',
+					$this->alias . '.start_date',
+					$this->alias . '.end_date',
 				)
 			);
 
-			Cache::write($cacheName, $specials, 'shop');
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				array(
+					$this->alias . '.shop_product_id' => $query['shop_product_id'],
+					$this->alias . '.active' => 1,
+					$this->alias . '.start_date <= ' => date('Y-m-d H:i:s'),
+					$this->alias . '.end_date >= ' => date('Y-m-d H:i:s')
+				)
+			);
 
-			return $specials;
+			return $query;
 		}
+
+		if(!empty($query['extract']) && $query['extract']) {
+			return Hash::extract($results, '{n}.' . $this->alias);
+		}
+
+		return $results;
 	}
+}
