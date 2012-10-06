@@ -40,7 +40,8 @@ class ShopProduct extends ShopAppModel {
 		'product' => true,
 		'paginated' => true,
 		'new' => true,
-		'updated' => true
+		'updated' => true,
+		'specials' => true
 	);
 
 /**
@@ -366,6 +367,33 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
+ * @brief find recently updated products
+ *
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findSpecials($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				$this->ShopSpecial->conditions()
+			);
+			$query['joins'][] = $this->autoJoinModel($this->ShopSpecial->fullModelName());
+
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
  * @brief find paginated list of products
  *
  * @param string $state
@@ -470,47 +498,43 @@ class ShopProduct extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findBasics($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
+		$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					'DISTINCT(ActiveCategory.id)',
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.slug',
-					$this->alias . '.total_stock',
-					$this->alias . '.' . $this->displayField,
+		$query['fields'] = array_merge(
+			(array)$query['fields'],
+			array(
+				'DISTINCT(ActiveCategory.id)',
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.slug',
+				$this->alias . '.total_stock',
+				$this->alias . '.' . $this->displayField,
 
-					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
-					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail',
-				)
-			);
+				$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
+				$this->ShopPrice->alias . '.selling',
+				$this->ShopPrice->alias . '.retail',
+			)
+		);
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.active' => 1,
-					'ActiveCategory.active' => 1,
-				)
-			);
+		$query['conditions'] = array_merge(
+			(array)$query['conditions'],
+			array(
+				$this->alias . '.active' => 1,
+				'ActiveCategory.active' => 1,
+			)
+		);
 
-			$query['joins'] = array_filter($query['joins']);
+		$query['joins'] = array_filter($query['joins']);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
-			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopCategoriesProduct->fullModelName(),
-				'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
-				'alias' => 'ActiveCategory'
-			));
+		$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
+		$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
+		$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
+		$query['joins'][] = $this->autoJoinModel(array(
+			'from' => $this->ShopCategoriesProduct->fullModelName(),
+			'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
+			'alias' => 'ActiveCategory'
+		));
 
-			return $query;
-		}
-
-		return $results;
+		return $query;
 	}
 
 }

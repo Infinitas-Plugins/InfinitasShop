@@ -185,6 +185,12 @@ class ShopProductTest extends CakeTestCase {
 		);
 		$result = Hash::extract($this->{$this->modelClass}->find('updated'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-option'
+		);
+		$result = Hash::extract($this->{$this->modelClass}->find('specials'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
 	}
 
 /**

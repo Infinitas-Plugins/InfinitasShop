@@ -87,6 +87,17 @@ class ShopSpecial extends ShopAppModel {
 		);
 	}
 
+/**
+ * @brief find a list of specials
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
 	protected function _findSpecials($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			if(empty($query['shop_product_id'])) {
@@ -107,11 +118,9 @@ class ShopSpecial extends ShopAppModel {
 
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
+				$this->conditions(),
 				array(
 					$this->alias . '.shop_product_id' => $query['shop_product_id'],
-					$this->alias . '.active' => 1,
-					$this->alias . '.start_date <= ' => date('Y-m-d H:i:s'),
-					$this->alias . '.end_date >= ' => date('Y-m-d H:i:s')
 				)
 			);
 
@@ -123,5 +132,20 @@ class ShopSpecial extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+/**
+ * @brief reusable conditions for finding specials that are current and usable to shoppers
+ *
+ * @return array
+ */
+	public function conditions() {
+		return array(
+			'and' => array(
+				$this->alias . '.active' => 1,
+				$this->alias . '.start_date <= ' => date('Y-m-d H:i:s'),
+				$this->alias . '.end_date >= ' => date('Y-m-d H:i:s')
+			)
+		);
 	}
 }
