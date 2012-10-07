@@ -532,8 +532,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
-
-		$results[$this->alias]['product_code'] = $this->productCode($results[$this->alias], $results['ShopOption']);
+		$results['ShopProductCode'] = $this->productCodes($results[$this->alias], $results['ShopOption']);
 
 		return $results;
 	}
@@ -552,7 +551,7 @@ class ShopProduct extends ShopAppModel {
  *
  * @return string
  */
-	public function productCode($product, array $options = array()) {
+	public function productCodes($product, array $options = array()) {
 		if(!is_array($product)) {
 			$product = array(
 				$this->primaryKey => $product,
@@ -573,15 +572,38 @@ class ShopProduct extends ShopAppModel {
 			));
 		}
 
+		$shopOptions = Hash::combine($options,
+			'{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->primaryKey,
+			'{n}.slug'
+		);
+		$shopOptionValues = Hash::extract($options, '{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->alias);
+
 		$productCodes = array();
-		foreach($options as $option) {
-			$productCodes = array_merge(
-				$productCodes,
-				Hash::combine($option['ShopOptionValue'], '{n}.slug', '{n}.product_code')
-			);
+		foreach($shopOptionValues as $shopOptionValueSet) {
+			foreach($shopOptionValueSet as $shopOptionValue) {
+				$replacements = $productCode = array();
+				$shopOptionId = null;
+				foreach($shopOptions as $shopOptionId => $shopOptionSlug) {
+					if($shopOptionValue['shop_option_id'] != $shopOptionId) {
+						continue;
+					}
+					$productCode = array(
+						'shop_option_id' => $shopOptionId,
+						'shop_option_value_id' => $shopOptionValue[$this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->primaryKey]
+					);
+					$replacements[$shopOptionSlug] = $shopOptionValue['product_code'];
+				}
+
+				if($productCode) {
+					$productCodes[] = array_merge(
+						array('product_code' =>  String::insert($product['product_code'], $replacements)),
+						$productCode
+					);
+				}
+			}
 		}
 
-		return String::insert($product['product_code'], $productCodes);
+		return $productCodes;
 	}
 
 /**

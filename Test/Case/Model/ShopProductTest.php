@@ -268,7 +268,8 @@ class ShopProductTest extends CakeTestCase {
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
 					'ShopImagesProduct' => array(),
-					'ShopOption' => array()
+					'ShopOption' => array(),
+					'ShopProductCode' => array()
 				),
 				$expected
 			);
@@ -403,6 +404,23 @@ class ShopProductTest extends CakeTestCase {
 								'slug' => 'ship-weight',
 								'shop_unit_type_id' => 'mass'
 							)
+						)
+					),
+					'ShopProductCode' => array(
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-large'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-medium'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-small'
 						)
 					)
 				)
@@ -610,6 +628,33 @@ class ShopProductTest extends CakeTestCase {
 								'id' => 'image-spotlight-multi-option',
 								'image' => 'image-spotlight-multi-option.png'
 							)
+						)
+					),
+					'ShopProductCode' => array(
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-large'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-medium'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-size',
+							'shop_option_value_id' => 'option-size-small'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-colour',
+							'shop_option_value_id' => 'option-colour-blue'
+						),
+						array(
+							'product_code' => '',
+							'shop_option_id' => 'option-colour',
+							'shop_option_value_id' => 'option-colour-red'
 						)
 					)
 				)
