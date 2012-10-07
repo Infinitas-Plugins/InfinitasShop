@@ -94,6 +94,7 @@ class ShopOption extends ShopAppModel {
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
 				$this->alias . '.slug',
+				$this->alias . '.description',
 				$this->alias . '.required',
 				'shop_product_id',
 				'ProductOptionIgnore.*'
