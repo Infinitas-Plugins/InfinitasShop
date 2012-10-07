@@ -32,9 +32,11 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_unit',
 		'plugin.shop.shop_unit_type',
 		'plugin.shop.shop_product_types_option',
+		'plugin.shop.shop_products_option_value_ignore',
 
 		'plugin.view_counter.view_counter_view',
-		'plugin.management.trash'
+		'plugin.management.trash',
+		'plugin.installer.plugin'
 	);
 
 /**

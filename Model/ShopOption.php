@@ -93,13 +93,14 @@ class ShopOption extends ShopAppModel {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
-				'shop_product_id'
+				'shop_product_id',
+				'ProductOptionIgnore.*'
 			));
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
 					$this->alias . '.' . $this->primaryKey . ' IS NOT NULL',
-					$productIdField => $query['shop_product_id']
+					$productIdField => $query['shop_product_id'],
 				)
 			);
 
@@ -119,6 +120,15 @@ class ShopOption extends ShopAppModel {
 						'from' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
 						'model' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
 						'type' => 'right'
+					)),
+					$this->autoJoinModel(array(
+						'model' => $this->ShopProductsOptionIgnore->fullModelName(),
+						'alias' => 'ProductOptionIgnore',
+						'conditions' => array(
+							'ProductOptionIgnore.shop_option_id = ' . $this->alias . '.' . $this->primaryKey,
+							'ProductOptionIgnore.model' => 'Shop.ShopProduct',
+							'ProductOptionIgnore.foreign_key = ShopProduct.id',
+						)
 					)),
 				)
 			);
@@ -147,11 +157,28 @@ class ShopOption extends ShopAppModel {
 		$optionIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
 		$options = $this->ShopOptionValue->find('values', array('shop_option_id' => $optionIds));
 
-		foreach($results as &$result) {
+		foreach($results as $k => &$result) {
+			if($result[$this->alias]['shop_product_id'] == $result['ProductOptionIgnore']['foreign_key']) {
+				unset($results[$k]);
+				continue;
+			}
+			unset($result['ProductOptionIgnore']);
+
 			$result[$this->alias][$this->ShopOptionValue->alias] = Hash::extract(
 				$options,
 				sprintf('{n}[id=/%s/]', $result[$this->alias][$this->primaryKey])
 			);
+			foreach($result[$this->alias][$this->ShopOptionValue->alias] as $k => &$optionValue) {
+				foreach($optionValue['ProductOptionValueIgnore'] as $kk => $ignore) {
+					if($ignore['foreign_key'] == $result[$this->alias]['shop_product_id']) {
+						unset($result[$this->alias][$this->ShopOptionValue->alias][$k]);
+						break;
+					}
+				}
+				unset($optionValue['ProductOptionValueIgnore']);
+			}
+			$result[$this->alias][$this->ShopOptionValue->alias] = array_values($result[$this->alias][$this->ShopOptionValue->alias]);
+
 		}
 
 		return true;

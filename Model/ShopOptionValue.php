@@ -101,7 +101,7 @@ class ShopOptionValue extends ShopAppModel {
 					$this->alias . '.shop_option_id',
 					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
 					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail',
+					$this->ShopPrice->alias . '.retail'
 				)
 			);
 
@@ -112,14 +112,38 @@ class ShopOptionValue extends ShopAppModel {
 				)
 			);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel($this->ShopPrice->fullModelName())
+				)
+			);
 
 			return $query;
 		}
 
+		if(empty($results)) {
+			return array();
+		}
+
+		$productValueIgnores = $this->ShopProductsOptionValueIgnore->find('all', array(
+			'fields' => array(
+				$this->ShopProductsOptionValueIgnore->alias . '.' . $this->ShopProductsOptionValueIgnore->primaryKey,
+				$this->ShopProductsOptionValueIgnore->alias . '.shop_option_value_id',
+				$this->ShopProductsOptionValueIgnore->alias . '.model',
+				$this->ShopProductsOptionValueIgnore->alias . '.foreign_key',
+			),
+			'conditions' => array(
+				$this->ShopProductsOptionValueIgnore->alias . '.shop_option_value_id' => Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey),
+				$this->ShopProductsOptionValueIgnore->alias . '.model' => 'Shop.ShopProduct'
+			)
+		));
+
 		foreach($results as &$result) {
 			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
-			unset($results[$this->ShopPrice->alias]);
+			$extractTemplate = sprintf('{n}.%s[shop_option_value_id=%s]', $this->ShopProductsOptionValueIgnore->alias, $result[$this->alias][$this->primaryKey]);
+			$result[$this->alias]['ProductOptionValueIgnore'] = Hash::extract($productValueIgnores, $extractTemplate);
+			unset($result[$this->ShopPrice->alias]);
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);

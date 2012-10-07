@@ -15,8 +15,10 @@ class ShopOptionValueTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_option',
+		'plugin.shop.shop_products_option_value_ignore',
 
-		'plugin.shop.shop_price'
+		'plugin.shop.shop_price',
+		'plugin.installer.plugin'
 	);
 
 /**
@@ -59,6 +61,16 @@ class ShopOptionValueTest extends CakeTestCase {
  * @dataProvider findValuesDataProvider
  */
 	public function testFindValues($data, $expected) {
+		if(!empty($expected)) {
+			foreach($expected as &$k) {
+				$k = array_merge(
+					array(
+						'ProductOptionValueIgnore' => array()
+					),
+					$k
+				);
+			}
+		}
 		$results = $this->{$this->modelClass}->find('values', array('shop_option_id' => $data));
 		$this->assertEquals($expected, $results);
 	}
@@ -95,6 +107,14 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => null,
 							'selling' => null,
 							'retail' => null,
+						),
+						'ProductOptionValueIgnore' => array(
+							array(
+								'id' => 'option-value-no-stock-added',
+								'shop_option_value_id' => 'option-size-medium',
+								'model' => 'Shop.ShopProduct',
+								'foreign_key' => 'no-stock-added'
+							)
 						)
 					),
 					array(
@@ -175,6 +195,14 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => null,
 							'selling' => null,
 							'retail' => null,
+						),
+						'ProductOptionValueIgnore' => array(
+							array(
+								'id' => 'option-value-no-stock-added',
+								'shop_option_value_id' => 'option-size-medium',
+								'model' => 'Shop.ShopProduct',
+								'foreign_key' => 'no-stock-added'
+							)
 						)
 					),
 					array(

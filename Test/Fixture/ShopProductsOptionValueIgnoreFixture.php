@@ -31,10 +31,10 @@ class ShopProductsOptionValueIgnoreFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '5070b804-3554-4acd-8897-29f66318cd70',
-			'shop_option_value_id' => 'Lorem ipsum dolor sit amet',
-			'model' => 'Lorem ipsum dolor sit amet',
-			'foreign_key' => 'Lorem ipsum dolor sit amet',
+			'id' => 'option-value-no-stock-added',
+			'shop_option_value_id' => 'option-size-medium',
+			'model' => 'Shop.ShopProduct',
+			'foreign_key' => 'no-stock-added',
 			'created' => '2012-10-07 00:00:20'
 		),
 	);

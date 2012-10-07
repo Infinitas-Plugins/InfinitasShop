@@ -184,7 +184,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'specifications' => 'no-stock-added specs',
 			'active' => 1,
 			'shop_image_id' => null,
-			'shop_product_type_id' => null,
+			'shop_product_type_id' => 'complex-options',
 			'rating' => 1,
 			'rating_count' => 1,
 			'views' => 1,

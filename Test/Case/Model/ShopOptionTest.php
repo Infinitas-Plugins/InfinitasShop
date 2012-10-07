@@ -19,6 +19,9 @@ class ShopOptionTest extends CakeTestCase {
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_products_option_ignore',
+		'plugin.shop.shop_products_option_value_ignore',
+		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view'
 	);
 
@@ -186,6 +189,40 @@ class ShopOptionTest extends CakeTestCase {
 										'retail' => null
 									)
 								),
+							)
+						)
+					)
+				)
+			),
+			'ignored-options' => array(
+				'no-stock-added',
+				array(
+					array(
+						'ShopOption' => array(
+							'id' => 'option-size',
+							'name' => 'option-size',
+							'shop_product_id' => 'no-stock-added',
+							'ShopOptionValue' => array(
+								array(
+									'id' => 'option-size-large',
+									'name' => 'option-size-large',
+									'shop_option_id' => 'option-size',
+									'ShopPrice' => array(
+										'id' => 'option-value-large',
+										'selling' => '3.00000',
+										'retail' => '4.00000'
+									)
+								),
+								array(
+									'id' => 'option-size-small',
+									'name' => 'option-size-small',
+									'shop_option_id' => 'option-size',
+									'ShopPrice' => array(
+										'id' => null,
+										'selling' => null,
+										'retail' => null
+									)
+								)
 							)
 						)
 					)
