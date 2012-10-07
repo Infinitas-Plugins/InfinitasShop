@@ -93,6 +93,7 @@ class ShopOption extends ShopAppModel {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
+				$this->alias . '.slug',
 				'shop_product_id',
 				'ProductOptionIgnore.*'
 			));

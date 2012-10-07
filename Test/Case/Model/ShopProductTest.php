@@ -135,11 +135,13 @@ class ShopProductTest extends CakeTestCase {
 						'ShopOption' => array(array(
 							'id' => 'option-size',
 							'name' => 'option-size',
+							'slug' => 'option-size',
 							'shop_product_id' => 'active',
 							'ShopOptionValue' => array(
 								array(
 									'id' => 'option-size-large',
 									'name' => 'option-size-large',
+									'product_code' => 'l',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => 'option-value-large',
@@ -150,6 +152,7 @@ class ShopProductTest extends CakeTestCase {
 								array(
 									'id' => 'option-size-medium',
 									'name' => 'option-size-medium',
+									'product_code' => 'm',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -160,6 +163,7 @@ class ShopProductTest extends CakeTestCase {
 								array(
 									'id' => 'option-size-small',
 									'name' => 'option-size-small',
+									'product_code' => 's',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -327,11 +331,13 @@ class ShopProductTest extends CakeTestCase {
 					'ShopOption' => array(array(
 						'id' => 'option-size',
 						'name' => 'option-size',
+						'slug' => 'option-size',
 						'shop_product_id' => 'active',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-size-large',
 								'name' => 'option-size-large',
+								'product_code' => 'l',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => 'option-value-large',
@@ -342,6 +348,7 @@ class ShopProductTest extends CakeTestCase {
 							array(
 								'id' => 'option-size-medium',
 								'name' => 'option-size-medium',
+								'product_code' => 'm',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -352,6 +359,7 @@ class ShopProductTest extends CakeTestCase {
 							array(
 								'id' => 'option-size-small',
 								'name' => 'option-size-small',
+								'product_code' => 's',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -514,11 +522,13 @@ class ShopProductTest extends CakeTestCase {
 					'ShopOption' => array(array(
 						'id' => 'option-size',
 						'name' => 'option-size',
+						'slug' => 'option-size',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-size-large',
 								'name' => 'option-size-large',
+								'product_code' => 'l',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => 'option-value-large',
@@ -529,6 +539,7 @@ class ShopProductTest extends CakeTestCase {
 							array(
 								'id' => 'option-size-medium',
 								'name' => 'option-size-medium',
+								'product_code' => 'm',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -539,6 +550,7 @@ class ShopProductTest extends CakeTestCase {
 							array(
 								'id' => 'option-size-small',
 								'name' => 'option-size-small',
+								'product_code' => 's',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -548,11 +560,13 @@ class ShopProductTest extends CakeTestCase {
 							))), array(
 						'id' => 'option-colour',
 						'name' => 'option-colour',
+						'slug' => 'option-colour',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-colour-blue',
 								'name' => 'option-colour-blue',
+								'product_code' => 'blue',
 								'shop_option_id' => 'option-colour',
 								'ShopPrice' => array(
 									'id' => null,
@@ -563,6 +577,7 @@ class ShopProductTest extends CakeTestCase {
 							array(
 								'id' => 'option-colour-red',
 								'name' => 'option-colour-red',
+								'product_code' => 'red',
 								'shop_option_id' => 'option-colour',
 								'ShopPrice' => array(
 									'id' => null,

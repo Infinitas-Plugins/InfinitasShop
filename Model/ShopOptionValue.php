@@ -99,6 +99,7 @@ class ShopOptionValue extends ShopAppModel {
 					$this->alias . '.' . $this->primaryKey,
 					$this->alias . '.' . $this->displayField,
 					$this->alias . '.shop_option_id',
+					$this->alias . '.product_code',
 					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
 					$this->ShopPrice->alias . '.selling',
 					$this->ShopPrice->alias . '.retail'

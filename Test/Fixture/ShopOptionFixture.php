@@ -13,6 +13,7 @@ class ShopOptionFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'slug' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'option_count' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 6),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
@@ -31,6 +32,7 @@ class ShopOptionFixture extends CakeTestFixture {
 		array(
 			'id' => 'option-size',
 			'name' => 'option-size',
+			'slug' => 'option-size',
 			'option_count' => 3,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'
@@ -38,6 +40,7 @@ class ShopOptionFixture extends CakeTestFixture {
 		array(
 			'id' => 'option-colour',
 			'name' => 'option-colour',
+			'slug' => 'option-colour',
 			'option_count' => 2,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'
