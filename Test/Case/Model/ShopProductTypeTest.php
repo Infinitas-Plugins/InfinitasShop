@@ -13,7 +13,11 @@ class ShopProductTypeTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.shop.shop_product_type'
+		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_product',
+		'plugin.shop.shop_categories_product',
+		'plugin.shop.shop_product_types_option',
+		'plugin.view_counter.view_counter_view'
 	);
 
 /**

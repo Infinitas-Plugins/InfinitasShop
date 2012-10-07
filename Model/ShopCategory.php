@@ -7,6 +7,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopCategory $ParentShopCategory
  * @property ShopCategory $ChildShopCategory
  * @property ShopCategoriesProduct $ShopCategoriesProduct
+ * @property ShopProductType $ShopProductType
  */
 class ShopCategory extends ShopAppModel {
 
@@ -53,6 +54,13 @@ class ShopCategory extends ShopAppModel {
 		'ShopCategoriesProduct' => array(
 			'className' => 'Shop.ShopCategoriesProduct',
 			'foreignKey' => 'shop_category_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopProductType' => array(
+			'className' => 'Shop.ShopProductType',
+			'foreignKey' => 'shop_product_type_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

@@ -83,24 +83,48 @@ class ShopOption extends ShopAppModel {
 				throw new InvalidArgumentException('No product specified');
 			}
 
-			$this->virtualFields['shop_product_id'] = $this->ShopProductsOption->alias . '.shop_product_id';
+			$productIdField = sprintf(
+				'%s.%s',
+				$this->ShopProductTypesOption->ShopProductType->ShopProduct->alias,
+				$this->ShopProductTypesOption->ShopProductType->ShopProduct->primaryKey
+			);
+
+			$this->virtualFields['shop_product_id'] = $productIdField;
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
 				'shop_product_id'
 			));
-
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->ShopProductsOption->alias . '.shop_product_id' => $query['shop_product_id']
+					$this->alias . '.' . $this->primaryKey . ' IS NOT NULL',
+					$productIdField => $query['shop_product_id']
 				)
 			);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductsOption->fullModelName());
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel(array(
+						'model' => $this->ShopProductTypesOption->fullModelName(),
+						'type' => 'right'
+					)),
+					$this->autoJoinModel(array(
+						'from' => $this->ShopProductTypesOption->fullModelName(),
+						'model' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
+						'type' => 'right'
+					)),
+					$this->autoJoinModel(array(
+						'from' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
+						'model' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
+						'type' => 'right'
+					)),
+				)
+			);
 
 			$query['order'] = array(
-				$this->alias . '.ordering' => 'asc'
+				$this->ShopProductTypesOption->alias . '.ordering' => 'asc'
 			);
 
 			return $query;

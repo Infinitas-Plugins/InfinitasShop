@@ -30,14 +30,14 @@ class ShopOptionFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 'option-size',
-			'name' => 'Size',
+			'name' => 'option-size',
 			'option_count' => 3,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'
 		),
 		array(
 			'id' => 'option-colour',
-			'name' => 'Colour',
+			'name' => 'option-colour',
 			'option_count' => 2,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'

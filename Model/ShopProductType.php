@@ -9,31 +9,38 @@
 class ShopProductType extends ShopAppModel {
 	public $validate = array();
 
+	public $findMethods = array(
+		'options' => true
+	);
+
 	public $belongsTo = array(
-		'ShopCategory' => array(
-			'modelClass' => 'Shop.ShopCategory',
-			'foreignKey' => 'foreign_key',
-			'conditions' => array(
-				'ShopProductType.model' => 'Shop.ShopCategory'
-			)
-		),
-		'ShopProduct' => array(
-			'modelClass' => 'Shop.ShopProduct',
-			'foreignKey' => 'foreign_key',
-			'conditions' => array(
-				'ShopProductType.model' => 'Shop.ShopProduct'
-			)
-		)
 	);
 
 	public $hasMany = array(
 		'ShopProductTypesOption' => array(
-			'modelClass' => 'Shop.ShopProductTypesOption',
+			'className' => 'Shop.ShopProductTypesOption',
+			'foreignKey' => 'shop_product_type_id',
+			'dependent' => true
+		),
+		'ShopCategory' => array(
+			'className' => 'Shop.ShopCategory',
+			'foreignKey' => 'shop_product_type_id',
+			'dependent' => true
+		),
+		'ShopProduct' => array(
+			'className' => 'Shop.ShopProduct',
 			'foreignKey' => 'shop_product_type_id',
 			'dependent' => true
 		)
 	);
 
+/**
+ * @brief overload construct to translate validation messages
+ *
+ * @param type $id
+ * @param type $table
+ * @param type $ds
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 

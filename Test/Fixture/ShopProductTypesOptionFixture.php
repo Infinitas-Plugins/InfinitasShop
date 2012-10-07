@@ -32,13 +32,31 @@ class ShopProductTypesOptionFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => '5070b41e-b600-4446-be37-28146318cd70',
-			'shop_option_id' => 'Lorem ipsum dolor sit amet',
-			'shop_product_type_id' => 'Lorem ipsum dolor sit amet',
+			'id' => 'product-option-shirts-size',
+			'shop_option_id' => 'option-size',
+			'shop_product_type_id' => 'shirts',
 			'created' => '2012-10-06 23:43:42',
 			'modified' => '2012-10-06 23:43:42',
 			'ordering' => 1
 		),
+		array(
+			'id' => 'product-option-complex-options-size',
+			'shop_option_id' => 'option-size',
+			'shop_product_type_id' => 'complex-options',
+			'created' => '2012-10-06 23:43:42',
+			'modified' => '2012-10-06 23:43:42',
+			'ordering' => 1
+		),
+		array(
+			'id' => 'product-option-complex-options-colour',
+			'shop_option_id' => 'option-colour',
+			'shop_product_type_id' => 'complex-options',
+			'created' => '2012-10-06 23:43:42',
+			'modified' => '2012-10-06 23:43:42',
+			'ordering' => 2
+		),
+
+
 	);
 
 }

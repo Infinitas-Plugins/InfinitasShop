@@ -23,6 +23,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_images_product',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_product_size',
+		'plugin.shop.shop_product_type',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_price',
@@ -30,6 +31,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_unit',
 		'plugin.shop.shop_unit_type',
+		'plugin.shop.shop_product_types_option',
 
 		'plugin.view_counter.view_counter_view',
 		'plugin.management.trash'
@@ -43,7 +45,7 @@ class ShopProductTest extends CakeTestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->ShopProduct = ClassRegistry::init('Shop.ShopProduct');
-		$this->modelClass = 'ShopProduct';
+		$this->modelClass = $this->ShopProduct->alias;
 	}
 
 /**
@@ -69,6 +71,7 @@ class ShopProductTest extends CakeTestCase {
 		foreach($expected as &$v) {
 			$v = array_merge(
 				array(
+					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
 					'ShopImage' => array('id' => null, 'image' => null),
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
@@ -106,6 +109,11 @@ class ShopProductTest extends CakeTestCase {
 							'name' => 'active',
 							'total_stock' => 25
 						),
+						'ShopProductType' => array(
+							'id' => 'shirts',
+							'name' => 'shirts',
+							'slug' => 'shirts'
+						),
 						'ShopImage' => array(
 							'id' => 'image-product-active',
 							'image' => 'image-product-active.png'
@@ -123,12 +131,12 @@ class ShopProductTest extends CakeTestCase {
 						)),
 						'ShopOption' => array(array(
 							'id' => 'option-size',
-							'name' => 'Size',
+							'name' => 'option-size',
 							'shop_product_id' => 'active',
 							'ShopOptionValue' => array(
 								array(
 									'id' => 'option-size-large',
-									'name' => 'Large',
+									'name' => 'option-size-large',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => 'option-value-large',
@@ -138,7 +146,7 @@ class ShopProductTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-medium',
-									'name' => 'Medium',
+									'name' => 'option-size-medium',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -148,7 +156,7 @@ class ShopProductTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-small',
-									'name' => 'Small',
+									'name' => 'option-size-small',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -246,13 +254,14 @@ class ShopProductTest extends CakeTestCase {
 		if(!empty($expected)) {
 			$expected = array_merge(
 				array(
+					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
 					'ShopImage' => array('id' => null, 'image' => null),
 					'ShopBranchStock' => array(),
 					'ShopProductSize' => array(),
-					'ShopOption' => array(),
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
-					'ShopImagesProduct' => array()
+					'ShopImagesProduct' => array(),
+					'ShopOption' => array()
 				),
 				$expected
 			);
@@ -278,6 +287,11 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'active',
 						'name' => 'active',
 						'total_stock' => '25'
+					),
+					'ShopProductType' => array(
+						'id' => 'shirts',
+						'name' => 'shirts',
+						'slug' => 'shirts'
 					),
 					'ShopImage' => array(
 						'id' => 'image-product-active',
@@ -308,12 +322,12 @@ class ShopProductTest extends CakeTestCase {
 					),
 					'ShopOption' => array(array(
 						'id' => 'option-size',
-						'name' => 'Size',
+						'name' => 'option-size',
 						'shop_product_id' => 'active',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-size-large',
-								'name' => 'Large',
+								'name' => 'option-size-large',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => 'option-value-large',
@@ -323,7 +337,7 @@ class ShopProductTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-medium',
-								'name' => 'Medium',
+								'name' => 'option-size-medium',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -333,7 +347,7 @@ class ShopProductTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-small',
-								'name' => 'Small',
+								'name' => 'option-size-small',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -469,6 +483,11 @@ class ShopProductTest extends CakeTestCase {
 						'name' => 'multi-option',
 						'total_stock' => null
 					),
+					'ShopProductType' => array(
+						'id' => 'complex-options',
+						'name' => 'complex-options',
+						'slug' => 'complex-options'
+					),
 					'ShopImage' => array(
 						'id' => 'image-product-multi-option',
 						'image' => 'image-product-multi-option.png'
@@ -486,12 +505,12 @@ class ShopProductTest extends CakeTestCase {
 					),
 					'ShopOption' => array(array(
 						'id' => 'option-size',
-						'name' => 'Size',
+						'name' => 'option-size',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-size-large',
-								'name' => 'Large',
+								'name' => 'option-size-large',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => 'option-value-large',
@@ -501,7 +520,7 @@ class ShopProductTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-medium',
-								'name' => 'Medium',
+								'name' => 'option-size-medium',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -511,7 +530,7 @@ class ShopProductTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-small',
-								'name' => 'Small',
+								'name' => 'option-size-small',
 								'shop_option_id' => 'option-size',
 								'ShopPrice' => array(
 									'id' => null,
@@ -520,12 +539,12 @@ class ShopProductTest extends CakeTestCase {
 								)
 							))), array(
 						'id' => 'option-colour',
-						'name' => 'Colour',
+						'name' => 'option-colour',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-colour-blue',
-								'name' => 'Blue',
+								'name' => 'option-colour-blue',
 								'shop_option_id' => 'option-colour',
 								'ShopPrice' => array(
 									'id' => null,
@@ -535,7 +554,7 @@ class ShopProductTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-colour-red',
-								'name' => 'Red',
+								'name' => 'option-colour-red',
 								'shop_option_id' => 'option-colour',
 								'ShopPrice' => array(
 									'id' => null,
@@ -584,7 +603,6 @@ class ShopProductTest extends CakeTestCase {
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
 			'ShopList',
-			'ShopProductsOption',
 			'ShopProductSize',
 			'ShopSpotlight',
 			'ShopSpecial'

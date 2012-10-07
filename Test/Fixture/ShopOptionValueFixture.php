@@ -31,35 +31,35 @@ class ShopOptionValueFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 'option-size-small',
-			'name' => 'Small',
+			'name' => 'option-size-small',
 			'shop_option_id' => 'option-size',
 			'created' => '2012-10-05 10:01:02',
 			'modified' => '2012-10-05 10:01:02'
 		),
 		array(
 			'id' => 'option-size-medium',
-			'name' => 'Medium',
+			'name' => 'option-size-medium',
 			'shop_option_id' => 'option-size',
 			'created' => '2012-10-05 10:01:02',
 			'modified' => '2012-10-05 10:01:02'
 		),
 		array(
 			'id' => 'option-size-large',
-			'name' => 'Large',
+			'name' => 'option-size-large',
 			'shop_option_id' => 'option-size',
 			'created' => '2012-10-05 10:01:02',
 			'modified' => '2012-10-05 10:01:02'
 		),
 		array(
 			'id' => 'option-colour-red',
-			'name' => 'Red',
+			'name' => 'option-colour-red',
 			'shop_option_id' => 'option-colour',
 			'created' => '2012-10-05 10:01:02',
 			'modified' => '2012-10-05 10:01:02'
 		),
 		array(
 			'id' => 'option-colour-blue',
-			'name' => 'Blue',
+			'name' => 'option-colour-blue',
 			'shop_option_id' => 'option-colour',
 			'created' => '2012-10-05 10:01:02',
 			'modified' => '2012-10-05 10:01:02'

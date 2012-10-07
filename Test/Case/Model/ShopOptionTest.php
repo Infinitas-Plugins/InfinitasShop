@@ -15,7 +15,11 @@ class ShopOptionTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
-		'plugin.shop.shop_price'
+		'plugin.shop.shop_price',
+		'plugin.shop.shop_product',
+		'plugin.shop.shop_product_types_option',
+		'plugin.shop.shop_product_type',
+		'plugin.view_counter.view_counter_view'
 	);
 
 /**
@@ -76,12 +80,12 @@ class ShopOptionTest extends CakeTestCase {
 					array(
 						'ShopOption' => array(
 							'id' => 'option-size',
-							'name' => 'Size',
+							'name' => 'option-size',
 							'shop_product_id' => 'active',
 							'ShopOptionValue' => array(
 								array(
 									'id' => 'option-size-large',
-									'name' => 'Large',
+									'name' => 'option-size-large',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => 'option-value-large',
@@ -91,7 +95,7 @@ class ShopOptionTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-medium',
-									'name' => 'Medium',
+									'name' => 'option-size-medium',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -101,7 +105,7 @@ class ShopOptionTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-small',
-									'name' => 'Small',
+									'name' => 'option-size-small',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -120,12 +124,12 @@ class ShopOptionTest extends CakeTestCase {
 					array(
 						'ShopOption' => array(
 							'id' => 'option-size',
-							'name' => 'Size',
+							'name' => 'option-size',
 							'shop_product_id' => 'multi-option',
 							'ShopOptionValue' => array(
 								array(
 									'id' => 'option-size-large',
-									'name' => 'Large',
+									'name' => 'option-size-large',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => 'option-value-large',
@@ -135,7 +139,7 @@ class ShopOptionTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-medium',
-									'name' => 'Medium',
+									'name' => 'option-size-medium',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -145,7 +149,7 @@ class ShopOptionTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-size-small',
-									'name' => 'Small',
+									'name' => 'option-size-small',
 									'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -159,12 +163,12 @@ class ShopOptionTest extends CakeTestCase {
 					array(
 						'ShopOption' => array(
 							'id' => 'option-colour',
-							'name' => 'Colour',
+							'name' => 'option-colour',
 							'shop_product_id' => 'multi-option',
 							'ShopOptionValue' => array(
 								array(
 									'id' => 'option-colour-blue',
-									'name' => 'Blue',
+									'name' => 'option-colour-blue',
 									'shop_option_id' => 'option-colour',
 									'ShopPrice' => array(
 										'id' => null,
@@ -174,7 +178,7 @@ class ShopOptionTest extends CakeTestCase {
 								),
 								array(
 									'id' => 'option-colour-red',
-									'name' => 'Red',
+									'name' => 'option-colour-red',
 									'shop_option_id' => 'option-colour',
 									'ShopPrice' => array(
 										'id' => null,
@@ -215,12 +219,12 @@ class ShopOptionTest extends CakeTestCase {
 				array(
 					array(
 						'id' => 'option-size',
-						'name' => 'Size',
+						'name' => 'option-size',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-size-large',
-								'name' => 'Large',
+								'name' => 'option-size-large',
 								'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => 'option-value-large',
@@ -230,7 +234,7 @@ class ShopOptionTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-medium',
-								'name' => 'Medium',
+								'name' => 'option-size-medium',
 								'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -240,7 +244,7 @@ class ShopOptionTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-size-small',
-								'name' => 'Small',
+								'name' => 'option-size-small',
 								'shop_option_id' => 'option-size',
 									'ShopPrice' => array(
 										'id' => null,
@@ -252,12 +256,12 @@ class ShopOptionTest extends CakeTestCase {
 					),
 					array(
 						'id' => 'option-colour',
-						'name' => 'Colour',
+						'name' => 'option-colour',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
 								'id' => 'option-colour-blue',
-								'name' => 'Blue',
+								'name' => 'option-colour-blue',
 								'shop_option_id' => 'option-colour',
 									'ShopPrice' => array(
 										'id' => null,
@@ -267,7 +271,7 @@ class ShopOptionTest extends CakeTestCase {
 							),
 							array(
 								'id' => 'option-colour-red',
-								'name' => 'Red',
+								'name' => 'option-colour-red',
 								'shop_option_id' => 'option-colour',
 									'ShopPrice' => array(
 										'id' => null,
@@ -280,6 +284,41 @@ class ShopOptionTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * @brief test option ordering
+ */
+	public function testOptionOrdering() {
+		$expected = array(
+			'option-size',
+			'option-colour'
+		);
+		$result = Hash::extract(
+			$this->{$this->modelClass}->find('options', array('shop_product_id' => 'multi-option')),
+			'{n}.ShopOption.id'
+		);
+		$this->assertEquals($expected, $result);
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->ShopProductTypesOption->save(array(
+			'id' => 'product-option-complex-options-size',
+			'ordering' => 2
+		), false));
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->ShopProductTypesOption->save(array(
+			'id' => 'product-option-complex-options-colou',
+			'ordering' => 1
+		), false));
+
+		$expected = array(
+			'option-colour',
+			'option-size',
+		);
+		$result = Hash::extract(
+			$this->{$this->modelClass}->find('options', array('shop_product_id' => 'multi-option')),
+			'{n}.ShopOption.id'
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 }
