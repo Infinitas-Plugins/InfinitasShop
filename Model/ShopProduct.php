@@ -496,6 +496,13 @@ class ShopProduct extends ShopAppModel {
 
 			$query = $this->_findBasics($state, $query);
 
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
+				array(
+					$this->alias . '.product_code'
+				)
+			);
+
 			$query['conditions']['or'] = array(
 				$this->alias . '.' . $this->primaryKey => $query[0],
 				$this->alias . '.slug' => $query[0]
@@ -526,7 +533,55 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
 
+		$results[$this->alias]['product_code'] = $this->productCode($results[$this->alias], $results['ShopOption']);
+
 		return $results;
+	}
+
+/**
+ * @brief get the product code built up based on options
+ *
+ * $product can be either id of a product or array with id / product code
+ * if only the id is passed the rest will be figured out.
+ *
+ * $options can be passed in which are used to build the product code, if not
+ * available this will be fetched fron the db.
+ *
+ * @param string|array $product
+ * @param array $options
+ *
+ * @return string
+ */
+	public function productCode($product, array $options = array()) {
+		if(!is_array($product)) {
+			$product = array(
+				$this->primaryKey => $product,
+				'product_code' => null
+			);
+		}
+
+		if(empty($options)) {
+			$options = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array(
+				'shop_product_id' => $product[$this->primaryKey],
+				'extract' => true
+			));
+		}
+
+		if(empty($product['product_code'])) {
+			$product['product_code'] = $this->field('product_code', array(
+				$this->alias . '.' . $this->primaryKey => $product[$this->primaryKey]
+			));
+		}
+
+		$productCodes = array();
+		foreach($options as $option) {
+			$productCodes = array_merge(
+				$productCodes,
+				Hash::combine($option['ShopOptionValue'], '{n}.slug', '{n}.product_code')
+			);
+		}
+
+		return String::insert($product['product_code'], $productCodes);
 	}
 
 /**
@@ -548,9 +603,9 @@ class ShopProduct extends ShopAppModel {
 				array(
 					'DISTINCT(ActiveCategory.id)',
 					$this->alias . '.' . $this->primaryKey,
+					$this->alias . '.' . $this->displayField,
 					$this->alias . '.slug',
 					$this->alias . '.total_stock',
-					$this->alias . '.' . $this->displayField,
 
 					$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey,
 					$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,

@@ -289,6 +289,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'active',
 						'slug' => 'active',
 						'name' => 'active',
+						'product_code' => null,
 						'total_stock' => '25'
 					),
 					'ShopProductType' => array(
@@ -405,6 +406,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category',
 						'slug' => 'multi-category',
 						'name' => 'multi-category',
+						'product_code' => null,
 						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
@@ -439,6 +441,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-mixed-state',
 						'slug' => 'multi-category-mixed-state',
 						'name' => 'multi-category-mixed-state',
+						'product_code' => null,
 						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
@@ -461,6 +464,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-category-parent-inactive',
 						'slug' => 'multi-category-parent-inactive',
 						'name' => 'multi-category-parent-inactive',
+						'product_code' => null,
 						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
@@ -484,6 +488,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-option',
 						'slug' => 'multi-option',
 						'name' => 'multi-option',
+						'product_code' => null,
 						'total_stock' => null
 					),
 					'ShopProductType' => array(
