@@ -1,46 +1,71 @@
 <?php
-/* ShopSupplier Fixture generated on: 2010-08-17 14:08:16 : 1282055236 */
+/**
+ * ShopSupplierFixture
+ *
+ */
 class ShopSupplierFixture extends CakeTestFixture {
-	public $name = 'ShopSupplier';
 
+/**
+ * Fields
+ *
+ * @var array
+ */
 	public $fields = array(
-		'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary'),
-		'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
-		'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100),
-		'address_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36),
-		'email' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 100),
-		'phone' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),
-		'fax' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 15),
-		'logo' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 150),
-		'deleted' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'deleted_date' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-		'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'slug' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'contact_address_id' => array('type' => 'integer', 'null' => false, 'default' => null),
+		'email' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'phone' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 15, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'fax' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 15, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'logo' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 150, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'product_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'terms' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 50),
+		'terms' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
-		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
+		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+/**
+ * Records
+ *
+ * @var array
+ */
 	public $records = array(
 		array(
-			'id' => 1,
-			'name' => 'CakePhp',
-			'slug' => 'cakephp',
-			'address_id' => 1,
-			'email' => 'cakephp@cakephp.org',
-			'phone' => '123456789',
-			'fax' => '123456789',
-			'logo' => 'cakephp_logo_250_trans.png',
-			'deleted' => 0,
-			'deleted_date' => '0000-00-00 00:00:00',
-			'created' => '2010-04-20 23:37:10',
-			'modified' => '2010-04-29 15:16:12',
-			'product_count' => 3,
-			'terms' => 'Cash',
-			'active' => 1
+			'id' => 'supplier-1',
+			'name' => 'supplier-1',
+			'slug' => 'supplier-1',
+			'contact_address_id' => 'supplier-1-address',
+			'email' => 'supplier-1@supplier-1.com',
+			'phone' => '555 5550',
+			'fax' => '555 5551',
+			'logo' => 'supplier-1.png',
+			'product_count' => 1,
+			'terms' => 'cash',
+			'active' => 1,
+			'created' => '2012-10-07 15:15:11',
+			'modified' => '2012-10-07 15:15:11'
+		),
+		array(
+			'id' => 'supplier-2',
+			'name' => 'supplier-2',
+			'slug' => 'supplier-2',
+			'contact_address_id' => 'supplier-2-address',
+			'email' => 'supplier-2@supplier-2.com',
+			'phone' => '555 5552',
+			'fax' => '555 5553',
+			'logo' => 'supplier-2.png',
+			'product_count' => 1,
+			'terms' => 'cash',
+			'active' => 1,
+			'created' => '2012-10-07 15:15:11',
+			'modified' => '2012-10-07 15:15:11'
 		),
 	);
+
 }
-?>

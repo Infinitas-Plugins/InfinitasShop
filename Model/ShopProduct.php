@@ -577,6 +577,7 @@ class ShopProduct extends ShopAppModel {
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
+			//$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
