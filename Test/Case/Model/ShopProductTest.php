@@ -136,6 +136,7 @@ class ShopProductTest extends CakeTestCase {
 							'id' => 'option-size',
 							'name' => 'option-size',
 							'slug' => 'option-size',
+							'required' => '1',
 							'shop_product_id' => 'active',
 							'ShopOptionValue' => array(
 								array(
@@ -333,6 +334,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'option-size',
 						'name' => 'option-size',
 						'slug' => 'option-size',
+						'required' => '1',
 						'shop_product_id' => 'active',
 						'ShopOptionValue' => array(
 							array(
@@ -535,6 +537,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'option-size',
 						'name' => 'option-size',
 						'slug' => 'option-size',
+						'required' => '1',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
@@ -573,6 +576,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'option-colour',
 						'name' => 'option-colour',
 						'slug' => 'option-colour',
+						'required' => '0',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
@@ -693,6 +697,11 @@ class ShopProductTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * @brief product code data provider
+ *
+ * @return array
+ */
 	public function productCodesDataProvider() {
 		return array(
 			'generate-from-db-by-id' => array(

@@ -14,6 +14,7 @@ class ShopOptionFixture extends CakeTestFixture {
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'slug' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'required' => array('type' => 'integer', 'null' => false, 'default' => 1, 'length' => 1),
 		'option_count' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 6),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
@@ -33,6 +34,7 @@ class ShopOptionFixture extends CakeTestFixture {
 			'id' => 'option-size',
 			'name' => 'option-size',
 			'slug' => 'option-size',
+			'required' => 1,
 			'option_count' => 3,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'
@@ -41,6 +43,7 @@ class ShopOptionFixture extends CakeTestFixture {
 			'id' => 'option-colour',
 			'name' => 'option-colour',
 			'slug' => 'option-colour',
+			'required' => 0,
 			'option_count' => 2,
 			'created' => '2012-10-05 09:59:11',
 			'modified' => '2012-10-05 09:59:11'

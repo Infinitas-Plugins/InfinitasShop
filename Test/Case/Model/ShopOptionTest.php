@@ -85,6 +85,7 @@ class ShopOptionTest extends CakeTestCase {
 							'id' => 'option-size',
 							'name' => 'option-size',
 							'slug' => 'option-size',
+							'required' => '1',
 							'shop_product_id' => 'active',
 							'ShopOptionValue' => array(
 								array(
@@ -133,6 +134,7 @@ class ShopOptionTest extends CakeTestCase {
 							'id' => 'option-size',
 							'name' => 'option-size',
 							'slug' => 'option-size',
+							'required' => '1',
 							'shop_product_id' => 'multi-option',
 							'ShopOptionValue' => array(
 								array(
@@ -176,6 +178,7 @@ class ShopOptionTest extends CakeTestCase {
 							'id' => 'option-colour',
 							'name' => 'option-colour',
 							'slug' => 'option-colour',
+							'required' => '0',
 							'shop_product_id' => 'multi-option',
 							'ShopOptionValue' => array(
 								array(
@@ -213,6 +216,7 @@ class ShopOptionTest extends CakeTestCase {
 							'id' => 'option-size',
 							'name' => 'option-size',
 							'slug' => 'option-size',
+							'required' => '1',
 							'shop_product_id' => 'no-stock-added',
 							'ShopOptionValue' => array(
 								array(
@@ -272,6 +276,7 @@ class ShopOptionTest extends CakeTestCase {
 						'id' => 'option-size',
 						'name' => 'option-size',
 						'slug' => 'option-size',
+						'required' => '1',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
@@ -313,6 +318,7 @@ class ShopOptionTest extends CakeTestCase {
 						'id' => 'option-colour',
 						'name' => 'option-colour',
 						'slug' => 'option-colour',
+						'required' => '0',
 						'shop_product_id' => 'multi-option',
 						'ShopOptionValue' => array(
 							array(
