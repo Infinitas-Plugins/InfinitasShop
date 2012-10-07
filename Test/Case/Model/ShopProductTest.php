@@ -294,7 +294,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'active',
 						'slug' => 'active',
 						'name' => 'active',
-						'product_code' => null,
+						'product_code' => 'active-:option-size',
 						'total_stock' => '25'
 					),
 					'ShopProductType' => array(
@@ -408,19 +408,13 @@ class ShopProductTest extends CakeTestCase {
 					),
 					'ShopProductCode' => array(
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-large'
+							'product_code' => 'active-l',
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-medium'
+							'product_code' => 'active-m',
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-small'
+							'product_code' => 'active-s',
 						)
 					)
 				)
@@ -514,7 +508,7 @@ class ShopProductTest extends CakeTestCase {
 						'id' => 'multi-option',
 						'slug' => 'multi-option',
 						'name' => 'multi-option',
-						'product_code' => null,
+						'product_code' => 'multi-option-:option-size(:option-colour)',
 						'total_stock' => null
 					),
 					'ShopProductType' => array(
@@ -632,29 +626,22 @@ class ShopProductTest extends CakeTestCase {
 					),
 					'ShopProductCode' => array(
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-large'
+							'product_code' => 'multi-option-l(blue)'
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-medium'
+							'product_code' => 'multi-option-l(red)'
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-size',
-							'shop_option_value_id' => 'option-size-small'
+							'product_code' => 'multi-option-m(blue)'
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-colour',
-							'shop_option_value_id' => 'option-colour-blue'
+							'product_code' => 'multi-option-m(red)'
 						),
 						array(
-							'product_code' => '',
-							'shop_option_id' => 'option-colour',
-							'shop_option_value_id' => 'option-colour-red'
+							'product_code' => 'multi-option-s(blue)'
+						),
+						array(
+							'product_code' => 'multi-option-s(red)'
 						)
 					)
 				)

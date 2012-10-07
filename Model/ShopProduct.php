@@ -566,6 +566,10 @@ class ShopProduct extends ShopAppModel {
 			));
 		}
 
+		if(empty($options)) {
+			return array();
+		}
+
 		if(empty($product['product_code'])) {
 			$product['product_code'] = $this->field('product_code', array(
 				$this->alias . '.' . $this->primaryKey => $product[$this->primaryKey]
@@ -578,32 +582,43 @@ class ShopProduct extends ShopAppModel {
 		);
 		$shopOptionValues = Hash::extract($options, '{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->alias);
 
-		$productCodes = array();
-		foreach($shopOptionValues as $shopOptionValueSet) {
-			foreach($shopOptionValueSet as $shopOptionValue) {
-				$replacements = $productCode = array();
-				$shopOptionId = null;
-				foreach($shopOptions as $shopOptionId => $shopOptionSlug) {
-					if($shopOptionValue['shop_option_id'] != $shopOptionId) {
-						continue;
-					}
-					$productCode = array(
-						'shop_option_id' => $shopOptionId,
-						'shop_option_value_id' => $shopOptionValue[$this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->primaryKey]
-					);
-					$replacements[$shopOptionSlug] = $shopOptionValue['product_code'];
-				}
-
-				if($productCode) {
-					$productCodes[] = array_merge(
-						array('product_code' =>  String::insert($product['product_code'], $replacements)),
-						$productCode
+		$allOptions = array(array());
+		foreach($shopOptionValues as $list) {
+			$temp = array();
+			foreach($allOptions as $result_item) {
+				foreach ($list as $list_item) {
+					$temp[] = array_merge(
+						$result_item,
+						array(
+							$shopOptions[$list_item['shop_option_id']] => $list_item['product_code']
+						)
 					);
 				}
 			}
+			$allOptions = $temp;
 		}
 
-		return $productCodes;
+		$generatedProductCodes = array();
+		foreach($allOptions as $allOption) {
+			$productCodeDetails = array(
+				//'shop_option_value_id' => $allOption['shop_option_value_id']
+			);
+			unset($allOption['shop_option_value_id']);
+			if(!empty($product['product_code'])) {
+				if(strstr($product['product_code'], ':') !== false) {
+					$productCode = String::insert($product['product_code'], $allOption);
+				} else {
+					$productCode .= '-' . implode('', $allOption);
+				}
+			} elseif(array_filter($allOption)) {
+				$productCode = implode('', $allOption);
+			} else {
+				$productCode = null;
+			}
+			$generatedProductCodes[] = array_merge(array('product_code' => $productCode), $productCodeDetails);
+		}
+
+		return $generatedProductCodes;
 	}
 
 /**

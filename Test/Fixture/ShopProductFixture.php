@@ -23,7 +23,7 @@ class ShopProductFixture extends CakeTestFixture {
 		'rating_count' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'views' => array('type' => 'integer', 'null' => false, 'default' => '0'),
 		'sales' => array('type' => 'integer', 'null' => false, 'default' => '0'),
-		'product_code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'product_code' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 255, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_supplier_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'key' => 'index'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
@@ -54,7 +54,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'rating_count' => 1,
 			'views' => 5,
 			'sales' => 1,
-			'product_code' => null,
+			'product_code' => 'active-:option-size',
 			'shop_supplier_id' => 'supplier-1',
 			'created' => '2012-10-05 01:14:47',
 			'modified' => '2012-10-05 01:14:47'
@@ -180,7 +180,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'rating_count' => 1,
 			'views' => 100,
 			'sales' => 25,
-			'product_code' => null,
+			'product_code' => 'multi-option-:option-size(:option-colour)',
 			'shop_supplier_id' => 'supplier-1',
 			'created' => '2012-10-01 01:14:47',
 			'modified' => '2012-10-01 01:14:47'
