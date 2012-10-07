@@ -681,4 +681,237 @@ class ShopProductTest extends CakeTestCase {
 		}
 	}
 
+/**
+ * @brief test generating product codes
+ *
+ * @dataProvider productCodesDataProvider
+ */
+	public function testProductCodes($data, $expected) {
+		$this->{$this->modelClass}->id = 'multi-option';
+		$this->{$this->modelClass}->saveField('product_code', null);
+		$result = $this->{$this->modelClass}->productCodes($data['product'], $data['options']);
+		$this->assertEquals($expected, $result);
+	}
+
+	public function productCodesDataProvider() {
+		return array(
+			'generate-from-db-by-id' => array(
+				array(
+					'product' => 'active',
+					'options' => array()
+				),
+				array(
+					array(
+						'product_code' => 'active-l'
+					),
+					array(
+						'product_code' => 'active-m'
+					),
+					array(
+						'product_code' => 'active-s'
+					)
+				)
+			),
+			'options-from-db' => array(
+				array(
+					'product' => array(
+						'id' => 'active',
+						'product_code' => ':option-size'
+					),
+					'options' => array()
+				),
+				array(
+					array(
+						'product_code' => 'l'
+					),
+					array(
+						'product_code' => 'm'
+					),
+					array(
+						'product_code' => 's'
+					)
+				)
+			),
+			'passed-in-options' => array(
+				array(
+					'product' => array(
+						'id' => 'active',
+						'product_code' => 'active-:option-size'
+					),
+					'options' => array(array(
+						'id' => 'option-size',
+						'name' => 'option-size',
+						'slug' => 'option-size',
+						'shop_product_id' => 'active',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-size-large',
+								'name' => 'option-size-large',
+								'product_code' => 'lar',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-medium',
+								'name' => 'option-size-medium',
+								'product_code' => 'med',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-small',
+								'name' => 'option-size-small',
+								'product_code' => 'sma',
+								'shop_option_id' => 'option-size'
+							),
+						)
+					))
+				),
+				array(
+					array(
+						'product_code' => 'active-lar'
+					),
+					array(
+						'product_code' => 'active-med'
+					),
+					array(
+						'product_code' => 'active-sma'
+					)
+				)
+			),
+			'append-codes' => array(
+				array(
+					'product' => array(
+						'id' => 'active',
+						'product_code' => 'active-product'
+					),
+					'options' => array()
+				),
+				array(
+					array(
+						'product_code' => 'active-product-l'
+					),
+					array(
+						'product_code' => 'active-product-m'
+					),
+					array(
+						'product_code' => 'active-product-s'
+					)
+				)
+			),
+			'null-main-code' => array(
+				array(
+					'product' => array(
+						'id' => 'out-of-stock',
+						'product_code' => null
+					),
+					'options' => array(array(
+						'id' => 'option-size',
+						'name' => 'option-size',
+						'slug' => 'option-size',
+						'shop_product_id' => 'out-of-stock',
+						'ShopOptionValue' => array(
+							array(
+								'id' => 'option-size-large',
+								'name' => 'option-size-large',
+								'product_code' => 'lar',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-medium',
+								'name' => 'option-size-medium',
+								'product_code' => 'med',
+								'shop_option_id' => 'option-size'
+							),
+							array(
+								'id' => 'option-size-small',
+								'name' => 'option-size-small',
+								'product_code' => 'sma',
+								'shop_option_id' => 'option-size'
+							),
+						)
+					))
+				),
+				array(
+					array(
+						'product_code' => 'lar'
+					),
+					array(
+						'product_code' => 'med'
+					),
+					array(
+						'product_code' => 'sma'
+					)
+				)
+			),
+			'null-main-code-no-options' => array(
+				array(
+					'product' => array(
+						'id' => 'out-of-stock',
+						'product_code' => null
+					),
+					'options' => array()
+				),
+				array(
+				)
+			),
+			'multi-option-append-codes' => array(
+				array(
+					'product' => array(
+						'id' => 'multi-option',
+						'product_code' => 'multi-option'
+					),
+					'options' => array()
+				),
+				array(
+					array(
+						'product_code' => 'multi-option-lblue'
+					),
+					array(
+						'product_code' => 'multi-option-lred'
+					),
+					array(
+						'product_code' => 'multi-option-mblue'
+					),
+					array(
+						'product_code' => 'multi-option-mred'
+					),
+					array(
+						'product_code' => 'multi-option-sblue'
+					),
+					array(
+						'product_code' => 'multi-option-sred'
+					),
+				)
+			),
+			'multi-option-null-main-code' => array(
+				array(
+					'product' => array(
+						'id' => 'multi-option',
+						'product_code' => null
+					),
+					'options' => array()
+				),
+				array(
+					array(
+						'product_code' => 'lblue'
+					),
+					array(
+						'product_code' => 'lred'
+					),
+					array(
+						'product_code' => 'mblue'
+					),
+					array(
+						'product_code' => 'mred'
+					),
+					array(
+						'product_code' => 'sblue'
+					),
+					array(
+						'product_code' => 'sred'
+					),
+				)
+			),
+		);
+	}
+
 }

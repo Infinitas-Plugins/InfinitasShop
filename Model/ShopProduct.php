@@ -604,16 +604,15 @@ class ShopProduct extends ShopAppModel {
 				//'shop_option_value_id' => $allOption['shop_option_value_id']
 			);
 			unset($allOption['shop_option_value_id']);
+			$productCode = null;
 			if(!empty($product['product_code'])) {
 				if(strstr($product['product_code'], ':') !== false) {
 					$productCode = String::insert($product['product_code'], $allOption);
 				} else {
-					$productCode .= '-' . implode('', $allOption);
+					$productCode = $product['product_code'] . '-' . implode('', $allOption);
 				}
 			} elseif(array_filter($allOption)) {
 				$productCode = implode('', $allOption);
-			} else {
-				$productCode = null;
 			}
 			$generatedProductCodes[] = array_merge(array('product_code' => $productCode), $productCodeDetails);
 		}
