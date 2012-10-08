@@ -16,8 +16,8 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_product',
 		'plugin.view_counter.view_counter_view',
-		'plugin.users.user',
-		'plugin.users.group'
+		'plugin.shop.core_user',
+		'plugin.shop.core_group'
 	);
 
 /**

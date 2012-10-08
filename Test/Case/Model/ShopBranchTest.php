@@ -19,8 +19,8 @@ class ShopBranchTest extends CakeTestCase {
 		'plugin.shop.shop_branch_stock_log',
 		'plugin.shop.contact_branch',
 
-		'plugin.users.user',
-		'plugin.users.group',
+		'plugin.shop.core_user',
+		'plugin.shop.core_group',
 		'plugin.view_counter.view_counter_view',
 		'plugin.management.ticket'
 	);
