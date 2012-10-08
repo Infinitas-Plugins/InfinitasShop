@@ -8,7 +8,6 @@
  * @property ShopCategoriesProduct $ShopCategoriesProduct
  * @property ShopImagesProduct $ShopImagesProduct
  * @property ShopList $ShopList
- * @property ShopProductSize $ShopProductSize
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
@@ -144,19 +143,6 @@ class ShopProduct extends ShopAppModel {
 		),
 		'ShopList' => array(
 			'className' => 'Shop.ShopList',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopProductSize' => array(
-			'className' => 'Shop.ShopProductSize',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
 			'conditions' => '',
@@ -546,7 +532,6 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopOption'] = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
-		$results['ShopProductSize'] = $this->ShopProductSize->find('sizes', $options);
 		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);

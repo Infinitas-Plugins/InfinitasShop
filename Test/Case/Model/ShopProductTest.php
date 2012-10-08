@@ -23,15 +23,12 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_images_product',
 		'plugin.shop.shop_list',
-		'plugin.shop.shop_product_size',
 		'plugin.shop.shop_product_type',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
-		'plugin.shop.shop_unit',
-		'plugin.shop.shop_unit_type',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_products_option_ignore',
 		'plugin.shop.shop_products_option_value_ignore',
@@ -306,7 +303,6 @@ class ShopProductTest extends CakeTestCase {
 					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
 					'ShopImage' => array('id' => null, 'image' => null),
 					'ShopBranchStock' => array(),
-					'ShopProductSize' => array(),
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
 					'ShopImagesProduct' => array(),
@@ -475,30 +471,6 @@ class ShopProductTest extends CakeTestCase {
 							'id' => 'branch-stock-2',
 							'shop_branch_id' => 'branch-2',
 							'stock' => '15'
-						)
-					),
-					'ShopProductSize' => array(
-						array(
-							'id' => 'active-product-weight',
-							'value' => '100.000',
-							'symbol' => 'g',
-							'ShopUnit' => array(
-								'id' => 'product-weight',
-								'name' => 'product-weight',
-								'slug' => 'product-weight',
-								'shop_unit_type_id' => 'mass'
-							)
-						),
-						array(
-							'id' => 'active-ship-weight',
-							'value' => '200.000',
-							'symbol' => 'g',
-							'ShopUnit' => array(
-								'id' => 'ship-weight',
-								'name' => 'ship-weight',
-								'slug' => 'ship-weight',
-								'shop_unit_type_id' => 'mass'
-							)
 						)
 					),
 					'ShopProductCode' => array(
@@ -788,7 +760,6 @@ class ShopProductTest extends CakeTestCase {
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
 			'ShopList',
-			'ShopProductSize',
 			'ShopSpotlight',
 			'ShopSpecial'
 		);
