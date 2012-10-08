@@ -13,6 +13,7 @@
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
  * @property ShopProductType $ShopProductType
+ * @property ShopSize $ShopSize
  */
 class ShopProduct extends ShopAppModel {
 
@@ -84,7 +85,16 @@ class ShopProduct extends ShopAppModel {
 			),
 			'fields' => '',
 			'order' => ''
-		)
+		),
+		'ShopSize' => array(
+			'className' => 'Shop.ShopSize',
+			'foreignKey' => 'foreign_key',
+			'conditions' => array(
+				'ShopSize.model' => 'Shop.ShopProduct'
+			),
+			'fields' => '',
+			'order' => ''
+		),
 	);
 
 /**
@@ -499,13 +509,21 @@ class ShopProduct extends ShopAppModel {
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
 				array(
-					$this->alias . '.product_code'
+					$this->alias . '.product_code',
+					$this->ShopSize->alias . '.*',
 				)
 			);
 
 			$query['conditions']['or'] = array(
 				$this->alias . '.' . $this->primaryKey => $query[0],
 				$this->alias . '.slug' => $query[0]
+			);
+
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel($this->ShopSize->fullModelName())
+				)
 			);
 
 			$query['limit'] = 1;

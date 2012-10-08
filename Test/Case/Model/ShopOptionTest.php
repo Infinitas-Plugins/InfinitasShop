@@ -16,6 +16,7 @@ class ShopOptionTest extends CakeTestCase {
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_price',
+		'plugin.shop.shop_size',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_product_type',
@@ -62,6 +63,32 @@ class ShopOptionTest extends CakeTestCase {
  * @dataProvider findOptionsDataProvider
  */
 	public function testFindOptions($data, $expected) {
+		foreach($expected as &$v) {
+			if(!empty($v['ShopOption']['ShopOptionValue'])) {
+				foreach($v['ShopOption']['ShopOptionValue'] as &$vv) {
+					if(!empty($vv)) {
+						$vv = array_merge(
+							array(
+								'ShopSize' => array(
+									'id' => null,
+									'model' => null,
+									'foreign_key' => null,
+									'product_width' => null,
+									'product_height' => null,
+									'product_length' => null,
+									'shipping_width' => null,
+									'shipping_height' => null,
+									'shipping_length' => null,
+									'product_weight' => null,
+									'shipping_weight' => null,
+								)
+							),
+							$vv
+						);
+					}
+				}
+			}
+		}
 		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data));
 		$this->assertEquals($expected, $results);
 	}
@@ -99,6 +126,19 @@ class ShopOptionTest extends CakeTestCase {
 										'id' => 'option-value-large',
 										'selling' => '3.00000',
 										'retail' => '4.00000'
+									),
+									'ShopSize' => array(
+										'id' => 'option-value-size-large',
+										'model' => 'Shop.ShopOptionValue',
+										'foreign_key' => 'option-size-large',
+										'product_width' => '1.50000',
+										'product_height' => '1.50000',
+										'product_length' => '1.50000',
+										'shipping_width' => '2.50000',
+										'shipping_height' => '2.50000',
+										'shipping_length' => '2.50000',
+										'product_weight' => '50.00000',
+										'shipping_weight' => '65.00000'
 									)
 								),
 								array(
@@ -152,6 +192,19 @@ class ShopOptionTest extends CakeTestCase {
 										'id' => 'option-value-large',
 										'selling' => '3.00000',
 										'retail' => '4.00000'
+									),
+									'ShopSize' => array(
+										'id' => 'option-value-size-large',
+										'model' => 'Shop.ShopOptionValue',
+										'foreign_key' => 'option-size-large',
+										'product_width' => '1.50000',
+										'product_height' => '1.50000',
+										'product_length' => '1.50000',
+										'shipping_width' => '2.50000',
+										'shipping_height' => '2.50000',
+										'shipping_length' => '2.50000',
+										'product_weight' => '50.00000',
+										'shipping_weight' => '65.00000'
 									)
 								),
 								array(
@@ -241,6 +294,19 @@ class ShopOptionTest extends CakeTestCase {
 										'id' => 'option-value-large',
 										'selling' => '3.00000',
 										'retail' => '4.00000'
+									),
+									'ShopSize' => array(
+										'id' => 'option-value-size-large',
+										'model' => 'Shop.ShopOptionValue',
+										'foreign_key' => 'option-size-large',
+										'product_width' => '1.50000',
+										'product_height' => '1.50000',
+										'product_length' => '1.50000',
+										'shipping_width' => '2.50000',
+										'shipping_height' => '2.50000',
+										'shipping_length' => '2.50000',
+										'product_weight' => '50.00000',
+										'shipping_weight' => '65.00000'
 									)
 								),
 								array(
@@ -269,6 +335,33 @@ class ShopOptionTest extends CakeTestCase {
  * @dataProvider productOptionExtractDataProvider
  */
 	public function testFindOptionsExtracted($data, $expected) {
+		foreach($expected as &$v) {
+			if(!empty($v['ShopOptionValue'])) {
+				foreach($v['ShopOptionValue'] as &$vv) {
+					if(!empty($vv)) {
+						$vv = array_merge(
+							array(
+								'ShopSize' => array(
+									'id' => null,
+									'model' => null,
+									'foreign_key' => null,
+									'product_width' => null,
+									'product_height' => null,
+									'product_length' => null,
+									'shipping_width' => null,
+									'shipping_height' => null,
+									'shipping_length' => null,
+									'product_weight' => null,
+									'shipping_weight' => null,
+								)
+							),
+							$vv
+						);
+					}
+				}
+			}
+		}
+
 		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data, 'extract' => true));
 		$this->assertEquals($expected, $results);
 	}
@@ -300,11 +393,24 @@ class ShopOptionTest extends CakeTestCase {
 								'description' => 'some text about option-size-large',
 								'product_code' => 'l',
 								'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => 'option-value-large',
-										'selling' => '3.00000',
-										'retail' => '4.00000'
-									)
+								'ShopPrice' => array(
+									'id' => 'option-value-large',
+									'selling' => '3.00000',
+									'retail' => '4.00000'
+								),
+								'ShopSize' => array(
+									'id' => 'option-value-size-large',
+									'model' => 'Shop.ShopOptionValue',
+									'foreign_key' => 'option-size-large',
+									'product_width' => '1.50000',
+									'product_height' => '1.50000',
+									'product_length' => '1.50000',
+									'shipping_width' => '2.50000',
+									'shipping_height' => '2.50000',
+									'shipping_length' => '2.50000',
+									'product_weight' => '50.00000',
+									'shipping_weight' => '65.00000'
+								)
 							),
 							array(
 								'id' => 'option-size-medium',
@@ -312,11 +418,11 @@ class ShopOptionTest extends CakeTestCase {
 								'description' => 'some text about option-size-medium',
 								'product_code' => 'm',
 								'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
+								'ShopPrice' => array(
+									'id' => null,
+									'selling' => null,
+									'retail' => null
+								)
 							),
 							array(
 								'id' => 'option-size-small',
@@ -324,11 +430,11 @@ class ShopOptionTest extends CakeTestCase {
 								'description' => 'some text about option-size-small',
 								'product_code' => 's',
 								'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
+								'ShopPrice' => array(
+									'id' => null,
+									'selling' => null,
+									'retail' => null
+								)
 							)
 						)
 					),
@@ -346,11 +452,11 @@ class ShopOptionTest extends CakeTestCase {
 								'description' => 'some text about option-colour-blue',
 								'product_code' => 'blue',
 								'shop_option_id' => 'option-colour',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
+								'ShopPrice' => array(
+									'id' => null,
+									'selling' => null,
+									'retail' => null
+								)
 							),
 							array(
 								'id' => 'option-colour-red',
@@ -358,11 +464,11 @@ class ShopOptionTest extends CakeTestCase {
 								'description' => 'some text about option-colour-red',
 								'product_code' => 'red',
 								'shop_option_id' => 'option-colour',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
+								'ShopPrice' => array(
+									'id' => null,
+									'selling' => null,
+									'retail' => null
+								)
 							),
 						)
 					)

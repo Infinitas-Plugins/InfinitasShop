@@ -15,6 +15,7 @@ class ShopOptionValueTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_option',
+		'plugin.shop.shop_size',
 		'plugin.shop.shop_products_option_value_ignore',
 
 		'plugin.shop.shop_price',
@@ -65,7 +66,20 @@ class ShopOptionValueTest extends CakeTestCase {
 			foreach($expected as &$k) {
 				$k = array_merge(
 					array(
-						'ProductOptionValueIgnore' => array()
+						'ProductOptionValueIgnore' => array(),
+						'ShopSize' => array(
+							'id' => null,
+							'model' => null,
+							'foreign_key' => null,
+							'product_width' => null,
+							'product_height' => null,
+							'product_length' => null,
+							'shipping_width' => null,
+							'shipping_height' => null,
+							'shipping_length' => null,
+							'product_weight' => null,
+							'shipping_weight' => null,
+						)
 					),
 					$k
 				);
@@ -99,6 +113,19 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => 'option-value-large',
 							'selling' => '3.00000',
 							'retail' => '4.00000',
+						),
+						'ShopSize' => array(
+							'id' => 'option-value-size-large',
+							'model' => 'Shop.ShopOptionValue',
+							'foreign_key' => 'option-size-large',
+							'product_width' => '1.50000',
+							'product_height' => '1.50000',
+							'product_length' => '1.50000',
+							'shipping_width' => '2.50000',
+							'shipping_height' => '2.50000',
+							'shipping_length' => '2.50000',
+							'product_weight' => '50.00000',
+							'shipping_weight' => '65.00000'
 						)
 					),
 					array(
@@ -201,6 +228,19 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => 'option-value-large',
 							'selling' => '3.00000',
 							'retail' => '4.00000',
+						),
+						'ShopSize' => array(
+							'id' => 'option-value-size-large',
+							'model' => 'Shop.ShopOptionValue',
+							'foreign_key' => 'option-size-large',
+							'product_width' => '1.50000',
+							'product_height' => '1.50000',
+							'product_length' => '1.50000',
+							'shipping_width' => '2.50000',
+							'shipping_height' => '2.50000',
+							'shipping_length' => '2.50000',
+							'product_weight' => '50.00000',
+							'shipping_weight' => '65.00000'
 						)
 					),
 					array(

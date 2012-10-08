@@ -4,6 +4,7 @@
  *
  * @property ShopOption $ShopOption
  * @property ShopPrice $ShopPrice
+ * @property ShopSize $ShopSize
  * @property ShopProductsOptionValueIgnore $ShopProductsOptionValueIgnore
  * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
  */
@@ -16,12 +17,17 @@ class ShopOptionValue extends ShopAppModel {
  */
 	public $displayField = 'name';
 
+/**
+ * @brief custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'values' => true
 	);
 
 /**
- * belongsTo associations
+ * @brief belongsTo associations
  *
  * @var array
  */
@@ -35,6 +41,11 @@ class ShopOptionValue extends ShopAppModel {
 		)
 	);
 
+/**
+ * @brief hasOne associations
+ *
+ * @var array
+ */
 	public $hasOne = array(
 		'ShopPrice' => array(
 			'className' => 'Shop.ShopPrice',
@@ -44,9 +55,23 @@ class ShopOptionValue extends ShopAppModel {
 			),
 			'fields' => '',
 			'order' => ''
+		),
+		'ShopSize' => array(
+			'className' => 'Shop.ShopSize',
+			'foreignKey' => 'foreign_key',
+			'conditions' => array(
+				'ShopSize.model' => 'Shop.ShopOptionValue'
+			),
+			'fields' => '',
+			'order' => ''
 		)
 	);
 
+/**
+ * @brief hasMany associations
+ *
+ * @var array
+ */
 	public $hasMany = array(
 		'ShopProductsOptionValueIgnore' => array(
 			'className' => 'Shop.ShopProductsOptionValueIgnore',
@@ -79,6 +104,8 @@ class ShopOptionValue extends ShopAppModel {
 /**
  * @brief get option values for multiple options
  *
+ * requires shop_option_id passed in
+ *
  * @param string $state
  * @param array $query
  * @param array $results
@@ -103,7 +130,8 @@ class ShopOptionValue extends ShopAppModel {
 					$this->alias . '.product_code',
 					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
 					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail'
+					$this->ShopPrice->alias . '.retail',
+					$this->ShopSize->alias . '.*'
 				)
 			);
 
@@ -117,7 +145,8 @@ class ShopOptionValue extends ShopAppModel {
 			$query['joins'] = array_merge(
 				(array)$query['joins'],
 				array(
-					$this->autoJoinModel($this->ShopPrice->fullModelName())
+					$this->autoJoinModel($this->ShopPrice->fullModelName()),
+					$this->autoJoinModel($this->ShopSize->fullModelName())
 				)
 			);
 
@@ -143,6 +172,7 @@ class ShopOptionValue extends ShopAppModel {
 
 		foreach($results as &$result) {
 			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
+			$result[$this->alias][$this->ShopSize->alias] = $result[$this->ShopSize->alias];
 			$extractTemplate = sprintf('{n}.%s[shop_option_value_id=%s]', $this->ShopProductsOptionValueIgnore->alias, $result[$this->alias][$this->primaryKey]);
 			$result[$this->alias]['ProductOptionValueIgnore'] = Hash::extract($productValueIgnores, $extractTemplate);
 			unset($result[$this->ShopPrice->alias]);
