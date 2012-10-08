@@ -1,5 +1,4 @@
 <?php
-App::uses('ShopAppModel', 'Shop.Model');
 /**
  * ShopBranch Model
  *

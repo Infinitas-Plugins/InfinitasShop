@@ -1,5 +1,4 @@
 <?php
-App::uses('ShopAppModel', 'Shop.Model');
 /**
  * ShopBranchStock Model
  *
@@ -313,7 +312,7 @@ class ShopBranchStock extends ShopAppModel {
 	protected function _findTotalProductStock($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
-			
+
 			if(!empty($query['shop_branch_id'])) {
 				$query['conditions'][$this->alias . '.shop_branch_id'] = $query['shop_branch_id'];
 			}

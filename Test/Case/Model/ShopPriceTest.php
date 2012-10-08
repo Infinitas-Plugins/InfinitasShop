@@ -13,8 +13,7 @@ class ShopPriceTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'plugin.shop.shop_price',
-		'plugin.shop.shop_products_option_value'
+		'plugin.shop.shop_price'
 	);
 
 /**
@@ -40,7 +39,7 @@ class ShopPriceTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
+
 	}
 
 }
