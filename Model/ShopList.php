@@ -35,14 +35,14 @@ class ShopList extends ShopAppModel {
 			'order' => ''
 		),
 		'ShopShippingMethod' => array(
-			'className' => 'ShopShippingMethod',
+			'className' => 'Shop.ShopShippingMethod',
 			'foreignKey' => 'shop_shipping_method_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
 		'ShopPaymentMethod' => array(
-			'className' => 'ShopPaymentMethod',
+			'className' => 'Shop.ShopPaymentMethod',
 			'foreignKey' => 'shop_payment_method_id',
 			'conditions' => '',
 			'fields' => '',
@@ -57,7 +57,7 @@ class ShopList extends ShopAppModel {
  */
 	public $hasMany = array(
 		'ShopListProduct' => array(
-			'className' => 'ShopListProduct',
+			'className' => 'Shop.ShopListProduct',
 			'foreignKey' => 'shop_list_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -261,7 +261,7 @@ class ShopList extends ShopAppModel {
 					$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->displayField,
 
 					$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->primaryKey,
-					$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->displayField,
+					$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->displayField
 				)
 			);
 
@@ -346,6 +346,12 @@ class ShopList extends ShopAppModel {
 		}
 
 		$results = current($results);
+
+		$conditions = array(
+			'shop_list_id' => $results[$this->alias][$this->primaryKey],
+			'extract' => true
+		);
+		$results[$this->ShopListProduct->alias] = $this->ShopListProduct->find('products', $conditions);
 
 		if($results[$this->User->alias][$this->User->primaryKey] === null) {
 			$results[$this->User->alias] = array(

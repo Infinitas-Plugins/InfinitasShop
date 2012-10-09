@@ -21,7 +21,13 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.shop_payment_method',
 		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_list_product',
-		'plugin.management.ticket'
+		'plugin.shop.shop_product',
+		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_price',
+		'plugin.shop.shop_image',
+
+		'plugin.management.ticket',
+		'plugin.view_counter.view_counter_view'
 	);
 
 /**
@@ -494,7 +500,8 @@ class ShopListTest extends CakeTestCase {
 					'ShopShippingMethod' => array(
 						'id' => null,
 						'name' => null
-					)
+					),
+					'ShopListProduct' => array()
 				),
 				$expected
 			);
@@ -536,6 +543,30 @@ class ShopListTest extends CakeTestCase {
 					'User' => array(
 						'id' => 'guest-1',
 						'username' => 'Guest'
+					),
+					'ShopListProduct' => array(
+						array(
+							'id' => 'shop-list-guest-1',
+							'shop_list_id' => 'shop-list-guest-1-cart',
+							'shop_product_id' => 'multi-category',
+							'quantity' => '3.00000',
+							'base_price' => '6.00000',
+							'created' => '2012-10-09 01:32:27',
+							'modified' => '2012-10-09 01:32:27',
+							'ShopProduct' => array(
+								'id' => 'multi-category',
+								'name' => 'multi-category',
+								'slug' => 'multi-category',
+								'ShopImage' => array(
+									'id' => null,
+									'image' => null,
+								),
+								'ShopProductType' => array(
+									'id' => null,
+									'name' => null,
+								)
+							)
+						)
 					)
 				)
 			),
@@ -562,6 +593,52 @@ class ShopListTest extends CakeTestCase {
 					'ShopShippingMethod' => array(
 						'id' => 'royal-mail-1st',
 						'name' => 'royal-mail-1st'
+					),
+					'ShopListProduct' => array(
+						array(
+							'id' => 'shop-list-bob-cart-active',
+							'shop_list_id' => 'shop-list-bob-cart',
+							'shop_product_id' => 'active',
+							'quantity' => '1.00000',
+							'base_price' => '12.00000',
+							'created' => '2012-10-09 01:32:27',
+							'modified' => '2012-10-09 01:32:27',
+							'ShopProduct' => array(
+								'id' => 'active',
+								'name' => 'active',
+								'slug' => 'active',
+								'ShopImage' => array(
+									'id' => 'image-product-active',
+									'image' => 'image-product-active.png',
+								),
+								'ShopProductType' => array(
+									'id' => 'shirts',
+									'name' => 'shirts',
+								)
+							)
+						),
+						array(
+							'id' => 'shop-list-bob-cart-multi-option',
+							'shop_list_id' => 'shop-list-bob-cart',
+							'shop_product_id' => 'multi-option',
+							'quantity' => '1.00000',
+							'base_price' => '25.00000',
+							'created' => '2012-10-09 01:32:27',
+							'modified' => '2012-10-09 01:32:27',
+							'ShopProduct' => array(
+								'id' => 'multi-option',
+								'name' => 'multi-option',
+								'slug' => 'multi-option',
+								'ShopImage' => array(
+									'id' => 'image-product-multi-option',
+									'image' => 'image-product-multi-option.png',
+								),
+								'ShopProductType' => array(
+									'id' => 'complex-options',
+									'name' => 'complex-options',
+								)
+							)
+						)
 					)
 				)
 			),
@@ -606,6 +683,30 @@ class ShopListTest extends CakeTestCase {
 					'ShopShippingMethod' => array(
 						'id' => 'royal-mail-2nd',
 						'name' => 'royal-mail-2nd'
+					),
+					'ShopListProduct' => array(
+						array(
+							'id' => 'shop-list-sally',
+							'shop_list_id' => 'shop-list-sally-cart',
+							'shop_product_id' => 'multi-option',
+							'quantity' => '10.00000',
+							'base_price' => '25.00000',
+							'created' => '2012-10-09 01:32:27',
+							'modified' => '2012-10-09 01:32:27',
+							'ShopProduct' => array(
+								'id' => 'multi-option',
+								'name' => 'multi-option',
+								'slug' => 'multi-option',
+								'ShopImage' => array(
+									'id' => 'image-product-multi-option',
+									'image' => 'image-product-multi-option.png',
+								),
+								'ShopProductType' => array(
+									'id' => 'complex-options',
+									'name' => 'complex-options',
+								)
+							)
+						)
 					)
 				)
 			),
@@ -632,6 +733,30 @@ class ShopListTest extends CakeTestCase {
 					'ShopShippingMethod' => array(
 						'id' => 'royal-mail-2nd',
 						'name' => 'royal-mail-2nd'
+					),
+					'ShopListProduct' => array(
+						array(
+							'id' => 'shop-list-sally',
+							'shop_list_id' => 'shop-list-sally-cart',
+							'shop_product_id' => 'multi-option',
+							'quantity' => '10.00000',
+							'base_price' => '25.00000',
+							'created' => '2012-10-09 01:32:27',
+							'modified' => '2012-10-09 01:32:27',
+							'ShopProduct' => array(
+								'id' => 'multi-option',
+								'name' => 'multi-option',
+								'slug' => 'multi-option',
+								'ShopImage' => array(
+									'id' => 'image-product-multi-option',
+									'image' => 'image-product-multi-option.png',
+								),
+								'ShopProductType' => array(
+									'id' => 'complex-options',
+									'name' => 'complex-options',
+								)
+							)
+						)
 					)
 				)
 			)

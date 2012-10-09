@@ -11,10 +11,9 @@ class ShopListProductFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'shop_list_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'price' => array('type' => 'float', 'null' => false, 'default' => '0.00000', 'length' => '15,5'),
 		'quantity' => array('type' => 'float', 'null' => false, 'default' => '1.00000', 'length' => '15,5'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
@@ -33,13 +32,36 @@ class ShopListProductFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 1,
-			'shop_list_id' => 'Lorem ipsum dolor sit amet',
-			'shop_product_id' => 'Lorem ipsum dolor sit amet',
-			'price' => 1,
+			'id' => 'shop-list-bob-cart-active',
+			'shop_list_id' => 'shop-list-bob-cart',
+			'shop_product_id' => 'active',
 			'quantity' => 1,
-			'created' => '2012-10-08 21:10:20',
-			'modified' => '2012-10-08 21:10:20'
+			'created' => '2012-10-09 01:32:27',
+			'modified' => '2012-10-09 01:32:27'
+		),
+		array(
+			'id' => 'shop-list-bob-cart-multi-option',
+			'shop_list_id' => 'shop-list-bob-cart',
+			'shop_product_id' => 'multi-option',
+			'quantity' => 1,
+			'created' => '2012-10-09 01:32:27',
+			'modified' => '2012-10-09 01:32:27'
+		),
+		array(
+			'id' => 'shop-list-sally',
+			'shop_list_id' => 'shop-list-sally-cart',
+			'shop_product_id' => 'multi-option',
+			'quantity' => 10,
+			'created' => '2012-10-09 01:32:27',
+			'modified' => '2012-10-09 01:32:27'
+		),
+		array(
+			'id' => 'shop-list-guest-1',
+			'shop_list_id' => 'shop-list-guest-1-cart',
+			'shop_product_id' => 'multi-category',
+			'quantity' => 3,
+			'created' => '2012-10-09 01:32:27',
+			'modified' => '2012-10-09 01:32:27'
 		),
 	);
 

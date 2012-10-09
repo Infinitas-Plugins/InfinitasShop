@@ -1,5 +1,6 @@
 <?php
 App::uses('ShopList', 'Shop.Model');
+App::uses('CakeSession', 'Model/Datasource');
 
 /**
  * ShopList Test Case
@@ -41,6 +42,7 @@ class ShopAppModelTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->ShopList);
+		CakeSession::destroy();
 
 		parent::tearDown();
 	}
