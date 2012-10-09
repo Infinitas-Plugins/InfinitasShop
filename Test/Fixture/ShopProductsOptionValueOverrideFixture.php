@@ -1,9 +1,9 @@
 <?php
 /**
- * ShopProductsOptionValueOverideFixture
+ * ShopProductsOptionValueOverrideFixture
  *
  */
-class ShopProductsOptionValueOverideFixture extends CakeTestFixture {
+class ShopProductsOptionValueOverrideFixture extends CakeTestFixture {
 
 /**
  * Fields

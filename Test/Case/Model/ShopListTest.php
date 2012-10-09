@@ -23,8 +23,11 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_option',
+		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_image',
+		'plugin.shop.shop_products_option_value_override',
 
 		'plugin.management.ticket',
 		'plugin.view_counter.view_counter_view'
@@ -564,6 +567,8 @@ class ShopListTest extends CakeTestCase {
 								'ShopProductType' => array(
 									'id' => null,
 									'name' => null,
+								),
+								'ShopListProductOption' => array(
 								)
 							)
 						)
@@ -614,6 +619,33 @@ class ShopListTest extends CakeTestCase {
 								'ShopProductType' => array(
 									'id' => 'shirts',
 									'name' => 'shirts',
+								),
+								'ShopListProductOption' => array(
+									array(
+										'id' => 'bob-cart-option-size-large',
+										'shop_list_product_id' => 'shop-list-bob-cart-active',
+										'shop_option_id' => 'option-size',
+										'shop_option_value_id' => 'option-size-large',
+										'ShopOption' => array(
+											'id' => 'option-size',
+											'name' => 'option-size',
+											'slug' => 'option-size',
+											'required' => '1',
+										),
+										'ShopOptionValue' => array(
+											'id' => 'option-size-large',
+											'name' => 'option-size-large',
+											'product_code' => 'l',
+											'ShopOverridePrice' => array(
+												'selling' => null,
+												'retail' => null
+											),
+											'ShopPrice' => array(
+												'selling' => '3.00000',
+												'retail' => '4.00000'
+											)
+										)
+									)
 								)
 							)
 						),
@@ -636,6 +668,9 @@ class ShopListTest extends CakeTestCase {
 								'ShopProductType' => array(
 									'id' => 'complex-options',
 									'name' => 'complex-options',
+								),
+								'ShopListProductOption' => array(
+
 								)
 							)
 						)
@@ -704,6 +739,58 @@ class ShopListTest extends CakeTestCase {
 								'ShopProductType' => array(
 									'id' => 'complex-options',
 									'name' => 'complex-options',
+								),
+								'ShopListProductOption' => array(
+									array(
+										'id' => 'sally-cart-option-colour-red',
+										'shop_list_product_id' => 'shop-list-sally',
+										'shop_option_id' => 'option-colour',
+										'shop_option_value_id' => 'option-colour-red',
+										'ShopOption' => array(
+											'id' => 'option-colour',
+											'name' => 'option-colour',
+											'slug' => 'option-colour',
+											'required' => '0',
+										),
+										'ShopOptionValue' => array(
+											'id' => 'option-colour-red',
+											'name' => 'option-colour-red',
+											'product_code' => 'red',
+											'ShopOverridePrice' => array(
+												'selling' => null,
+												'retail' => null
+											),
+											'ShopPrice' => array(
+												'selling' => null,
+												'retail' => null
+											)
+										)
+									),
+									array(
+										'id' => 'sally-cart-option-size-medium',
+										'shop_list_product_id' => 'shop-list-sally',
+										'shop_option_id' => 'option-size',
+										'shop_option_value_id' => 'option-size-medium',
+										'ShopOption' => array(
+											'id' => 'option-size',
+											'name' => 'option-size',
+											'slug' => 'option-size',
+											'required' => '1',
+										),
+										'ShopOptionValue' => array(
+											'id' => 'option-size-medium',
+											'name' => 'option-size-medium',
+											'product_code' => 'm',
+											'ShopOverridePrice' => array(
+												'selling' => null,
+												'retail' => null
+											),
+											'ShopPrice' => array(
+												'selling' => null,
+												'retail' => null
+											)
+										)
+									)
 								)
 							)
 						)
@@ -754,6 +841,58 @@ class ShopListTest extends CakeTestCase {
 								'ShopProductType' => array(
 									'id' => 'complex-options',
 									'name' => 'complex-options',
+								),
+								'ShopListProductOption' => array(
+									array(
+										'id' => 'sally-cart-option-colour-red',
+										'shop_list_product_id' => 'shop-list-sally',
+										'shop_option_id' => 'option-colour',
+										'shop_option_value_id' => 'option-colour-red',
+										'ShopOption' => array(
+											'id' => 'option-colour',
+											'name' => 'option-colour',
+											'slug' => 'option-colour',
+											'required' => '0',
+										),
+										'ShopOptionValue' => array(
+											'id' => 'option-colour-red',
+											'name' => 'option-colour-red',
+											'product_code' => 'red',
+											'ShopOverridePrice' => array(
+												'selling' => null,
+												'retail' => null
+											),
+											'ShopPrice' => array(
+												'selling' => null,
+												'retail' => null
+											)
+										)
+									),
+									array(
+										'id' => 'sally-cart-option-size-medium',
+										'shop_list_product_id' => 'shop-list-sally',
+										'shop_option_id' => 'option-size',
+										'shop_option_value_id' => 'option-size-medium',
+										'ShopOption' => array(
+											'id' => 'option-size',
+											'name' => 'option-size',
+											'slug' => 'option-size',
+											'required' => '1',
+										),
+										'ShopOptionValue' => array(
+											'id' => 'option-size-medium',
+											'name' => 'option-size-medium',
+											'product_code' => 'm',
+											'ShopOverridePrice' => array(
+												'selling' => null,
+												'retail' => null
+											),
+											'ShopPrice' => array(
+												'selling' => null,
+												'retail' => null
+											)
+										)
+									)
 								)
 							)
 						)

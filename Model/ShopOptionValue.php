@@ -9,14 +9,6 @@
  * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
  */
 class ShopOptionValue extends ShopAppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
-
 /**
  * @brief custom find methods
  *

@@ -1,13 +1,13 @@
 <?php
 /**
- * ShopProductOptionValueOveride Model
+ * ShopProductOptionValueOverride Model
  *
  * @property ShopPrice $ShopPrice
  * @property ShopOptionsValue $ShopOptionsValue
  * @property ShopProduct $ShopProduct
  * @property ShopCategory $ShopCategory
  */
-class ShopProductsOptionValueOveride extends ShopAppModel {
+class ShopProductsOptionValueOverride extends ShopAppModel {
 /**
  * hasOne associations
  *
@@ -32,7 +32,7 @@ class ShopProductsOptionValueOveride extends ShopAppModel {
  */
 	public $belongsTo = array(
 		'ShopOptionsValue' => array(
-			'className' => 'ShopOptionsValue',
+			'className' => 'Shop.ShopOptionsValue',
 			'foreignKey' => 'shop_options_value_id',
 			'conditions' => '',
 			'fields' => '',

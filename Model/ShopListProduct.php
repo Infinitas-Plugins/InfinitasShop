@@ -5,6 +5,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  *
  * @property ShopList $ShopList
  * @property ShopProduct $ShopProduct
+ * @property ShopListProductOption $ShopListProductOption
  */
 class ShopListProduct extends ShopAppModel {
 /**
@@ -37,6 +38,12 @@ class ShopListProduct extends ShopAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		)
+	);
+
+	public $hasMany = array(
+		'ShopListProductOption' => array(
+			'className' => 'Shop.ShopListProductOption'
 		)
 	);
 
@@ -130,12 +137,20 @@ class ShopListProduct extends ShopAppModel {
 			return array();
 		}
 
+		$shopListProductIds = Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey));
+		$shopListProductOptions = $this->ShopListProductOption->find('options', array(
+			'shop_list_product_id' => $shopListProductIds
+		));
+
 		foreach($results as &$result) {
 			$result[$this->alias][$this->ShopProduct->alias] = array_merge(
 				$result[$this->ShopProduct->alias],
 				array($this->ShopProduct->ShopProductType->alias => $result[$this->ShopProduct->ShopProductType->alias]),
 				array($this->ShopProduct->ShopImage->alias => $result[$this->ShopProduct->ShopImage->alias])
 			);
+			$result[$this->alias][$this->ShopProduct->alias][$this->ShopListProductOption->alias] = Hash::extract($shopListProductOptions, sprintf(
+				'{n}[shop_list_product_id=%s]', $result[$this->alias][$this->primaryKey]
+			));
 		}
 
 		if($query['extract']) {
