@@ -22,7 +22,6 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_categories_product',
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_images_product',
-		'plugin.shop.shop_list',
 		'plugin.shop.shop_product_type',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
@@ -759,7 +758,6 @@ class ShopProductTest extends CakeTestCase {
 			'ShopBranchStock',
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
-			'ShopList',
 			'ShopSpotlight',
 			'ShopSpecial'
 		);

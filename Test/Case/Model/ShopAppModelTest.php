@@ -19,7 +19,8 @@ class ShopAppModelTest extends CakeTestCase {
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_payment_method',
 		'plugin.shop.shop_list_product_option',
-		'plugin.shop.shop_list_product'
+		'plugin.shop.shop_list_product',
+		'plugin.management.ticket'
 	);
 
 /**
@@ -78,6 +79,60 @@ class ShopAppModelTest extends CakeTestCase {
 			)
 		);
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * @brief test is guest
+ *
+ * @param type $data
+ * @param type $expected
+ *
+ * @dataProvider isGuestDataProvider
+ */
+	public function testIsGuest($data, $expected) {
+		CakeSession::write('Shop.Guest.id', $data['guest_id']);
+		CakeSession::write('Auth.User.id', $data['user_id']);
+
+		$result = $this->{$this->modelClass}->isGuest($data);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * @brief is guest data provider
+ *
+ * @return array
+ */
+	public function isGuestDataProvider() {
+		return array(
+			'nothing' => array(
+				array(
+					'user_id' => null,
+					'guest_id' => null
+				),
+				true
+			),
+			'guest' => array(
+				array(
+					'user_id' => null,
+					'guest_id' => 'guest-1'
+				),
+				true
+			),
+			'user' => array(
+				array(
+					'user_id' => 'bob',
+					'guest_id' => null
+				),
+				false
+			),
+			'both' => array(
+				array(
+					'user_id' => 'bob',
+					'guest_id' => 'guest-1'
+				),
+				false
+			)
+		);
 	}
 
 }

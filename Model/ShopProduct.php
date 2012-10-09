@@ -7,7 +7,6 @@
  * @property ShopBranchStock $ShopBranchStock
  * @property ShopCategoriesProduct $ShopCategoriesProduct
  * @property ShopImagesProduct $ShopImagesProduct
- * @property ShopList $ShopList
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
@@ -130,19 +129,6 @@ class ShopProduct extends ShopAppModel {
 		),
 		'ShopImagesProduct' => array(
 			'className' => 'Shop.ShopImagesProduct',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopList' => array(
-			'className' => 'Shop.ShopList',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
 			'conditions' => '',

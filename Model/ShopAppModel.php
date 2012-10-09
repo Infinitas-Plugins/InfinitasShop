@@ -1,4 +1,8 @@
 <?php
+App::uses('AuthComponent', 'Controller/Component');
+/**
+ * @brief ShopAppModel
+ */
 
 class ShopAppModel extends AppModel {
 /**
@@ -9,9 +13,33 @@ class ShopAppModel extends AppModel {
  * @return string.
  */
 	public function currentUserId() {
-		App::uses('AuthComponent', 'Controller/Component');
 		$userId = AuthComponent::user('id');
-		
+
 		return $userId ? $userId : CakeSession::read('Shop.Guest.id');
+	}
+
+/**
+ * @brief check if the user is a guest
+ *
+ * @return boolean
+ */
+	public function isGuest() {
+		return $this->isUser() == false;
+	}
+
+/**
+ * @brief check if the user is logged in
+ *
+ * Returns true if the user is logged in
+ *
+ * @return boolean
+ */
+	public function isUser() {
+		$userId = AuthComponent::user('id');
+		if(!$userId) {
+			return false;
+		}
+
+		return ClassRegistry::init('Users.User')->exists($userId);
 	}
 }
