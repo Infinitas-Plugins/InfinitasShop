@@ -269,7 +269,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'total' => 3.05,
 					'shipping' => 3.05,
 					'insurance_rate' => 0.0,
-					'insurance_cover' => 39.0
+					'insurance_cover' => 39.0,
+					'surcharge' => '0.00000'
 				)
 			),
 			'active-2nd-class' => array(
@@ -281,7 +282,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'total' => 2.61,
 					'shipping' => 2.61,
 					'insurance_rate' => 0.0,
-					'insurance_cover' => 0.0
+					'insurance_cover' => 0.0,
+					'surcharge' => '0.00000'
 				)
 			)
 		);
@@ -308,6 +310,20 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'shop_list_id' => $data['shop_list_id']
 		));
 		$this->assertEquals($expected, $result);
+
+		if($data['shop_shipping_method_id']) {
+			$this->{$this->modelClass}->id = $data['shop_shipping_method_id'];
+			$this->{$this->modelClass}->saveField('surcharge', 25);
+
+			$expected['total'] += 25;
+			$expected['surcharge'] = 25;
+			$result = $this->{$this->modelClass}->find('productList', array(
+				'shop_shipping_method_id' => $data['shop_shipping_method_id'],
+				'shop_list_id' => $data['shop_list_id']
+			));
+			$this->assertEquals($expected, $result);
+		}
+
 		CakeSession::destroy();
 	}
 
@@ -328,7 +344,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'total' => 4.71,
 					'shipping' => 3.71,
 					'insurance_rate' => 1.0,
-					'insurance_cover' => 100.0
+					'insurance_cover' => 100.0,
+					'surcharge' => '0.00000'
 				)
 			),
 			'shop-list-bob-cart' => array(
@@ -341,7 +358,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'total' => 3.15,
 					'shipping' => 3.15,
 					'insurance_rate' => 0.0,
-					'insurance_cover' => 0.0
+					'insurance_cover' => 0.0,
+					'surcharge' => '0.00000'
 				)
 			),
 			'shop-list-bob-wish' => array(
@@ -354,7 +372,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'total' => 1.33,
 					'shipping' => 1.33,
 					'insurance_rate' => 0.0,
-					'insurance_cover' => 0.0
+					'insurance_cover' => 0.0,
+					'surcharge' => '0.00000'
 				)
 			)
 		);

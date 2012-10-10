@@ -237,10 +237,11 @@ class ShopShippingMethod extends ShopAppModel {
 		$shipping = self::_calculateShipping($sizes['weight'], $method['rates']);
 		$insurance = self::_calculateInsurance($sizes['cost'], $method['insurance']);
 		return array(
-			'total' => round($shipping + $insurance['rate'], 4),
+			'total' => round($shipping + $method['surcharge'] + $insurance['rate'], 4),
 			'shipping' => round($shipping, 4),
 			'insurance_rate' => round($insurance['rate'], 4),
-			'insurance_cover' => round($insurance['limit'], 4)
+			'insurance_cover' => round($insurance['limit'], 4),
+			'surcharge' => $method['surcharge']
 		);
 	}
 
