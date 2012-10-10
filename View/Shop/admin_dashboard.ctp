@@ -1,11 +1,11 @@
 <?php
 	if(false && !$requreSetup) { ?>
 		<div class="dashboard grid_16">
-			<h1><?php echo __d('blog', 'Please setup the Blog plugin before use'); ?></h1>
+			<h1><?php echo __d('shop', 'Please setup the Shop before use'); ?></h1>
 			<p class="info">
 				<?php
 					echo sprintf(
-						__d('blog', 'Add some %s before you start blogging'),
+						__d('shop', 'Add some %s before you start selling'),
 						$this->Html->link(
 							__d('contents', 'layouts'),
 							array(
