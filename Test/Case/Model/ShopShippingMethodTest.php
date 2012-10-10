@@ -17,6 +17,26 @@ class ShopShippingMethodTest extends CakeTestCase {
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_order',
+		'plugin.shop.shop_product',
+		'plugin.shop.shop_branch_stock',
+		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_image',
+		'plugin.shop.shop_images_product',
+		'plugin.shop.shop_price',
+		'plugin.shop.shop_categories_product',
+		'plugin.shop.shop_category',
+		'plugin.shop.shop_size',
+		'plugin.shop.shop_product_types_option',
+		'plugin.shop.shop_option',
+		'plugin.shop.shop_products_option_ignore',
+		'plugin.shop.shop_option_value',
+		'plugin.shop.shop_products_option_value_ignore',
+		'plugin.shop.shop_list_product_option',
+		'plugin.shop.shop_special',
+		'plugin.shop.shop_spotlight',
+		
+		'plugin.installer.plugin',
+		'plugin.view_counter.view_counter_view',
 	);
 
 /**
@@ -59,7 +79,9 @@ class ShopShippingMethodTest extends CakeTestCase {
 		if(!empty($expected)) {
 			$expected = array('ShopShippingMethod' => $expected);
 		}
-		$result = $this->{$this->modelClass}->find('shipping', $data['shop_shipping_method_id']);
+		$result = $this->{$this->modelClass}->find('shipping', array(
+			'shop_shipping_method_id' => $data['shop_shipping_method_id']
+		));
 		$this->assertEquals($expected, $result);
 	}
 
@@ -189,7 +211,9 @@ class ShopShippingMethodTest extends CakeTestCase {
 			array('limit' => 200, 'rate' => 6.0),
 		);
 		$this->{$this->modelClass}->saveField('rates', '150:5,120:4,200:6');
-		$result = $this->{$this->modelClass}->find('shipping', $this->{$this->modelClass}->id);
+		$result = $this->{$this->modelClass}->find('shipping', array(
+			'shop_shipping_method_id' => $this->{$this->modelClass}->id
+		));
 		$this->assertEquals($expected, $result[$this->modelClass]['rates']);
 
 		$expected = array(
@@ -198,8 +222,60 @@ class ShopShippingMethodTest extends CakeTestCase {
 			array('limit' => 200, 'rate' => 6.0),
 		);
 		$this->{$this->modelClass}->saveField('insurance', '150:5,120:4,200:6');
-		$result = $this->{$this->modelClass}->find('shipping', $this->{$this->modelClass}->id);
+		$result = $this->{$this->modelClass}->find('shipping', array(
+			'shop_shipping_method_id' => $this->{$this->modelClass}->id
+		));
 		$this->assertEquals($expected, $result[$this->modelClass]['rates']);
+	}
+
+/**
+ * @brief test product
+ * 
+ * @param  [type] $data     [description]
+ * @param  [type] $expected [description]
+ * 
+ * @dataProvider productDataProvider
+ */
+	public function testProduct($data, $expected) {
+		$result = $this->{$this->modelClass}->find('product', array(
+			'shop_shipping_method_id' => $data['shop_shipping_method_id'],
+			'shop_product_id' => $data['product']
+		));
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * @brief product data provider
+ * 
+ * @return array
+ */
+	public function productDataProvider() {
+		return array(
+			'active-1st-class' => array(
+				array(
+					'product' => 'active',
+					'shop_shipping_method_id' => 'royal-mail-1st'
+				),
+				array(
+					'total' => 3.05,
+					'shipping' => 3.05,
+					'insurance_rate' => 0.0,
+					'insurance_cover' => 39.0
+				)
+			),
+			'active-2nd-class' => array(
+				array(
+					'product' => 'active',
+					'shop_shipping_method_id' => 'royal-mail-2nd'
+				),
+				array(
+					'total' => 2.61,
+					'shipping' => 2.61,
+					'insurance_rate' => 0.0,
+					'insurance_cover' => 0.0
+				)
+			)
+		);
 	}
 
 }

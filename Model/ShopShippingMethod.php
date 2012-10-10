@@ -13,7 +13,9 @@ class ShopShippingMethod extends ShopAppModel {
  * @var array
  */
 	public $findMethods = array(
-		'shipping' => true
+		'shipping' => true,
+		'product' => true,
+		'productList' => true
 	);
 
 /**
@@ -98,7 +100,7 @@ class ShopShippingMethod extends ShopAppModel {
 				)
 			);
 
-			if(empty($query[0])) {
+			if(empty($query['shop_shipping_method_id'])) {
 				$query['joins'][] = $this->autoJoinModel(array(
 					'model' => 'Shop.ShopList',
 					'conditions' => array(
@@ -108,7 +110,7 @@ class ShopShippingMethod extends ShopAppModel {
 					'type' => 'right'
 				));
 			} else {
-				$query['conditions'][$this->alias . '.' . $this->primaryKey] = $query[0];
+				$query['conditions'][$this->alias . '.' . $this->primaryKey] = $query['shop_shipping_method_id'];
 			}
 
 			if(!AuthComponent::user('id')) {
@@ -133,6 +135,60 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
+ * @brief get the shipping particulars for a selected product
+ * 
+ * @param  string $state   [description]
+ * @param  array $query   [description]
+ * @param  array $results [description]
+ * 
+ * @return array
+ */
+	protected function _findProduct($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = array_merge(array('shop_product_id' => null), $query);
+			return self::_findShipping($state, $query);
+		}
+
+		$results = self::_findShipping($state, $query, $results);
+
+		if(empty($results)) {
+			throw new CakeException(__d('shop', 'Unable to get the selected shipping method'));
+		}
+
+		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', $query['shop_product_id']);
+
+		return self::_getShipping($sizes, 
+			$results[$this->alias]['rates'], 
+			$results[$this->alias]['insurance']
+		);
+	}
+
+	protected function _findProductList($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = array_merge(array('shop_list_id' => null), $query);
+			if(empty($query['shop_list_id'])) {
+				$query['shop_list_id'] = ClassRegistry::init('Shop.ShopList')->currentListId();
+			}
+			return self::_findShipping($state, $query);
+		}
+
+		$results = self::_findShipping($state, $query, $results);
+
+		if(empty($results)) {
+			throw new CakeException(__d('shop', 'Unable to get the selected shipping method'));
+		}
+
+		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('prodcutListShipping', array(
+			'shop_list_id' => $query['shop_list_id']
+		));
+		
+		return self::_getShipping($sizes, 
+			$results[$this->alias]['rates'], 
+			$results[$this->alias]['insurance']
+		);
+	}
+
+/**
  * @brief parse the shipping values into arrays
  * 
  * @param string $values values (passed by reference)
@@ -153,10 +209,76 @@ class ShopShippingMethod extends ShopAppModel {
 				'rate' => (float)$tmp[1]
 			);
 		});
-		
+
 		usort($values, function($a, $b) {
 		    return $a['limit'] - $b['limit'];
 		});
+	}
+
+/**
+ * @brief get the shipping costs
+ *
+ * $sizes expects having the width, height, lenght and cost available.
+ * 
+ * @param array $sizes the values for the current check
+ * @param array $rates the rates table from the database
+ * @param array $insurance true for insurance calculation
+ * 
+ * @return array
+ */
+	protected function _getShipping(array $sizes, array &$rates, array &$insurance) {
+		$shipping = self::_calculateShipping($sizes['weight'], $rates);
+		$insurance = self::_calculateInsurance($sizes['cost'], $insurance);
+		return array(
+			'total' => round($shipping + $insurance['rate'], 4),
+			'shipping' => round($shipping, 4),
+			'insurance_rate' => round($insurance['rate'], 4),
+			'insurance_cover' => round($insurance['limit'], 4)
+		);
+	}
+
+/**
+ * @brief calculate the shipping cost based on the product weight
+ *
+ * @param  float $weight the weight of the item being checked
+ * @param  array $shipping the shipping prices
+ *
+ * @throws CakeException when no option is available
+ * 
+ * @return float
+ */
+	protected function _calculateShipping($weight, array &$rates) {
+		foreach($rates as $cost) {
+			if($weight < $cost['limit']) {
+				return $cost['rate'];
+			}
+		}
+
+		throw new CakeException(__d('shop', 'Product is to heavy to be shipped by this method'));
+	}
+/**
+ * @brief calculate the insurance provided by selected shipping method
+ *
+ * This will return the best insurance cover base on the price of the passed
+ * in value. If the item is more expensive than the highest available insurance 
+ * option the highest option is returned.
+ *
+ * The rate + limit is returned to be displayed on the front end so users will 
+ * see how much cover they have (or if there is short fall)
+ * 
+ * @param  float $price the cost of goods being insured
+ * @param  array $insurance the insurance options
+ * 
+ * @return array
+ */
+	protected function _calculateInsurance($price, array &$insurance) {
+		foreach($insurance as $cost) {
+			if($price < $cost['limit']) {
+				return $cost;
+			}
+		}
+
+		return $price;
 	}
 
 }
