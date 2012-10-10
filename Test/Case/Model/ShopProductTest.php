@@ -338,6 +338,51 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test find product shipping
+ *
+ * @param array $data
+ * @param array $expected
+ *
+ * @dataProvider findProductListShippingDataProvider
+ */
+	public function testFindProductListShipping($data, $expected) {
+		App::uses('CakeSession', 'Model/Datasource');
+		if(isset($data['user_id'])) {
+			CakeSession::write('Auth.User.id', $data['user_id']);
+		}
+		if(isset($data['guest_id'])) {
+			CakeSession::write('Shop.Guest.id', $data['guest_id']);
+		}
+		$results = $this->{$this->modelClass}->find('prodcutListShipping', array(
+			'shop_list_id' => $data
+		));
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * @brief find product shipping data provider
+ *
+ * @return array
+ */
+	public function findProductListShippingDataProvider() {
+		return array(
+			'shop-list-bob-cart' => array(
+				array(
+					'shop_list_id' => 'shop-list-bob-cart',
+					'user_id' => 'bob'
+				),
+				array(
+					'width' => 17.5,
+					'height' => 17.5,
+					'length' => 17.5,
+					'weight' => 780.0,
+					'cost' => 43.0
+				)
+			),
+		);
+	}
+
+/**
  * @brief test find products
  *
  * @dataProvider findProductDataProvider

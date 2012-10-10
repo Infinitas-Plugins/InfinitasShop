@@ -32,6 +32,7 @@ class ShopProduct extends ShopAppModel {
 		'productShipping' => true,
 		'paginated' => true,
 		'productsForList' => true,
+		'prodcutListShipping' => true,
 		'new' => true,
 		'updated' => true,
 		'specials' => true,
@@ -448,7 +449,7 @@ class ShopProduct extends ShopAppModel {
  *
  * @return array
  */
-	public function _findProductsForList($state, array $query, array $results = array()) {
+	protected function _findProductsForList($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			if(empty($query['shop_list_id'])) {
 				$query['shop_list_id'] = $this->ShopListProduct->ShopList->currentListId(true);
@@ -606,9 +607,54 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		$results = self::_findProduct($state, $query, $results);
+		return self::_getMaxValuesForShipping($results);
+	}
 
+/**
+ * @brief find the total values for shipping on an entire product list
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findProdcutListShipping($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			return self::_findProductsForList($state, $query);
+		}
+
+		$results = self::_findProductsForList($state, $query, $results);
+		foreach($results as &$result) {
+			$result = self::_getMaxValuesForShipping($result);
+		}
+		$fields = array(
+			'width',
+			'height',
+			'length',
+			'weight',
+			'cost'
+		);
+		$totals = array();
+		foreach($fields as $key) {
+			$totals[$key] = array_sum(Hash::extract($results, '{n}.' . $key));
+		}
+
+		return $totals;
+	}
+
+/**
+ * @brife figure out the max values for the passed in product
+ *
+ * @param array $results the fesults of a find
+ *
+ * @return array
+ */
+	protected function _getMaxValuesForShipping(&$results) {
 		if(empty($results)) {
-			return array();
+			return array(
+
+			);
 		}
 
 		$sizeFields = array(
@@ -620,9 +666,12 @@ class ShopProduct extends ShopAppModel {
 
 		$sizes = $optionCost = array();
 		foreach($results['ShopOption'] as $option) {
-			$optionCosts[] = max(Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling'));
+			$prices = Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling');
+			$optionCosts[] = !empty($prices) ? max($prices): 0.0;
 			foreach($sizeFields as $sizeOption) {
-				$sizes[$sizeOption][] = $results['ShopSize']['shipping_' . $sizeOption] + max(Hash::extract($option['ShopOptionValue'], '{n}.ShopSize.shipping_' . $sizeOption));
+				$value = Hash::extract($option['ShopOptionValue'], '{n}.ShopSize.shipping_' . $sizeOption);
+				$value = !empty($value) ? max($value) : 0.0;
+				$sizes[$sizeOption][] = $results['ShopSize']['shipping_' . $sizeOption] + (float)$value;
 			}
 		}
 

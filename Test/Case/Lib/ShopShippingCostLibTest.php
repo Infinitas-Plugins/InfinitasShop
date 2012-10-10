@@ -179,6 +179,11 @@ class ShopShippingCostLibTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * @brief product data provider
+ * 
+ * @return array
+ */
 	public function productDataProvider() {
 		return array(
 			'active-1st-class' => array(
@@ -190,7 +195,7 @@ class ShopShippingCostLibTest extends CakeTestCase {
 					'total' => 3.05,
 					'shipping' => 3.05,
 					'insurance_rate' => 0.0,
-					'insurance_cover' => 0.0
+					'insurance_cover' => 39.0
 				)
 			),
 			'active-2nd-class' => array(

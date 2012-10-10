@@ -44,13 +44,35 @@ class ShopShippingCostLib {
 
 		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', $product);
 
-		$shipping = self::_calculateShipping($sizes['weight'], $method['ShopShippingMethod']['rates']);
-		$insurance = self::_calculateShipping($sizes['cost'], $method['ShopShippingMethod']['rates']);
+		return self::_getShipping($sizes, 
+			$method['ShopShippingMethod']['rates'], 
+			$method['ShopShippingMethod']['insurance']
+		);
+	}
+
+	public static function productList($productListId = null) {
+		if(empty($productListId)) {
+			$productListId = ClassRegistry::init('Shop.ShopList')->currentListId();
+		}
+
+		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('prodcutListShipping', array(
+			'shop_list_id' => $productListId
+		));
+
+		return self::_getShipping($sizes, 
+			$method['ShopShippingMethod']['rates'], 
+			$method['ShopShippingMethod']['insurance']
+		);
+	}
+
+	protected static function _getShipping(array $sizes, array &$rates, array &$insurance) {
+		$shipping = self::_calculateShipping($sizes['weight'], $rates);
+		$insurance = self::_calculateInsurance($sizes['cost'], $insurance);
 		return array(
 			'total' => round($shipping + $insurance['rate'], 4),
 			'shipping' => round($shipping, 4),
 			'insurance_rate' => round($insurance['rate'], 4),
-			'insurance_cover' => round($insurance['cover'], 4)
+			'insurance_cover' => round($insurance['limit'], 4)
 		);
 	}
 
@@ -64,8 +86,8 @@ class ShopShippingCostLib {
  * 
  * @return float
  */
-	protected function _calculateShipping($weight, array &$shipping) {
-		foreach($shipping as $cost) {
+	protected function _calculateShipping($weight, array &$rates) {
+		foreach($rates as $cost) {
 			if($weight < $cost['limit']) {
 				return $cost['rate'];
 			}
@@ -90,15 +112,11 @@ class ShopShippingCostLib {
  */
 	protected function _calculateInsurance($price, array &$insurance) {
 		foreach($insurance as $cost) {
-			if($weight < $cost['limit']) {
+			if($price < $cost['limit']) {
 				return $cost;
 			}
 		}
 
-		return $cost;
-	}
-
-	public static function cart() {
-
+		return $price;
 	}
 }
