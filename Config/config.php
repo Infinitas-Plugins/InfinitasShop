@@ -1,5 +1,7 @@
 <?php
 	$config['Shop'] = array(
+		'currency' => 'gbp',
+		
 		'allow_ratings' => true,
 		'allow_comments' => true,
 		'payment_terms' => array(
