@@ -352,4 +352,86 @@ class ShopShippingMethodTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * @brief test min settings
+ */
+	public function testMinimum() {
+		$findConditions = array(
+			'shop_shipping_method_id' => 'royal-mail-2nd',
+			'shop_list_id' => 'shop-list-bob-cart'
+		);
+		$this->{$this->modelClass}->id = $findConditions['shop_shipping_method_id'];
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', null));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(is_array($result));
+		} catch(Exception $e) {
+			$this->assertTrue(false, 'Was not able to get a valid shipping total');
+		}
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', 1));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(is_array($result));
+		} catch(Exception $e) {
+			$this->assertTrue(false, 'Was not able to get a valid shipping total');
+		}
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', 250));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(false, 'No Exception was thrown');
+		} catch(Exception $e) {
+			if(get_class($e) == 'ShopShippingMethodMinimumException') {
+				$this->assertTrue(true);
+			} else {
+				throw $e;
+			}
+		}
+	}
+
+/**
+ * @brief test max settings
+ */
+	public function testMaximum() {
+		$findConditions = array(
+			'shop_shipping_method_id' => 'royal-mail-2nd',
+			'shop_list_id' => 'shop-list-bob-cart'
+		);
+		$this->{$this->modelClass}->id = $findConditions['shop_shipping_method_id'];
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', null));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(is_array($result));
+		} catch(Exception $e) {
+			$this->assertTrue(false, 'Was not able to get a valid shipping total');
+		}
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', 500));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(is_array($result));
+		} catch(Exception $e) {
+			$this->assertTrue(false, 'Was not able to get a valid shipping total');
+		}
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', 1));
+
+		try {
+			$result = $this->{$this->modelClass}->find('productList', $findConditions);
+			$this->assertTrue(false, 'No Exception was thrown');
+		} catch(Exception $e) {
+			if(get_class($e) == 'ShopShippingMethodMaximumException') {
+				$this->assertTrue(true);
+			} else {
+				throw $e;
+			}
+		}
+	}
+
 }

@@ -42,3 +42,17 @@ class ShopBranchMultipleConfiguredException extends CakeException {
  */
 	protected $_messageTemplate = 'More than one branch exists';
 }
+
+/**
+ * @brief price is below the minium threshold for the selected option
+ */
+class ShopShippingMethodMinimumException extends CakeException {
+	protected $_messageTemplate = '"%s" is below the minimum threshold of "%s"';
+}
+
+/**
+ * @brief price is above the maximum threshold for the selected option
+ */
+class ShopShippingMethodMaximumException extends CakeException {
+	protected $_messageTemplate = '"%s" is abouve the maximum threshold of "%s"';
+}

@@ -157,10 +157,7 @@ class ShopShippingMethod extends ShopAppModel {
 
 		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', $query['shop_product_id']);
 
-		return self::_getShipping($sizes, 
-			$results[$this->alias]['rates'], 
-			$results[$this->alias]['insurance']
-		);
+		return self::_getShipping($sizes, $results[$this->alias]);
 	}
 
 /**
@@ -191,10 +188,7 @@ class ShopShippingMethod extends ShopAppModel {
 			'shop_list_id' => $query['shop_list_id']
 		));
 
-		return self::_getShipping($sizes, 
-			$results[$this->alias]['rates'], 
-			$results[$this->alias]['insurance']
-		);
+		return self::_getShipping($sizes, $results[$this->alias]);
 	}
 
 /**
@@ -235,9 +229,21 @@ class ShopShippingMethod extends ShopAppModel {
  * 
  * @return array
  */
-	protected function _getShipping(array $sizes, array &$rates, array &$insurance) {
-		$shipping = self::_calculateShipping($sizes['weight'], $rates);
-		$insurance = self::_calculateInsurance($sizes['cost'], $insurance);
+	protected function _getShipping(array $sizes, array &$method) {
+		if($method['total_minimum'] !== null && $sizes['cost'] < $method['total_minimum']) {
+			throw new ShopShippingMethodMinimumException(array(
+				'total' => $sizes['cost'],
+				'minimum' => $method['total_minimum']
+			));
+		}
+		if($method['total_maximum'] !== null && $sizes['cost'] > $method['total_maximum']) {
+			throw new ShopShippingMethodMaximumException(array(
+				'total' => $sizes['cost'],
+				'minimum' => $method['total_maximum']
+			));
+		}
+		$shipping = self::_calculateShipping($sizes['weight'], $method['rates']);
+		$insurance = self::_calculateInsurance($sizes['cost'], $method['insurance']);
 		return array(
 			'total' => round($shipping + $insurance['rate'], 4),
 			'shipping' => round($shipping, 4),
