@@ -230,18 +230,8 @@ class ShopShippingMethod extends ShopAppModel {
  * @return array
  */
 	protected function _getShipping(array $sizes, array &$method) {
-		if($method['total_minimum'] !== null && $sizes['cost'] < $method['total_minimum']) {
-			throw new ShopShippingMethodMinimumException(array(
-				'total' => $sizes['cost'],
-				'minimum' => $method['total_minimum']
-			));
-		}
-		if($method['total_maximum'] !== null && $sizes['cost'] > $method['total_maximum']) {
-			throw new ShopShippingMethodMaximumException(array(
-				'total' => $sizes['cost'],
-				'minimum' => $method['total_maximum']
-			));
-		}
+		self::_checkCostLimits($sizes['cost'], $method);
+
 		$shipping = self::_calculateShipping($sizes['weight'], $method['rates']);
 		$insurance = self::_calculateInsurance($sizes['cost'], $method['insurance']);
 		return array(
@@ -250,6 +240,33 @@ class ShopShippingMethod extends ShopAppModel {
 			'insurance_rate' => round($insurance['rate'], 4),
 			'insurance_cover' => round($insurance['limit'], 4)
 		);
+	}
+
+/**
+ * @brief check that the costs are within the bounds defined by the shipping method
+ * 
+ * @param float $cost the cost of the product / cart total
+ * @param array $method the details of the shipping method
+ *
+ * @throws ShopShippingMethodMinimumException
+ * @throws ShopShippingMethodMaximumException
+ * 
+ * @return void
+ */
+	protected function _checkCostLimits($cost, &$method) {
+		if($method['total_minimum'] !== null && $cost < $method['total_minimum']) {
+			throw new ShopShippingMethodMinimumException(array(
+				'total' => $cost,
+				'minimum' => $method['total_minimum']
+			));
+		}
+
+		if($method['total_maximum'] !== null && $cost > $method['total_maximum']) {
+			throw new ShopShippingMethodMaximumException(array(
+				'total' => $cost,
+				'minimum' => $method['total_maximum']
+			));
+		}
 	}
 
 /**
