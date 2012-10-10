@@ -5,6 +5,7 @@
  * @property ShopOptionValue $ShopOptionValue
  * @property ShopProductsOptionIgnore $ShopProductsOptionIgnore
  * @property ShopProductTypesOption $ShopProductTypesOption
+ * @property ShopListProductOption $ShopListProductOption
  */
 class ShopOption extends ShopAppModel {
 
@@ -64,6 +65,19 @@ class ShopOption extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'ShopListProductOption' => array(
+			'className' => 'Shop.ShopListProductOption',
+			'foreignKey' => 'shop_option_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 	);
 
 /**
@@ -107,34 +121,50 @@ class ShopOption extends ShopAppModel {
 				)
 			);
 
-			$query['joins'] = array_merge(
-				(array)$query['joins'],
-				array(
-					$this->autoJoinModel(array(
-						'model' => $this->ShopProductTypesOption->fullModelName(),
-						'type' => 'right'
-					)),
-					$this->autoJoinModel(array(
-						'from' => $this->ShopProductTypesOption->fullModelName(),
-						'model' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
-						'type' => 'right'
-					)),
-					$this->autoJoinModel(array(
-						'from' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
-						'model' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
-						'type' => 'right'
-					)),
-					$this->autoJoinModel(array(
-						'model' => $this->ShopProductsOptionIgnore->fullModelName(),
-						'alias' => 'ProductOptionIgnore',
-						'conditions' => array(
-							'ProductOptionIgnore.shop_option_id = ' . $this->alias . '.' . $this->primaryKey,
-							'ProductOptionIgnore.model' => 'Shop.ShopProduct',
-							'ProductOptionIgnore.foreign_key = ShopProduct.id',
-						)
-					)),
+			$query['joins'][] = $this->autoJoinModel(array(
+				'model' => $this->ShopProductTypesOption->fullModelName(),
+				'type' => 'right'
+			));
+
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductTypesOption->fullModelName(),
+				'model' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
+				'type' => 'right'
+			));
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductTypesOption->ShopProductType->fullModelName(),
+				'model' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
+				'type' => 'right'
+			));
+
+			$query['joins'][] = $this->autoJoinModel(array(
+				'model' => $this->ShopProductsOptionIgnore->fullModelName(),
+				'alias' => 'ProductOptionIgnore',
+				'conditions' => array(
+					'ProductOptionIgnore.shop_option_id = ' . $this->alias . '.' . $this->primaryKey,
+					'ProductOptionIgnore.model' => 'Shop.ShopProduct',
+					'ProductOptionIgnore.foreign_key = ShopProduct.id',
 				)
-			);
+			));
+
+			if(isset($query['shop_list_id']) && $query['shop_list_id']) {
+				$query['joins'][] = $this->autoJoinModel(array(
+					'from' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
+					'model' => $this->ShopListProductOption->ShopListProduct->fullModelName(),
+					'conditions' => array(
+						'ShopListProduct.shop_product_id = ShopProduct.id',
+						'ShopListProduct.shop_list_id' => $query['shop_list_id']
+					)
+				));
+				$query['joins'][] = $this->autoJoinModel(array(
+					'from' => $this->ShopListProductOption->ShopListProduct->fullModelName(),
+					'model' => $this->ShopListProductOption->fullModelName(),
+					'conditions' => array(
+						'ShopListProductOption.shop_list_product_id = ShopListProduct.id',
+						'ShopListProductOption.shop_option_id = ' . $this->alias . '.' . $this->primaryKey,
+					)
+				));
+			}
 
 			$query['order'] = array(
 				$this->ShopProductTypesOption->alias . '.ordering' => 'asc'
@@ -147,7 +177,7 @@ class ShopOption extends ShopAppModel {
 			return array();
 		}
 
-		$this->_linkOptionValues($results);
+		$this->_linkOptionValues($results, $query);
 
 		if(isset($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->alias);
@@ -156,9 +186,27 @@ class ShopOption extends ShopAppModel {
 		return $results;
 	}
 
-	protected function _linkOptionValues(&$results) {
+	protected function _linkOptionValues(&$results, $query) {
 		$optionIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
-		$options = $this->ShopOptionValue->find('values', array('shop_option_id' => $optionIds));
+		$optionValueConditions = array('shop_option_id' => $optionIds);
+
+		if(isset($query['shop_list_id']) && $query['shop_list_id']) {
+			$optionValueConditions['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopOptionValue->fullModelName(),
+				'model' => $this->ShopOptionValue->ShopListProductOption->fullModelName(),
+				'type' => 'right'
+			));
+			$optionValueConditions['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopOptionValue->ShopListProductOption->fullModelName(),
+				'model' => $this->ShopOptionValue->ShopListProductOption->ShopListProduct->fullModelName(),
+				'conditions' => array(
+					'ShopListProduct.id = ShopListProductOption.shop_list_product_id',
+					'ShopListProduct.shop_list_id' => $query['shop_list_id']
+				),
+				'type' => 'right'
+			));
+		}
+		$options = $this->ShopOptionValue->find('values', $optionValueConditions);
 
 		foreach($results as $k => &$result) {
 			if($result[$this->alias]['shop_product_id'] == $result['ProductOptionIgnore']['foreign_key']) {
@@ -166,6 +214,10 @@ class ShopOption extends ShopAppModel {
 				continue;
 			}
 			unset($result['ProductOptionIgnore']);
+
+			if(!empty($result[$this->ShopListProductOption->alias])) {
+				$result[$this->alias][$this->ShopListProductOption->alias] = $result[$this->ShopListProductOption->alias];
+			}
 
 			$result[$this->alias][$this->ShopOptionValue->alias] = Hash::extract(
 				$options,
@@ -181,7 +233,6 @@ class ShopOption extends ShopAppModel {
 				unset($optionValue['ProductOptionValueIgnore']);
 			}
 			$result[$this->alias][$this->ShopOptionValue->alias] = array_values($result[$this->alias][$this->ShopOptionValue->alias]);
-
 		}
 
 		return true;

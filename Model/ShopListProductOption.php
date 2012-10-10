@@ -3,7 +3,7 @@ App::uses('ShopAppModel', 'Shop.Model');
 /**
  * ShopListProductOption Model
  *
- * @property ShopList $ShopList
+ * @property ShopListProduct $ShopListProduct
  * @property ShopOption $ShopOption
  * @property ShopOptionValue $ShopOptionValue
  */
@@ -30,9 +30,9 @@ class ShopListProductOption extends ShopAppModel {
  * @var array
  */
 	public $belongsTo = array(
-		'ShopList' => array(
-			'className' => 'Shop.ShopList',
-			'foreignKey' => 'shop_list_id',
+		'ShopListProduct' => array(
+			'className' => 'Shop.ShopListProduct',
+			'foreignKey' => 'shop_list_product_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

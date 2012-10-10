@@ -7,6 +7,7 @@
  * @property ShopSize $ShopSize
  * @property ShopProductsOptionValueIgnore $ShopProductsOptionValueIgnore
  * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
+ * @property ShopListProductOption $ShopListProductOption
  */
 class ShopOptionValue extends ShopAppModel {
 /**
@@ -91,6 +92,19 @@ class ShopOptionValue extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'ShopListProductOption' => array(
+			'className' => 'Shop.ShopListProductOption',
+			'foreignKey' => 'shop_option_value_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 	);
 
 /**
@@ -111,6 +125,7 @@ class ShopOptionValue extends ShopAppModel {
 			if(empty($query['shop_option_id'])) {
 				throw new InvalidArgumentException('No option has been specified');
 			}
+
 
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -134,13 +149,8 @@ class ShopOptionValue extends ShopAppModel {
 				)
 			);
 
-			$query['joins'] = array_merge(
-				(array)$query['joins'],
-				array(
-					$this->autoJoinModel($this->ShopPrice->fullModelName()),
-					$this->autoJoinModel($this->ShopSize->fullModelName())
-				)
-			);
+			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());
 
 			return $query;
 		}
@@ -167,7 +177,9 @@ class ShopOptionValue extends ShopAppModel {
 			$result[$this->alias][$this->ShopSize->alias] = $result[$this->ShopSize->alias];
 			$extractTemplate = sprintf('{n}.%s[shop_option_value_id=%s]', $this->ShopProductsOptionValueIgnore->alias, $result[$this->alias][$this->primaryKey]);
 			$result[$this->alias]['ProductOptionValueIgnore'] = Hash::extract($productValueIgnores, $extractTemplate);
-			unset($result[$this->ShopPrice->alias]);
+			if(!empty($result[$this->ShopListProductOption->alias])) {
+				$result[$this->alias][$this->ShopListProductOption->alias] = $result[$this->ShopListProductOption->alias];
+			}
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);

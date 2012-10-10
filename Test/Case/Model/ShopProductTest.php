@@ -28,12 +28,20 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
+		'plugin.shop.shop_list',
+		'plugin.shop.shop_list_product',
+		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_products_option_ignore',
 		'plugin.shop.shop_products_option_value_ignore',
+		'plugin.shop.shop_products_option_value_override',
+
+		'plugin.shop.core_user',
+		'plugin.shop.core_group',
 
 		'plugin.view_counter.view_counter_view',
 		'plugin.management.trash',
+		'plugin.management.ticket',
 		'plugin.installer.plugin'
 	);
 
@@ -1015,6 +1023,215 @@ class ShopProductTest extends CakeTestCase {
 					),
 				)
 			),
+		);
+	}
+
+/**
+ * @brief test find products for list
+ *
+ * @dataProvider  findProductsForListDataProvider
+ */
+	public function testFindProductsForList($data, $expected) {
+		App::uses('CakeSession', 'Model/Datasource');
+		if(isset($data['user_id'])) {
+			CakeSession::write('Auth.User.id', $data['user_id']);
+		}
+		if(isset($data['guest_id'])) {
+			CakeSession::write('Shop.Guest.id', $data['guest_id']);
+		}
+		$result = $this->{$this->modelClass}->find('productsForList', array(
+			'shop_list_id' => $data['shop_list_id']
+		));
+		$this->assertEquals($expected, $result);
+
+		CakeSession::destroy();
+	}
+
+/**
+ * @brief find products for list data provider
+ *
+ * @return array
+ */
+	public function findProductsForListDataProvider() {
+		return array(
+			/*'empty' => array(
+				array('shop_list_id' => null),
+				array()
+			),*/
+			'bob-cart' => array(
+				array(
+					'shop_list_id' => 'shop-list-bob-cart',
+					'user_id' => 'bob'
+				),
+				array(
+					array(
+						'ShopProduct' => array(
+							'id' => 'active',
+							'name' => 'active',
+							'slug' => 'active',
+							'product_code' => 'active-:option-size',
+							'total_stock' => '25',
+						),
+						'ShopProductType' => array(
+							'id' => 'shirts',
+							'name' => 'shirts',
+							'slug' => 'shirts'
+						),
+						'ShopImage' => array(
+							'id' => 'image-product-active',
+							'image' => 'image-product-active.png'
+						),
+						'ShopPrice' => array(
+							'id' => 'active',
+							'selling' => '12.00000',
+							'retail' => '15.00000'
+						),
+						'ShopCategory' => array(array(
+							'id' => 'active',
+							'name' => 'active',
+							'slug' => 'active',
+							'shop_product_id' => 'active'
+						)),
+						'ShopSize' => array(
+							'shipping_width' => '12.50000',
+							'shipping_height' => '12.50000',
+							'shipping_length' => '12.50000',
+							'shipping_weight' => '650.00000',
+						),
+						'ShopListProduct' => array(
+							'id' => 'shop-list-bob-cart-active',
+							'shop_list_id' => 'shop-list-bob-cart',
+							'shop_product_id' => 'active',
+							'quantity' => '1.00000'
+						),
+						'ShopOption' => array(
+							array(
+								'id' => 'option-size',
+								'name' => 'option-size',
+								'slug' => 'option-size',
+								'description' => 'some descriptive text about option-size',
+								'required' => '1',
+								'shop_product_id' => 'active',
+								'ShopOptionValue' => array(
+									array(
+										'id' => 'option-size-large',
+										'name' => 'option-size-large',
+										'description' => 'some text about option-size-large',
+										'product_code' => 'l',
+										'shop_option_id' => 'option-size',
+										'ShopPrice' => array(
+											'id' => 'option-value-large',
+											'selling' => '3.00000',
+											'retail' => '4.00000'
+										),
+										'ShopSize' => array(
+											'id' => 'option-value-size-large',
+											'model' => 'Shop.ShopOptionValue',
+											'foreign_key' => 'option-size-large',
+											'product_width' => '1.50000',
+											'product_height' => '1.50000',
+											'product_length' => '1.50000',
+											'shipping_width' => '2.50000',
+											'shipping_height' => '2.50000',
+											'shipping_length' => '2.50000',
+											'product_weight' => '50.00000',
+											'shipping_weight' => '65.00000'
+										)
+									)
+								)
+							)
+						)
+					),
+					array(
+						'ShopProduct' => array(
+							'id' => 'multi-option',
+							'name' => 'multi-option',
+							'slug' => 'multi-option',
+							'product_code' => 'multi-option-:option-size(:option-colour)',
+							'total_stock' => null,
+						),
+						'ShopProductType' => array(
+							'id' => 'complex-options',
+							'name' => 'complex-options',
+							'slug' => 'complex-options'
+						),
+						'ShopImage' => array(
+							'id' => 'image-product-multi-option',
+							'image' => 'image-product-multi-option.png'
+						),
+						'ShopPrice' => array(
+							'id' => 'multi-option',
+							'selling' => '25.00000',
+							'retail' => '30.00000'
+						),
+						'ShopCategory' => array(array(
+							'id' => 'active',
+							'name' => 'active',
+							'slug' => 'active',
+							'shop_product_id' => 'multi-option'
+						)),
+						'ShopSize' => array(
+							'shipping_width' => null,
+							'shipping_height' => null,
+							'shipping_length' => null,
+							'shipping_weight' => null,
+						),
+						'ShopListProduct' => array(
+							'id' => 'shop-list-bob-cart-multi-option',
+							'shop_list_id' => 'shop-list-bob-cart',
+							'shop_product_id' => 'multi-option',
+							'quantity' => '1.00000'
+						),
+						'ShopOption' => array(
+							array(
+								'id' => 'option-size',
+								'name' => 'option-size',
+								'slug' => 'option-size',
+								'description' => 'some descriptive text about option-size',
+								'required' => '1',
+								'shop_product_id' => 'multi-option',
+								'ShopOptionValue' => array(
+									array(
+										'id' => 'option-size-large',
+										'name' => 'option-size-large',
+										'description' => 'some text about option-size-large',
+										'product_code' => 'l',
+										'shop_option_id' => 'option-size',
+										'ShopPrice' => array(
+											'id' => 'option-value-large',
+											'selling' => '3.00000',
+											'retail' => '4.00000'
+										),
+										'ShopSize' => array(
+											'id' => 'option-value-size-large',
+											'model' => 'Shop.ShopOptionValue',
+											'foreign_key' => 'option-size-large',
+											'product_width' => '1.50000',
+											'product_height' => '1.50000',
+											'product_length' => '1.50000',
+											'shipping_width' => '2.50000',
+											'shipping_height' => '2.50000',
+											'shipping_length' => '2.50000',
+											'product_weight' => '50.00000',
+											'shipping_weight' => '65.00000'
+										)
+									)
+								)
+							),
+							array(
+								'id' => 'option-colour',
+								'name' => 'option-colour',
+								'slug' => 'option-colour',
+								'description' => 'some descriptive text about option-colour',
+								'required' => '0',
+								'shop_product_id' => 'multi-option',
+								'ShopOptionValue' => array(
+								)
+							)
+						)
+					)
+				)
+			)
 		);
 	}
 

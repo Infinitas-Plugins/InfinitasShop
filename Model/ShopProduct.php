@@ -12,16 +12,9 @@
  * @property ShopPrice $ShopPrice
  * @property ShopProductType $ShopProductType
  * @property ShopSize $ShopSize
+ * @property ShopListProduct $ShopListProduct
  */
 class ShopProduct extends ShopAppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
-
 /**
  * Validation rules
  *
@@ -37,6 +30,7 @@ class ShopProduct extends ShopAppModel {
 	public $findMethods = array(
 		'product' => true,
 		'paginated' => true,
+		'productsForList' => true,
 		'new' => true,
 		'updated' => true,
 		'specials' => true,
@@ -93,6 +87,24 @@ class ShopProduct extends ShopAppModel {
 			'fields' => '',
 			'order' => ''
 		),
+		'ShopCurrentSpecial' => array(
+			'className' => 'Shop.ShopSpecial',
+			'foreignKey' => 'shop_product_id',
+			'conditions' => array(
+				'ShopCurrentSpecial.active' => 1
+			),
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopCurrentSpotlight' => array(
+			'className' => 'Shop.ShopSpotlight',
+			'foreignKey' => 'shop_product_id',
+			'conditions' => array(
+				'ShopCurrentSpotlight.active' => 1
+			),
+			'fields' => '',
+			'order' => ''
+		)
 	);
 
 /**
@@ -155,6 +167,19 @@ class ShopProduct extends ShopAppModel {
 		),
 		'ShopSpotlight' => array(
 			'className' => 'Shop.ShopSpotlight',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopListProduct' => array(
+			'className' => 'Shop.ShopListProduct',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
 			'conditions' => '',
@@ -411,6 +436,107 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
+ * @brief find products for a list
+ *
+ * @param type $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	public function _findProductsForList($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query['shop_list_id'])) {
+				$query['shop_list_id'] = $this->ShopListProduct->ShopList->currentListId(true);
+			}
+
+			$query = $this->_findBasics($state, $query);
+			array_shift($query['fields']);
+
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
+				array(
+					$this->alias . '.product_code',
+
+					$this->ShopSize->alias . '.shipping_width',
+					$this->ShopSize->alias . '.shipping_height',
+					$this->ShopSize->alias . '.shipping_length',
+					$this->ShopSize->alias . '.shipping_weight',
+
+					$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey,
+					$this->ShopListProduct->alias . '.shop_list_id',
+					$this->ShopListProduct->alias . '.shop_product_id',
+					$this->ShopListProduct->alias . '.quantity',
+				)
+			);
+
+			$query['conditions'] = array_merge(
+				(array)$query['conditions'],
+				array($this->ShopListProduct->alias . '.shop_list_id' => $query['shop_list_id'])
+			);
+
+			$query['joins'] = array_merge(
+				(array)$query['joins'],
+				array(
+					$this->autoJoinModel($this->ShopSize->fullModelName()),
+					$this->autoJoinModel(array(
+						'model' => $this->ShopListProduct->fullModelName(),
+						'type' => 'right'
+					)),
+					//$this->autoJoinModel($this->ShopCurrentSpecial->fullModelName())
+				)
+			);
+
+			$query['group'] = array_merge(
+				(array)$query['group'],
+				array(
+					$this->alias . '.' . $this->primaryKey
+				)
+			);
+
+			return $query;
+		}
+
+		$options = array(
+			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
+			'extract' => true
+		);
+
+		if(empty($results[0][$this->alias][$this->primaryKey])) {
+			if(!array_filter($options['shop_product_id'])) {
+				return array();
+			}
+		}
+
+		$shopListIds = array_unique(Hash::extract($results, sprintf('{n}.%s.shop_list_id', $this->ShopListProduct->ShopList->ShopListProduct->alias)));
+		$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array_merge(
+			$options,
+			array('shop_list_id' => $shopListIds)
+		));
+
+		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
+		$shopSpecials = $this->ShopSpecial->find('specials', $options);
+		foreach($results as &$result) {
+			unset($result['ActiveCategory']);
+			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
+			//$result[$this->ShopSpecial->alias] = Hash::extract($shopSpecials, $extractTemplate);
+
+			/*$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array_merge(
+				$options,
+				array(
+					'shop_product_id' => $result[$this->alias][$this->primaryKey],
+					'shop_list_product_id' => $shopListProductIds
+				)
+			));*/
+
+			$result[$this->ShopProductType->ShopProductTypesOption->ShopOption->alias] = Hash::extract($shopOptions, $extractTemplate);
+		}
+
+		return $results;
 	}
 
 /**

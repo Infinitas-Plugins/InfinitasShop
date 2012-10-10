@@ -40,14 +40,14 @@ class ShopListProductOptionFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 'sally-cart-option-size-medium',
-			'shop_list_product_id' => 'shop-list-sally',
+			'shop_list_product_id' => 'shop-list-sally-cart',
 			'shop_option_id' => 'option-size',
 			'shop_option_value_id' => 'option-size-medium',
 			'created' => '2012-10-08 21:09:40'
 		),
 		array(
 			'id' => 'sally-cart-option-colour-red',
-			'shop_list_product_id' => 'shop-list-sally',
+			'shop_list_product_id' => 'shop-list-sally-cart',
 			'shop_option_id' => 'option-colour',
 			'shop_option_value_id' => 'option-colour-red',
 			'created' => '2012-10-08 21:09:40'
