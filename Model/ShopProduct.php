@@ -29,6 +29,7 @@ class ShopProduct extends ShopAppModel {
  */
 	public $findMethods = array(
 		'product' => true,
+		'productShipping' => true,
 		'paginated' => true,
 		'productsForList' => true,
 		'new' => true,
@@ -585,6 +586,52 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+/**
+ * @brief find the values for calculating shipping
+ *
+ * returns the max width, height, length and cost based on the
+ * worst case senario
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	public function _findProductShipping($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			return self::_findProduct($state, $query);
+		}
+
+		$results = self::_findProduct($state, $query, $results);
+
+		if(empty($results)) {
+			return array();
+		}
+
+		$sizeFields = array(
+			'width',
+			'height',
+			'length',
+			'weight'
+		);
+
+		$sizes = $optionCost = array();
+		foreach($results['ShopOption'] as $option) {
+			$optionCosts[] = max(Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling'));
+			foreach($sizeFields as $sizeOption) {
+				$sizes[$sizeOption][] = $results['ShopSize']['shipping_' . $sizeOption] + max(Hash::extract($option['ShopOptionValue'], '{n}.ShopSize.shipping_' . $sizeOption));
+			}
+		}
+
+		foreach($sizes as &$size) {
+			$size = max($size);
+		}
+		$sizes['cost'] = $results['ShopPrice']['selling'] + array_sum($optionCosts);
+
+		return $sizes;
 	}
 
 /**

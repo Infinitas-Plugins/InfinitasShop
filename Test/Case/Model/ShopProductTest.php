@@ -299,6 +299,45 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test find product shipping
+ *
+ * @param array $data
+ * @param array $expected
+ *
+ * @dataProvider findProductShippingDataProvider
+ */
+	public function testFindProductShipping($data, $expected) {
+		$results = $this->{$this->modelClass}->find('productShipping', $data);
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * @brief find product shipping data provider
+ *
+ * @return array
+ */
+	public function findProductShippingDataProvider() {
+		return array(
+			'fake' => array(
+				'fake',
+				array(
+
+				)
+			),
+			'active' => array(
+				'active',
+				array(
+					'width' => 15.0,
+					'height' => 15.0,
+					'length' => 15.0,
+					'weight' => 715.0,
+					'cost' => 15.0
+				)
+			)
+		);
+	}
+
+/**
  * @brief test find products
  *
  * @dataProvider findProductDataProvider
