@@ -301,69 +301,6 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief get the list details
- *
- * @param string $state
- * @param array $query
- * @param array $results
- *
- * @return array
- */
-	protected function _findListDetails($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_list_id'])) {
-				$query['shop_list_id'] = $this->currentListId(true);
-			}
-
-			$query = $this->_baseFind($state, $query);
-
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->alias . '.user_id',
-					$this->User->alias . '.' . $this->User->primaryKey,
-					$this->User->alias . '.' . $this->User->displayField
-				)
-			);
-
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.' . $this->primaryKey => $query['shop_list_id']
-				)
-			);
-
-			$query['joins'][] = $this->autoJoinModel($this->User->fullModelName());
-
-			$query['limit'] = 1;
-			return $query;
-		}
-
-		if(empty($results)) {
-			return array();
-		}
-
-		$results = current($results);
-
-		$conditions = array(
-			'shop_list_id' => $results[$this->alias][$this->primaryKey],
-			'extract' => true
-		);
-		$results[$this->ShopListProduct->alias] = $this->ShopListProduct->find('products', $conditions);
-
-		if($results[$this->User->alias][$this->User->primaryKey] === null) {
-			$results[$this->User->alias] = array(
-				$this->User->primaryKey => $results[$this->alias]['user_id'],
-				$this->User->displayField => __d('shop', 'Guest')
-			);
-		}
-
-		return $results;
-	}
-
-/**
  * @brief check if the user has a list already
  *
  * @param string $state
