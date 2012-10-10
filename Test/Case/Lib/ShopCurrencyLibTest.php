@@ -81,4 +81,31 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	public function testSetCurrencyInvalid() {
 		ShopCurrencyLib::setCurrency('invalid');
 	}
+
+/**
+ * @brief test convert
+ *
+ * @dataProvider convertDataProvider
+ */
+	public function testsConvert($data, $expected) {
+		$result = ShopCurrencyLib::convert(1000, $data);
+		$this->assertEquals($expected, $result);
+		CakeSession::destroy();
+
+		ShopCurrencyLib::setCurrency($data);
+		$result = ShopCurrencyLib::convert(1000);
+		$this->assertEquals($expected, $result);
+		CakeSession::destroy();
+	}
+
+/**
+ * @brief convert data provider
+ */
+	public function convertDataProvider() {
+		return array(
+			array('gbp', 1000),
+			array('usd', 1599.9),
+			array('eur', 1242.5),
+		);
+	}
 }

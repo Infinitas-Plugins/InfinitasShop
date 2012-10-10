@@ -62,7 +62,7 @@ class ShopCurrencyLib {
  * @param float $amount the amount being converted
  * @param string $to the currency code being converted to
  *
- * @return type
+ * @return float
  */
 	public static function convert($amount, $to = null) {
 		if(!$to) {
@@ -74,7 +74,7 @@ class ShopCurrencyLib {
 			return $amount;
 		}
 
-		// @todo conversion
+		return round($amount * $factors[$to], 4);
 	}
 
 /**
