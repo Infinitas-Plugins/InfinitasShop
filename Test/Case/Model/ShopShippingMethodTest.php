@@ -115,6 +115,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					),
 					'total_minimum' => 0,
 					'total_maximum' => 150,
+					'surcharge' => '0.00000',
+					'delivery_time' => '48'
 				)
 			),
 			'from-cart' => array(
@@ -140,6 +142,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					),
 					'total_minimum' => 0,
 					'total_maximum' => 150,
+					'surcharge' => '0.00000',
+					'delivery_time' => '48'
 				)
 			),
 			'bob-custom' => array(
@@ -161,6 +165,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					),
 					'total_minimum' => 0,
 					'total_maximum' => 150,
+					'surcharge' => '0.00000',
+					'delivery_time' => '96'
 				)
 			),
 			'inactive' => array(
@@ -195,6 +201,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					),
 					'total_minimum' => 0,
 					'total_maximum' => 150,
+					'surcharge' => '0.00000',
+					'delivery_time' => '48'
 				)
 			),
 		);

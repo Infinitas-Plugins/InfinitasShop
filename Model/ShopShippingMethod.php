@@ -89,7 +89,9 @@ class ShopShippingMethod extends ShopAppModel {
 					$this->alias . '.insurance',
 					$this->alias . '.rates',
 					$this->alias . '.total_minimum',
-					$this->alias . '.total_maximum'
+					$this->alias . '.total_maximum',
+					$this->alias . '.surcharge',
+					$this->alias . '.delivery_time'
 				)
 			);
 
