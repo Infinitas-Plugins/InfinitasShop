@@ -163,6 +163,15 @@ class ShopShippingMethod extends ShopAppModel {
 		);
 	}
 
+/**
+ * @brief get the shipping details of a product list
+ * 
+ * @param  string $state   [description]
+ * @param  array  $query   [description]
+ * @param  array  $results [description]
+ * 
+ * @return array
+ */
 	protected function _findProductList($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$query = array_merge(array('shop_list_id' => null), $query);
@@ -181,7 +190,7 @@ class ShopShippingMethod extends ShopAppModel {
 		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('prodcutListShipping', array(
 			'shop_list_id' => $query['shop_list_id']
 		));
-		
+
 		return self::_getShipping($sizes, 
 			$results[$this->alias]['rates'], 
 			$results[$this->alias]['insurance']

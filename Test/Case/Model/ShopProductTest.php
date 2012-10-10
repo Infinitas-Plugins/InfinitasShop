@@ -357,6 +357,7 @@ class ShopProductTest extends CakeTestCase {
 			'shop_list_id' => $data
 		));
 		$this->assertEquals($expected, $results);
+		CakeSession::destroy();
 	}
 
 /**

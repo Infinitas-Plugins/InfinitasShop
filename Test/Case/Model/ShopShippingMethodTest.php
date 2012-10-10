@@ -31,6 +31,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 		'plugin.shop.shop_products_option_ignore',
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_products_option_value_ignore',
+		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
@@ -271,6 +272,79 @@ class ShopShippingMethodTest extends CakeTestCase {
 				array(
 					'total' => 2.61,
 					'shipping' => 2.61,
+					'insurance_rate' => 0.0,
+					'insurance_cover' => 0.0
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test product list
+ * 
+ * @param  [type] $data     [description]
+ * @param  [type] $expected [description]
+ * 
+ * @dataProvider productListDataProvider
+ */
+	public function testProductList($data, $expected) {
+		App::uses('CakeSession', 'Model/Datasource');
+		if(isset($data['user_id'])) {
+			CakeSession::write('Auth.User.id', $data['user_id']);
+		}
+		if(isset($data['guest_id'])) {
+			CakeSession::write('Shop.Guest.id', $data['guest_id']);
+		}
+		$result = $this->{$this->modelClass}->find('productList', array(
+			'shop_shipping_method_id' => $data['shop_shipping_method_id'],
+			'shop_list_id' => $data['shop_list_id']
+		));
+		$this->assertEquals($expected, $result);
+		CakeSession::destroy();
+	}
+
+/**
+ * @brief product list data provider
+ * 
+ * @return array
+ */
+	public function productListDataProvider() {
+		return array(
+			'bob-list-from-session' => array(
+				array(
+					'shop_shipping_method_id' => null,
+					'shop_list_id' => null,
+					'user_id' => 'bob'
+				),
+				array(
+					'total' => 4.71,
+					'shipping' => 3.71,
+					'insurance_rate' => 1.0,
+					'insurance_cover' => 100.0
+				)
+			),
+			'shop-list-bob-cart' => array(
+				array(
+					'shop_shipping_method_id' => 'royal-mail-2nd',
+					'shop_list_id' => 'shop-list-bob-cart',
+					'user_id' => 'bob'
+				),
+				array(
+					'total' => 3.15,
+					'shipping' => 3.15,
+					'insurance_rate' => 0.0,
+					'insurance_cover' => 0.0
+				)
+			),
+			'shop-list-bob-wish' => array(
+				array(
+					'shop_shipping_method_id' => 'royal-mail-2nd',
+					'shop_list_id' => 'shop-list-bob-wish',
+					'user_id' => 'bob'
+				),
+				array(
+					'total' => 1.33,
+					'shipping' => 1.33,
 					'insurance_rate' => 0.0,
 					'insurance_cover' => 0.0
 				)
