@@ -35,6 +35,12 @@
 				'icon' => '/contents/img/categories.png',
 				'dashboard' => array('controller' => 'shop_categories', 'action' => 'index')
 			),
+			array(
+				'name' => __d('shop', 'Config'),
+				'description' => __d('shop', 'Manage store configuration'),
+				'icon' => '/shop/img/icons/configuration.png',
+				'dashboard' => array('controller' => 'shop', 'action' => 'configuration')
+			),
 		),
 		'products' => array(
 			array(
