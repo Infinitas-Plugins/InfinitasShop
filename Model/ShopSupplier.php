@@ -7,20 +7,30 @@
  * @property ShopProduct $ShopProduct
  */
 class ShopSupplier extends ShopAppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
-
 /**
  * Validation rules
  *
  * @var array
  */
 	public $validate = array();
+
+/**
+ * @brief behaviors that are attached
+ * 
+ * @var array
+ */
+	public $actsAs = array(
+		'Filemanager.Upload' => array(
+			'logo' => array(
+				'thumbnailSizes' => array(
+					'large' => '1000l',
+					'medium' => '600l',
+					'small' => '300l',
+					'thumb' => '75l'
+				)
+			)
+		)
+	);
 
 /**
  * belongsTo associations
@@ -76,93 +86,36 @@ class ShopSupplier extends ShopAppModel {
 
 		$this->validate = array(
 			'name' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
+					'message' => __d('shop', 'Please enter a name for the supplier'),
+					'allowEmpty' => false
 				),
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __d('shop', 'A supplier with that name already exists')
+				)
 			),
 			'contact_address_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => array('validateRecordExists'),
+					'message' => __d('shop', 'The selected address does not exist'),
+					'allowEmpty' => true,
+					'required' => false
 				),
 			),
 			'email' => array(
 				'email' => array(
 					'rule' => array('email'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'phone' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'fax' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'logo' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'product_count' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'terms' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
+					'message' => __d('shop', 'Please enter a valid email address'),
+					'allowEmpty' => true,
+					'required' => false
+				)
 			),
 			'active' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'The value for active is not valid'),
 				),
 			),
 		);
