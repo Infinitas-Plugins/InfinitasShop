@@ -30,7 +30,8 @@ class ShopOptionValue extends ShopAppModel {
 			'foreignKey' => 'shop_option_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'counterCache' => true
 		)
 	);
 
