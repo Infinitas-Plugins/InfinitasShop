@@ -20,6 +20,9 @@
 
 		$smallField = array('div' => false, 'error' => false, 'label' => false);
 
+		if(empty($this->request->data['ShopOptionValue'])) {
+			$this->request->data['ShopOptionValue'] = array();
+		}
 		$table = array();
 		foreach($this->request->data['ShopOptionValue'] as $shopOptionValue) {
 			$table[] = sprintf(

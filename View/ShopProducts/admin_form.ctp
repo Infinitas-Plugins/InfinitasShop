@@ -69,7 +69,10 @@
 			)),
 			implode('', array(
 
-			))
+			)),
+			implode('', array(
+
+			)),
 		);
 
 		echo $this->Design->tabs($tabs, $contents);
