@@ -27,6 +27,7 @@
 		echo $this->Form->hidden('ShopSize.model', array('value' => 'Shop.ShopProduct'));
 		$tabs = array(
 			__d('shop', 'Product'),
+			__d('shop', 'Images'),
 			__d('shop', 'Supply'),
 			__d('shop', 'Options'),
 			__d('shop', 'Promotion')
@@ -53,12 +54,22 @@
 
 		$contents = array(
 			implode('', array(
-				$this->Form->input('shop_product_type_id', array('label' => __d('shop', 'Product Type'))),
+				$this->Form->input('shop_product_type_id', array(
+					'label' => __d('shop', 'Product Type'),
+					'empty' => __d('shop', 'Use category type')
+				)),
 				$this->Form->input('name'),
 				$this->Form->input('active'),
 				$this->Form->input('shop_image_id', array('label' => 'Default Image')),
 				$this->Infinitas->wysiwyg('ShopProduct.description'),
 				$this->Infinitas->wysiwyg('ShopProduct.specifications')
+			)),
+			implode('', array(
+				$this->Form->input('ShopImagesProduct', array(
+					'options' => $shopImages,
+					'multiple' => 'checkbox',
+					'empty' => false
+				))
 			)),
 			implode('', array(
 				$this->Form->input('shop_supplier_id', array('label' => __d('shop', 'Supplier'))),
@@ -68,7 +79,7 @@
 
 			)),
 			implode('', array(
-
+				$this->Form->input('ShopProductOption')
 			)),
 			implode('', array(
 

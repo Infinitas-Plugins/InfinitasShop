@@ -8,6 +8,23 @@
  * @property ShopSpotlight $ShopSpotlight
  */
 class ShopImage extends ShopAppModel {
+/**
+ * @brief behaviors that are attached
+ * 
+ * @var array
+ */
+	public $actsAs = array(
+		'Filemanager.Upload' => array(
+			'image' => array(
+				'thumbnailSizes' => array(
+					'large' => '1000l',
+					'medium' => '600l',
+					'small' => '300l',
+					'thumb' => '75l'
+				)
+			)
+		)
+	);
 
 /**
  * Validation rules
@@ -87,46 +104,7 @@ class ShopImage extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
-			'image' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'ext' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'width' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'height' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
+			
 		);
 	}
 
