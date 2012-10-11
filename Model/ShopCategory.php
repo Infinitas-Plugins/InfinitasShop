@@ -28,7 +28,10 @@ class ShopCategory extends ShopAppModel {
  */
 	public $validate = array();
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
+/**
+ * @brief model default ordering
+ */
+	public $order = array();
 
 /**
  * belongsTo associations
@@ -46,13 +49,6 @@ class ShopCategory extends ShopAppModel {
 		'ParentShopCategory' => array(
 			'className' => 'Shop.ShopCategory',
 			'foreignKey' => 'parent_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'ShopCategoriesProduct' => array(
-			'className' => 'Shop.ShopCategoriesProduct',
-			'foreignKey' => 'shop_category_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -84,64 +80,63 @@ class ShopCategory extends ShopAppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
-		)
+		),
+		'ShopCategoriesProduct' => array(
+			'className' => 'Shop.ShopCategoriesProduct',
+			'foreignKey' => 'shop_category_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
 	);
 
+/**
+ * @brief overload construct for translated validation messages
+ * 
+ * @param boolean $id    [description]
+ * @param [type]  $table [description]
+ * @param [type]  $ds    [description]
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
 			'name' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'slug' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'notEmpty' => array(
+					'rule' => array('notEmpty'),
+					'message' => __d('shop', 'Please enter a name for this category'),
 				),
 			),
 			'active' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'lft' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'rght' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'The value for active is not valid'),
 				),
 			),
 		);
+
+		$this->order = array(
+			$this->alias . '.lft'
+		);
+	}
+
+/**
+ * @brief after saving figure out the path depth
+ * 
+ * @param  boolean $created was the record created (true) or modified (false)
+ * 
+ * @return ShopAppModel::afterSave()
+ */
+	public function afterSave($created) {
+		$this->saveField(
+			'path_depth', 
+			count($this->getPath($this->id)) - 1,
+			array(
+				'callbacks' => false
+			)
+		);
+		
+		return parent::afterSave($created);
 	}
 
 /**

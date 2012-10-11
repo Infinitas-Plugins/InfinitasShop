@@ -602,14 +602,14 @@ class ShopProductTest extends CakeTestCase {
 						'total_stock' => null
 					),
 					'ShopCategory' => array(array(
-						'id' => 'another',
-						'name' => 'another',
-						'slug' => 'another',
-						'shop_product_id' => 'multi-category'
-					), array(
 						'id' => 'active',
 						'name' => 'active',
 						'slug' => 'active',
+						'shop_product_id' => 'multi-category'
+					), array(
+						'id' => 'another',
+						'name' => 'another',
+						'slug' => 'another',
 						'shop_product_id' => 'multi-category'
 					)),
 					'ShopPrice' => array(

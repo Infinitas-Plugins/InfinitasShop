@@ -112,16 +112,16 @@ class ShopCategoryTest extends CakeTestCase {
 				array('shop_product_id' => 'multi-category'),
 				array(array(
 					'ShopCategory' => array(
-						'id' => 'another',
-						'name' => 'another',
-						'slug' => 'another',
+						'id' => 'active',
+						'name' => 'active',
+						'slug' => 'active',
 						'shop_product_id' => 'multi-category'
 					)
 				), array(
 					'ShopCategory' => array(
-						'id' => 'active',
-						'name' => 'active',
-						'slug' => 'active',
+						'id' => 'another',
+						'name' => 'another',
+						'slug' => 'another',
 						'shop_product_id' => 'multi-category'
 					)
 				))
@@ -156,14 +156,14 @@ class ShopCategoryTest extends CakeTestCase {
  */
 	public function testFindRelatedExtract() {
 		$expected = array(array(
-			'id' => 'another',
-			'name' => 'another',
-			'slug' => 'another',
-			'shop_product_id' => 'multi-category'
-		), array(
 			'id' => 'active',
 			'name' => 'active',
 			'slug' => 'active',
+			'shop_product_id' => 'multi-category'
+		), array(
+			'id' => 'another',
+			'name' => 'another',
+			'slug' => 'another',
 			'shop_product_id' => 'multi-category'
 		));
 
