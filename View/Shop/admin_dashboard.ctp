@@ -49,24 +49,6 @@
 				'icon' => '/shop/img/icons/products.png',
 				'dashboard' => array('controller' => 'shop_products', 'action' => 'index')
 			),
-			array(
-				'name' => __d('shop', 'Options'),
-				'description' => __d('shop', 'Manage store options'),
-				'icon' => '/shop/img/icons/options.png',
-				'dashboard' => array('controller' => 'shop_options', 'action' => 'index')
-			),
-			array(
-				'name' => __d('shop', 'Attributes'),
-				'description' => __d('shop', 'Manage store attributes'),
-				'icon' => '/shop/img/icons/attributes.png',
-				'dashboard' => array('controller' => 'shop_attributes', 'action' => 'index')
-			),
-			array(
-				'name' => __d('shop', 'Images'),
-				'description' => __d('shop', 'Manage store images'),
-				'icon' => '/shop/img/icons/images.png',
-				'dashboard' => array('controller' => 'shop_images', 'action' => 'index')
-			),
 		),
 		'stock' => array(
 			array(
