@@ -2,3 +2,7 @@
 	border: 1px solid #CFCFCF;
 	margin-bottom: 15px;
 }
+
+td img {
+	vertical-align: middle;
+}

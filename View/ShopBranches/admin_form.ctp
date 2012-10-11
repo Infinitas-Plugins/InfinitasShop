@@ -35,9 +35,9 @@
 			implode('', array(
 				$this->Form->input('ContactBranch.name'),
 				$this->Form->input('ContactBranch.image', array('type' => 'file')),
-				$this->Form->input('email'),
-				$this->Form->input('phone'),
-				$this->Form->input('fax'),
+				$this->Form->input('ContactBranch.email'),
+				$this->Form->input('ContactBranch.phone'),
+				$this->Form->input('ContactBranch.fax'),
 				$this->Form->input('manager_id'),
 				$this->Form->input('active')
 			)),

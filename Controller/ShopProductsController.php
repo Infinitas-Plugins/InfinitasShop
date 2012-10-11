@@ -92,7 +92,13 @@ class ShopProductsController extends ShopAppController {
 		$shopImages = $this->ShopProduct->ShopImage->find('list');
 		$shopSuppliers = $this->ShopProduct->ShopSupplier->find('list');
 		$shopProductTypes = $this->ShopProduct->ShopProductType->find('list');
-		$this->set(compact('shopImages', 'shopSuppliers', 'shopProductTypes'));
+		$shopBranches = $this->ShopProduct->ShopBranchStock->ShopBranch->find('all', array(
+			'contain' => array(
+				'ContactBranch.name',
+				'Manager.full_name'
+			)
+		));
+		$this->set(compact('shopImages', 'shopSuppliers', 'shopProductTypes', 'shopBranches'));
 	}
 
 /**
@@ -111,6 +117,7 @@ class ShopProductsController extends ShopAppController {
 		$shopImages = $this->ShopProduct->ShopImage->find('list');
 		$shopSuppliers = $this->ShopProduct->ShopSupplier->find('list');
 		$shopProductTypes = $this->ShopProduct->ShopProductType->find('list');
-		$this->set(compact('shopImages', 'shopSuppliers', 'shopProductTypes'));
+		$shopBranches = $this->ShopProduct->ShopBranchStock->ShopBranch->find('list');
+		$this->set(compact('shopImages', 'shopSuppliers', 'shopProductTypes', 'shopBranches'));
 	}
 }

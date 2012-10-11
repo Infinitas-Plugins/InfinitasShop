@@ -22,10 +22,7 @@ $massActions = $this->Infinitas->massActionButtons(
 		'edit',
 		'toggle',
 		'copy',
-		'delete',
-
-		// other methods available
-		// 'unlock',
+		'delete'
 	)
 );
 
@@ -40,10 +37,17 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						'class' => 'first',
 						'style' => 'width:25px;'
 					),
+					$this->Paginator->sort('ContactBranch.name', __d('shop', 'Branch')),
 					$this->Paginator->sort('manager_id'),
-					$this->Paginator->sort('active'),
-					$this->Paginator->sort('ordering'),
-					$this->Paginator->sort('modified')
+					$this->Paginator->sort('ordering') => array(
+						'style' => 'width:75px'
+					),
+					$this->Paginator->sort('active') => array(
+						'style' => 'width:75px'
+					),
+					$this->Paginator->sort('modified') => array(
+						'style' => 'width:100px'
+					)
 				)
 			);
 
@@ -52,15 +56,32 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopBranch); ?>&nbsp;</td>
 					<td>
 						<?php 
-							echo $this->Hmtl->link($shopBranch['Manager']['full_name'], array(
+							echo $this->Shop->emailLink($shopBranch['ContactBranch']['email']);
+							echo $this->Html->link($shopBranch['ContactBranch']['name'], array(
+								'action' => 'edit',
+								$shopBranch['ShopBranch']['id']
+							)); 
+						?>&nbsp;
+					</td>
+					<td>
+						<?php
+							echo $this->Shop->emailLink($shopBranch['Manager']['email']);
+							echo $this->Html->link($shopBranch['Manager']['full_name'], array(
 								'plugin' => 'users',
 								'controller' => 'users',
 								'action' => 'edit',
 								$shopBranch['Manager']['id']
-							)); 
+							));
 						?>&nbsp;
 					</td>
-					<td><?php echo $this->Infinitas->ordering($shopBranch['ShopBranch']['ordering']); ?>&nbsp;</td>
+					<td>
+						<?php 
+							echo $this->Infinitas->ordering(
+								$shopBranch['ShopBranch']['id'], 
+								$shopBranch['ShopBranch']['ordering']
+							); 
+						?>&nbsp;
+					</td>
 					<td><?php echo $this->Infinitas->status($shopBranch['ShopBranch']['active']); ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopBranch['ShopBranch']); ?>&nbsp;</td>
 				</tr><?php

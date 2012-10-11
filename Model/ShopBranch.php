@@ -72,43 +72,28 @@ class ShopBranch extends ShopAppModel {
 
 		$this->validate = array(
 			'contact_branch_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => array('validateRecordExists'),
+					'message' => __d('shop', 'The branch details join is not valid')
 				),
 			),
 			'manager_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => array('validateRecordExists'),
+					'message' => __d('shop', 'The selected manager is not valid'),
+					'allowEmpty' => false
 				),
 			),
 			'ordering' => array(
 				'numeric' => array(
 					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'Ordering needs to be numeric')
 				),
 			),
 			'active' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'Active should be boolean')
 				),
 			),
 		);

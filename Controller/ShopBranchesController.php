@@ -19,17 +19,6 @@
 
 class ShopBranchesController extends ShopAppController {
 /**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
-
-/**
  * @brief the index method
  *
  * Show a paginated list of ShopBranch records.
@@ -50,7 +39,10 @@ class ShopBranchesController extends ShopAppController {
 
 		$filterOptions = $this->Filter->filterOptions;
 		$filterOptions['fields'] = array(
-			'id',
+			'ContactBranch.name',
+			'ContactBranch.email',
+			'Manager.full_name',
+			'Manager.email',
 			'active' => (array)Configure::read('CORE.active_options'),
 		);
 
@@ -62,7 +54,7 @@ class ShopBranchesController extends ShopAppController {
  *
  * Show detailed information on a single ShopBranch
  *
- * @todo update the documentation 
+ * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
@@ -107,7 +99,13 @@ class ShopBranchesController extends ShopAppController {
  * @return void
  */
 	public function admin_edit($id = null) {
-		parent::admin_edit($id);
+		parent::admin_edit($id, array(
+			'contain' => array(
+				'ContactBranch' => array(
+					'ContactAddress'
+				)
+			)
+		));
 
 		$contactBranches = $this->ShopBranch->ContactBranch->find('list');
 		$managers = $this->ShopBranch->Manager->find('list');
