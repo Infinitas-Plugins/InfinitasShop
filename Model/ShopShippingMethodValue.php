@@ -21,6 +21,7 @@ class ShopShippingMethodValue extends ShopAppModel {
 	public $findMethods = array(
 		'values' => true
 	);
+
 /**
  * How the default ordering on this model is done
  *
@@ -75,9 +76,136 @@ class ShopShippingMethodValue extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
+			'shop_shipping_method_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No shipping method associated'),
+					'allowEmpty' => false,
+					'required' => true
+				)
+			),
+			'insurance' => array(
+				'field_present' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No insurance rates'),
+					'allowEmpty' => true,
+					'required' => true
+				)
+			),
+			'rates' => array(
+				'field_present' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No shipping rates'),
+					'allowEmpty' => true,
+					'required' => true
+				)
+			),
+			'active' => array(
+				'boolean' => array(
+					'rule' => 'boolean',
+					'message' => __d('shop', 'Active should be boolean (true / false)'),
+				)
+			),
+			'surcharge' => array(
+				'validateFloatAboveZero' => array(
+					'rule' => 'validateFloatAboveZero',
+					'message' => __d('shop', 'Surcharge should be in the format xx.xxx'),
+					'required' => true,
+					'allowEmpty' => true
+				)
+			),
+			'delivery_time' => array(
+				'comparison' => array(
+					'rule' => array('comparison', '>', 1),
+					'message' => __d('shop', 'Enter a valid number of hours for delivery estimation'),
+					'required' => true,
+					'allowEmpty' => false
+				)
+			),
+			'total_minimum' => array(
+				'validateFloatAboveZero' => array(
+					'rule' => 'validateFloatAboveZero',
+					'message' => __d('shop', 'Enter a valid amount for the order minimum'),
+					'required' => true,
+					'allowEmpty' => true
+				)
+			),
+			'total_maximum' => array(
+				'validateFloatAboveZero' => array(
+					'rule' => 'validateFloatAboveZero',
+					'message' => __d('shop', 'Enter a valid amount for the order maximum'),
+					'required' => true,
+					'allowEmpty' => true
+				)
+			),
+			'require_login' => array(
+				'boolean' => array(
+					'rule' => 'boolean',
+					'message' => __d('shop', 'Require login should be boolean (true / false)'),
+				)
+			),
 		);
 	}
 
+/**
+ * @brief validate the field is a float type
+ * 
+ * @param array $field the data being validated
+ * 
+ * @return boolean
+ */
+	public function validateFloatAboveZero(array $field) {
+		$field = current($field);
+		return empty($field) || is_float((float)$field) || $field > 0;
+	}
+
+/**
+ * @brief parse the insurance and rates for the backend CRUD
+ * 
+ * @param array|boolean $results the results from a find
+ * @param boolean $primary is this find on the model or from a relation
+ * 
+ * @return array|boolean 
+ */
+	public function afterFind($results, $primary) {
+		if($this->findQueryType == 'first') {
+			foreach($results as &$result) {
+				self::_explode($result[$this->alias]['insurance']);
+				self::_explode($result[$this->alias]['rates']);
+			}
+		}
+
+		return parent::afterFind($results, $primary);
+	}
+
+/**
+ * @brief implode the rates before validation/saving
+ * 
+ * @param array $options options for validation see Model::beforeValidate()
+ * 
+ * @return boolean
+ */
+	public function beforeValidate(array $options) {
+		if(!empty($this->data[$this->alias]['rates'])) {
+			$this->_implode($this->data[$this->alias]['rates']);
+		}
+		if(!empty($this->data[$this->alias]['insurance'])) {
+			$this->_implode($this->data[$this->alias]['insurance']);
+		}
+		return true;
+	}
+
+/**
+ * @brief find shipping values
+ * 
+ * @param string $state before or after
+ * @param array $query the query being performed
+ * @param array $results the results from the find
+ *
+ * @throws InvalidArgumentException
+ * 
+ * @return array
+ */
 	protected function _findValues($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			if(empty($query['shop_shipping_method_id'])) {
@@ -135,8 +263,8 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 		$results = Hash::extract($results, '{n}.' . $this->alias);
 		foreach($results as &$result) {
-			self::_parseValues($result['insurance']);
-			self::_parseValues($result['rates']);
+			self::_explode($result['insurance']);
+			self::_explode($result['rates']);
 		}
 
 		return $results;
@@ -150,7 +278,7 @@ class ShopShippingMethodValue extends ShopAppModel {
  * 
  * @return void
  */
-	protected function _parseValues(&$values) {
+	protected function _explode(&$values) {
 		$values = array_filter(explode(',', trim($values)));
 		if(empty($values)) {
 			return;
@@ -167,5 +295,29 @@ class ShopShippingMethodValue extends ShopAppModel {
 		usort($values, function($a, $b) {
 		    return $a['limit'] - $b['limit'];
 		});
+	}
+
+/**
+ * @brief implode the values for sotrage
+ * 
+ * @param array $values the data to be imploded
+ * 
+ * @return void
+ */
+	protected function _implode(&$values) {
+		foreach($values as $k => &$value) {
+			$value = array_filter($value);
+			if(count($value) != 2) {
+				unset($values[$k]);
+				continue;
+			}
+
+			$value = implode(':', array(
+				'limit' => $value['limit'],
+				'rate' => $value['rate']
+			));
+		}
+
+		$values = implode(',', $values);
 	}
 }

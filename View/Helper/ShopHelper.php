@@ -25,4 +25,22 @@ class ShopHelper extends AppHelper {
 			$options
 		);
 	}
+
+	public function timeEstimate($hours) {
+		if($hours <= 24) {
+			return __d('shop', '%d hours', round($hours));
+		}
+
+		$days = round($hours / 24);
+		if($days <= 7) {
+			return __d('shop', '%d days', $days);			
+		}
+
+		return __d('shop', '%d weeks', round($days / 7));
+
+	}
+
+	public function adminCurrency($amount) {
+		return CakeNumber::currency($amount, 'GBP');
+	}
 }

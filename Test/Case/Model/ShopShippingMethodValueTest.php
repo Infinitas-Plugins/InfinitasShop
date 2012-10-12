@@ -221,4 +221,76 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * @brief test save
+ * 
+ * @param  [type] $data     [description]
+ * @param  [type] $expected [description]
+ * 
+ * @dataProvider saveDataProvider
+ */
+	public function testSave($data, $expected) {
+		$result = $this->{$this->modelClass}->save($data);
+		$this->assertTrue((bool)$result);
+
+		$result = $this->{$this->modelClass}->find('first', array(
+			'conditions' => array(
+				$this->modelClass . '.id' => $this->{$this->modelClass}->id
+			)
+		));
+		unset($result[$this->modelClass]['id'], $result[$this->modelClass]['created'], $result[$this->modelClass]['modified']);
+		$this->assertEquals($expected, current($result));
+	}
+
+/**
+ * @brief save data provider
+ * @return array
+ */
+	public function saveDataProvider() {
+		return array(
+			'normal-order' => array(
+				array(
+					'name' => 'royal-mail-1st-rate-1',
+					'shop_shipping_method_id' => 'royal-mail-1st',
+					'active' => 1,
+					'insurance' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => 30, 'rate' => 3.0),
+						array('limit' => 20.00, 'rate' => 2.0),
+					),
+					'rates' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => 30.0, 'rate' => 3.0),
+						array('limit' => 20.0, 'rate' => 2.0),
+					),
+					'surcharge' => 0,
+					'delivery_time' => 48,
+					'total_minimum' => 0,
+					'total_maximum' => 150,
+					'require_login' => 0,
+				),
+				array(
+					'name' => 'royal-mail-1st-rate-1',
+					'shop_shipping_method_id' => 'royal-mail-1st',
+					'active' => true,
+					'insurance' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => 20.0, 'rate' => 2.0),
+						array('limit' => 30.0, 'rate' => 3.0),
+					),
+					'rates' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => 20.0, 'rate' => 2.0),
+						array('limit' => 30.0, 'rate' => 3.0),
+					),
+					'surcharge' => '0.00000',
+					'delivery_time' => '48',
+					'total_minimum' => '0.00000',
+					'total_maximum' => '150.00000',
+					'require_login' => false,
+				)
+			)
+		);
+	}
+
 }

@@ -105,7 +105,9 @@ class ShopEvents extends AppEvents {
 
 	public function onRequireJavascriptToLoad($event, $data = null) {
 		if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
-			return;
+			return array(
+				'Shop.shop_admin'
+			);
 		}
 
 		return array(
