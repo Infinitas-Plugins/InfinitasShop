@@ -25,7 +25,7 @@ class ShopShippingMethod extends ShopAppModel {
  */
 	public $hasMany = array(
 		'ShopList' => array(
-			'className' => 'ShopList',
+			'className' => 'Shop.ShopList',
 			'foreignKey' => 'shop_shipping_method_id',
 			'dependent' => false,
 			'conditions' => '',
@@ -38,9 +38,22 @@ class ShopShippingMethod extends ShopAppModel {
 			'counterQuery' => ''
 		),
 		'ShopOrder' => array(
-			'className' => 'ShopOrder',
+			'className' => 'Shop.ShopOrder',
 			'foreignKey' => 'shop_shipping_method_id',
 			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopShippingMethodValue' => array(
+			'className' => 'Shop.ShopShippingMethodValue',
+			'foreignKey' => 'shop_shipping_method_id',
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -85,20 +98,14 @@ class ShopShippingMethod extends ShopAppModel {
 				(array)$query['fields'],
 				array(
 					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->alias . '.insurance',
-					$this->alias . '.rates',
-					$this->alias . '.total_minimum',
-					$this->alias . '.total_maximum',
-					$this->alias . '.surcharge',
-					$this->alias . '.delivery_time'
+					$this->alias . '.' . $this->displayField
 				)
 			);
 
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->alias . '.active' => 1,
+					$this->alias . '.active' => 1
 				)
 			);
 
@@ -115,10 +122,6 @@ class ShopShippingMethod extends ShopAppModel {
 				$query['conditions'][$this->alias . '.' . $this->primaryKey] = $query['shop_shipping_method_id'];
 			}
 
-			if(!AuthComponent::user('id')) {
-				$query['conditions'][$this->alias . '.require_login'] = 0;
-			}
-
 			$query['limit'] = 1;
 			
 			return $query;
@@ -129,9 +132,13 @@ class ShopShippingMethod extends ShopAppModel {
 		}
 
 		$results = current($results);
+		$results[$this->alias][$this->ShopShippingMethodValue->alias] = $this->ShopShippingMethodValue->find('values', array(
+			'shop_shipping_method_id' => $results[$this->alias][$this->primaryKey]
+		));
 
-		self::_parseValues($results[$this->alias]['insurance'], true);
-		self::_parseValues($results[$this->alias]['rates']);
+		if(empty($results[$this->alias][$this->ShopShippingMethodValue->alias])) {
+			return array();
+		}
 
 		return $results;
 	}
@@ -159,7 +166,7 @@ class ShopShippingMethod extends ShopAppModel {
 
 		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', $query['shop_product_id']);
 
-		return self::_getShipping($sizes, $results[$this->alias]);
+		return self::_getShipping($sizes, $results[$this->alias][$this->ShopShippingMethodValue->alias][0]);
 	}
 
 /**
@@ -190,34 +197,7 @@ class ShopShippingMethod extends ShopAppModel {
 			'shop_list_id' => $query['shop_list_id']
 		));
 
-		return self::_getShipping($sizes, $results[$this->alias]);
-	}
-
-/**
- * @brief parse the shipping values into arrays
- * 
- * @param string $values values (passed by reference)
- * @param  boolean $insurance insurance or shipping
- * 
- * @return void
- */
-	protected function _parseValues(&$values, $insurance = false) {
-		$values = array_filter(explode(',', trim($values)));
-		if(empty($values)) {
-			return;
-		}
-
-		array_walk($values, function(&$value) use($insurance) {
-			$tmp = explode(':', $value);
-			$value = array(
-				'limit' => (float)$tmp[0],
-				'rate' => (float)$tmp[1]
-			);
-		});
-
-		usort($values, function($a, $b) {
-		    return $a['limit'] - $b['limit'];
-		});
+		return self::_getShipping($sizes, $results[$this->alias][$this->ShopShippingMethodValue->alias][0]);
 	}
 
 /**
@@ -227,13 +207,10 @@ class ShopShippingMethod extends ShopAppModel {
  * 
  * @param array $sizes the values for the current check
  * @param array $rates the rates table from the database
- * @param array $insurance true for insurance calculation
  * 
  * @return array
  */
 	protected function _getShipping(array $sizes, array &$method) {
-		self::_checkCostLimits($sizes['cost'], $method);
-
 		$shipping = self::_calculateShipping($sizes['weight'], $method['rates']);
 		$insurance = self::_calculateInsurance($sizes['cost'], $method['insurance']);
 		return array(
@@ -243,33 +220,6 @@ class ShopShippingMethod extends ShopAppModel {
 			'insurance_cover' => round($insurance['limit'], 4),
 			'surcharge' => $method['surcharge']
 		);
-	}
-
-/**
- * @brief check that the costs are within the bounds defined by the shipping method
- * 
- * @param float $cost the cost of the product / cart total
- * @param array $method the details of the shipping method
- *
- * @throws ShopShippingMethodMinimumException
- * @throws ShopShippingMethodMaximumException
- * 
- * @return void
- */
-	protected function _checkCostLimits($cost, &$method) {
-		if($method['total_minimum'] !== null && $cost < $method['total_minimum']) {
-			throw new ShopShippingMethodMinimumException(array(
-				'total' => $cost,
-				'minimum' => $method['total_minimum']
-			));
-		}
-
-		if($method['total_maximum'] !== null && $cost > $method['total_maximum']) {
-			throw new ShopShippingMethodMaximumException(array(
-				'total' => $cost,
-				'minimum' => $method['total_maximum']
-			));
-		}
 	}
 
 /**

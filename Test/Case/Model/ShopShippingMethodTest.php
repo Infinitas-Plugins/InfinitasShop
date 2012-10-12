@@ -15,6 +15,7 @@ class ShopShippingMethodTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_shipping_method',
+		'plugin.shop.shop_shipping_method_value',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_order',
 		'plugin.shop.shop_product',
@@ -100,23 +101,31 @@ class ShopShippingMethodTest extends CakeTestCase {
 				array(
 					'id' => 'royal-mail-1st',
 					'name' => 'royal-mail-1st',
-					'insurance' => array(
-						array('limit' => 39.0, 'rate' => 0.0),
-						array('limit' => 100, 'rate' => 1.0),
-						array('limit' => 250.0, 'rate' => 2.25),
-						array('limit' => 500.0, 'rate' => 3.5),
-					),
-					'rates' => array(
-						array('limit' => 100.0, 'rate' => 1.58),
-						array('limit' => 250.0, 'rate' => 1.96),
-						array('limit' => 500.0, 'rate' => 2.48),
-						array('limit' => 750.0, 'rate' => 3.05),
-						array('limit' => 1000.0, 'rate' => 3.71),
-					),
-					'total_minimum' => 0,
-					'total_maximum' => 150,
-					'surcharge' => '0.00000',
-					'delivery_time' => '48'
+					'ShopShippingMethodValue' => array(
+						array(
+							'id' => 'royal-mail-1st-rate-1',
+							'name' => 'royal-mail-1st-rate-1',
+							'shop_shipping_method_id' => 'royal-mail-1st',
+							'insurance' => array(
+								array('limit' => 39.0, 'rate' => 0.0),
+								array('limit' => 100, 'rate' => 1.0),
+								array('limit' => 250.0, 'rate' => 2.25),
+								array('limit' => 500.0, 'rate' => 3.5),
+							),
+							'rates' => array(
+								array('limit' => 100.0, 'rate' => 1.58),
+								array('limit' => 250.0, 'rate' => 1.96),
+								array('limit' => 500.0, 'rate' => 2.48),
+								array('limit' => 750.0, 'rate' => 3.05),
+								array('limit' => 1000.0, 'rate' => 3.71),
+							),
+							'surcharge' => '0.00000',
+							'delivery_time' => '48',
+							'total_minimum' => '0.00000',
+							'total_maximum' => '150.00000',
+							'require_login' => false,
+						)
+					)
 				)
 			),
 			'from-cart' => array(
@@ -127,23 +136,31 @@ class ShopShippingMethodTest extends CakeTestCase {
 				array(
 					'id' => 'royal-mail-1st',
 					'name' => 'royal-mail-1st',
-					'insurance' => array(
-						array('limit' => 39.0, 'rate' => 0.0),
-						array('limit' => 100, 'rate' => 1.0),
-						array('limit' => 250.0, 'rate' => 2.25),
-						array('limit' => 500.0, 'rate' => 3.5),
-					),
-					'rates' => array(
-						array('limit' => 100.0, 'rate' => 1.58),
-						array('limit' => 250.0, 'rate' => 1.96),
-						array('limit' => 500.0, 'rate' => 2.48),
-						array('limit' => 750.0, 'rate' => 3.05),
-						array('limit' => 1000.0, 'rate' => 3.71),
-					),
-					'total_minimum' => 0,
-					'total_maximum' => 150,
-					'surcharge' => '0.00000',
-					'delivery_time' => '48'
+					'ShopShippingMethodValue' => array(
+						array(
+							'id' => 'royal-mail-1st-rate-1',
+							'name' => 'royal-mail-1st-rate-1',
+							'shop_shipping_method_id' => 'royal-mail-1st',
+							'insurance' => array(
+								array('limit' => 39.0, 'rate' => 0.0),
+								array('limit' => 100, 'rate' => 1.0),
+								array('limit' => 250.0, 'rate' => 2.25),
+								array('limit' => 500.0, 'rate' => 3.5),
+							),
+							'rates' => array(
+								array('limit' => 100.0, 'rate' => 1.58),
+								array('limit' => 250.0, 'rate' => 1.96),
+								array('limit' => 500.0, 'rate' => 2.48),
+								array('limit' => 750.0, 'rate' => 3.05),
+								array('limit' => 1000.0, 'rate' => 3.71),
+							),
+							'surcharge' => '0.00000',
+							'delivery_time' => '48',
+							'total_minimum' => '0.00000',
+							'total_maximum' => '150.00000',
+							'require_login' => false,
+						)
+					)
 				)
 			),
 			'bob-custom' => array(
@@ -154,19 +171,46 @@ class ShopShippingMethodTest extends CakeTestCase {
 				array(
 					'id' => 'royal-mail-2nd',
 					'name' => 'royal-mail-2nd',
-					'insurance' => array(
-					),
-					'rates' => array(
-						array('limit' => 100.0, 'rate' => 1.33),
-						array('limit' => 250.0, 'rate' => 1.72),
-						array('limit' => 500.0, 'rate' => 2.16),
-						array('limit' => 750.0, 'rate' => 2.61),
-						array('limit' => 1000.0, 'rate' => 3.15),
-					),
-					'total_minimum' => 0,
-					'total_maximum' => 150,
-					'surcharge' => '0.00000',
-					'delivery_time' => '96'
+					'ShopShippingMethodValue' => array(
+						array(
+							'id' => 'royal-mail-2nd-rate-1',
+							'name' => 'royal-mail-2nd-rate-1',
+							'shop_shipping_method_id' => 'royal-mail-2nd',
+							'insurance' => array(
+							),
+							'rates' => array(
+								array('limit' => 100.0, 'rate' => 1.33),
+								array('limit' => 250.0, 'rate' => 1.72),
+								array('limit' => 500.0, 'rate' => 2.16),
+								array('limit' => 750.0, 'rate' => 2.61),
+								array('limit' => 1000.0, 'rate' => 3.15),
+							),
+							'total_minimum' => '0.00000',
+							'total_maximum' => '150.00000',
+							'surcharge' => '0.00000',
+							'delivery_time' => '96',
+							'require_login' => false
+						),
+						array(
+							'id' => 'royal-mail-2nd-rate-2',
+							'name' => 'royal-mail-2nd-rate-2',
+							'shop_shipping_method_id' => 'royal-mail-2nd',
+							'insurance' => array(
+							),
+							'rates' => array(
+								array('limit' => 100.0, 'rate' => 5),
+								array('limit' => 250.0, 'rate' => 10),
+								array('limit' => 500.0, 'rate' => 15),
+								array('limit' => 750.0, 'rate' => 20),
+								array('limit' => 1000.0, 'rate' => 25),
+							),
+							'total_minimum' => '0.00000',
+							'total_maximum' => '150.00000',
+							'surcharge' => '0.00000',
+							'delivery_time' => '240',
+							'require_login' => true
+						)
+					)
 				)
 			),
 			'inactive' => array(
@@ -186,23 +230,31 @@ class ShopShippingMethodTest extends CakeTestCase {
 				array(
 					'id' => 'royal-mail-1st',
 					'name' => 'royal-mail-1st',
-					'insurance' => array(
-						array('limit' => 39.0, 'rate' => 0.0),
-						array('limit' => 100, 'rate' => 1.0),
-						array('limit' => 250.0, 'rate' => 2.25),
-						array('limit' => 500.0, 'rate' => 3.5),
-					),
-					'rates' => array(
-						array('limit' => 100.0, 'rate' => 1.58),
-						array('limit' => 250.0, 'rate' => 1.96),
-						array('limit' => 500.0, 'rate' => 2.48),
-						array('limit' => 750.0, 'rate' => 3.05),
-						array('limit' => 1000.0, 'rate' => 3.71),
-					),
-					'total_minimum' => 0,
-					'total_maximum' => 150,
-					'surcharge' => '0.00000',
-					'delivery_time' => '48'
+					'ShopShippingMethodValue' => array(
+						array(
+							'id' => 'royal-mail-1st-rate-1',
+							'name' => 'royal-mail-1st-rate-1',
+							'shop_shipping_method_id' => 'royal-mail-1st',
+							'insurance' => array(
+								array('limit' => 39.0, 'rate' => 0.0),
+								array('limit' => 100, 'rate' => 1.0),
+								array('limit' => 250.0, 'rate' => 2.25),
+								array('limit' => 500.0, 'rate' => 3.5),
+							),
+							'rates' => array(
+								array('limit' => 100.0, 'rate' => 1.58),
+								array('limit' => 250.0, 'rate' => 1.96),
+								array('limit' => 500.0, 'rate' => 2.48),
+								array('limit' => 750.0, 'rate' => 3.05),
+								array('limit' => 1000.0, 'rate' => 3.71),
+							),
+							'surcharge' => '0.00000',
+							'delivery_time' => '48',
+							'total_minimum' => '0.00000',
+							'total_maximum' => '150.00000',
+							'require_login' => false,
+						)
+					)
 				)
 			),
 		);
@@ -212,29 +264,24 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @brief test order of rates is correct
  */
 	public function testGetShippingOrder() {
-		$this->{$this->modelClass}->id = 'royal-mail-1st';
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-1st-rate-1';
 
 		$expected = array(
 			array('limit' => 120, 'rate' => 4.0),
 			array('limit' => 150, 'rate' => 5.0),
 			array('limit' => 200, 'rate' => 6.0),
 		);
-		$this->{$this->modelClass}->saveField('rates', '150:5,120:4,200:6');
+		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('rates', '150:5,120:4,200:6');
 		$result = $this->{$this->modelClass}->find('shipping', array(
 			'shop_shipping_method_id' => $this->{$this->modelClass}->id
 		));
-		$this->assertEquals($expected, $result[$this->modelClass]['rates']);
+		$this->assertEquals($expected, $result[$this->modelClass]['ShopShippingMethodValue'][0]['rates']);
 
-		$expected = array(
-			array('limit' => 120, 'rate' => 4.0),
-			array('limit' => 150, 'rate' => 5.0),
-			array('limit' => 200, 'rate' => 6.0),
-		);
-		$this->{$this->modelClass}->saveField('insurance', '150:5,120:4,200:6');
+		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('insurance', '150:5,120:4,200:6');
 		$result = $this->{$this->modelClass}->find('shipping', array(
 			'shop_shipping_method_id' => $this->{$this->modelClass}->id
 		));
-		$this->assertEquals($expected, $result[$this->modelClass]['rates']);
+		$this->assertEquals($expected, $result[$this->modelClass]['ShopShippingMethodValue'][0]['insurance']);
 	}
 
 /**
@@ -311,9 +358,9 @@ class ShopShippingMethodTest extends CakeTestCase {
 		));
 		$this->assertEquals($expected, $result);
 
-		if($data['shop_shipping_method_id']) {
-			$this->{$this->modelClass}->id = $data['shop_shipping_method_id'];
-			$this->{$this->modelClass}->saveField('surcharge', 25);
+		if(!empty($data['shop_shipping_method_value_id'])) {
+			$this->{$this->modelClass}->ShopShippingMethodValue->id = $data['shop_shipping_method_value_id'];
+			$this->{$this->modelClass}->ShopShippingMethodValue->saveField('surcharge', 25);
 
 			$expected['total'] += 25;
 			$expected['surcharge'] = 25;
@@ -351,6 +398,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'shop-list-bob-cart' => array(
 				array(
 					'shop_shipping_method_id' => 'royal-mail-2nd',
+					'shop_shipping_method_value_id' => 'royal-mail-2nd-rate-1',
 					'shop_list_id' => 'shop-list-bob-cart',
 					'user_id' => 'bob'
 				),
@@ -365,6 +413,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'shop-list-bob-wish' => array(
 				array(
 					'shop_shipping_method_id' => 'royal-mail-2nd',
+					'shop_shipping_method_value_id' => 'royal-mail-2nd-rate-1',
 					'shop_list_id' => 'shop-list-bob-wish',
 					'user_id' => 'bob'
 				),
@@ -377,88 +426,6 @@ class ShopShippingMethodTest extends CakeTestCase {
 				)
 			)
 		);
-	}
-
-/**
- * @brief test min settings
- */
-	public function testMinimum() {
-		$findConditions = array(
-			'shop_shipping_method_id' => 'royal-mail-2nd',
-			'shop_list_id' => 'shop-list-bob-cart'
-		);
-		$this->{$this->modelClass}->id = $findConditions['shop_shipping_method_id'];
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', null));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(is_array($result));
-		} catch(Exception $e) {
-			$this->assertTrue(false, 'Was not able to get a valid shipping total');
-		}
-
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', 1));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(is_array($result));
-		} catch(Exception $e) {
-			$this->assertTrue(false, 'Was not able to get a valid shipping total');
-		}
-
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_minimum', 250));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(false, 'No Exception was thrown');
-		} catch(Exception $e) {
-			if(get_class($e) == 'ShopShippingMethodMinimumException') {
-				$this->assertTrue(true);
-			} else {
-				throw $e;
-			}
-		}
-	}
-
-/**
- * @brief test max settings
- */
-	public function testMaximum() {
-		$findConditions = array(
-			'shop_shipping_method_id' => 'royal-mail-2nd',
-			'shop_list_id' => 'shop-list-bob-cart'
-		);
-		$this->{$this->modelClass}->id = $findConditions['shop_shipping_method_id'];
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', null));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(is_array($result));
-		} catch(Exception $e) {
-			$this->assertTrue(false, 'Was not able to get a valid shipping total');
-		}
-
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', 500));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(is_array($result));
-		} catch(Exception $e) {
-			$this->assertTrue(false, 'Was not able to get a valid shipping total');
-		}
-
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('total_maximum', 1));
-
-		try {
-			$result = $this->{$this->modelClass}->find('productList', $findConditions);
-			$this->assertTrue(false, 'No Exception was thrown');
-		} catch(Exception $e) {
-			if(get_class($e) == 'ShopShippingMethodMaximumException') {
-				$this->assertTrue(true);
-			} else {
-				throw $e;
-			}
-		}
 	}
 
 }
