@@ -72,18 +72,6 @@
 		),
 		'orders' => array(
 			array(
-				'name' => __d('shop', 'Payments'),
-				'description' => __d('shop', 'Manage store payments'),
-				'icon' => '/shop/img/icons/payments.png',
-				'dashboard' => array('controller' => 'shop_payment_methods', 'action' => 'index')
-			),
-			array(
-				'name' => __d('shop', 'Shipping'),
-				'description' => __d('shop', 'Manage store shipping'),
-				'icon' => '/shop/img/icons/payments.png',
-				'dashboard' => array('controller' => 'shop_shipping_methods', 'action' => 'index')
-			),
-			array(
 				'name' => __d('shop', 'Carts'),
 				'description' => __d('shop', 'Manage store carts'),
 				'icon' => '/shop/img/icons/cart.png',
