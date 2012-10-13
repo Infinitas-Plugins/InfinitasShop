@@ -20,7 +20,22 @@ class ShopCurrencyLib {
  * @return string
  */
 	public function getCurrency() {
-		return self::_getSession();
+		$value = CakeSession::read(self::$_sessionKey);
+		if(!$value) {
+			return strtolower(Configure::read('Shop.currency'));
+		}
+		return $value;
+	}
+
+/**
+ * @brief set the currency to be used
+ * 
+ * @param string $currency the new currency to be used
+ * 
+ * @return see CakeSession::write()
+ */
+	public function setSession($currency) {
+		return CakeSession::write(self::$_sessionKey, strtolower($code));
 	}
 
 /**
@@ -28,12 +43,26 @@ class ShopCurrencyLib {
  *
  * @param type $currency
  *
- * @return type
+ * @return see self::setSession()
  */
 	public static function setCurrency($currency = null) {
 		if(!$currency) {
-			$currency = self::_getSession();
+			$currency = self::getCurrency();
 		}
+
+		self::addFormat($currency);
+
+		return self::setSession($currency['code']);
+	}
+
+/**
+ * @brief add a new format to the available currency conversions
+ * 
+ * @param string $currency the currency code to be added
+ *
+ * @return CakeNumber::addFormat()
+ */
+	public function addFormat($currency) {
 		$currency = ClassRegistry::init('Shop.ShopCurrency')->find('currency', array(
 			'currency' => $currency
 		));
@@ -48,8 +77,6 @@ class ShopCurrencyLib {
 			$currency[Inflector::variable($field)] = $currency[$field];
 			unset($currency['field']);
 		});
-
-		self::_setSession($currency['code']);
 
 		return CakeNumber::addFormat($currency['code'], $currency);
 	}
@@ -66,38 +93,14 @@ class ShopCurrencyLib {
  */
 	public static function convert($amount, $to = null) {
 		if(!$to) {
-			$to = self::_getSession();
+			$to = self::getCurrency();
 		}
 		$factors = ClassRegistry::init('Shop.ShopCurrency')->find('conversions');
 
-		if($factors[$to] == 1) {
+		if(isset($factors[strtoupper($to)]) && (float)$factors[strtoupper($to)] == 1) {
 			return $amount;
 		}
 
 		return round($amount * $factors[$to], 4);
-	}
-
-/**
- * @brief get the currently used currency code
- *
- * @return CakeSession::read()
- */
-	protected function _getSession() {
-		$value = CakeSession::read(self::$_sessionKey);
-		if(!$value) {
-			return strtolower(Configure::read('Shop.currency'));
-		}
-		return $value;
-	}
-
-/**
- * @brief set the currently used session code
- *
- * @param string $code the code to be used
- *
- * @return CakeSession::write()
- */
-	protected function _setSession($code) {
-		return CakeSession::write(self::$_sessionKey, strtolower($code));
 	}
 }

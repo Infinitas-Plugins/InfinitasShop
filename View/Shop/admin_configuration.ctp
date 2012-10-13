@@ -19,6 +19,12 @@
 				'icon' => '/shop/img/icons/attributes.png',
 				'dashboard' => array('controller' => 'shop_attributes', 'action' => 'index')
 			),
+			array(
+				'name' => __d('shop', 'Currencies'),
+				'description' => __d('shop', 'Manage store currencies'),
+				'icon' => '/shop/img/icons/currency.png',
+				'dashboard' => array('controller' => 'shop_currencies', 'action' => 'index')
+			),
 		),
 		'assets' => array(
 			array(

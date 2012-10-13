@@ -30,6 +30,27 @@ class ShopEvents extends AppEvents {
 		$menu['main'] = array(
 			'Dashboard' => array('plugin' => 'shop', 'controller' => 'shop', 'action' => 'dashboard'),
 		);
+		$configControllers = array(
+			'shop_product_types',
+			'shop_options',
+			'shop_attributes',
+			'shop_currencies',
+			'shop_images',
+			'shop_downloads',
+			'shop_payment_',
+			'shop_shipping_'
+		);
+
+		$configuration = in_array($Event->Handler->request->params['controller'], $configControllers);
+		foreach($configControllers as $controller) {
+			if($configuration) {
+				break;
+			}
+			$configuration = $configuration || strpos($Event->Handler->request->params['controller'], $controller) !== false;
+		}
+		if($configuration) {
+			$menu['main']['Configuration'] = array('plugin' => 'shop', 'controller' => 'shop', 'action' => 'configuration');
+		}
 
 		return $menu;
 	}

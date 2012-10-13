@@ -55,6 +55,7 @@ class ShopCurrency extends ShopAppModel {
  * @param array $results
  */
 	public function _findCurrency($state, array $query, array $results = array()) {
+		exit;
 		if($state == 'before') {
 			if(!empty($query['currency'])) {
 				$query['conditions'] = array(
