@@ -1,15 +1,19 @@
 <?php
-App::uses('ShopEvents', 'Shop.Lib');
-class ShopEventsTest extends CakeTestCase {
-	public function setUp() {
-		parent::setUp();
+/**
+ * @brief ContentsEventsTest
+ *
+ * These tests are extended from InfinitasEventTestCase which does most of the
+ * automated testing for simple events
+ */
+
+App::uses('InfinitasEventTestCase', 'Events.Test/Lib');
+
+class ShopEventsTest extends InfinitasEventTestCase {
+	public function testRequireCss() {
+		
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-	}
-
-	public function testSomething() {
-
+	public function testRequireJs() {
+		
 	}
 }

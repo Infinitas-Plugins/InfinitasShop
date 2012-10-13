@@ -1,5 +1,10 @@
 <?php
 class ShopEvents extends AppEvents {
+/**
+ * @brief get the plugins details
+ * 
+ * @return array
+ */
 	public function onPluginRollCall() {
 		return array(
 			'name' => 'Shop',
@@ -14,6 +19,26 @@ class ShopEvents extends AppEvents {
 		);
 	}
 
+/**
+ * @brief the admin menu
+ *
+ * @param Event $event the Event
+ *
+ * @return array
+ */
+	public function onAdminMenu(Event $Event) {
+		$menu['main'] = array(
+			'Dashboard' => array('plugin' => 'shop', 'controller' => 'shop', 'action' => 'dashboard'),
+		);
+
+		return $menu;
+	}
+
+/**
+ * @brief get the plugins configuration
+ * 
+ * @return array
+ */
 	public function onSetupCache() {
 		return array(
 			'name' => 'shop',
@@ -27,7 +52,15 @@ class ShopEvents extends AppEvents {
 		);
 	}
 
-	public function onSlugUrl($event, $data) {
+/**
+ * @brief figure out a url slug
+ * 
+ * @param Event $event the Event
+ * @param array $data the data used to build a url
+ * 
+ * @return array
+ */
+	public function onSlugUrl(Event $event, $data) {
 		switch($data['type']) {
 			case 'products':
 				return array(
@@ -51,47 +84,48 @@ class ShopEvents extends AppEvents {
 		} // switch
 	}
 
-	public function onSetupThemeLayout($event, $data) {
-		if($data['params']['plugin'] == 'shop' && $data['params']['controller'] == 'carts' && $data['params']['action'] == 'index') {
-			//return 'checkout';
-		}
+/**
+ * @brief sort out the guest data once the user logs in
+ * 
+ * @param Event $event the event
+ * @param array data passed in
+ * 
+ * @return array
+ */
+	public function onUserLogin(Event $event, $data) {
+
 	}
 
-	public function onSetupTabs($event, $data) {
-		echo 'yey: shop event';
-		exit;
-	}
-
-	public function onUserLogin($event, $data) {
-		try {
-			if(ClassRegistry::init('Shop.Cart')->moveSessionToDb(CakeSession::read('Cart.TempCart'), $data) === true) {
-				CakeSession::delete('Cart');
-			}
-
-			if(ClassRegistry::init('Shop.Wishlist')->moveSessionToDb(CakeSession::read('Wishlist.TempWishlist'), $data) === true) {
-				CakeSession::delete('Wishlist');
-			}
-		}
-
-		catch(Exception $e) {
-
-		}
-	}
-
+/**
+ * @brief get helpers that need loading
+ * 
+ * @return array
+ */
 	public function onRequireHelpersToLoad() {
 		return array(
 			'Shop.Shop'
 		);
 	}
 
+/**
+ * @brief get components that need loading
+ * 
+ * @return array
+ */
 	public function onRequireComponentsToLoad() {
 		return array(
 			'Shop.Shop'
-			//'Libs.Voucher'
 		);
 	}
 
-	public function onRequireCssToLoad($event, $data = null) {
+/**
+ * @brief get css that needs loading
+ * 
+ * @param Event $event the event
+ * 
+ * @return array
+ */
+	public function onRequireCssToLoad(Event $event) {
 		if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
@@ -103,7 +137,14 @@ class ShopEvents extends AppEvents {
 		);
 	}
 
-	public function onRequireJavascriptToLoad($event, $data = null) {
+/**
+ * @brief get js that needs loading
+ * 
+ * @param Event $event the event
+ * 
+ * @return array
+ */
+	public function onRequireJavascriptToLoad(Event $event) {
 		if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
@@ -114,4 +155,5 @@ class ShopEvents extends AppEvents {
 			'Shop.shop'
 		);
 	}
+	
 }
