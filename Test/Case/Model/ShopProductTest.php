@@ -14,6 +14,7 @@ class ShopProductTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_product',
+		'plugin.shop.shop_brand',
 		'plugin.shop.shop_size',
 		'plugin.shop.shop_image',
 		'plugin.shop.shop_supplier',
@@ -35,6 +36,8 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_products_option_ignore',
 		'plugin.shop.shop_products_option_value_ignore',
 		'plugin.shop.shop_products_option_value_override',
+
+		'plugin.shop.contact_address',
 
 		'plugin.shop.core_user',
 		'plugin.shop.core_group',
@@ -139,6 +142,11 @@ class ShopProductTest extends CakeTestCase {
 							'slug' => 'active',
 							'name' => 'active',
 							'total_stock' => 25
+						),
+						'ShopBrand' => array(
+							'id' => 'inhouse',
+							'name' => 'inhouse',
+							'slug' => 'inhouse'
 						),
 						'ShopProductType' => array(
 							'id' => 'shirts',
@@ -467,6 +475,11 @@ class ShopProductTest extends CakeTestCase {
 						'name' => 'shirts',
 						'slug' => 'shirts'
 					),
+					'ShopBrand' => array(
+						'id' => 'inhouse',
+						'name' => 'inhouse',
+						'slug' => 'inhouse'
+					),
 					'ShopImage' => array(
 						'id' => 'image-product-active',
 						'image' => 'image-product-active.png'
@@ -601,6 +614,11 @@ class ShopProductTest extends CakeTestCase {
 						'product_code' => null,
 						'total_stock' => null
 					),
+					'ShopBrand' => array(
+						'id' => 'inhouse',
+						'name' => 'inhouse',
+						'slug' => 'inhouse'
+					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
 						'name' => 'active',
@@ -636,6 +654,11 @@ class ShopProductTest extends CakeTestCase {
 						'product_code' => null,
 						'total_stock' => null
 					),
+					'ShopBrand' => array(
+						'id' => 'inhouse',
+						'name' => 'inhouse',
+						'slug' => 'inhouse'
+					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
 						'name' => 'active',
@@ -658,6 +681,11 @@ class ShopProductTest extends CakeTestCase {
 						'name' => 'multi-category-parent-inactive',
 						'product_code' => null,
 						'total_stock' => null
+					),
+					'ShopBrand' => array(
+						'id' => 'inhouse',
+						'name' => 'inhouse',
+						'slug' => 'inhouse'
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -682,6 +710,11 @@ class ShopProductTest extends CakeTestCase {
 						'name' => 'multi-option',
 						'product_code' => 'multi-option-:option-size(:option-colour)',
 						'total_stock' => null
+					),
+					'ShopBrand' => array(
+						'id' => 'inhouse',
+						'name' => 'inhouse',
+						'slug' => 'inhouse'
 					),
 					'ShopProductType' => array(
 						'id' => 'complex-options',
@@ -1157,6 +1190,11 @@ class ShopProductTest extends CakeTestCase {
 							'product_code' => 'active-:option-size',
 							'total_stock' => '25',
 						),
+						'ShopBrand' => array(
+							'id' => 'inhouse',
+							'name' => 'inhouse',
+							'slug' => 'inhouse'
+						),
 						'ShopProductType' => array(
 							'id' => 'shirts',
 							'name' => 'shirts',
@@ -1234,6 +1272,11 @@ class ShopProductTest extends CakeTestCase {
 							'slug' => 'multi-option',
 							'product_code' => 'multi-option-:option-size(:option-colour)',
 							'total_stock' => null,
+						),
+						'ShopBrand' => array(
+							'id' => 'inhouse',
+							'name' => 'inhouse',
+							'slug' => 'inhouse'
 						),
 						'ShopProductType' => array(
 							'id' => 'complex-options',
@@ -1318,6 +1361,67 @@ class ShopProductTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * @brief test things that make products inactive
+ *
+ * brand - active when:
+ * 	not specified
+ * 	brand active
+ * 	
+ * product type - active when:
+ * 	not specified
+ * 	product type active
+ * 	
+ * supplier - active when:
+ * 	not specified
+ * 	supplier active
+ * 	
+ * @todo categories - active when:
+ * 	category active 
+ * 
+ */
+	public function testThingsThatMakeProductsInactive() {
+		$id = 'active';
+		$Model = $this->{$this->modelClass};
+		$product = function($id) use($Model) {
+			$product = $Model->find('product', $id);
+
+			return !empty($product[$Model->alias][$Model->primaryKey]) && 
+				$product[$Model->alias][$Model->primaryKey] == $id;
+		};
+
+		$Model->saveField('active', 0);
+		$this->assertTrue($product($id));
+		$Model->saveField('active', 1);
+
+		$Model->ShopBrand->id = 'inhouse';
+		$Model->ShopBrand->saveField('active', 0);
+		$this->assertFalse($product($id));
+		$Model->ShopBrand->deleteAll(array('ShopBrand.id' => 'inhouse'));
+		$this->assertTrue($product($id));
+
+		$Model->ShopProductType->id = 'shirts';
+		$Model->ShopProductType->saveField('active', 0);
+		$this->assertFalse($product($id));
+		$Model->ShopProductType->deleteAll(array('ShopProductType.id' => 'shirts'));
+		$this->assertTrue($product($id));
+
+		$Model->ShopSupplier->id = 'supplier-1';
+		$Model->ShopSupplier->saveField('active', 0);
+		$this->assertFalse($product($id));
+		$Model->ShopSupplier->deleteAll(array('ShopSupplier.id' => 'supplier-1'));
+		$this->assertTrue($product($id));
+
+		return;
+
+		$Model->ShopCategoriesProduct->ShopCategory->id = 'active';
+		$Model->ShopCategoriesProduct->ShopCategory->saveField('active', 0);
+		$this->assertFalse($product($id));
+
+		$Model->ShopCategoriesProduct->ShopCategory->saveField('active', 1);
+		$this->assertTrue($product($id));
 	}
 
 }

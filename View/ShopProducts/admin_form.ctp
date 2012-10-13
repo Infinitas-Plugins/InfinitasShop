@@ -101,6 +101,7 @@
 			implode('', array(
 				$this->Html->tag('div', implode('', array(
 					$this->Form->input('shop_supplier_id', array('label' => __d('shop', 'Default Supplier'))),
+					$this->Form->input('shop_brand_id', array('label' => __d('shop', 'Brand'))),
 					$this->Html->tag('label', __d('shop', 'Costing'), array('for' => '')) . $shopPrice,
 					$this->Html->tag('label', __d('shop', 'Product Dimentions (W x L x H)'), array('for' => '')) . $shopSizeProduct,
 					$this->Html->tag('label', __d('shop', 'Shipping Dimentions (W x L x H)'), array('for' => '')) . $shopSizeShipping

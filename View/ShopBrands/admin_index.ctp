@@ -22,7 +22,7 @@ $massActions = $this->Infinitas->massActionButtons(
 		'edit',
 		'toggle',
 		'copy',
-		'delete',
+		'delete'
 	)
 );
 
@@ -39,28 +39,38 @@ echo $this->Filter->alphabetFilter();
 						'style' => 'width:25px;'
 					),
 					$this->Paginator->sort('name'),
+					$this->Paginator->sort('image'),
+					$this->Paginator->sort('shop_product_count', __d('shop', 'Products')) => array(
+						'style' => 'width:50px;'
+					),
 					$this->Paginator->sort('active') => array(
-						'style' => 'width:75px;'
+						'style' => 'width:50px;'
 					),
 					$this->Paginator->sort('modified') => array(
-						'style' => 'width:100px;'
+						'style' => 'width:75px;'
 					),
 				)
 			);
 
-			foreach ($shopProductTypes as $shopProductType) { ?>
+			foreach ($shopBrands as $shopBrand) { ?>
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-					<td><?php echo $this->Infinitas->massActionCheckBox($shopProductType); ?>&nbsp;</td>
-					<td><?php echo $this->Html->adminQuickLink($shopProductType['ShopProductType']); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->massActionCheckBox($shopBrand); ?>&nbsp;</td>
+					<td title="<?php echo $shopBrand['ShopBrand']['slug']; ?>"><?php echo $this->Html->adminQuickLink($shopBrand['ShopBrand']); ?>&nbsp;</td>
+					<td><?php echo $shopBrand['ShopBrand']['image']; ?>&nbsp;</td>
 					<td>
-						<?php 
-							echo $this->Infinitas->status($shopProductType['ShopProductType']['active'], array(
-								'title_yes' => __d('shop', 'Active :: The product type is active'),
-								'title_no' => __d('shop', 'Inactive :: Products of this type will not be available for purchase')
-							)); 
+						<?php
+							if(empty($shopBrand['ShopBrand']['shop_product_count'])) {
+								$shopBrand['ShopBrand']['shop_product_count'] = '-';
+							}
+							echo $this->Html->link($shopBrand['ShopBrand']['shop_product_count'], array(
+								'controller' => 'shop_products',
+								'action' => 'index',
+								'ShopProduct.shop_brand_id' => $shopBrand['ShopBrand']['id']
+							))
 						?>&nbsp;
 					</td>
-					<td><?php echo $this->Infinitas->date($shopProductType['ShopProductType']); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->status($shopBrand['ShopBrand']['active']); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->date($shopBrand['ShopBrand']); ?>&nbsp;</td>
 				</tr><?php
 			}
 		?>

@@ -8,7 +8,7 @@
  */
 class ShopSupplier extends ShopAppModel {
 /**
- * Validation rules
+ * @brief Validation rules
  *
  * @var array
  */

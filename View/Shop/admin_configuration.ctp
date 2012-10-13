@@ -54,10 +54,10 @@
 				'dashboard' => array('controller' => 'shop_suppliers', 'action' => 'index')
 			),
 			array(
-				'name' => __d('shop', 'Manufacturers'),
-				'description' => __d('shop', 'Manage product manufacturers'),
+				'name' => __d('shop', 'Brands'),
+				'description' => __d('shop', 'Manage product brands'),
 				'icon' => '/shop/img/icons/manufacturers.png',
-				'dashboard' => array('controller' => 'shop_manufacturers', 'action' => 'index')
+				'dashboard' => array('controller' => 'shop_brands', 'action' => 'index')
 			),
 			array(
 				'name' => __d('shop', 'Payments'),

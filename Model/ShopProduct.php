@@ -67,6 +67,13 @@ class ShopProduct extends ShopAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'ShopBrand' => array(
+			'className' => 'Shop.ShopBrand',
+			'foreignKey' => 'shop_brand_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 
@@ -858,6 +865,10 @@ class ShopProduct extends ShopAppModel {
 					$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,
 					$this->ShopProductType->alias . '.slug',
 
+					$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey,
+					$this->ShopBrand->alias . '.' . $this->ShopBrand->displayField,
+					$this->ShopBrand->alias . '.slug',
+
 					$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
 					$this->ShopImage->alias . '.image',
 
@@ -872,6 +883,18 @@ class ShopProduct extends ShopAppModel {
 				array(
 					$this->alias . '.active' => 1,
 					'ActiveCategory.active' => 1,
+					array('or' => array(
+						$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
+						$this->ShopBrand->alias . '.active' => 1,
+					)),
+					array('or' => array(
+						$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
+						$this->ShopProductType->alias . '.active' => 1,
+					)),
+					array('or' => array(
+						$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
+						$this->ShopSupplier->alias . '.active' => 1,
+					))
 				)
 			);
 
@@ -879,7 +902,8 @@ class ShopProduct extends ShopAppModel {
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
-			//$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopBrand->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
