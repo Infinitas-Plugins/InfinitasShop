@@ -27,6 +27,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter('Contact.ContactBranch');
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">
@@ -55,12 +56,12 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopBranch); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Shop->emailLink($shopBranch['ContactBranch']['email']);
 							echo $this->Html->link($shopBranch['ContactBranch']['name'], array(
 								'action' => 'edit',
 								$shopBranch['ShopBranch']['id']
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td>
@@ -75,11 +76,11 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Infinitas->ordering(
-								$shopBranch['ShopBranch']['id'], 
+								$shopBranch['ShopBranch']['id'],
 								$shopBranch['ShopBranch']['ordering']
-							); 
+							);
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->status($shopBranch['ShopBranch']['active']); ?>&nbsp;</td>

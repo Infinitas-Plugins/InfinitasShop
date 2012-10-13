@@ -30,6 +30,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">
@@ -58,7 +59,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopShippingMethod); ?>&nbsp;</td>
 					<td><?php echo $this->Html->adminQuickLink($shopShippingMethod['ShopShippingMethod']); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							if(!$shopShippingMethod['ShopShippingMethod']['shop_shipping_method_value_count']) {
 								$shopShippingMethod['ShopShippingMethod']['shop_shipping_method_value_count'] = '-';
 							}
@@ -67,7 +68,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 								'controller' => 'shop_shipping_method_values',
 								'action' => 'index',
 								'ShopShippingMethodValue.shop_shipping_method_id' => $shopShippingMethod['ShopShippingMethod']['id']
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->status($shopShippingMethod['ShopShippingMethod']['active']); ?>&nbsp;</td>

@@ -8,9 +8,11 @@
  * @property ShopSpotlight $ShopSpotlight
  */
 class ShopImage extends ShopAppModel {
+	public $displayField = 'image';
+	
 /**
  * @brief behaviors that are attached
- * 
+ *
  * @var array
  */
 	public $actsAs = array(
@@ -104,7 +106,7 @@ class ShopImage extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
-			
+
 		);
 	}
 

@@ -30,6 +30,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">
@@ -57,11 +58,11 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $this->Html->adminQuickLink($shopOption['ShopOption']); ?>&nbsp;</td>
 					<td><?php echo $shopOption['ShopOption']['shop_option_value_count']; ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Infinitas->status($shopOption['ShopOption']['required'], array(
 								'title_yes' => __d('shop', 'Required :: This option requres a value to be selected'),
 								'title_no' => __d('shop', 'Required :: This option does not requre a value to be selected'),
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->date($shopOption['ShopOption']); ?>&nbsp;</td>

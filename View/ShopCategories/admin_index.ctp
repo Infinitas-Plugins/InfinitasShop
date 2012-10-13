@@ -30,6 +30,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">
@@ -59,44 +60,44 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopCategory); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Html->link($shopCategory['ShopImage']['id'], array(
-								'controller' => 'shop_images', 
-								'action' => 'view', 
+								'controller' => 'shop_images',
+								'action' => 'view',
 								$shopCategory['ShopImage']['id']
 							));
             				if ($shopCategory['ShopCategory']['path_depth'] >= 1) {
             					echo '<b>', str_repeat('- ', $shopCategory['ShopCategory']['path_depth']), ' |</b> ';
             				}
-							echo $this->Html->adminQuickLink($shopCategory['ShopCategory']); 
+							echo $this->Html->adminQuickLink($shopCategory['ShopCategory']);
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Html->link($shopCategory['ParentShopCategory']['name'], array(
-								'controller' => 'shop_categories', 
-								'action' => 'view', 
+								'controller' => 'shop_categories',
+								'action' => 'view',
 								$shopCategory['ParentShopCategory']['id']
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Html->link($shopCategory['ShopProductType']['name'], array(
-								'controller' => 'shop_product_types', 
-								'action' => 'view', 
+								'controller' => 'shop_product_types',
+								'action' => 'view',
 								$shopCategory['ShopProductType']['id']
 							));
 						?>&nbsp;
 					</td>
 					<td><?php echo $shopCategory['ShopCategory']['product_count']; ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Infinitas->status($shopCategory['ShopCategory']['active'], array(
 								'title_yes' => __d('infinitas', 'Status :: This category is enabled'),
 								'title_no' => __d('infinitas', 'Status :: This category has been disabled, any ' .
 									'products within this category will not be available on the front end'),
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->date($shopCategory['ShopCategory']); ?>&nbsp;</td>

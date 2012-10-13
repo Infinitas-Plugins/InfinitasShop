@@ -60,7 +60,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $this->Infinitas->massActionCheckBox($value); ?>&nbsp;</td>
 					<td><?php echo $this->Html->adminQuickLink($value['ShopShippingMethodValue']); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							if(!$value['ShopShippingMethodValue']['surcharge']) {
 								echo '-';
 							} else {
@@ -70,7 +70,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					</td>
 					<td><?php echo $this->Shop->timeEstimate($value['ShopShippingMethodValue']['delivery_time']); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							if(!$value['ShopShippingMethodValue']['total_minimum']) {
 								echo '-';
 							} else {
@@ -79,7 +79,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							if(!$value['ShopShippingMethodValue']['total_maximum']) {
 								echo '-';
 							} else {
@@ -88,7 +88,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Infinitas->status(!$value['ShopShippingMethodValue']['require_login'], array(
 								'title_yes' => __d('infinitas', 'Login :: This shipping option is available for all users'),
 								'title_no' => __d('infinitas', 'Login :: This shipping option requires users to be logged in')
@@ -96,16 +96,16 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						?>&nbsp;
 					</td>
 					<td>
-						<?php 
+						<?php
 							$status = array(
 								'title_yes' => __d('shop', 'Acitve :: This option is active'),
 								'title_no' => __d('shop', 'Not Active :: This shipping option value is currently disabled')
 							);
 							if(!$value['ShopShippingMethod']['active']) {
-								$status['title_no'] = __d('shop', 'Not Active :: The shipping option "%s" is currently disabled', $value['ShopShippingMethod']['name']);	
+								$status['title_no'] = __d('shop', 'Not Active :: The shipping option "%s" is currently disabled', $value['ShopShippingMethod']['name']);
 							}
-							
-							echo $this->Infinitas->status($value['ShopShippingMethodValue']['active'] && $value['ShopShippingMethod']['active'], $status); 
+
+							echo $this->Infinitas->status($value['ShopShippingMethodValue']['active'] && $value['ShopShippingMethod']['active'], $status);
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->date($value['ShopShippingMethodValue']); ?>&nbsp;</td>

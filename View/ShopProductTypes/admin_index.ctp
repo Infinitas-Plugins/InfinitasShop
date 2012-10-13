@@ -26,6 +26,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">

@@ -30,6 +30,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="table">
 	<table class="listing" cellpadding="0" cellspacing="0">
@@ -60,9 +61,9 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopSupplier); ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Html->image($shopSupplier['ShopSupplier']['logo_thumb'], array('width' => 75));
-							echo $this->Html->adminQuickLink($shopSupplier['ShopSupplier'], array('action' => 'edit')); 
+							echo $this->Html->adminQuickLink($shopSupplier['ShopSupplier'], array('action' => 'edit'));
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Text->autoLinkEmails($shopSupplier['ShopSupplier']['email']); ?>&nbsp;</td>
@@ -70,11 +71,11 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $shopSupplier['ShopSupplier']['product_count']; ?>&nbsp;</td>
 					<td><?php echo $shopSupplier['ShopSupplier']['terms']; ?>&nbsp;</td>
 					<td>
-						<?php 
+						<?php
 							echo $this->Infinitas->status($shopSupplier['ShopSupplier']['active'], array(
 								'title_yes' => __d('shop', 'Status :: Supplier is active'),
 								'title_no' => __d('shop', 'Status :: Supplier is disabled, products will no longer be displayed'),
-							)); 
+							));
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Infinitas->date($shopSupplier['ShopSupplier']); ?>&nbsp;</td>

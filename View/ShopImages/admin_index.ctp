@@ -27,6 +27,7 @@ $massActions = $this->Infinitas->massActionButtons(
 );
 
 echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Filter->alphabetFilter();
 ?>
 <div class="dashboard">
 	<?php
@@ -56,12 +57,12 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						);
 					?>
 					<div class="name">
-						<?php 
-							echo $this->Infinitas->massActionCheckBox($shopImage) . 
+						<?php
+							echo $this->Infinitas->massActionCheckBox($shopImage) .
 								$this->Html->link($this->Text->truncate($shopImage['ShopImage']['image'], 20), array(
-									'action' => 'edit', 
+									'action' => 'edit',
 									$shopImage['ShopImage']['id']
-								)); 
+								));
 						?>
 					</div>
 					<div class="info">
