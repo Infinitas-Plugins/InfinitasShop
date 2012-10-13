@@ -91,7 +91,6 @@ class ShopHelper extends AppHelper {
 
 	public function currency($amount, $to = null) {
 		App::uses('ShopCurrencyLib', 'Shop.Lib');
-		//ShopCurrencyLib::addFormat(strtoupper($to));
-		return ShopCurrencyLib::convert($amount);
+		return ShopCurrencyLib::convert($amount, ShopCurrencyLib::addFormat($to));
 	}
 }

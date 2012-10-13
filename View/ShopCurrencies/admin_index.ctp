@@ -61,8 +61,8 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 					<td><?php echo $this->Html->adminQuickLink($shopCurrency['ShopCurrency']); ?>&nbsp;</td>
 					<td><?php echo $shopCurrency['ShopCurrency']['code']; ?>&nbsp;</td>
 					<td><?php echo $shopCurrency['ShopCurrency']['factor']; ?>&nbsp;</td>
-					<td><?php echo $this->Shop->currency(1000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
-					<td><?php echo $this->Shop->currency(-1000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
+					<td><?php echo $this->Shop->currency(5000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
+					<td><?php echo $this->Shop->currency(-5000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->currency(0, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
 					<td>
 						<?php

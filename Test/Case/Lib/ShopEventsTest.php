@@ -16,4 +16,8 @@ class ShopEventsTest extends InfinitasEventTestCase {
 	public function testRequireJs() {
 		
 	}
+
+	public function testAdminMenu() {
+		
+	}
 }

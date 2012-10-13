@@ -55,7 +55,6 @@ class ShopCurrency extends ShopAppModel {
  * @param array $results
  */
 	public function _findCurrency($state, array $query, array $results = array()) {
-		exit;
 		if($state == 'before') {
 			if(!empty($query['currency'])) {
 				$query['conditions'] = array(
@@ -75,12 +74,15 @@ class ShopCurrency extends ShopAppModel {
 
 			return $query;
 		}
+		$results = current($results);
 
 		if(empty($results)) {
 			throw new CakeException(__d('shop', 'Selected currency was not found'));
 		}
 
-		return current($results);
+		$results[$this->alias]['code'] = strtoupper($results[$this->alias]['code']);
+
+		return $results;
 	}
 
 /**
@@ -106,10 +108,11 @@ class ShopCurrency extends ShopAppModel {
 			return $query;
 		}
 
-		return Hash::combine($results,
-			sprintf('{n}.%s.code', $this->alias),
-			sprintf('{n}.%s.factor', $this->alias)
-		);
+		$return = array();
+		foreach($results as $result) {
+			$return[strtoupper($result[$this->alias]['code'])] = $result[$this->alias]['factor'];
+		}
+		return $return;
 	}
 
 }

@@ -80,7 +80,7 @@ class ShopCurrencyTest extends CakeTestCase {
 		$expected = array(
 			'ShopCurrency' => array(
 				'name' => 'gbp',
-				'code' => 'gbp',
+				'code' => 'GBP',
 				'factor' => 1,
 				'whole_symbol' => '£',
 				'whole_position' => 0,
@@ -105,7 +105,7 @@ class ShopCurrencyTest extends CakeTestCase {
 		$expected = array(
 			'ShopCurrency' => array(
 				'name' => 'usd',
-				'code' => 'usd',
+				'code' => 'USD',
 				'factor' => '1.00000000',
 				'whole_symbol' => '$',
 				'whole_position' => false,
@@ -155,7 +155,7 @@ class ShopCurrencyTest extends CakeTestCase {
 				false,
 				array(
 					'name' => 'gbp',
-					'code' => 'gbp',
+					'code' => 'GBP',
 					'factor' => 1,
 					'whole_symbol' => '£',
 					'whole_position' => 0,
@@ -173,7 +173,7 @@ class ShopCurrencyTest extends CakeTestCase {
 				'gbp',
 				array(
 					'name' => 'gbp',
-					'code' => 'gbp',
+					'code' => 'GBP',
 					'factor' => 1,
 					'whole_symbol' => '£',
 					'whole_position' => 0,
@@ -191,7 +191,7 @@ class ShopCurrencyTest extends CakeTestCase {
 				'usd',
 				array(
 					'name' => 'usd',
-					'code' => 'usd',
+					'code' => 'USD',
 					'factor' => '1.5999',
 					'whole_symbol' => '$',
 					'whole_position' => 0,
@@ -221,9 +221,9 @@ class ShopCurrencyTest extends CakeTestCase {
 		};
 
 		$expected = array(
-			'gbp' => '1.0000',
-			'usd' => '1.5999',
-			'eur' => '1.2425'
+			'GBP' => '1.0000',
+			'USD' => '1.5999',
+			'EUR' => '1.2425'
 		);
 		$result = $round($this->{$this->modelClass}->find('conversions'));
 
@@ -231,8 +231,8 @@ class ShopCurrencyTest extends CakeTestCase {
 
 		$this->assertTrue($this->{$this->modelClass}->deleteAll(array($this->modelClass . '.id' => 'eur')));
 		$expected = array(
-			'gbp' => '1.0000',
-			'usd' => '1.5999'
+			'GBP' => '1.0000',
+			'USD' => '1.5999'
 		);
 		$result = $round($this->{$this->modelClass}->find('conversions'));
 		$this->assertEquals($expected, $result);

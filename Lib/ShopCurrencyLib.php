@@ -19,12 +19,24 @@ class ShopCurrencyLib {
  *
  * @return string
  */
-	public function getCurrency() {
+	public function getCurrency($to = null) { 
+		if($to) {
+			return strtoupper($to);
+		}
 		$value = CakeSession::read(self::$_sessionKey);
 		if(!$value) {
-			return strtolower(Configure::read('Shop.currency'));
+			return self::defaultCurrency();
 		}
 		return $value;
+	}
+
+/**
+ * @brief get the default store currency
+ * 
+ * @return string
+ */
+	public function defaultCurrency() {
+		return strtoupper(Configure::read(self::$_sessionKey));
 	}
 
 /**
@@ -35,7 +47,10 @@ class ShopCurrencyLib {
  * @return see CakeSession::write()
  */
 	public function setSession($currency) {
-		return CakeSession::write(self::$_sessionKey, strtolower($code));
+		if(strlen($currency) !== 3) {
+			throw new InvalidArgumentException('Invalid currency code');
+		}
+		return CakeSession::write(self::$_sessionKey, strtoupper($currency));
 	}
 
 /**
@@ -50,9 +65,7 @@ class ShopCurrencyLib {
 			$currency = self::getCurrency();
 		}
 
-		self::addFormat($currency);
-
-		return self::setSession($currency['code']);
+		return self::setSession(self::addFormat($currency));
 	}
 
 /**
@@ -75,10 +88,12 @@ class ShopCurrencyLib {
 		);
 		array_walk($changeFields, function($field) use(&$currency) {
 			$currency[Inflector::variable($field)] = $currency[$field];
-			unset($currency['field']);
+			unset($currency[$field]);
 		});
+		$currency['code'] = self::getCurrency($currency['code']);
 
-		return CakeNumber::addFormat($currency['code'], $currency);
+		CakeNumber::addFormat($currency['code'], $currency);
+		return $currency['code'];
 	}
 
 /**
@@ -92,15 +107,11 @@ class ShopCurrencyLib {
  * @return float
  */
 	public static function convert($amount, $to = null) {
-		if(!$to) {
-			$to = self::getCurrency();
-		}
 		$factors = ClassRegistry::init('Shop.ShopCurrency')->find('conversions');
-
-		if(isset($factors[strtoupper($to)]) && (float)$factors[strtoupper($to)] == 1) {
+		$to = self::getCurrency($to);
+		if(isset($factors[$to]) && (float)$factors[$to] == 1) {
 			return $amount;
 		}
-
 		return round($amount * $factors[$to], 4);
 	}
 }

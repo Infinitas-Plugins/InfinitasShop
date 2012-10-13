@@ -35,16 +35,16 @@ class ShopCurrencyLibTest extends CakeTestCase {
  * @brief test get currency
  */
 	public function testGetCurrency() {
-		$expected = Configure::read('Shop.currency');
+		$expected = ShopCurrencyLib::getCurrency(Configure::read('Shop.currency'));
 		$result = ShopCurrencyLib::getCurrency();
 		$this->assertEquals($expected, $result);
 
-		$expected = 'gbp';
+		$expected = 'GBP';
 		CakeSession::write('Shop.currency', $expected);
 		$result = ShopCurrencyLib::getCurrency();
 		$this->assertEquals($expected, $result);
 
-		$expected = 'usd';
+		$expected = 'USD';
 		CakeSession::write('Shop.currency', $expected);
 		$result = ShopCurrencyLib::getCurrency();
 		$this->assertEquals($expected, $result);
@@ -67,9 +67,9 @@ class ShopCurrencyLibTest extends CakeTestCase {
  */
 	public function setCurrencyDataProvider() {
 		return array(
-			array('gbp', '£1,000.00'),
-			array('usd', '$1,000.00'),
-			array('eur', '€1.000,000'),
+			'gbp' => array('gbp', '£1,000.00'),
+			'usd' => array('usd', '$1,000.00'),
+			'eur' => array('eur', '€1.000,000'),
 		);
 	}
 
@@ -87,7 +87,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
  *
  * @dataProvider convertDataProvider
  */
-	public function testsConvert($data, $expected) {
+	public function testConvert($data, $expected) {
 		$result = ShopCurrencyLib::convert(1000, $data);
 		$this->assertEquals($expected, $result);
 		CakeSession::destroy();
@@ -103,6 +103,8 @@ class ShopCurrencyLibTest extends CakeTestCase {
  */
 	public function convertDataProvider() {
 		return array(
+			array('gbp', 1000),
+			array('GbP', 1000),
 			array('gbp', 1000),
 			array('usd', 1599.9),
 			array('eur', 1242.5),
