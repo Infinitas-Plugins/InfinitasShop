@@ -1366,6 +1366,9 @@ class ShopProductTest extends CakeTestCase {
 /**
  * @brief test things that make products inactive
  *
+ * available data - active when
+ * 	before now (rounded to latest minute)
+ *
  * brand - active when:
  * 	not specified
  * 	brand active
@@ -1385,16 +1388,24 @@ class ShopProductTest extends CakeTestCase {
 	public function testThingsThatMakeProductsInactive() {
 		$id = 'active';
 		$Model = $this->{$this->modelClass};
+		$Model->id = $id;
 		$product = function($id) use($Model) {
 			$product = $Model->find('product', $id);
 
 			return !empty($product[$Model->alias][$Model->primaryKey]) && 
 				$product[$Model->alias][$Model->primaryKey] == $id;
 		};
+		$this->assertTrue($product($id));
+
+		$Model->saveField('available', date('Y-m-d H:i:s', time() + 10000));
+		$this->assertFalse($product($id));
+		$Model->saveField('available', date('Y-m-d H:i:s', time() - 10000));
+		$this->assertTrue($product($id));
 
 		$Model->saveField('active', 0);
-		$this->assertTrue($product($id));
+		$this->assertFalse($product($id));
 		$Model->saveField('active', 1);
+		$this->assertTrue($product($id));
 
 		$Model->ShopBrand->id = 'inhouse';
 		$Model->ShopBrand->saveField('active', 0);
@@ -1413,11 +1424,12 @@ class ShopProductTest extends CakeTestCase {
 		$this->assertFalse($product($id));
 		$Model->ShopSupplier->deleteAll(array('ShopSupplier.id' => 'supplier-1'));
 		$this->assertTrue($product($id));
-
 		return;
 
+		print_r($Model->ShopCategoriesProduct->ShopCategory->find('list', array('fields' => array('ShopCategory.id', 'ShopCategory.active'))));
 		$Model->ShopCategoriesProduct->ShopCategory->id = 'active';
 		$Model->ShopCategoriesProduct->ShopCategory->saveField('active', 0);
+		print_r($Model->ShopCategoriesProduct->ShopCategory->find('list', array('fields' => array('ShopCategory.id', 'ShopCategory.active'))));
 		$this->assertFalse($product($id));
 
 		$Model->ShopCategoriesProduct->ShopCategory->saveField('active', 1);

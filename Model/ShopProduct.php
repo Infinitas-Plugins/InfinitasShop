@@ -882,6 +882,7 @@ class ShopProduct extends ShopAppModel {
 				(array)$query['conditions'],
 				array(
 					$this->alias . '.active' => 1,
+					$this->alias . '.available <=' => date('Y-m-d H:i:00'),
 					'ActiveCategory.active' => 1,
 					array('or' => array(
 						$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,

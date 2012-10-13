@@ -88,6 +88,10 @@
 				$this->Form->input('name'),
 				$this->Form->input('active'),
 				$this->Form->input('shop_image_id', array('label' => 'Default Image')),
+				$this->Form->input('available', array(
+					'default' => date('Y-m-d H:i:s'), 
+					'empty' => false
+				)),
 				$this->Infinitas->wysiwyg('ShopProduct.description'),
 				$this->Infinitas->wysiwyg('ShopProduct.specifications')
 			)),
