@@ -115,4 +115,40 @@ class ShopCurrency extends ShopAppModel {
 		return $return;
 	}
 
+/**
+ * @brief update the currecy conversion factors
+ *
+ * @return boolean
+ */
+	public function updateCurrencies() {
+		App::uses('ShopCurrencyLib', 'Shop.Lib');
+		$currencies = $this->find('conversions', array(
+			'conditions' => array(
+				$this->alias . '.modified < ' => date('Y-m-d H:i:s', (time() - (6 * 60 * 60)))
+			)
+		));
+		$saved = true;
+		$defaultCurrency = ShopCurrencyLib::defaultCurrency();
+		foreach($currencies as $currency => $factor) {
+			if(!$saved) {
+				break;
+			}
+
+			if((float)$factor == 1.0) {
+				continue;
+			}
+
+			$newFactor = ShopCurrencyLib::fetchUpdate($defaultCurrency, $currency);
+			if($newFactor && $factor == $newFactor) {
+				continue;
+			}
+
+			$saved = $this->updateAll(
+				array($this->alias . '.factor' => $newFactor, $this->alias . '.modified' => sprintf('"%s"', date('Y-m-d H:i:s'))),
+				array($this->alias . '.code' => $currency)
+			);
+		}
+		return $saved;
+	}
+
 }

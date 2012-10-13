@@ -9,7 +9,7 @@ App::uses('CakeSession', 'Model/Datasource');
 class ShopCurrencyLib {
 /**
  * @brief session key used for storing the path to the current currency
- * 
+ *
  * @param array
  */
 	protected static $_sessionKey = 'Shop.currency';
@@ -19,7 +19,7 @@ class ShopCurrencyLib {
  *
  * @return string
  */
-	public function getCurrency($to = null) { 
+	public function getCurrency($to = null) {
 		if($to) {
 			return strtoupper($to);
 		}
@@ -32,7 +32,7 @@ class ShopCurrencyLib {
 
 /**
  * @brief get the default store currency
- * 
+ *
  * @return string
  */
 	public function defaultCurrency() {
@@ -41,9 +41,9 @@ class ShopCurrencyLib {
 
 /**
  * @brief set the currency to be used
- * 
+ *
  * @param string $currency the new currency to be used
- * 
+ *
  * @return see CakeSession::write()
  */
 	public function setSession($currency) {
@@ -70,7 +70,7 @@ class ShopCurrencyLib {
 
 /**
  * @brief add a new format to the available currency conversions
- * 
+ *
  * @param string $currency the currency code to be added
  *
  * @return CakeNumber::addFormat()
@@ -114,4 +114,46 @@ class ShopCurrencyLib {
 		}
 		return round($amount * $factors[$to], 4);
 	}
+
+/**
+ * @brief update the currencies
+ *
+ * figures out what needs updating. anything that has not changed is dropped
+ * 
+ * @param array $currencies (by reference) list of currencies being updated
+ * 
+ * @return array 
+ */
+	public static function update(&$currencies) {
+	}
+
+/**
+ * @brief fetch the updated currencies
+ * 
+ * @param string $from the currency being converted from
+ * @param string $to the currency being converted to
+ * 
+ * @return float
+ */
+	public function fetchUpdate($from, $to) {
+		App::uses('HttpSocket', 'Network/Http');
+		$HttpSocket = new HttpSocket();
+		$result = json_decode(str_replace(
+			array('lhs', 'rhs', 'error', 'icc'),
+			array('"lhs"', '"rhs"', '"error"', '"icc"'),
+			$HttpSocket->get('http://www.google.com/ig/calculator', sprintf('hl=en&q=1%s%%20in%%20%s', $from, $to))->body
+		), true);
+
+		if(!empty($result['error'])) {
+			CakeLog::write('shop', $result['error']);
+			return false;
+		}
+
+		if(empty($result['rhs'])) {
+			return false;
+		}
+
+		return current(explode(' ', $result['rhs']));
+	}
+
 }

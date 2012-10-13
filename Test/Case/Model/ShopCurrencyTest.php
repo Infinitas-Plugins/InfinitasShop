@@ -238,4 +238,31 @@ class ShopCurrencyTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * @brief test currencies get updated
+ */
+	public function testUpdate() {
+		$now = date('Y-m-d H:i:s');
+		App::uses('CakeSession', 'Model/Datasource');
+		$before = $this->{$this->modelClass}->find('conversions');
+		$this->assertTrue($this->{$this->modelClass}->updateCurrencies());
+		$after = $this->{$this->modelClass}->find('conversions');
+
+		$this->assertNotEquals($before, $after);
+
+		$results = $this->{$this->modelClass}->find('list', array(
+			'fields' => array(
+				$this->modelClass . '.' . $this->{$this->modelClass}->primaryKey,
+				$this->modelClass . '.modified',
+			),
+			'conditions' => array('not' => array(
+				$this->modelClass . '.code' => 'GBP'
+			))
+		));
+
+		foreach($results as $id => $modified) {
+			$this->assertTrue($modified >= $now);
+		}
+	}
+
 }
