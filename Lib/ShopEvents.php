@@ -2,7 +2,7 @@
 class ShopEvents extends AppEvents {
 /**
  * @brief get the plugins details
- * 
+ *
  * @return array
  */
 	public function onPluginRollCall() {
@@ -37,6 +37,8 @@ class ShopEvents extends AppEvents {
 			'shop_currencies',
 			'shop_images',
 			'shop_downloads',
+			'shop_branches',
+			'shop_suppliers',
 			'shop_payment_',
 			'shop_shipping_'
 		);
@@ -57,7 +59,7 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief get the plugins configuration
- * 
+ *
  * @return array
  */
 	public function onSetupCache() {
@@ -75,10 +77,10 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief figure out a url slug
- * 
+ *
  * @param Event $event the Event
  * @param array $data the data used to build a url
- * 
+ *
  * @return array
  */
 	public function onSlugUrl(Event $event, $data) {
@@ -107,10 +109,10 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief sort out the guest data once the user logs in
- * 
+ *
  * @param Event $event the event
  * @param array data passed in
- * 
+ *
  * @return array
  */
 	public function onUserLogin(Event $event, $data) {
@@ -119,7 +121,7 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief get helpers that need loading
- * 
+ *
  * @return array
  */
 	public function onRequireHelpersToLoad() {
@@ -130,7 +132,7 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief get components that need loading
- * 
+ *
  * @return array
  */
 	public function onRequireComponentsToLoad() {
@@ -141,9 +143,9 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief get css that needs loading
- * 
+ *
  * @param Event $event the event
- * 
+ *
  * @return array
  */
 	public function onRequireCssToLoad(Event $event) {
@@ -160,9 +162,9 @@ class ShopEvents extends AppEvents {
 
 /**
  * @brief get js that needs loading
- * 
+ *
  * @param Event $event the event
- * 
+ *
  * @return array
  */
 	public function onRequireJavascriptToLoad(Event $event) {
@@ -176,5 +178,5 @@ class ShopEvents extends AppEvents {
 			'Shop.shop'
 		);
 	}
-	
+
 }

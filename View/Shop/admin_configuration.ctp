@@ -42,6 +42,24 @@
 		),
 		'configuration' => array(
 			array(
+				'name' => __d('shop', 'Branches'),
+				'description' => __d('shop', 'Manage store branches'),
+				'icon' => '/shop/img/icons/branches.png',
+				'dashboard' => array('controller' => 'shop_branches', 'action' => 'index')
+			),
+			array(
+				'name' => __d('shop', 'Suppliers'),
+				'description' => __d('shop', 'Manage store suppliers'),
+				'icon' => '/shop/img/icons/suppliers.png',
+				'dashboard' => array('controller' => 'shop_suppliers', 'action' => 'index')
+			),
+			array(
+				'name' => __d('shop', 'Manufacturers'),
+				'description' => __d('shop', 'Manage product manufacturers'),
+				'icon' => '/shop/img/icons/manufacturers.png',
+				'dashboard' => array('controller' => 'shop_manufacturers', 'action' => 'index')
+			),
+			array(
 				'name' => __d('shop', 'Payments'),
 				'description' => __d('shop', 'Manage store payments'),
 				'icon' => '/shop/img/icons/payment.png',
@@ -68,3 +86,6 @@
 	<h1><?php echo __d('shop', 'Configuration'); ?></h1>
 	<?php echo $this->Design->arrayToList(current($this->Menu->builDashboardLinks($links['configuration'], 'shop_config_configuration')), 'icons'); ?>
 </div>
+<?php
+	echo $this->ModuleLoader->loadDirect('Contents.dashboard_links');
+?>
