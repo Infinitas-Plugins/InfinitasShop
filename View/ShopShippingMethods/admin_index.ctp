@@ -41,6 +41,7 @@ echo $this->Filter->alphabetFilter();
 						'class' => 'first',
 						'style' => 'width:25px;'
 					),
+					$this->Paginator->sort('ShopSupplier.name', __d('shop', 'Supplier')),
 					$this->Paginator->sort('name'),
 					$this->Paginator->sort('shop_shipping_method_value_count', __d('shop', 'Tiers')) => array(
 						'style' => 'width:50px;'
@@ -57,6 +58,15 @@ echo $this->Filter->alphabetFilter();
 			foreach ($shopShippingMethods as $shopShippingMethod) { ?>
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopShippingMethod); ?>&nbsp;</td>
+					<td>
+						<?php 
+							echo $this->Html->link($shopShippingMethod['ShopSupplier']['name'], array(
+								'controller' => 'shop_suppliers',
+								'action' => 'edit',
+								$shopShippingMethod['ShopSupplier']['id']
+							));
+						?>&nbsp;
+					</td>
 					<td><?php echo $this->Html->adminQuickLink($shopShippingMethod['ShopShippingMethod']); ?>&nbsp;</td>
 					<td>
 						<?php

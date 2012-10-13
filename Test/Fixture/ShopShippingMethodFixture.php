@@ -15,6 +15,7 @@ class ShopShippingMethodFixture extends CakeTestFixture {
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'active' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
 		'shop_shipping_method_value_count' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'shop_supplier_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
@@ -34,6 +35,7 @@ class ShopShippingMethodFixture extends CakeTestFixture {
 			'name' => 'royal-mail-1st',
 			'active' => 1,
 			'shop_shipping_method_value_count' => 1,
+			'shop_supplier_id' => 'mail-supplier',
 			'created' => '2012-10-08 21:08:12',
 			'modified' => '2012-10-08 21:08:12'
 		),
@@ -42,6 +44,7 @@ class ShopShippingMethodFixture extends CakeTestFixture {
 			'name' => 'royal-mail-2nd',
 			'active' => 1,
 			'shop_shipping_method_value_count' => 1,
+			'shop_supplier_id' => 'mail-supplier',
 			'created' => '2012-10-08 21:08:12',
 			'modified' => '2012-10-08 21:08:12'
 		),
@@ -50,6 +53,7 @@ class ShopShippingMethodFixture extends CakeTestFixture {
 			'name' => 'inactive',
 			'active' => 0,
 			'shop_shipping_method_value_count' => 0,
+			'shop_supplier_id' => 'mail-supplier',
 			'created' => '2012-10-08 21:08:12',
 			'modified' => '2012-10-08 21:08:12'
 		),

@@ -66,6 +66,21 @@ class ShopSupplierFixture extends CakeTestFixture {
 			'created' => '2012-10-07 15:15:11',
 			'modified' => '2012-10-07 15:15:11'
 		),
+		array(
+			'id' => 'mail-supplier',
+			'name' => 'mail-supplier',
+			'slug' => 'mail-supplier',
+			'contact_address_id' => 'mail-supplier-address',
+			'email' => 'mail-supplier@mail-supplier.com',
+			'phone' => '555 5552',
+			'fax' => '555 5553',
+			'logo' => 'mail-supplier.png',
+			'product_count' => 0,
+			'terms' => 'cash',
+			'active' => 1,
+			'created' => '2012-10-07 15:15:11',
+			'modified' => '2012-10-07 15:15:11'
+		),
 	);
 
 }

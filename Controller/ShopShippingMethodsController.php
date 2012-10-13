@@ -41,6 +41,7 @@ class ShopShippingMethodsController extends ShopAppController {
 	public function admin_index() {
 		$this->Paginator->settings = array(
 			'contain' => array(
+				'ShopSupplier'
 			)
 		);
 
@@ -89,6 +90,9 @@ class ShopShippingMethodsController extends ShopAppController {
 	public function admin_add() {
 		parent::admin_add();
 
+		$shopSuppliers = $this->{$this->modelClass}->ShopSupplier->find('list');
+		$this->set(compact('shopSuppliers'));
+
 	}
 
 /**
@@ -104,5 +108,7 @@ class ShopShippingMethodsController extends ShopAppController {
 	public function admin_edit($id = null) {
 		parent::admin_edit($id);
 
+		$shopSuppliers = $this->{$this->modelClass}->ShopSupplier->find('list');
+		$this->set(compact('shopSuppliers'));
 	}
 }

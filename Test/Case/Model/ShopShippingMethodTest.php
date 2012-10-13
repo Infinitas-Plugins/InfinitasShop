@@ -36,6 +36,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
+		'plugin.shop.shop_supplier',
 		
 		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view',
@@ -125,6 +126,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 							'total_maximum' => '150.00000',
 							'require_login' => false,
 						)
+					),
+					'ShopSupplier' => array(
+						'id' => 'mail-supplier',
+						'name' => 'mail-supplier'
 					)
 				)
 			),
@@ -160,6 +165,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 							'total_maximum' => '150.00000',
 							'require_login' => false,
 						)
+					),
+					'ShopSupplier' => array(
+						'id' => 'mail-supplier',
+						'name' => 'mail-supplier'
 					)
 				)
 			),
@@ -210,6 +219,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 							'delivery_time' => '240',
 							'require_login' => true
 						)
+					),
+					'ShopSupplier' => array(
+						'id' => 'mail-supplier',
+						'name' => 'mail-supplier'
 					)
 				)
 			),
@@ -254,6 +267,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 							'total_maximum' => '150.00000',
 							'require_login' => false,
 						)
+					),
+					'ShopSupplier' => array(
+						'id' => 'mail-supplier',
+						'name' => 'mail-supplier'
 					)
 				)
 			),

@@ -19,6 +19,21 @@ class ShopShippingMethod extends ShopAppModel {
 	);
 
 /**
+ * belongsTo associations
+ *
+ * @var array
+ */
+	public $belongsTo = array(
+		'ShopSupplier' => array(
+			'className' => 'Shop.ShopSupplier',
+			'foreignKey' => 'shop_supplier_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+	);
+
+/**
  * @brief hasMany associations
  *
  * @var array
@@ -98,16 +113,20 @@ class ShopShippingMethod extends ShopAppModel {
 				(array)$query['fields'],
 				array(
 					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField
+					$this->alias . '.' . $this->displayField,
+					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey,
+					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField
 				)
 			);
 
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->alias . '.active' => 1
+					$this->alias . '.active' => 1,
+					$this->ShopSupplier->alias . '.active' => 1,
 				)
 			);
+			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 
 			if(empty($query['shop_shipping_method_id'])) {
 				$query['joins'][] = $this->autoJoinModel(array(
@@ -135,6 +154,8 @@ class ShopShippingMethod extends ShopAppModel {
 		$results[$this->alias][$this->ShopShippingMethodValue->alias] = $this->ShopShippingMethodValue->find('values', array(
 			'shop_shipping_method_id' => $results[$this->alias][$this->primaryKey]
 		));
+		$results[$this->alias][$this->ShopSupplier->alias] = $results[$this->ShopSupplier->alias];
+		unset($results[$this->ShopSupplier->alias]);
 
 		if(empty($results[$this->alias][$this->ShopShippingMethodValue->alias])) {
 			return array();

@@ -14,7 +14,11 @@
 	 * Licensed under The MIT License
 	 * Redistributions of files must retain the above copyright notice.
 	 */
-	echo $this->Form->create();
+	echo $this->Form->create(null, array(
+		'inputDefaults' => array(
+			'empty' => Configure::read('Website.empty_select')
+		)
+	));
 		echo $this->Infinitas->adminEditHead();
 		echo $this->Form->input('id');
 
@@ -24,6 +28,9 @@
 		$contents = array(
 			implode('', array(
 				$this->Form->input('name'),
+				$this->Form->input('shop_supplier_id', array(
+					'label' => __d('shop', 'Supplier')
+				)),
 				$this->Form->input('active')
 			))
 		);

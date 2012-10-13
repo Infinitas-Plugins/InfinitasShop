@@ -17,7 +17,9 @@
 	echo $this->Form->create();
 		echo $this->Infinitas->adminEditHead(); 
 		echo $this->Form->input('id');
-		echo $this->Form->hidden('shop_shipping_method_id');
+		echo $this->Form->hidden('shop_shipping_method_id', array(
+			'default' => !empty($this->request->params['named']) ? $this->request->params['named'] : null
+		));
 
 		$rates = $insurance = array();
 		if(!empty($this->request->data['ShopShippingMethodValue'])) {

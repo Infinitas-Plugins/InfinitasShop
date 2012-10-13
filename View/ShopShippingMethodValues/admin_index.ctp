@@ -14,7 +14,7 @@
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  */
-echo $this->Form->create(null, array('action' => 'mass'));
+echo $this->Form->create(null, array('url' => array('action' => 'mass') + $this->request->params['named']));
 
 $massActions = $this->Infinitas->massActionButtons(
 	array(
