@@ -53,30 +53,32 @@
 		)), array('class' => 'input tiny'));
 
 		$stockForm = array();
-		$i = 0;
-		foreach($shopBranches as $branch) {
-			$stockForm[] = $this->Html->tag('div', implode('', array(
-				$this->Form->hidden('ShopBranchStock.' . $i . '.id'),
-				$this->Form->hidden('ShopBranchStock.' . $i . '.shop_branch_id'),
-				$this->Form->input('ShopBranchStock.' . $i . '.stock', array(
-					'label' => __d(
-						'shop', 'Branch: %s (%s)',
-						$this->Html->link($branch['ContactBranch']['name'], array(
-							'plugin' => 'shop',
-							'controller' => 'shop_branches',
-							'action' => 'edit',
-							$branch['ShopBranch']['id']
-						)), 
-						$this->Html->link($branch['Manager']['full_name'], array(
-							'plugin' => 'users',
-							'controller' => 'users',
-							'action' => 'edit',
-							$branch['ShopBranch']['manager_id']
-						))
-					),
-					'placeholder' => __d('shop', 'Stock')
-				))
-			)));
+		if(empty($this->request->data['ShopProduct'])) {
+			$i = 0;
+			foreach($shopBranches as $branch) {
+				$stockForm[] = $this->Html->tag('div', implode('', array(
+					$this->Form->hidden('ShopBranchStock.' . $i . '.id'),
+					$this->Form->hidden('ShopBranchStock.' . $i . '.shop_branch_id'),
+					$this->Form->input('ShopBranchStock.' . $i . '.stock', array(
+						'label' => __d(
+							'shop', 'Branch: %s (%s)',
+							$this->Html->link($branch['ContactBranch']['name'], array(
+								'plugin' => 'shop',
+								'controller' => 'shop_branches',
+								'action' => 'edit',
+								$branch['ShopBranch']['id']
+							)), 
+							$this->Html->link($branch['Manager']['full_name'], array(
+								'plugin' => 'users',
+								'controller' => 'users',
+								'action' => 'edit',
+								$branch['ShopBranch']['manager_id']
+							))
+						),
+						'placeholder' => __d('shop', 'Stock')
+					))
+				)));
+			}
 		}
 
 		$contents = array(
