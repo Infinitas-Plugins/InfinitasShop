@@ -41,10 +41,15 @@ class ShopProductsController extends ShopAppController {
 	public function admin_index() {
 		$this->Paginator->settings = array(
 			'paginated',
-			array_merge($this->Filter->filter, array('admin' => true))
+			'admin' => true,
+			'fields' => array(
+				$this->{$this->modelClass}->fullFieldName('modified'),
+				$this->{$this->modelClass}->ShopSupplier->fullFieldName($this->{$this->modelClass}->ShopSupplier->primaryKey),
+				$this->{$this->modelClass}->ShopSupplier->fullFieldName($this->{$this->modelClass}->ShopSupplier->displayField),
+			)
 		);
 
-		$shopProducts = $this->Paginator->paginate();
+		$shopProducts = $this->Paginator->paginate(null, $this->Filter->filter);
 
 		$filterOptions = $this->Filter->filterOptions;
 		$filterOptions['fields'] = array(

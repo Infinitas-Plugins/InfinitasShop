@@ -841,14 +841,18 @@ class ShopProduct extends ShopAppModel {
 	protected function _findBasics($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
-
+			
 			$query['fields'] = array_merge(
-				(array)$query['fields'],
 				array(
 					'DISTINCT(ActiveCategory.id)',
 					$this->alias . '.' . $this->primaryKey,
 					$this->alias . '.' . $this->displayField,
 					$this->alias . '.slug',
+					$this->alias . '.rating',
+					$this->alias . '.rating_count',
+					$this->alias . '.views',
+					$this->alias . '.sales',
+					$this->alias . '.active',
 					$this->alias . '.total_stock',
 
 					$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey,
@@ -865,29 +869,13 @@ class ShopProduct extends ShopAppModel {
 					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
 					$this->ShopPrice->alias . '.selling',
 					$this->ShopPrice->alias . '.retail',
-				)
+				),
+				(array)$query['fields']
 			);
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.active' => 1,
-					$this->alias . '.available <=' => date('Y-m-d H:i:00'),
-					'ActiveCategory.active' => 1,
-					array('or' => array(
-						$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
-						$this->ShopBrand->alias . '.active' => 1,
-					)),
-					array('or' => array(
-						$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
-						$this->ShopProductType->alias . '.active' => 1,
-					)),
-					array('or' => array(
-						$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
-						$this->ShopSupplier->alias . '.active' => 1,
-					))
-				)
-			);
+			if(!isset($query['admin']) || $query['admin'] !== true) {
+				$this->_activeOnlyConditions($query);
+			}
 
 			$query['joins'] = array_filter($query['joins']);
 
@@ -908,6 +896,36 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+/**
+ * @brief build the conditions to find only active products
+ * 
+ * @param array $query the query being run (passed by reference)
+ * 
+ * @return void
+ */
+	protected function _activeOnlyConditions(array &$query) {
+		$query['conditions'] = array_merge(
+			(array)$query['conditions'],
+			array(
+				$this->alias . '.active' => 1,
+				$this->alias . '.available <=' => date('Y-m-d H:i:00'),
+				'ActiveCategory.active' => 1,
+				array('or' => array(
+					$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
+					$this->ShopBrand->alias . '.active' => 1,
+				)),
+				array('or' => array(
+					$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
+					$this->ShopProductType->alias . '.active' => 1,
+				)),
+				array('or' => array(
+					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
+					$this->ShopSupplier->alias . '.active' => 1,
+				))
+			)
+		);
 	}
 
 }
