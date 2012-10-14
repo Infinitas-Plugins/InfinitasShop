@@ -64,7 +64,7 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 							echo sprintf('<td>%s&nbsp;</td>', $this->Html->link($stock, array(
 								'controller' => 'shop_branch_stock_logs',
 								'action' => 'index',
-								'ShopBranchStockLog.shop_branch_stock_id' => null
+								'ShopBranchStockLog.shop_branch_stock_id' => $shopBranchId
 							)));
 						}
 					?>

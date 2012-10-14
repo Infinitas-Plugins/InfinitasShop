@@ -5,17 +5,6 @@
  * @property ShopBranchStock $ShopBranchStock
  */
 class ShopBranchStockLog extends ShopAppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'id';
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
 /**
  * belongsTo associations
  *
@@ -31,8 +20,19 @@ class ShopBranchStockLog extends ShopAppModel {
 		)
 	);
 
+/**
+ * @brief overload construct for translated validation
+ *
+ * @param type $id
+ * @param type $table
+ * @param type $ds
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		$this->order = array(
+			$this->alias . '.created' => 'desc'
+		);
 
 		$this->validate = array(
 			'shop_branch_stock_id' => array(
@@ -69,7 +69,7 @@ class ShopBranchStockLog extends ShopAppModel {
  * @param type $field
  * @return type
  */
-	public function validateStockAmount($field) {
+	public function validateStockAmount(array $field) {
 		$field = current($field);
 		return is_int($field) && $field !== 0;
 	}
