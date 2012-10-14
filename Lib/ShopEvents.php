@@ -179,4 +179,13 @@ class ShopEvents extends AppEvents {
 		);
 	}
 
+/**
+ * @brief update the currency conversions
+ *
+ * @param Event $Event the event being run
+ */
+	public function onRunCrons(Event $Event) {
+		ClassRegistry::init('Shop.ShopCurrency')->updateCurrencies();
+	}
+
 }
