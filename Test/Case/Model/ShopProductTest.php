@@ -69,6 +69,133 @@ class ShopProductTest extends CakeTestCase {
 
 		parent::tearDown();
 	}
+	public function testValidationA() {
+		$data = array();
+		$expected = array(
+			'name' => array('Please enter the name of this product'),
+			'description' => array('Please enter the description for this product')
+		);
+		$result = $this->{$this->modelClass}->saveAll($data);
+		$this->assertFalse($result);
+
+		$this->assertEquals($expected, $this->{$this->modelClass}->validationErrors);
+		$data = array('name' => 'active');
+		$expected = array(
+			'name' => array('A product with that name already exists'),
+			'description' => array('Please enter the description for this product')
+		);
+		$result = $this->{$this->modelClass}->saveAll($data);
+		$this->assertFalse($result);
+
+		$this->assertEquals($expected, $this->{$this->modelClass}->validationErrors);
+	}
+
+/**
+ * @brief test validation A
+ * 
+ * @param  [type] $data     [description]
+ * @param  [type] $expected [description]
+ * 
+ * @dataProvider validationBDataProvider
+ */
+	public function testValidationB($data, $expected) {
+		$save = array($data => 'fake');
+		$this->assertFalse($this->{$this->modelClass}->save($save));
+
+		$this->assertTrue(!empty($this->{$this->modelClass}->validationErrors[$data]), 'Validation not found');
+		$result = $this->{$this->modelClass}->validationErrors[$data];
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * @brief validation A data provider
+ * 
+ * @return array
+ */
+	public function validationBDataProvider() {
+		return array(
+			'image' => array(
+				'shop_image_id',
+				array('The selected image does not exist')
+			),
+			'product-type' => array(
+				'shop_product_type_id',
+				array('The selected product type does not exist')
+			),
+			'supplier' => array(
+				'shop_supplier_id',
+				array('The selected supplier does not exist')
+			),
+			'brand' => array(
+				'shop_brand_id',
+				array('The selected brand does not exist')
+			),
+			'active' => array(
+				'active',
+				array('Active should be boolean')
+			),
+			'available' => array(
+				'available',
+				array('Please enter a valid date')
+			)
+		);
+	}
+
+/**
+ * @brief test validation C
+ * 
+ * @param  [type] $data     [description]
+ * @param  [type] $expected [description]
+ * 
+ * @dataProvider validationCDataProvider
+ */
+	public function testValidationC($data) {
+		$this->assertFalse($this->{$this->modelClass}->save($data));
+		$this->assertTrue(empty($this->{$this->modelClass}->validationErrors[key($data)]), 'Validation failed but should pass');
+	}
+
+/**
+ * @brief validation C data provider
+ * 
+ * @return array
+ */
+	public function validationCDataProvider() {
+		return array(
+			'name' => array(
+				array('name' => 'some-cool-product')
+			),
+			'description' => array(
+				array('description' => 'some cool description')
+			),
+			'image' => array(
+				array('shop_image_id' => 'image-spotlight-multi-option')
+			),
+			'product-type' => array(
+				array('shop_product_type_id' => 'general')
+			),
+			'supplier' => array(
+				array('shop_supplier_id' => 'supplier-1')
+			),
+			'brand' => array(
+				array('shop_brand_id' => 'inhouse')
+			),
+			'active' => array(
+				array('active' => 1)
+			),
+			'inactive' => array(
+				array('active' => 0)
+			),
+			'available-before' => array(
+				array('available' => '2012-01-01 00:00:00')
+			),
+			'available-after' => array(
+				array('available' => '2050-01-01 00:00:00')
+			),
+			'available-format' => array(
+				array('available' => '2050/01/01 00:00:00')
+			)
+		);
+	}
 
 /**
  * @brief find paginated

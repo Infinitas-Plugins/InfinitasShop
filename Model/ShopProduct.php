@@ -202,90 +202,80 @@ class ShopProduct extends ShopAppModel {
 		)
 	);
 
+/**
+ * @brief overload the construct for translated validation messages
+ * 
+ * @param boolean $id    [description]
+ * @param [type]  $table [description]
+ * @param [type]  $ds    [description]
+ *
+ * @return void
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
 			'name' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Please enter the name of this product'),
+					'allowEmpty' => false,
+					'required' => true
 				),
-			),
-			'slug' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __d('shop', 'A product with that name already exists'),
+				)
 			),
 			'description' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
-			'specifications' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Please enter the description for this product'),
+					'allowEmpty' => false,
+					'required' => true
 				),
 			),
 			'active' => array(
 				'boolean' => array(
-					'rule' => array('boolean'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'rule' => 'boolean',
+					'message' => __d('shop', 'Active should be boolean')
 				),
 			),
-			'rating_count' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
+			'shop_image_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected image does not exist'),
+					'allowEmpty' => true
+				)
 			),
-			'views' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
+			'shop_product_type_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected product type does not exist'),
+					'allowEmpty' => true
+				)
 			),
-			'sales' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
+			'shop_supplier_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected supplier does not exist'),
+					'allowEmpty' => true
+				)
 			),
+			'shop_brand_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected brand does not exist'),
+					'allowEmpty' => true
+				)
+			),
+			'available' => array(
+				'datetime' => array(
+					'rule' => array('datetime', 'ymd'),
+					'message' => __d('shop', 'Please enter a valid date'),
+					'allowEmpty' => false
+				)
+			)
 		);
 	}
 
