@@ -39,7 +39,6 @@ echo $this->Filter->alphabetFilter();
 						'style' => 'width:25px;'
 					),
 					$this->Paginator->sort('name'),
-					$this->Paginator->sort('image'),
 					$this->Paginator->sort('shop_product_count', __d('shop', 'Products')) => array(
 						'style' => 'width:50px;'
 					),
@@ -55,8 +54,14 @@ echo $this->Filter->alphabetFilter();
 			foreach ($shopBrands as $shopBrand) { ?>
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopBrand); ?>&nbsp;</td>
-					<td title="<?php echo $shopBrand['ShopBrand']['slug']; ?>"><?php echo $this->Html->adminQuickLink($shopBrand['ShopBrand']); ?>&nbsp;</td>
-					<td><?php echo $shopBrand['ShopBrand']['image']; ?>&nbsp;</td>
+					<td>
+						<?php 
+							echo sprintf('%s<br/>%s',
+								$this->Html->image($shopBrand['ShopBrand']['image_thumb'], array('width' => 75)),
+								$this->Html->adminQuickLink($shopBrand['ShopBrand'])
+							);
+						?>&nbsp;
+					</td>
 					<td>
 						<?php
 							if(empty($shopBrand['ShopBrand']['shop_product_count'])) {
