@@ -52,7 +52,7 @@ echo $this->Filter->alphabetFilter();
 						'style' => 'width:50px;'
 					),
 					$this->Paginator->sort('modified') => array(
-						'style' => 'width:75px;'
+						'style' => 'width:100px;'
 					),
 				)
 			);
@@ -62,8 +62,10 @@ echo $this->Filter->alphabetFilter();
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopSupplier); ?>&nbsp;</td>
 					<td>
 						<?php
-							echo $this->Html->image($shopSupplier['ShopSupplier']['logo_thumb'], array('width' => 75));
-							echo $this->Html->adminQuickLink($shopSupplier['ShopSupplier'], array('action' => 'edit'));
+							echo sprintf('%s<br/>%s', 
+								$this->Html->image($shopSupplier['ShopSupplier']['logo_thumb'], array('width' => 75)),
+								$this->Html->adminQuickLink($shopSupplier['ShopSupplier'], array('action' => 'edit'))
+							);
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Text->autoLinkEmails($shopSupplier['ShopSupplier']['email']); ?>&nbsp;</td>
