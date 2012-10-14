@@ -10,3 +10,28 @@ td img {
 .tiny img.remove {
 	padding-top: 13px;
 }
+
+.shop_images .image {
+	width: 150px;
+	float: left;
+	text-align: center;
+}
+.shop_images .image a {
+	clear: both;
+	display: block;
+}
+.shop_images .image a > img {
+	width: 75px;
+}
+
+.shop_images .image div.name {
+	text-align: left;
+}
+
+.shop_images .image div.info {
+	clear: both;
+}
+
+.shop_images .dashboard .info {
+	border: none;
+}
