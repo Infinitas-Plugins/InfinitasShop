@@ -40,7 +40,8 @@ class ShopEvents extends AppEvents {
 			'shop_branches',
 			'shop_suppliers',
 			'shop_payment_',
-			'shop_shipping_'
+			'shop_shipping_',
+			'shop_order_statuses'
 		);
 
 		$configuration = in_array($Event->Handler->request->params['controller'], $configControllers);

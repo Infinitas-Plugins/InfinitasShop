@@ -44,31 +44,12 @@ class ShopBrand extends ShopAppModel {
 	);
 
 /**
- * How the default ordering on this model is done
+ * @brief How the default ordering on this model is done
  *
  * @access public
  * @var array
  */
-	public $order = array(
-	);
-
-/**
- * hasOne relations for this model
- *
- * @access public
- * @var array
- */
-	public $hasOne = array(
-	);
-
-/**
- * belongsTo relations for this model
- *
- * @access public
- * @var array
- */
-	public $belongsTo = array(
-	);
+	public $order = array();
 
 /**
  * hasMany relations for this model
@@ -93,15 +74,6 @@ class ShopBrand extends ShopAppModel {
 	);
 
 /**
- * hasAndBelongsToMany relations for this model
- *
- * @access public
- * @var array
- */
-	public $hasAndBelongsToMany = array(
-	);
-
-/**
  * overload the construct method so that you can use translated validation
  * messages.
  *
@@ -116,33 +88,28 @@ class ShopBrand extends ShopAppModel {
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
-		$this->validate = array(
+		$this->order = array(
+			$this->alias . '.' . $this->displayField => 'asc'
 		);
-	}
 
-/**
- * General method for the view pages. Gets the required data and relations
- * and can be used for the admin preview also.
- *
- * @param array $conditions conditions for the find
- * @return array the data that was found
- */
-	public function getViewData($conditions = array()) {
-		if(!$conditions) {
-			return false;
-		}
-
-		$data = $this->find(
-			'first',
-			array(
-				'fields' => array(
+		$this->validate = array(
+			'name' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Please enter the brand name'),
+					'required' => true
 				),
-				'conditions' => $conditions,
-				'contain' => array(
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __d('shop', 'This brand already exists')
+				),
+			),
+			'active' => array(
+				'boolean' => array(
+					'rule' => 'boolean',
+					'message' => __d('shop', 'Active should be boolean')
 				)
 			)
 		);
-
-		return $data;
 	}
 }

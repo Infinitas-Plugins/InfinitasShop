@@ -70,6 +70,12 @@
 				'description' => __d('shop', 'Manage store shipping'),
 				'icon' => '/shop/img/icons/shipping.png',
 				'dashboard' => array('controller' => 'shop_shipping_methods', 'action' => 'index')
+			),
+			array(
+				'name' => __d('shop', 'Status'),
+				'description' => __d('shop', 'Manage order statuses'),
+				'icon' => '/shop/img/icons/order_status.png',
+				'dashboard' => array('controller' => 'shop_order_statuses', 'action' => 'index')
 			)
 		)
 	);
