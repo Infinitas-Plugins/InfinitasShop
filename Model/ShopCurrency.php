@@ -120,13 +120,17 @@ class ShopCurrency extends ShopAppModel {
  *
  * @return boolean
  */
-	public function updateCurrencies() {
+	public function updateCurrencies($force = false) {
 		App::uses('ShopCurrencyLib', 'Shop.Lib');
-		$currencies = $this->find('conversions', array(
-			'conditions' => array(
-				$this->alias . '.modified < ' => date('Y-m-d H:i:s', (time() - (6 * 60 * 60)))
-			)
-		));
+		$conditions = array();
+		if(!$force) {
+			$conditions = array(
+				'conditions' => array(
+					$this->alias . '.modified < ' => date('Y-m-d H:i:s', (time() - (6 * 60 * 60)))
+				)
+			);
+		}
+		$currencies = $this->find('conversions', $conditions);
 		$saved = true;
 		$defaultCurrency = ShopCurrencyLib::defaultCurrency();
 		foreach($currencies as $currency => $factor) {

@@ -19,15 +19,24 @@
 
 class ShopCurrenciesController extends ShopAppController {
 /**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
+ * @brief overlaod beforeFilter to add some notices
+ * 
+ * @return void
  */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		$this->notice['updated'] = array(
+			'message' => __d('shop', 'Exchange rates have been updated'),
+			'redirect' => true,
+		);
+
+		$this->notice['not_updated'] = array(
+			'message' => __d('shop', 'There was a problem updating the currencies'),
+			'redirect' => true,
+			'level' => 'warning'
+		);
+	}
 
 /**
  * @brief the index method
@@ -39,69 +48,40 @@ class ShopCurrenciesController extends ShopAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Paginator->settings = array(
-			'contain' => array(
-			)
-		);
-
 		$shopCurrencies = $this->Paginator->paginate(null, $this->Filter->filter);
 
 		$filterOptions = $this->Filter->filterOptions;
 		$filterOptions['fields'] = array(
 			'name',
+			'code'
 		);
 
 		$this->set(compact('shopCurrencies', 'filterOptions'));
 	}
 
 /**
- * @brief view method for a single row
- *
- * Show detailed information on a single ShopCurrency
- *
- * @todo update the documentation 
- * @param mixed $id int or string uuid or the row to find
- *
+ * @brief overload the mass actions for the update method
+ * 
  * @return void
  */
-	public function admin_view($id = null) {
-		if(!$id) {
-			$this->Infinitas->noticeInvalidRecord();
+	public function admin_mass() {
+		if($this->MassAction->getAction() == 'update') {
+			$this->_update();
 		}
 
-		$shopCurrency = $this->ShopCurrency->getViewData(
-			array($this->ShopCurrency->alias . '.' . $this->ShopCurrency->primaryKey => $id)
-		);
-
-		$this->set(compact('shopCurrency'));
+		parent::admin_mass();
 	}
 
 /**
- * @brief admin create action
- *
- * Adding new ShopCurrency records.
- *
- * @todo update the documentation
- *
+ * @brief manually update the currency exchange rates
+ * 
  * @return void
  */
-	public function admin_add() {
-		parent::admin_add();
-
+	protected function _update() {
+		if($this->{$this->modelClass}->updateCurrencies(true)) {
+			$this->notice('updated');
+		} 
+		$this->notice('not_updated');
 	}
-
-/**
- * @brief admin edit action
- *
- * Edit old ShopCurrency records.
- *
- * @todo update the documentation
- * @param mixed $id int or string uuid or the row to edit
- *
- * @return void
- */
-	public function admin_edit($id = null) {
-		parent::admin_edit($id);
-
-	}
+	
 }

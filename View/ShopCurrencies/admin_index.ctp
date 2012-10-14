@@ -22,6 +22,7 @@ $massActions = $this->Infinitas->massActionButtons(
 		'edit',
 		'toggle',
 		'copy',
+		'update',
 		'delete',
 
 		// other methods available
