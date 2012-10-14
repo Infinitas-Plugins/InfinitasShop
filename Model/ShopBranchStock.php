@@ -10,7 +10,8 @@ class ShopBranchStock extends ShopAppModel {
 	public $findMethods = array(
 		'productStock' => true,
 		'isInStock' => true,
-		'totalProductStock' => true
+		'totalProductStock' => true,
+		'stockList' => true
 	);
 
 /**
@@ -333,6 +334,57 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		return 0;
+	}
+
+	protected function _findStockList($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['fields'] = array_merge(
+				(array)$query['fields'],
+				array(
+					$this->ShopProduct->alias . '.' . $this->ShopProduct->primaryKey,
+					$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField,
+				)
+			);
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+
+			$query['order'] = array(
+				$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField => 'asc'
+			);
+
+			$query['group'] = array(
+				$this->alias . '.shop_product_id'
+			);
+
+			return $query;
+		}
+
+		if(empty($results)) {
+			return array();
+		}
+
+		$shopBranchStocks = $this->find('all', array(
+			'fields' => array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.shop_product_id',
+				$this->alias . '.stock'
+			),
+			'conditions' => array(
+				$this->alias . '.shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->ShopProduct->alias, $this->ShopProduct->primaryKey))
+			)
+		));
+		foreach($results as &$result) {
+			$result[$this->alias] = Hash::combine(
+				Hash::extract($shopBranchStocks, sprintf(
+					'{n}.%s[shop_product_id=%s]',
+					$this->alias,
+					$result[$this->ShopProduct->alias][$this->ShopProduct->primaryKey]
+				)),
+				'{n}.' . $this->primaryKey,
+				'{n}.stock'
+			);
+		}
+		return $results;
 	}
 
 }

@@ -715,4 +715,33 @@ class ShopBranchStockTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * @brief test find stock list
+ */
+	public function testFindStockList() {
+		$expected = array(
+			array(
+				'ShopProduct' => array(
+					'id' => 'active',
+					'name' => 'active'
+				),
+				'ShopBranchStock' => array(
+					'branch-stock-1' => 10,
+					'branch-stock-2' => 15
+				)
+			),
+			array(
+				'ShopProduct' => array(
+					'id' => 'out-of-stock',
+					'name' => 'out-of-stock'
+				),
+				'ShopBranchStock' => array(
+					'branch-stock-3' => 0
+				)
+			)
+		);
+		$result = $this->{$this->modelClass}->find('stockList');
+		$this->assertEquals($expected, $result);
+	}
+
 }
