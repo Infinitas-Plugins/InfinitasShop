@@ -263,10 +263,20 @@ class ShopBranchStock extends ShopAppModel {
 					'shop_branch_id' => $v['shop_branch_id']
 				));
 
-				if(($add && $stock[$k]['change'] < 0) || (!$add && $stock[$k]['change'] > 0)) {
-					$stock[$k]['change'] = intval($stock[$k]['change']) * -1;
+				if(empty($stock[$k]['shop_branch_stock_id'])) {
+					$this->save(array(
+						'shop_product_id' => $v['shop_product_id'],
+						'shop_branch_id' => $v['shop_branch_id'],
+						'stock' => 0
+					));
+					$stock[$k]['shop_branch_stock_id'] = $this->id;
 				}
 			}
+
+			if(($add && $stock[$k]['change'] < 0) || (!$add && $stock[$k]['change'] > 0)) {
+				$stock[$k]['change'] = intval($stock[$k]['change']) * -1;
+			}
+			$stock[$k]['change'] = (int)$stock[$k]['change'];
 
 			if(empty($v['notes'])) {
 				$stock[$k]['notes'] = $add ? 'Adding stock' : 'Removing stock';

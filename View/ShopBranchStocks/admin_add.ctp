@@ -29,7 +29,11 @@
 			implode('', array(
 				$this->Form->input('shop_branch_id', array('titel' => __d('shop', 'Branch'))),
 				$this->Form->input('shop_product_id', array('title' => __d('shop', 'Product'))),
-				$this->Form->input('stock')
+				$this->Form->input('change', array(
+					'label' => __d('shop', 'Amount to be added / removed (10 or -10 etc)'),
+					'type' => 'number'
+				)),
+				$this->Form->input('notes', array('type' => 'textarea'))
 			))
 		);
 		echo $this->Design->tabs($tabs, $contents);

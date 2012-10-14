@@ -744,4 +744,14 @@ class ShopBranchStockTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+	public function testAddStockNewCombo() {
+		$data = array(
+			'shop_product_id' => 'out-of-stock',
+			'shop_branch_id' => 'branch-2',
+			'change' => 10
+		);
+		$result = $this->{$this->modelClass}->addStock($data);
+		$this->assertTrue((bool)$result);
+	}
+
 }

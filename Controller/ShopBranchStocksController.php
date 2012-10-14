@@ -18,16 +18,20 @@
  */
 
 class ShopBranchStocksController extends ShopAppController {
-/**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		$this->notice['updated'] = array(
+			'message' => __d('shop', 'Stock levels have been updted'),
+			'redirect' => ''
+		);
+
+		$this->notice['not_updated'] = array(
+			'message' => __d('shop', 'Stock levels were not updted'),
+			'redirect' => false,
+			'level' => 'warning'
+		);
+	}
 
 /**
  * @brief the index method
@@ -45,41 +49,28 @@ class ShopBranchStocksController extends ShopAppController {
 
 		$filterOptions = $this->Filter->filterOptions;
 		$filterOptions['fields'] = array(
-			'id',
+			'ShopProduct.name',
+			'ShopBranch.name'
 		);
 
-		$shopBranches = $this->{$this->modelClass}->ShopBranch->find('list', array(
+		$shopBranches = $this->{$this->modelClass}->find('list', array(
 			'fields' => array(
-				$this->{$this->modelClass}->ShopBranch->alias . '.' . $this->{$this->modelClass}->ShopBranch->primaryKey,
+				$this->{$this->modelClass}->alias . '.' . $this->{$this->modelClass}->primaryKey,
 				$this->{$this->modelClass}->ShopBranch->ContactBranch->alias . '.' . $this->{$this->modelClass}->ShopBranch->ContactBranch->displayField
 			),
 			'joins' => array(
-				$this->{$this->modelClass}->ShopBranch->autoJoinModel($this->{$this->modelClass}->ShopBranch->ContactBranch->fullModelName())
+				$this->{$this->modelClass}->autoJoinModel(array(
+					'model' => $this->{$this->modelClass}->ShopBranch->fullModelName(),
+					'type' => 'left'
+				)),
+				$this->{$this->modelClass}->ShopBranch->autoJoinModel(array(
+					'from' => $this->{$this->modelClass}->ShopBranch->fullModelName(),
+					'model' => $this->{$this->modelClass}->ShopBranch->ContactBranch->fullModelName(),
+					'type' => 'left'
+				))
 			)
 		));
 		$this->set(compact('shopBranchStocks', 'shopBranches', 'filterOptions'));
-	}
-
-/**
- * @brief view method for a single row
- *
- * Show detailed information on a single ShopBranchStock
- *
- * @todo update the documentation 
- * @param mixed $id int or string uuid or the row to find
- *
- * @return void
- */
-	public function admin_view($id = null) {
-		if(!$id) {
-			$this->Infinitas->noticeInvalidRecord();
-		}
-
-		$shopBranchStock = $this->ShopBranchStock->getViewData(
-			array($this->ShopBranchStock->alias . '.' . $this->ShopBranchStock->primaryKey => $id)
-		);
-
-		$this->set(compact('shopBranchStock'));
 	}
 
 /**
@@ -92,28 +83,24 @@ class ShopBranchStocksController extends ShopAppController {
  * @return void
  */
 	public function admin_add() {
-		parent::admin_add();
+		if(!empty($this->request->data[$this->modelClass]['change'])) {
+			$method = 'addStock';
+			if($this->request->data[$this->modelClass]['change'] < 0) {
+				$method = 'removeStock';
+			}
+
+			if($this->{$this->modelClass}->{$method}($this->request->data[$this->modelClass])) {
+				$this->notice('updated');
+			}
+
+			$this->notice('not_updated');
+		}
 
 		$shopBranches = $this->ShopBranchStock->ShopBranch->find('list');
 		$shopProducts = $this->ShopBranchStock->ShopProduct->find('list');
 		$this->set(compact('shopBranches', 'shopProducts'));
+
+		$this->saveRedirectMarker();
 	}
 
-/**
- * @brief admin edit action
- *
- * Edit old ShopBranchStock records.
- *
- * @todo update the documentation
- * @param mixed $id int or string uuid or the row to edit
- *
- * @return void
- */
-	public function admin_edit($id = null) {
-		parent::admin_edit($id);
-
-		$shopBranches = $this->ShopBranchStock->ShopBranch->find('list');
-		$shopProducts = $this->ShopBranchStock->ShopProduct->find('list');
-		$this->set(compact('shopBranches', 'shopProducts'));
-	}
 }
