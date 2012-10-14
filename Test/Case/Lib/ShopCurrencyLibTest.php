@@ -110,18 +110,4 @@ class ShopCurrencyLibTest extends CakeTestCase {
 			array('eur', 1242.5),
 		);
 	}
-
-/**
- * @brief test currencies get updated
- */
-	public function testUpdate() {
-		App::uses('CakeSession', 'Model/Datasource');
-		$before = $after = ClassRegistry::init('Shop.ShopCurrency')->find('conversions');
-
-		ShopCurrencyLib::update($after);
-		$this->assertEquals(count($before) - 1, count($after));
-
-		ShopCurrencyLib::update($after);
-		$this->assertEquals(0, count($after));
-	}
 }
