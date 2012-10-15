@@ -384,11 +384,11 @@ class ShopBranchStockTest extends CakeTestCase {
 						),
 						array(
 							'change' => 5,
-							'notes' => 'Adding some test stock'
+							'notes' => 'Adding more stock'
 						),
 						array(
 							'change' => 5,
-							'notes' => 'Adding more stock'
+							'notes' => 'Adding some test stock'
 						),
 					)
 				)
@@ -526,11 +526,11 @@ class ShopBranchStockTest extends CakeTestCase {
 						),
 						array(
 							'change' => 5,
-							'notes' => 'Adding some test stock'
+							'notes' => 'Adding more stock'
 						),
 						array(
 							'change' => 5,
-							'notes' => 'Adding more stock'
+							'notes' => 'Adding some test stock'
 						),
 					)
 				)
