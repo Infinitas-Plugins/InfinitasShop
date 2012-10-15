@@ -145,4 +145,72 @@ class ShopHelperTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * @brief test stock value
+ *
+ * @dataProvider stockValueDataProvider
+ */
+	public function testStockValue($data, $expected) {
+		$result = $this->Shop->stockValue($data['quantity'], $data['price']);
+		$this->assertTags($result, $expected);
+	}
+
+/**
+ * @brief stock value data provider
+ * 
+ * @return array
+ */
+	public function stockValueDataProvider() {
+		return array(
+			'normal' => array(
+				array(
+					'quantity' => 10,
+					'price' => 10
+				),
+				array(
+					array('div' => array('class' => 'stock-value')),
+						array('span' => array('class' => 'quantity')),
+							10,
+						'/span',
+						array('span' => array('class' => 'value')),
+							'&#163;100.00',
+						'/span',
+					'/div'
+				)
+			),
+			'negative-stock' => array(
+				array(
+					'quantity' => -10,
+					'price' => 10
+				),
+				array(
+					array('div' => array('class' => 'stock-value')),
+						array('span' => array('class' => 'quantity')),
+							-10,
+						'/span',
+						array('span' => array('class' => 'value')),
+							'&#163;0.00',
+						'/span',
+					'/div'
+				)
+			),
+			'null-price' => array(
+				array(
+					'quantity' => 10,
+					'price' => null
+				),
+				array(
+					array('div' => array('class' => 'stock-value')),
+						array('span' => array('class' => 'quantity')),
+							10,
+						'/span',
+						array('span' => array('class' => 'value')),
+							'&#163;0.00',
+						'/span',
+					'/div'
+				)
+			)
+		);
+	}
+
 }

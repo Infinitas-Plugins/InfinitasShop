@@ -35,3 +35,7 @@ td img {
 .shop_images .dashboard .info {
 	border: none;
 }
+
+.stock-value span.value{
+	display: none;
+}

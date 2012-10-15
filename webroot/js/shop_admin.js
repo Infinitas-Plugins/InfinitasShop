@@ -27,3 +27,9 @@ $('a .rate.add').live('click', function() {
 	$counter.val(parseInt($count) + 1);
 	return false;
 });
+
+$('div.stock-value').hover(function() {
+	$('span', this).toggle();
+}, function() {
+	$('span', this).toggle();
+});

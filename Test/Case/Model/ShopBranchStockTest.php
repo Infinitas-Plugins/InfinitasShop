@@ -16,6 +16,7 @@ class ShopBranchStockTest extends CakeTestCase {
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_branch',
 		'plugin.shop.shop_product',
+		'plugin.shop.shop_price',
 		'plugin.shop.shop_branch_stock_log',
 		'plugin.view_counter.view_counter_view',
 	);
@@ -723,7 +724,8 @@ class ShopBranchStockTest extends CakeTestCase {
 			array(
 				'ShopProduct' => array(
 					'id' => 'active',
-					'name' => 'active'
+					'name' => 'active',
+					'selling' => '12.000'
 				),
 				'ShopBranchStock' => array(
 					'branch-stock-1' => 10,
@@ -733,7 +735,8 @@ class ShopBranchStockTest extends CakeTestCase {
 			array(
 				'ShopProduct' => array(
 					'id' => 'out-of-stock',
-					'name' => 'out-of-stock'
+					'name' => 'out-of-stock',
+					'selling' => null
 				),
 				'ShopBranchStock' => array(
 					'branch-stock-3' => 0

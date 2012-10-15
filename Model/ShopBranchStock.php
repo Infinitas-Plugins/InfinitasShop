@@ -348,15 +348,21 @@ class ShopBranchStock extends ShopAppModel {
 
 	protected function _findStockList($state, array $query, array $results = array()) {
 		if($state == 'before') {
+			$this->ShopProduct->virtualFields['selling'] = 'ShopPrice.selling';
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
 				array(
 					$this->ShopProduct->alias . '.' . $this->ShopProduct->primaryKey,
 					$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField,
+					'ShopPrice.selling as ShopProduct__selling'
 				)
 			);
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProduct->fullModelName(),
+				'model' => $this->ShopProduct->ShopPrice->fullModelName()
+			));
 
 			$query['order'] = array(
 				$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField => 'asc'

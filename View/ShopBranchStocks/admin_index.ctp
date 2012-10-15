@@ -61,11 +61,15 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 					<?php
 						foreach($shopBranches as $shopBranchId => $shopBranch) {
 							$stock = !empty($shopBranchStock['ShopBranchStock'][$shopBranchId]) ? $shopBranchStock['ShopBranchStock'][$shopBranchId] : '-';
-							echo sprintf('<td>%s&nbsp;</td>', $this->Html->link($stock, array(
-								'controller' => 'shop_branch_stock_logs',
-								'action' => 'index',
-								'ShopBranchStockLog.shop_branch_stock_id' => $shopBranchId
-							)));
+							echo sprintf('<td>%s&nbsp;</td>', $this->Html->link(
+								$this->Shop->stockValue($shopBranchStock['ShopBranchStock'][$shopBranchId], $shopBranchStock['ShopProduct']['selling']),
+								array(
+									'controller' => 'shop_branch_stock_logs',
+									'action' => 'index',
+									'ShopBranchStockLog.shop_branch_stock_id' => $shopBranchId
+								),
+								array('escape' => false)
+							));
 						}
 					?>
 				</tr><?php
