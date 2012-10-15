@@ -28,7 +28,7 @@ $('a .rate.add').live('click', function() {
 	return false;
 });
 
-$('div.stock-value').hover(function() {
+$('div.stock-value, div.price, div.markup').hover(function() {
 	$('span', this).toggle();
 }, function() {
 	$('span', this).toggle();

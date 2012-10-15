@@ -130,50 +130,135 @@ class ShopHelper extends AppHelper {
 		);
 	}
 
+/**
+ * @brief show the status of a product
+ *
+ * products are only available to the customers when specific criteria is met, brand,
+ * category, product type etc should all be acitve before the product is available.
+ *
+ * This method helps display any reason why the product is not displaying on the
+ * front end.
+ *
+ * If any of the fields required for figuring out the status are not available 'disabled'
+ * symbol is returned with details of the missing data
+ * 
+ * @param  array $product the product from a find, must include all details to determin the status
+ * 
+ * @return string
+ */
 	public function adminStatus(array &$product) {
+		$problem = $this->Infinitas->status(0, array('title_no' => __d('shop', 'Missing data :: Unable to determin the status of the product (Missing %s)')));
+		if(!array_key_exists('active', $product['ShopProduct'])) {
+			return sprintf($problem, __d('shop', 'product status'));
+		}
+		if(!array_key_exists('available', $product['ShopProduct'])) {
+			return sprintf($problem, __d('shop', 'product available date'));
+		}
+		if(!array_key_exists('active', $product['ShopBrand'])) {
+			return sprintf($problem, __d('shop', 'brand'));
+		}
+		if(!array_key_exists('active', $product['ShopProductType'])) {
+			return sprintf($problem, __d('shop', 'product type'));
+		}
+		if(!array_key_exists('active', $product['ShopSupplier'])) {
+			return sprintf($problem, __d('shop', 'supplier'));
+		}
+		if(!array_key_exists('category_active', $product['ShopProduct'])) {
+			return sprintf($problem, __d('shop', 'cateogry status'));
+		}
+
 		$statuses = array(
 			'product' => array(
-				'status' => isset($product['ShopProduct']['active']) && $product['ShopProduct']['active'],
+				'status' => $product['ShopProduct']['active'],
 				1 => __d('shop', 'Product is active'),
 				0 => __d('shop', 'Product is disabled')
 			),
 			'available' => array(
-				'status' => isset($product['ShopProduct']['available']) && $product['ShopProduct']['available'] <= date('Y-m-d H:i:s'),
+				'status' => $product['ShopProduct']['available'] <= date('Y-m-d H:i:s'),
 				1 => __d('shop', 'Product is currently available'),
 				0 => __d('shop', 'Product will be available after %s', CakeTime::niceShort($product['ShopProduct']['available']))
 			),
 			'brand' => array(
-				'status' => isset($product['ShopBrand']['active']) && $product['ShopBrand']['active'],
+				'status' => $product['ShopBrand']['active'],
 				1 => __d('shop', 'Brand is active'),
 				0 => __d('shop', 'Brand has been disabled')
 			),
 			'type' => array(
-				'status' => isset($product['ShopProductType']['active']) && $product['ShopProductType']['active'],
+				'status' => $product['ShopProductType']['active'],
 				1 => __d('shop', 'Product type is active'),
 				0 => __d('shop', 'Product type has been disabled')
 			),
 			'supplier' => array(
-				'status' => isset($product['ShopSupplier']['active']) && $product['ShopSupplier']['active'],
+				'status' => $product['ShopSupplier']['active'],
 				1 => __d('shop', 'Supplier is active'),
 				0 => __d('shop', 'Supplier has been disabled')
 			),
 			'category' => array(
-				'status' => isset($product['ShopProduct']['category_active']) && $product['ShopProduct']['category_active'],
+				'status' => $product['ShopProduct']['category_active'],
 				1 => __d('shop', 'Category is active'),
 				0 => __d('shop', 'Category has been disabled')
-			),
+			)
 		);
+
+		if(empty($product['ShopCategory'])) {
+			$statuses['category'] = array(
+				'status' => false,
+				0 => __d('shop', 'Not linked to any categories')
+			);
+		}
 
 		$overallStatus = true;
 		foreach($statuses as $status) {
+			if($status['status'] === true) {
+				continue;
+			}
 			$overallStatus = $overallStatus && $status['status'];
 			$out[] = $status[(int)$status['status']];
 		}
 
 		$out = $this->Design->arrayToList($out);
 		return $this->Infinitas->status($overallStatus, array(
-			'title_yes' => __d('shop', 'The product is currently available to customers :: %s', $out),
-			'title_no' => __d('shop', 'The product is not available to customers :: %s', $out)
+			'title_yes' => __d('shop', 'Available :: This product is available to customers for purchase'),
+			'title_no' => __d('shop', 'Disabled :: This product will not be available to customers.<br/>%s', $out)
 		));
+	}
+
+/**
+ * @brief display the cost details for a price
+ * 
+ * @param array $shopPrice the price details
+ * 
+ * @return string
+ */
+	public function adminPrice(array &$shopPrice) {
+		$options = array(
+			__d('shop', 'Cost: %s', self::adminCurrency($shopPrice['cost'])),
+			__d('shop', 'Selling: %s', self::adminCurrency($shopPrice['selling'])),
+			__d('shop', 'Markup: %s (%s)', self::_markup($shopPrice), self::_markup($shopPrice, true)),
+			__d('shop', 'Retail: %s', self::adminCurrency($shopPrice['retail']))
+		);
+		return $this->Html->tag('div', implode('', array(
+			$this->Html->tag('span', self::adminCurrency($shopPrice['cost']), array(
+				'class' => 'cost',
+				'title' => __d('shop', 'Price :: %s', $this->Design->arrayToList($options))
+			)),
+			$this->Html->tag('span', self::adminCurrency($shopPrice['selling']), array('class' => 'selling')),
+		)), array('class' => 'price'));
+	}
+
+	public function adminMarkup(array &$shopPrice) {
+		return $this->Html->tag('div', implode('', array(
+			$this->Html->tag('span', self::adminCurrency(self::_markup($shopPrice)), array('class' => 'amount')),
+			$this->Html->tag('span', CakeNumber::toPercentage(self::_markup($shopPrice, true)), array('class' => 'percentage')),
+		)), array('class' => 'markup'));
+	}
+
+	protected function _markup(array $shopPrice, $percent = false) {
+		$markup = $shopPrice['selling'] - $shopPrice['cost'];
+		if(!$percent) {
+			return $markup;
+		}
+		
+		return ($markup / $shopPrice['cost']) * 100;
 	}
 }

@@ -51,6 +51,8 @@ echo $this->Filter->alphabetFilter();
 					$this->Paginator->sort('sales') => array(
 						'style' => 'width:40px;'
 					),
+					$this->Paginator->sort('ShopPrice.selling', __d('shop', 'Price')),
+					__d('shop', 'Markup'),
 					$this->Paginator->sort('total_stock', __d('shop', 'Stock')),
 					$this->Paginator->sort('modified') => array(
 						'style' => 'width:100px;'
@@ -93,7 +95,7 @@ echo $this->Filter->alphabetFilter();
 					<td>
 						<?php 
 							echo $this->Html->link($shopProduct['ShopBrand']['name'], array(
-								'controller' => 'shop_brand', 
+								'controller' => 'shop_brands', 
 								'action' => 'edit', 
 								$shopProduct['ShopBrand']['id']
 							)); 
@@ -124,6 +126,8 @@ echo $this->Filter->alphabetFilter();
 							echo $shopProduct['ShopProduct']['sales'];
 						?>&nbsp;
 					</td>
+					<td><?php echo $this->Shop->adminPrice($shopProduct['ShopPrice']); ?>&nbsp;</td>
+					<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopPrice']); ?>&nbsp;</td>
 					<td><?php echo $shopProduct['ShopProduct']['total_stock']; ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>

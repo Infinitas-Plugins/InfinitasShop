@@ -36,6 +36,14 @@ td img {
 	border: none;
 }
 
-.stock-value span.value{
+div.price,
+div.markup,
+div.stock-value {
+	cursor: pointer;
+}
+
+div.price span.cost,
+div.markup span.percentage,
+div.stock-value span.value{
 	display: none;
 }

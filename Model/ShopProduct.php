@@ -543,15 +543,17 @@ class ShopProduct extends ShopAppModel {
 		if($state == 'before') {
 			$query['admin'] = true;
 
+			$this->virtualFields['category_active'] = 'ActiveCategory.active';
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName('modified'),
 				$this->fullFieldName('available'),
+				$this->ShopPrice->fullFieldName('cost'),
 				$this->ShopSupplier->fullFieldName($this->ShopSupplier->primaryKey),
 				$this->ShopSupplier->fullFieldName($this->ShopSupplier->displayField),
 				$this->ShopSupplier->fullFieldName('active'),
 				$this->ShopBrand->fullFieldName('active'),
 				$this->ShopProductType->fullFieldName('active'),
-				'ActiveCategory.active as ShopProduct__category_active',
+				'category_active',
 				'total_stock'
 			));
 
