@@ -15,7 +15,8 @@ class ShopShippingMethodValueTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_shipping_method_value',
-		'plugin.shop.shop_shipping_method'
+		'plugin.shop.shop_shipping_method',
+		'plugin.shop.shop_supplier'
 	);
 
 /**
@@ -248,7 +249,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
  */
 	public function saveDataProvider() {
 		return array(
-			'normal-order' => array(
+			'normal' => array(
 				array(
 					'name' => 'royal-mail-1st-rate-1',
 					'shop_shipping_method_id' => 'royal-mail-1st',
@@ -288,6 +289,44 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 					'total_minimum' => '0.00000',
 					'total_maximum' => '150.00000',
 					'require_login' => false,
+				)
+			),
+			'missing-data' => array(
+				array(
+					'name' => 'new-rates',
+					'shop_shipping_method_id' => 'royal-mail-1st',
+					'active' => true,
+					'insurance' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => 20.0, 'rate' => ''),
+						array('limit' => null, 'rate' => 3.0),
+					),
+					'rates' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+						array('limit' => '', 'rate' => 2.0),
+						array('limit' => 30.0, 'rate' => null),
+					),
+					'surcharge' => 0,
+					'delivery_time' => 12,
+					'total_minimum' => 1,
+					'total_maximum' => 1,
+					'require_login' => 0,
+				),
+				array(
+					'name' => 'new-rates',
+					'shop_shipping_method_id' => 'royal-mail-1st',
+					'active' => true,
+					'insurance' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+					),
+					'rates' => array(
+						array('limit' => 10.0, 'rate' => 1.0),
+					),
+					'surcharge' => '0.00000',
+					'delivery_time' => 12,
+					'total_minimum' => '1.00000',
+					'total_maximum' => '1.00000',
+					'require_login' => 0,
 				)
 			)
 		);
