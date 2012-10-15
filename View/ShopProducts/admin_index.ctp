@@ -40,20 +40,16 @@ echo $this->Filter->alphabetFilter();
 					),
 					$this->Paginator->sort('name'),
 					$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')),
-					$this->Paginator->sort('ShopSupplier.name', __d('shop', 'Supplier')),
 					$this->Paginator->sort('ShopBrand.name', __d('shop', 'Brand')),
-					$this->Paginator->sort('rating') => array(
-						'style' => 'width:40px;'
+					$this->Paginator->sort('ShopPrice.selling', __d('shop', 'Price')) => array(
+						'style' => 'width:60px;'
 					),
-					$this->Paginator->sort('views') => array(
-						'style' => 'width:40px;'
+					__d('shop', 'Markup') => array(
+						'style' => 'width:60px;'
 					),
-					$this->Paginator->sort('sales') => array(
-						'style' => 'width:40px;'
+					$this->Paginator->sort('total_stock', __d('shop', 'Stock')) => array(
+						'style' => 'width:80px;'
 					),
-					$this->Paginator->sort('ShopPrice.selling', __d('shop', 'Price')),
-					__d('shop', 'Markup'),
-					$this->Paginator->sort('total_stock', __d('shop', 'Stock')),
 					$this->Paginator->sort('modified') => array(
 						'style' => 'width:100px;'
 					),
@@ -63,9 +59,15 @@ echo $this->Filter->alphabetFilter();
 				)
 			);
 
-			foreach ($shopProducts as $shopProduct) { ?>
-				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
-					<td><?php echo $this->Infinitas->massActionCheckBox($shopProduct); ?>&nbsp;</td>
+			foreach ($shopProducts as $shopProduct) {
+				$rowClass = $this->Infinitas->rowClass(); ?>
+            	<tr class="parent <?php echo $rowClass; ?>">
+					<td>
+						<?php 
+							echo '<span class="toggle"><a href="#">+</a></span>',
+							$this->Infinitas->massActionCheckBox($shopProduct); 
+						?>&nbsp;
+					</td>
 					<td>
 						<?php 
 							echo sprintf('%s<br/>%s', 
@@ -85,45 +87,11 @@ echo $this->Filter->alphabetFilter();
 					</td>
 					<td>
 						<?php 
-							echo $this->Html->link($shopProduct['ShopSupplier']['name'], array(
-								'controller' => 'shop_suppliers', 
-								'action' => 'edit', 
-								$shopProduct['ShopSupplier']['id']
-							)); 
-						?>&nbsp;
-					</td>
-					<td>
-						<?php 
 							echo $this->Html->link($shopProduct['ShopBrand']['name'], array(
 								'controller' => 'shop_brands', 
 								'action' => 'edit', 
 								$shopProduct['ShopBrand']['id']
 							)); 
-						?>&nbsp;
-					</td>
-					<td>
-						<?php 
-							if($shopProduct['ShopProduct']['rating_count']) {
-								sprintf('%s from %d', $shopProduct['ShopProduct']['rating'], $shopProduct['ShopProduct']['rating_count']);
-							} else {
-								echo '-';
-							}
-						?>&nbsp;
-					</td>
-					<td>
-						<?php 
-							if(!$shopProduct['ShopProduct']['views']) {
-								$shopProduct['ShopProduct']['views'] = '-';
-							}
-							echo $shopProduct['ShopProduct']['views'];
-						?>&nbsp;
-					</td>
-					<td>
-						<?php 
-							if(!$shopProduct['ShopProduct']['sales']) {
-								$shopProduct['ShopProduct']['sales'] = '-';
-							}
-							echo $shopProduct['ShopProduct']['sales'];
 						?>&nbsp;
 					</td>
 					<td><?php echo $this->Shop->adminPrice($shopProduct['ShopPrice']); ?>&nbsp;</td>
@@ -143,6 +111,30 @@ echo $this->Filter->alphabetFilter();
 					</td>
 					<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
+				</tr>
+				<tr class="details <?php echo $rowClass; ?>">
+					<td colspan="2">
+						<?php 
+							echo $this->Html->link($shopProduct['ShopSupplier']['name'], array(
+								'controller' => 'shop_suppliers', 
+								'action' => 'edit', 
+								$shopProduct['ShopSupplier']['id']
+							)); 
+						?>&nbsp;
+					</td>
+					<td><?php echo __d('shop', '%d views', (int)$shopProduct['ShopProduct']['views']); ?>&nbsp;</td>
+					<td>
+						<?php 
+							echo __d('shop', '%s from %d', $shopProduct['ShopProduct']['rating'], $shopProduct['ShopProduct']['rating_count']); 
+						?>&nbsp;
+					</td>
+					<td colspan="100">
+						<?php
+							echo $this->element('Shop.expanded/sales', array('data' => $shopProduct));
+							echo $this->element('Shop.expanded/seo', array('data' => $shopProduct));
+							echo $this->element('Shop.expanded/views', array('data' => $shopProduct));
+						?>
+					</td>
 				</tr><?php
 			}
 		?>

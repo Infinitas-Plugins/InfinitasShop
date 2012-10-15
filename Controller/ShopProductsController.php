@@ -35,6 +35,9 @@ class ShopProductsController extends ShopAppController {
 		$filterOptions = $this->Filter->filterOptions;
 		$filterOptions['fields'] = array(
 			'name',
+			'shop_product_type_id' => $this->{$this->modelClass}->ShopProductType->find('list'),
+			'shop_brand_id' => $this->{$this->modelClass}->ShopBrand->find('list'),
+			'shop_supplier_id' => $this->{$this->modelClass}->ShopSupplier->find('list'),
 			'active' => (array)Configure::read('CORE.active_options'),
 		);
 
