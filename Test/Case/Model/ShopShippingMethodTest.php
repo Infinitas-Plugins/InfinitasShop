@@ -16,6 +16,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_shipping_method_value',
+		'plugin.shop.shop_brand',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_order',
 		'plugin.shop.shop_product',
