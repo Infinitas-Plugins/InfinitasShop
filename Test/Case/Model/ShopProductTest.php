@@ -268,7 +268,12 @@ class ShopProductTest extends CakeTestCase {
 							'id' => 'active',
 							'slug' => 'active',
 							'name' => 'active',
-							'total_stock' => 25
+							'total_stock' => 25,
+							'rating' => 1,
+							'rating_count' => 1,
+							'views' => 5,
+							'sales' => 1,
+							'active' => true
 						),
 						'ShopBrand' => array(
 							'id' => 'inhouse',
@@ -595,7 +600,12 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'active',
 						'name' => 'active',
 						'product_code' => 'active-:option-size',
-						'total_stock' => '25'
+						'total_stock' => '25',
+						'rating' => 1,
+						'rating_count' => 1,
+						'views' => 5,
+						'sales' => 1,
+						'active' => true
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',
@@ -739,7 +749,12 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'multi-category',
 						'name' => 'multi-category',
 						'product_code' => null,
-						'total_stock' => null
+						'total_stock' => null,
+						'rating' => 1,
+						'rating_count' => 1,
+						'views' => 30,
+						'sales' => 100,
+						'active' => true
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -779,7 +794,12 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'multi-category-mixed-state',
 						'name' => 'multi-category-mixed-state',
 						'product_code' => null,
-						'total_stock' => null
+						'total_stock' => null,
+						'rating' => 1,
+						'rating_count' => 1,
+						'views' => 20,
+						'sales' => 1,
+						'active' => true
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -807,7 +827,12 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'multi-category-parent-inactive',
 						'name' => 'multi-category-parent-inactive',
 						'product_code' => null,
-						'total_stock' => null
+						'total_stock' => null,
+						'rating' => 1,
+						'rating_count' => 1,
+						'views' => 1,
+						'sales' => 1,
+						'active' => true
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -836,7 +861,12 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'multi-option',
 						'name' => 'multi-option',
 						'product_code' => 'multi-option-:option-size(:option-colour)',
-						'total_stock' => null
+						'total_stock' => null,
+						'rating' => 1,
+						'rating_count' => 1,
+						'views' => 100,
+						'sales' => 25,
+						'active' => true
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -1316,6 +1346,11 @@ class ShopProductTest extends CakeTestCase {
 							'slug' => 'active',
 							'product_code' => 'active-:option-size',
 							'total_stock' => '25',
+							'rating' => 1,
+							'rating_count' => 1,
+							'views' => 5,
+							'sales' => 1,
+							'active' => true
 						),
 						'ShopBrand' => array(
 							'id' => 'inhouse',
@@ -1399,6 +1434,11 @@ class ShopProductTest extends CakeTestCase {
 							'slug' => 'multi-option',
 							'product_code' => 'multi-option-:option-size(:option-colour)',
 							'total_stock' => null,
+							'rating' => 1,
+							'rating_count' => 1,
+							'views' => 100,
+							'sales' => 25,
+							'active' => true
 						),
 						'ShopBrand' => array(
 							'id' => 'inhouse',
@@ -1561,6 +1601,38 @@ class ShopProductTest extends CakeTestCase {
 
 		$Model->ShopCategoriesProduct->ShopCategory->saveField('active', 1);
 		$this->assertTrue($product($id));
+	}
+
+/**
+ * @brief test admin finds
+ */
+	public function testAdminFinds() {
+		$expected = array(
+			'active',
+			'inactive-parent-category',
+			'multi-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+			'multi-option'
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('paginated'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $results);
+		
+		$expected = array(
+			'active',
+			'inactive',
+			'inactive-category',
+			'inactive-parent-category',
+			'multi-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+			'multi-option',
+			'no-stock-added',
+			'out-of-stock'
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('paginated', array('admin' => true)), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $results);
+
 	}
 
 }
