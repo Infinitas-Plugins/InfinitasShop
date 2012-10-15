@@ -3,8 +3,8 @@ class ShopHelper extends AppHelper {
 	public $helpers = array(
 		'Text',
 		'Html',
-		'Lib.Infinitas',
-		'Lib.Design'
+		'Libs.Infinitas',
+		'Libs.Design'
 	);
 
 /**
@@ -216,10 +216,9 @@ class ShopHelper extends AppHelper {
 			$out[] = $status[(int)$status['status']];
 		}
 
-		$out = $this->Design->arrayToList($out);
 		return $this->Infinitas->status($overallStatus, array(
 			'title_yes' => __d('shop', 'Available :: This product is available to customers for purchase'),
-			'title_no' => __d('shop', 'Disabled :: This product will not be available to customers.<br/>%s', $out)
+			'title_no' => __d('shop', 'Disabled :: This product will not be available to customers.<br/>%s', $this->Design->arrayToList($out))
 		));
 	}
 
@@ -237,6 +236,7 @@ class ShopHelper extends AppHelper {
 			__d('shop', 'Markup: %s (%s)', self::_markup($shopPrice), self::_markup($shopPrice, true)),
 			__d('shop', 'Retail: %s', self::adminCurrency($shopPrice['retail']))
 		);
+
 		return $this->Html->tag('div', implode('', array(
 			$this->Html->tag('span', self::adminCurrency($shopPrice['cost']), array(
 				'class' => 'cost',
@@ -246,6 +246,13 @@ class ShopHelper extends AppHelper {
 		)), array('class' => 'price'));
 	}
 
+/**
+ * @brief build markup info switch html
+ * 
+ * @param  array $shopPrice the pricing information
+ * 
+ * @return string
+ */
 	public function adminMarkup(array &$shopPrice) {
 		return $this->Html->tag('div', implode('', array(
 			$this->Html->tag('span', self::adminCurrency(self::_markup($shopPrice)), array('class' => 'amount')),
@@ -253,6 +260,14 @@ class ShopHelper extends AppHelper {
 		)), array('class' => 'markup'));
 	}
 
+/**
+ * @brief calculate the markup of a price
+ * 
+ * @param  array $shopPrice the pricing information
+ * @param  boolean $percent calculate as a percentacge or value
+ * 
+ * @return string
+ */
 	protected function _markup(array $shopPrice, $percent = false) {
 		$markup = $shopPrice['selling'] - $shopPrice['cost'];
 		if(!$percent) {

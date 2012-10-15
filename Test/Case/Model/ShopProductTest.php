@@ -69,6 +69,10 @@ class ShopProductTest extends CakeTestCase {
 
 		parent::tearDown();
 	}
+
+/**
+ * @brief test validation A
+ */
 	public function testValidationA() {
 		$data = array();
 		$expected = array(
@@ -92,9 +96,6 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test validation A
- * 
- * @param  [type] $data     [description]
- * @param  [type] $expected [description]
  * 
  * @dataProvider validationBDataProvider
  */
@@ -143,9 +144,6 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test validation C
- * 
- * @param  [type] $data     [description]
- * @param  [type] $expected [description]
  * 
  * @dataProvider validationCDataProvider
  */
@@ -199,9 +197,6 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief find paginated
- *
- * @param type $data
- * @param type $expected
  *
  * @dataProvider findPaginatedDataProvider
  */
@@ -367,9 +362,6 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test find wrapper methods
- *
- * @param type $data
- * @param type $expected
  */
 	public function testFindWrappers() {
 		$expected = array(
@@ -441,9 +433,6 @@ class ShopProductTest extends CakeTestCase {
 /**
  * @brief test find product shipping
  *
- * @param array $data
- * @param array $expected
- *
  * @dataProvider findProductShippingDataProvider
  */
 	public function testFindProductShipping($data, $expected) {
@@ -479,9 +468,6 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test find product shipping
- *
- * @param array $data
- * @param array $expected
  *
  * @dataProvider findProductListShippingDataProvider
  */
