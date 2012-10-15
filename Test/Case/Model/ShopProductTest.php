@@ -1630,9 +1630,8 @@ class ShopProductTest extends CakeTestCase {
 			'no-stock-added',
 			'out-of-stock'
 		);
-		$results = Hash::extract($this->{$this->modelClass}->find('paginated', array('admin' => true)), '{n}.ShopProduct.id');
+		$results = Hash::extract($this->{$this->modelClass}->find('adminPaginated'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $results);
-
 	}
 
 }

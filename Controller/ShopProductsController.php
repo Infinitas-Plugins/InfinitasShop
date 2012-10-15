@@ -19,17 +19,6 @@
 
 class ShopProductsController extends ShopAppController {
 /**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
-
-/**
  * @brief the index method
  *
  * Show a paginated list of ShopProduct records.
@@ -39,15 +28,7 @@ class ShopProductsController extends ShopAppController {
  * @return void
  */
 	public function admin_index() {
-		$this->Paginator->settings = array(
-			'paginated',
-			'admin' => true,
-			'fields' => array(
-				$this->{$this->modelClass}->fullFieldName('modified'),
-				$this->{$this->modelClass}->ShopSupplier->fullFieldName($this->{$this->modelClass}->ShopSupplier->primaryKey),
-				$this->{$this->modelClass}->ShopSupplier->fullFieldName($this->{$this->modelClass}->ShopSupplier->displayField),
-			)
-		);
+		$this->Paginator->settings = array('adminPaginated');
 
 		$shopProducts = $this->Paginator->paginate(null, $this->Filter->filter);
 

@@ -31,6 +31,7 @@ class ShopProduct extends ShopAppModel {
 		'product' => true,
 		'productShipping' => true,
 		'paginated' => true,
+		'adminPaginated' => true,
 		'productsForList' => true,
 		'prodcutListShipping' => true,
 		'new' => true,
@@ -536,6 +537,22 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+	public function _findAdminPaginated($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['admin'] = true;
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName('modified'),
+				$this->ShopSupplier->fullFieldName($this->ShopSupplier->primaryKey),
+				$this->ShopSupplier->fullFieldName($this->ShopSupplier->displayField)
+			));
+
+			return self::_findPaginated($state, $query);
+		}
+
+		return self::_findPaginated($state, $query, $results);
 	}
 
 /**
