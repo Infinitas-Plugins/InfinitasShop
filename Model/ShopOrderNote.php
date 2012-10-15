@@ -106,30 +106,4 @@ class ShopOrderNote extends ShopAppModel {
 		$this->validate = array(
 		);
 	}
-
-/**
- * General method for the view pages. Gets the required data and relations
- * and can be used for the admin preview also.
- *
- * @param array $conditions conditions for the find
- * @return array the data that was found
- */
-	public function getViewData($conditions = array()) {
-		if(!$conditions) {
-			return false;
-		}
-
-		$data = $this->find(
-			'first',
-			array(
-				'fields' => array(
-				),
-				'conditions' => $conditions,
-				'contain' => array(
-				)
-			)
-		);
-
-		return $data;
-	}
 }
