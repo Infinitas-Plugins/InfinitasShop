@@ -2,7 +2,9 @@
 class ShopHelper extends AppHelper {
 	public $helpers = array(
 		'Text',
-		'Html'
+		'Html',
+		'Lib.Infinitas',
+		'Lib.Design'
 	);
 
 /**
@@ -126,5 +128,52 @@ class ShopHelper extends AppHelper {
 			)),
 			array('class' => 'stock-value')
 		);
+	}
+
+	public function adminStatus(array &$product) {
+		$statuses = array(
+			'product' => array(
+				'status' => isset($product['ShopProduct']['active']) && $product['ShopProduct']['active'],
+				1 => __d('shop', 'Product is active'),
+				0 => __d('shop', 'Product is disabled')
+			),
+			'available' => array(
+				'status' => isset($product['ShopProduct']['available']) && $product['ShopProduct']['available'] <= date('Y-m-d H:i:s'),
+				1 => __d('shop', 'Product is currently available'),
+				0 => __d('shop', 'Product will be available after %s', CakeTime::niceShort($product['ShopProduct']['available']))
+			),
+			'brand' => array(
+				'status' => isset($product['ShopBrand']['active']) && $product['ShopBrand']['active'],
+				1 => __d('shop', 'Brand is active'),
+				0 => __d('shop', 'Brand has been disabled')
+			),
+			'type' => array(
+				'status' => isset($product['ShopProductType']['active']) && $product['ShopProductType']['active'],
+				1 => __d('shop', 'Product type is active'),
+				0 => __d('shop', 'Product type has been disabled')
+			),
+			'supplier' => array(
+				'status' => isset($product['ShopSupplier']['active']) && $product['ShopSupplier']['active'],
+				1 => __d('shop', 'Supplier is active'),
+				0 => __d('shop', 'Supplier has been disabled')
+			),
+			'category' => array(
+				'status' => isset($product['ShopProduct']['category_active']) && $product['ShopProduct']['category_active'],
+				1 => __d('shop', 'Category is active'),
+				0 => __d('shop', 'Category has been disabled')
+			),
+		);
+
+		$overallStatus = true;
+		foreach($statuses as $status) {
+			$overallStatus = $overallStatus && $status['status'];
+			$out[] = $status[(int)$status['status']];
+		}
+
+		$out = $this->Design->arrayToList($out);
+		return $this->Infinitas->status($overallStatus, array(
+			'title_yes' => __d('shop', 'The product is currently available to customers :: %s', $out),
+			'title_no' => __d('shop', 'The product is not available to customers :: %s', $out)
+		));
 	}
 }

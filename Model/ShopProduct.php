@@ -545,8 +545,14 @@ class ShopProduct extends ShopAppModel {
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName('modified'),
+				$this->fullFieldName('available'),
 				$this->ShopSupplier->fullFieldName($this->ShopSupplier->primaryKey),
-				$this->ShopSupplier->fullFieldName($this->ShopSupplier->displayField)
+				$this->ShopSupplier->fullFieldName($this->ShopSupplier->displayField),
+				$this->ShopSupplier->fullFieldName('active'),
+				$this->ShopBrand->fullFieldName('active'),
+				$this->ShopProductType->fullFieldName('active'),
+				'ActiveCategory.active as ShopProduct__category_active',
+				'total_stock'
 			));
 
 			return self::_findPaginated($state, $query);

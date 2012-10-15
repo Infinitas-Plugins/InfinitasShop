@@ -51,12 +51,12 @@ echo $this->Filter->alphabetFilter();
 					$this->Paginator->sort('sales') => array(
 						'style' => 'width:40px;'
 					),
-					$this->Paginator->sort('active') => array(
-						'style' => 'width:50px;'
-					),
 					$this->Paginator->sort('total_stock', __d('shop', 'Stock')),
 					$this->Paginator->sort('modified') => array(
-						'style' => 'width:75px;'
+						'style' => 'width:100px;'
+					),
+					$this->Paginator->sort('active', __d('shop', 'Status')) => array(
+						'style' => 'width:50px;'
 					),
 				)
 			);
@@ -124,9 +124,9 @@ echo $this->Filter->alphabetFilter();
 							echo $shopProduct['ShopProduct']['sales'];
 						?>&nbsp;
 					</td>
-					<td><?php echo $this->Infinitas->status($shopProduct['ShopProduct']['active']); ?>&nbsp;</td>
 					<td><?php echo $shopProduct['ShopProduct']['total_stock']; ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?>&nbsp;</td>
+					<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
 				</tr><?php
 			}
 		?>
