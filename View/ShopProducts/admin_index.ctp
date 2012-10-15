@@ -128,7 +128,19 @@ echo $this->Filter->alphabetFilter();
 					</td>
 					<td><?php echo $this->Shop->adminPrice($shopProduct['ShopPrice']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopPrice']); ?>&nbsp;</td>
-					<td><?php echo $shopProduct['ShopProduct']['total_stock']; ?>&nbsp;</td>
+					<td>
+						<?php
+							echo $this->Html->link(
+								$this->Shop->stockValue($shopProduct['ShopProduct']['total_stock'], $shopProduct['ShopPrice']['selling']),
+								array(
+									'controller' => 'shop_branch_stock_logs',
+									'action' => 'index',
+									'ShopBranchStockLog.shop_product_id' => $shopProduct['ShopProduct']['id']
+								),
+								array('escape' => false)
+							);
+						?>&nbsp;
+					</td>
 					<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
 				</tr><?php

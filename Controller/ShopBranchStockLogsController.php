@@ -29,12 +29,26 @@ class ShopBranchStockLogsController extends ShopAppController {
  */
 	public function admin_index() {
 		$this->Paginator->settings = array(
-			'contain' => array(
-				'ShopBranchStock' => array(
-					'ShopBranch.id',
-					'ShopProduct.id',
-					'ShopProduct.name',
-				),
+			'fields' => array(
+				$this->{$this->modelClass}->alias . '.*',
+				$this->{$this->modelClass}->ShopBranchStock->alias . '.*',
+				$this->{$this->modelClass}->ShopBranchStock->ShopProduct->fullFieldName($this->{$this->modelClass}->ShopBranchStock->ShopProduct->displayField),
+				$this->{$this->modelClass}->ShopBranchStock->ShopBranch->ContactBranch->fullFieldName($this->{$this->modelClass}->ShopBranchStock->ShopBranch->ContactBranch->displayField)
+			),
+			'joins' => array(
+				$this->{$this->modelClass}->autoJoinModel($this->{$this->modelClass}->ShopBranchStock->fullModelName()),
+				$this->{$this->modelClass}->autoJoinModel(array(
+					'from' => $this->{$this->modelClass}->ShopBranchStock->fullModelName(),
+					'model' => $this->{$this->modelClass}->ShopBranchStock->ShopProduct->fullModelName(),
+				)),
+				$this->{$this->modelClass}->autoJoinModel(array(
+					'from' => $this->{$this->modelClass}->ShopBranchStock->fullModelName(),
+					'model' => $this->{$this->modelClass}->ShopBranchStock->ShopBranch->fullModelName()
+				)),
+				$this->{$this->modelClass}->autoJoinModel(array(
+					'from' => $this->{$this->modelClass}->ShopBranchStock->ShopBranch->fullModelName(),
+					'model' => $this->{$this->modelClass}->ShopBranchStock->ShopBranch->ContactBranch->fullModelName()
+				)),
 			)
 		);
 

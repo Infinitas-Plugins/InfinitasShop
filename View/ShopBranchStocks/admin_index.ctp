@@ -60,7 +60,7 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 					</td> 
 					<?php
 						foreach($shopBranches as $shopBranchId => $shopBranch) {
-							$stock = !empty($shopBranchStock['ShopBranchStock'][$shopBranchId]) ? $shopBranchStock['ShopBranchStock'][$shopBranchId] : '-';
+							$shopBranchStock['ShopBranchStock'][$shopBranchId] = !empty($shopBranchStock['ShopBranchStock'][$shopBranchId]) ? $shopBranchStock['ShopBranchStock'][$shopBranchId] : 0;
 							echo sprintf('<td>%s&nbsp;</td>', $this->Html->link(
 								$this->Shop->stockValue($shopBranchStock['ShopBranchStock'][$shopBranchId], $shopBranchStock['ShopProduct']['selling']),
 								array(

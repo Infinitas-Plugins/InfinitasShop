@@ -29,6 +29,8 @@ echo $this->Infinitas->adminIndexHead(null, $massActions);
 						'class' => 'first',
 						'style' => 'width:25px;'
 					),
+					$this->Paginator->sort('ShopProduct.name', __d('shop', 'Product')),
+					$this->Paginator->sort('ShopBranch.name', __d('shop', 'Branch')),
 					$this->Paginator->sort('change') => array(
 						'style' => 'width:100px;'
 					),
@@ -42,6 +44,8 @@ echo $this->Infinitas->adminIndexHead(null, $massActions);
 			foreach ($shopBranchStockLogs as $shopBranchStockLog) { ?>
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopBranchStockLog); ?>&nbsp;</td>
+					<td><?php echo $shopBranchStockLog['ShopProduct']['name']; ?>&nbsp;</td>
+					<td><?php echo $shopBranchStockLog['ContactBranch']['name']; ?>&nbsp;</td>
 					<td><?php echo $shopBranchStockLog['ShopBranchStockLog']['change']; ?>&nbsp;</td>
 					<td><?php echo $shopBranchStockLog['ShopBranchStockLog']['notes']; ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopBranchStockLog['ShopBranchStockLog']); ?>&nbsp;</td>
