@@ -11,7 +11,7 @@ class ShopCategoriesProductFixture extends CakeTestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'key' => 'primary'),
+		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'shop_category_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
 		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index'),
 		'indexes' => array(

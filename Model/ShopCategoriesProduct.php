@@ -38,28 +38,33 @@ class ShopCategoriesProduct extends ShopAppModel {
 		)
 	);
 
+/**
+ * @brief overload consturct for translated validation 
+ * 
+ * @param boolean $id    [description]
+ * @param [type]  $table [description]
+ * @param [type]  $ds    [description]
+ *
+ * @return void
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
 			'shop_category_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected category does not exist'),
+					'allowEmpty' => false,
+					'required' => true,
 				),
 			),
 			'shop_product_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'The selected product does not exist'),
+					'allowEmpty' => false,
+					'required' => true,
 				),
 			),
 		);

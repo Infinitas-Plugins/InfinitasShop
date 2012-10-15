@@ -76,9 +76,20 @@ class ShopProductsController extends ShopAppController {
  * @return void
  */
 	public function admin_add() {
-		parent::admin_add();
+		if(!empty($this->request->data)) {
+			$this->request->data['ShopBranchStock'][0]['shop_branch_id'] = '5076d76c-6710-47cc-8f7e-0aeac0a80102';
+			try {
+				if($this->{$this->modelClass}->saveProduct($this->request->data)) {
+					$this->notice('saved');
+				}
+				$this->notice('not_saved');
+			} catch(Exception $e) {
+				$this->notice($e);
+			}
+		}
 
 		$shopImages = $this->ShopProduct->ShopImage->find('list');
+		$shopCategories = $this->ShopProduct->ShopCategoriesProduct->ShopCategory->generateTreeList();
 		$shopSuppliers = $this->ShopProduct->ShopSupplier->find('list');
 		$shopBrands = $this->ShopProduct->ShopBrand->find('list');
 		$shopProductTypes = $this->ShopProduct->ShopProductType->find('list');
@@ -88,7 +99,7 @@ class ShopProductsController extends ShopAppController {
 				'Manager.full_name'
 			)
 		));
-		$this->set(compact('shopImages', 'shopSuppliers', 'shopBrands', 'shopProductTypes', 'shopBranches'));
+		$this->set(compact('shopImages', 'shopCategories', 'shopSuppliers', 'shopBrands', 'shopProductTypes', 'shopBranches'));
 	}
 
 /**
@@ -102,13 +113,33 @@ class ShopProductsController extends ShopAppController {
  * @return void
  */
 	public function admin_edit($id = null) {
-		parent::admin_edit($id);
+		if(!empty($this->request->data)) {
+			$this->request->data['ShopBranchStock'][0]['shop_branch_id'] = '5076d76c-6710-47cc-8f7e-0aeac0a80102';
+			try {
+				if($this->{$this->modelClass}->saveProduct($this->request->data)) {
+					$this->notice('saved');
+				}
+				$this->notice('not_saved');
+			} catch(Exception $e) {
+				$this->notice($e);
+			}
+		} else {
+			parent::admin_edit($id, array(
+				'contain' => array(
+					'ShopPrice',
+					'ShopSize',
+					'ShopImagesProduct',
+					'ShopCategoriesProduct'
+				)
+			));
+		}
 
 		$shopImages = $this->ShopProduct->ShopImage->find('list');
+		$shopCategories = $this->ShopProduct->ShopCategoriesProduct->ShopCategory->generateTreeList();
 		$shopSuppliers = $this->ShopProduct->ShopSupplier->find('list');
 		$shopBrands = $this->ShopProduct->ShopBrand->find('list');
 		$shopProductTypes = $this->ShopProduct->ShopProductType->find('list');
 		$shopBranches = $this->ShopProduct->ShopBranchStock->ShopBranch->find('list');
-		$this->set(compact('shopImages', 'shopSuppliers', 'shopBrands', 'shopProductTypes', 'shopBranches'));
+		$this->set(compact('shopImages', 'shopCategories', 'shopSuppliers', 'shopBrands', 'shopProductTypes', 'shopBranches'));
 	}
 }

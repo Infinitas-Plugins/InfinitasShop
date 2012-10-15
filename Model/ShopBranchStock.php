@@ -208,6 +208,7 @@ class ShopBranchStock extends ShopAppModel {
  */
 	public function addStock(array $stock) {
 		$stock = $this->_normaliseStock($stock);
+		$this->ShopBranchStockLog->create();
 		if(!$this->ShopBranchStockLog->saveAll($stock)) {
 			return false;
 		}
@@ -229,6 +230,7 @@ class ShopBranchStock extends ShopAppModel {
  */
 	public function removeStock(array $stock) {
 		$stock = $this->_normaliseStock($stock, false);
+		$this->ShopBranchStockLog->create();
 		if(!$this->ShopBranchStockLog->saveAll($stock)) {
 			return false;
 		}
@@ -251,6 +253,7 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		foreach($stock as $k => $v) {
+		var_dump($v);
 			$skip = (empty($v['shop_product_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
 			if($skip) {
 				unset($stock[$k]);
@@ -300,6 +303,9 @@ class ShopBranchStock extends ShopAppModel {
 	public function updateStock(array $stock) {
 		$saved = true;
 		foreach($stock as $k => $v) {
+			if(!empty($v[$this->ShopBranchStockLog->alias])) {
+				$v = $v[$this->ShopBranchStockLog->alias];
+			}
 			$saved = $saved && $this->updateAll(
 				array($this->alias . '.stock' => $this->find('totalProductStock', $v) + $v['change']),
 				array(

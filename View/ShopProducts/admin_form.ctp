@@ -27,6 +27,7 @@
 		echo $this->Form->hidden('ShopSize.model', array('value' => 'Shop.ShopProduct'));
 		$tabs = array(
 			__d('shop', 'Product'),
+			__d('shop', 'Details'),
 			__d('shop', 'Images'),
 			__d('shop', 'Supply'),
 			__d('shop', 'Options'),
@@ -53,13 +54,15 @@
 		)), array('class' => 'input tiny'));
 
 		$stockForm = array();
-		if(empty($this->request->data['ShopProduct'])) {
+		if(empty($this->request->data['ShopProduct']['id'])) {
 			$i = 0;
 			foreach($shopBranches as $branch) {
 				$stockForm[] = $this->Html->tag('div', implode('', array(
 					$this->Form->hidden('ShopBranchStock.' . $i . '.id'),
-					$this->Form->hidden('ShopBranchStock.' . $i . '.shop_branch_id'),
-					$this->Form->input('ShopBranchStock.' . $i . '.stock', array(
+					$this->Form->hidden('ShopBranchStock.' . $i . '.shop_branch_id', array(
+						'default' => $branch['ShopBranch']['id']
+					)),
+					$this->Form->input('ShopBranchStock.' . $i . '.change', array(
 						'label' => __d(
 							'shop', 'Branch: %s (%s)',
 							$this->Html->link($branch['ContactBranch']['name'], array(
@@ -79,21 +82,40 @@
 					))
 				)));
 			}
+		} else {
+			$stockForm[] = sprintf('<p>%s</p>', __d('shop', 'Use the %s to adjust stock', $this->Html->link(
+				__d('shop', 'stock manager'),
+				array(
+					'controller' => 'shop_branch_stocks',
+					'action' => 'index',
+				)
+			)));
 		}
 
 		$contents = array(
 			implode('', array(
+				$this->Form->input('name'),
 				$this->Form->input('shop_product_type_id', array(
 					'label' => __d('shop', 'Product Type'),
 					'empty' => __d('shop', 'Use category type')
 				)),
-				$this->Form->input('name'),
-				$this->Form->input('active'),
 				$this->Form->input('shop_image_id', array('label' => 'Default Image')),
 				$this->Form->input('available', array(
-					'default' => date('Y-m-d H:i:s'), 
+					'default' => date('Y-m-d H:i:s'),
 					'empty' => false
 				)),
+				$this->Form->input('ShopCategoriesProduct', array(
+					'options' => $shopCategories,
+					'label' => __d('shop', 'Categories'),
+					'multiple' => true, 
+					'empty' => false,
+					'name' => 'data[ShopCategoriesProduct]',
+					'selected' => Hash::extract($this->request->data, 'ShopCategoriesProduct.{n}.shop_category_id'),
+					'style' => 'height: 200px;'
+				)),
+				$this->Form->input('active'),
+			)),
+			implode('', array(
 				$this->Infinitas->wysiwyg('ShopProduct.description'),
 				$this->Infinitas->wysiwyg('ShopProduct.specifications')
 			)),

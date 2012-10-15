@@ -208,6 +208,7 @@ class ShopHelper extends AppHelper {
 		}
 
 		$overallStatus = true;
+		$out = array();
 		foreach($statuses as $status) {
 			if($status['status'] === true) {
 				continue;

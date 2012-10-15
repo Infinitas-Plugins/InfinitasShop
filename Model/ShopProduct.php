@@ -953,4 +953,65 @@ class ShopProduct extends ShopAppModel {
 		);
 	}
 
+/**
+ * @brief save product details
+ *
+ * Saves a product and (when required) creates the stock listing.
+ * 
+ * @param array $product the details of the product to be saved
+ * 
+ * @return boolean
+ */
+	public function saveProduct($product) {
+		$this->transaction();
+		$create = false;
+		if(empty($product[$this->alias][$this->primaryKey])) {
+			$create = true;
+			$this->create();
+		}
+
+		if(!empty($product['ShopBranchStock'])) {
+			$shopBranchStock = $product['ShopBranchStock'];
+			unset($product['ShopBranchStock']);
+		}
+
+		if(!empty($product['ShopCategoriesProduct'])) {
+			$shopCategories = $product['ShopCategoriesProduct'];
+			unset($product['ShopCategoriesProduct']);
+		}
+
+		$saved = (bool)$this->saveAll($product);
+
+		if(!empty($shopCategories)) {
+			$this->ShopCategoriesProduct->deleteAll(array(
+				'shop_product_id' => $this->id
+			));
+
+			foreach($shopCategories as $k => $category) {
+				$shopCategories[$k] = array(
+					'shop_category_id' => $category,
+					'shop_product_id' => $this->id
+				);
+			}
+
+			$this->ShopCategoriesProduct->create();
+			$saved = $saved && $this->ShopCategoriesProduct->saveAll($shopCategories);
+		}
+		if($create) {
+			foreach($shopBranchStock as &$stock) {
+				$stock['shop_product_id'] = $this->id;
+				$stock['notes'] = __d('shop', 'Initial stock (created product)');
+			}
+			$saved = $saved && $this->ShopBranchStock->addStock($shopBranchStock);
+		}
+
+		if($saved) {
+			$this->transaction(true);
+			return true;
+		}
+
+		$this->transaction(false);
+		return false;
+	}
+
 }
