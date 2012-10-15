@@ -41,6 +41,7 @@ echo $this->Filter->alphabetFilter();
 					$this->Paginator->sort('name'),
 					$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')),
 					$this->Paginator->sort('ShopSupplier.name', __d('shop', 'Supplier')),
+					$this->Paginator->sort('ShopBrand.name', __d('shop', 'Brand')),
 					$this->Paginator->sort('rating') => array(
 						'style' => 'width:40px;'
 					),
@@ -86,6 +87,15 @@ echo $this->Filter->alphabetFilter();
 								'controller' => 'shop_suppliers', 
 								'action' => 'edit', 
 								$shopProduct['ShopSupplier']['id']
+							)); 
+						?>&nbsp;
+					</td>
+					<td>
+						<?php 
+							echo $this->Html->link($shopProduct['ShopBrand']['name'], array(
+								'controller' => 'shop_brand', 
+								'action' => 'edit', 
+								$shopProduct['ShopBrand']['id']
 							)); 
 						?>&nbsp;
 					</td>
