@@ -253,7 +253,6 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		foreach($stock as $k => $v) {
-		var_dump($v);
 			$skip = (empty($v['shop_product_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
 			if($skip) {
 				unset($stock[$k]);

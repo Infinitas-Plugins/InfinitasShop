@@ -2,8 +2,7 @@
 /**
  * ShopSpecial Model
  *
- * @property ShopProduct $ShopProduct
- * @property ShopImage $ShopImage
+ * @property ShopProductsSpecial $ShopProductsSpecial
  */
 class ShopSpecial extends ShopAppModel {
 
@@ -18,70 +17,49 @@ class ShopSpecial extends ShopAppModel {
 		'specials' => true
 	);
 
-/**
- * belongsTo associations
- *
- * @var array
- */
-	public $belongsTo = array(
-		'ShopProduct' => array(
-			'className' => 'Shop.ShopProduct',
-			'foreignKey' => 'shop_product_id',
+	public $hasMany = array(
+		'ShopProductsSpecial' => array(
+			'className' => 'Shop.ShopProductsSpecial',
+			'foreignKey' => 'shop_special_id',
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
 		),
-		'ShopImage' => array(
-			'className' => 'Shop.ShopImage',
-			'foreignKey' => 'shop_image_id',
-			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		)
 	);
 
+/**
+ * @brief overload construct for translated validation errors
+ * 
+ * @param boolean $id    [description]
+ * @param [type]  $table [description]
+ * @param [type]  $ds    [description]
+ */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
-			'shop_product_id' => array(
-				'numeric' => array(
-					'rule' => array('numeric'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
-				),
-			),
 			'start_date' => array(
 				'date' => array(
-					'rule' => array('date'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'rule' => 'date',
+					'message' => __d('shop', 'Start date is not valid')
 				),
 			),
 			'end_date' => array(
 				'date' => array(
-					'rule' => array('date'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'rule' => 'date',
+					'message' => __d('shop', 'End date is not valid')
 				),
 			),
 			'active' => array(
 				'boolean' => array(
 					'rule' => array('boolean'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' operations
+					'message' => __d('shop', 'Active should be boolean')
 				),
 			),
 		);
@@ -104,32 +82,34 @@ class ShopSpecial extends ShopAppModel {
 				throw new InvalidArgumentException('No product selected');
 			}
 
+			$this->virtualFields['shop_product_id'] = $this->ShopProductsSpecial->fullFieldName('shop_product_id');
+
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
 				array(
 					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.shop_product_id',
 					$this->alias . '.discount',
 					$this->alias . '.amount',
+					$this->alias . '.free_shipping',
 					$this->alias . '.start_date',
 					$this->alias . '.end_date',
-					$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
-					$this->ShopImage->alias . '.image',
+					'shop_product_id'
 				)
 			);
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				$this->conditions(),
-				array(
-					$this->alias . '.shop_product_id' => $query['shop_product_id'],
-				)
-			);
+			$query['conditions'] = array_merge((array)$query['conditions'], $this->conditions());
 
 			$query['joins'] = array_merge(
 				(array)$query['joins'],
 				array(
-					$this->autoJoinModel($this->ShopImage->fullModelName())
+					$this->autoJoinModel(array(
+						'model' => $this->ShopProductsSpecial->fullModelName(),
+						'type' => 'right',
+						'conditions' => array(
+							$this->ShopProductsSpecial->alias . '.shop_special_id = ShopSpecial.id',
+							$this->ShopProductsSpecial->alias . '.shop_product_id = ' . sprintf('"%s"', $query['shop_product_id'])
+						)
+					))
 				)
 			);
 
@@ -138,11 +118,6 @@ class ShopSpecial extends ShopAppModel {
 
 		if(empty($results)) {
 			return array();
-		}
-
-		foreach($results as &$result) {
-			$result[$this->alias][$this->ShopImage->alias] = $result[$this->ShopImage->alias];
-			unset($result[$this->ShopImage->alias]);
 		}
 
 		if(!empty($query['extract']) && $query['extract']) {

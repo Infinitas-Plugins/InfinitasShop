@@ -24,6 +24,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_images_product',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_products_special',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_price',
@@ -972,14 +973,11 @@ class ShopProductTest extends CakeTestCase {
 						array(
 							'id' => 'special-multi-option',
 							'shop_product_id' => 'multi-option',
-							'discount' => 10,
-							'amount' => null,
+							'discount' => true,
+							'amount' => 10,
+							'free_shipping' => false,
 							'start_date' => '2012-09-06 00:00:00',
-							'end_date' => '2050-10-06 23:59:59',
-							'ShopImage' => array(
-								'id' => 'image-special-multi-option',
-								'image' => 'image-special-multi-option.png'
-							)
+							'end_date' => '2050-10-06 23:59:59'
 						)
 					),
 					'ShopSpotlight' => array(
@@ -1028,7 +1026,7 @@ class ShopProductTest extends CakeTestCase {
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
 			'ShopSpotlight',
-			'ShopSpecial'
+			'ShopProductsSpecial'
 		);
 		$this->{$this->modelClass}->Behaviors->disable('Trashable');
 

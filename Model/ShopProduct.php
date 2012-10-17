@@ -7,7 +7,7 @@
  * @property ShopBranchStock $ShopBranchStock
  * @property ShopCategoriesProduct $ShopCategoriesProduct
  * @property ShopImagesProduct $ShopImagesProduct
- * @property ShopSpecial $ShopSpecial
+ * @property ShopProductsSpecial $ShopProductsSpecial
  * @property ShopSpotlight $ShopSpotlight
  * @property ShopPrice $ShopPrice
  * @property ShopProductType $ShopProductType
@@ -162,8 +162,8 @@ class ShopProduct extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'ShopSpecial' => array(
-			'className' => 'Shop.ShopSpecial',
+		'ShopProductsSpecial' => array(
+			'className' => 'Shop.ShopProductsSpecial',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
 			'conditions' => '',
@@ -401,9 +401,13 @@ class ShopProduct extends ShopAppModel {
 
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
-				$this->ShopSpecial->conditions()
+				$this->ShopProductsSpecial->ShopSpecial->conditions()
 			);
-			$query['joins'][] = $this->autoJoinModel($this->ShopSpecial->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductsSpecial->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductsSpecial->fullModelName(),
+				'model' => $this->ShopProductsSpecial->ShopSpecial->fullModelName()
+			));
 
 			return $query;
 		}
@@ -518,7 +522,7 @@ class ShopProduct extends ShopAppModel {
 		));
 
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
-		$shopSpecials = $this->ShopSpecial->find('specials', $options);
+		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		foreach($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
@@ -596,7 +600,7 @@ class ShopProduct extends ShopAppModel {
 		);
 
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
-		$shopSpecials = $this->ShopSpecial->find('specials', $options);
+		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$shopSpotlights = $this->ShopSpotlight->find('spotlights', $options);
 		$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		foreach($results as &$result) {
@@ -762,7 +766,7 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopOption'] = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
-		$results['ShopSpecial'] = $this->ShopSpecial->find('specials', $options);
+		$results['ShopSpecial'] = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
 		$results['ShopProductCode'] = $this->productCodes($results[$this->alias], $results['ShopOption']);
