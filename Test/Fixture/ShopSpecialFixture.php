@@ -12,6 +12,7 @@ class ShopSpecialFixture extends CakeTestFixture {
  */
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 50),
 		'discount' => array('type' => 'float', 'null' => true, 'default' => null),
 		'amount' => array('type' => 'float', 'null' => true, 'default' => null),
 		'free_shipping' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
@@ -34,6 +35,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 	public $records = array(
 		array(
 			'id' => 'special-multi-option',
+			'name' => 'special-multi-option',
 			'discount' => 1,
 			'amount' => 10,
 			'free_shipping' => 0,
@@ -45,6 +47,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 'special-active',
+			'name' => 'special-active',
 			'discount' => 1,
 			'amount' => 15,
 			'free_shipping' => 0,
@@ -56,6 +59,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 'special-active-pending',
+			'name' => 'special-active-pending',
 			'discount' => 1,
 			'amount' => 15,
 			'free_shipping' => 0,
@@ -67,6 +71,7 @@ class ShopSpecialFixture extends CakeTestFixture {
 		),
 		array(
 			'id' => 'special-active-expired',
+			'name' => 'special-active-expired',
 			'discount' => 0,
 			'amount' => 15,
 			'free_shipping' => 0,

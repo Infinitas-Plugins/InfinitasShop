@@ -13,10 +13,20 @@ class ShopSpecial extends ShopAppModel {
  */
 	public $validate = array();
 
+/**
+ * @brief custom find methods
+ * 
+ * @var array
+ */
 	public $findMethods = array(
 		'specials' => true
 	);
 
+/**
+ * @brief has many relations
+ * 
+ * @var array
+ */
 	public $hasMany = array(
 		'ShopProductsSpecial' => array(
 			'className' => 'Shop.ShopProductsSpecial',
@@ -44,17 +54,39 @@ class ShopSpecial extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
-			'start_date' => array(
-				'date' => array(
-					'rule' => 'date',
-					'message' => __d('shop', 'Start date is not valid')
+			'name' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Please enter a name for this special'),
+					'allowEmpty' => false,
+					'required' => true
 				),
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __d('shop', 'The entered name has already been used')
+				)
+			),
+			'start_date' => array(
+				'datetime' => array(
+					'rule' => array('datetime', 'ymd'),
+					'message' => __d('shop', 'Start date is not valid'),
+					'allowEmpty' => true
+				),
+				'validateInTheFuture' => array(
+					'rule' => 'validateInTheFuture',
+					'message' => __d('shop', 'The start date should be in the future')
+				)
 			),
 			'end_date' => array(
-				'date' => array(
-					'rule' => 'date',
-					'message' => __d('shop', 'End date is not valid')
+				'datetime' => array(
+					'rule' => array('datetime', 'ymd'),
+					'message' => __d('shop', 'End date is not valid'),
+					'allowEmpty' => true
 				),
+				'validateAfterStart' => array(
+					'rule' => 'validateAfterStart',
+					'message' => __d('shop', 'The end date should be after the start date')
+				)
 			),
 			'active' => array(
 				'boolean' => array(
@@ -63,6 +95,32 @@ class ShopSpecial extends ShopAppModel {
 				),
 			),
 		);
+	}
+
+/**
+ * @brief validate the start date is before the end date
+ * 
+ * @param array $field the start date
+ * 
+ * @return boolean
+ */
+	public function validateInTheFuture(array $field) {
+		$startDate = current($field);
+
+		return empty($this->data[$this->alias]['start_date']) || $this->data[$this->alias]['start_date'] > date('Y-m-d H:i:s');
+	}
+
+/**
+ * @brief validate the end date is after the start date
+ * 
+ * @param array $field the start date
+ * 
+ * @return boolean
+ */
+	public function validateAfterStart(array $field) {
+		$endDate = current($field);
+
+		return empty($this->data[$this->alias]['start_date']) || $endDate >= $this->data[$this->alias]['start_date'];
 	}
 
 /**
@@ -107,7 +165,7 @@ class ShopSpecial extends ShopAppModel {
 						'type' => 'right',
 						'conditions' => array(
 							$this->ShopProductsSpecial->alias . '.shop_special_id = ShopSpecial.id',
-							$this->ShopProductsSpecial->alias . '.shop_product_id = ' . sprintf('"%s"', $query['shop_product_id'])
+							$this->ShopProductsSpecial->alias . '.shop_product_id' => $query['shop_product_id']
 						)
 					))
 				)
@@ -136,8 +194,14 @@ class ShopSpecial extends ShopAppModel {
 		return array(
 			'and' => array(
 				$this->alias . '.active' => 1,
-				$this->alias . '.start_date <= ' => date('Y-m-d H:i:s'),
-				$this->alias . '.end_date >= ' => date('Y-m-d H:i:s')
+				array('or' => array(
+					$this->alias . '.start_date <= ' => date('Y-m-d H:i:s'),
+					$this->alias . '.start_date' => '0000-00-00 00:00:00',
+				)),
+				array('or' => array(
+					$this->alias . '.end_date >= ' => date('Y-m-d H:i:s'),
+					$this->alias . '.end_date' => '0000-00-00 00:00:00',
+				))
 			)
 		);
 	}

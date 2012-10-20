@@ -14,6 +14,7 @@ class ShopSpecialTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_special',
+		'plugin.shop.shop_products_special',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_image',
 		'plugin.view_counter.view_counter_view',
@@ -39,6 +40,151 @@ class ShopSpecialTest extends CakeTestCase {
 		unset($this->ShopSpecial);
 
 		parent::tearDown();
+	}
+
+/**
+ * @brief test validation pass
+ *
+ * @dataProvider validationPassDataProvider
+ */
+	public function testValidationPass($data, $expected) {
+		$result = $this->{$this->modelClass}->save($data);
+		$this->assertTrue((bool)$result);
+
+		$result = $this->{$this->modelClass}->read(array('name', 'start_date', 'end_date'));
+		$this->assertEquals(array($this->modelClass => $expected), $result);
+	}
+
+/**
+ * @brief validation pass data provider
+ * 
+ * @return array
+ */
+	public function validationPassDataProvider() {
+		return array(
+			'not-empty-name' => array(
+				array('name' => 'foo bar'),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '0000-00-00 00:00:00',
+					'end_date' => '0000-00-00 00:00:00'
+				)
+			),
+			'start-date' => array(
+				array(
+					'name' => 'foo bar',
+					'start_date' => array(
+						'year' => '2025',
+						'month' => '01',
+						'day' => '01',
+						'hour' => '00',
+						'min' => '00',
+						'meridian' => 'am'
+					)
+				),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '2025-01-01 00:00:00',
+					'end_date' => '0000-00-00 00:00:00'
+				)
+			),
+			'end-date' => array(
+				array(
+					'end_date' => '2025-01-01 00:00:00',
+					'name' => 'foo bar'
+				),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '0000-00-00 00:00:00',
+					'end_date' => '2025-01-01 00:00:00',
+				)
+			),
+			'end-date' => array(
+				array(
+					'end_date' => '2025-01-01 00:00:00',
+					'name' => 'foo bar'
+				),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '0000-00-00 00:00:00',
+					'end_date' => '2025-01-01 00:00:00',
+				)
+			),
+			'both-dates' => array(
+				array(
+					'start_date' => '2025-01-01 00:00:00',
+					'end_date' => '2025-01-01 00:00:01',
+					'name' => 'foo bar'
+				),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '2025-01-01 00:00:00',
+					'end_date' => '2025-01-01 00:00:01'
+				)
+			)
+		);
+	}
+
+/**
+ * @brief test validation fails
+ *
+ * @dataProvider validationFailsDataProvider
+ */
+	public function testValidationFails($data, $expected) {
+		$this->assertFalse($this->{$this->modelClass}->save($data));
+		$result = $this->{$this->modelClass}->validationErrors[key($data)];
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * @brief validation fails data provider
+ * 
+ * @return array
+ */
+	public function validationFailsDataProvider() {
+		return array(
+			'no-name' => array(
+				array(
+					'name' => null
+				),
+				array(
+					'Please enter a name for this special'
+				)
+			),
+			'already-named' => array(
+				array(
+					'name' => 'special-active-pending'
+				),
+				array(
+					'The entered name has already been used'
+				)
+			),
+			'start-date-invalid' => array(
+				array(
+					'start_date' => '2012'
+				),
+				array(
+					'Start date is not valid'
+				)
+			),
+			'start-date-after-end' => array(
+				array(
+					'end_date' => '2012-01-01 00:00:00',
+					'start_date' => '2012-01-01 00:00:01',
+				),
+				array(
+					'The end date should be after the start date'
+				)
+			),
+			'star-is-in-the-past' => array(
+				array(
+					'start_date' => '2012-01-01 00:00:01',
+				),
+				array(
+					'The start date should be in the future'
+				)
+			)
+		);
 	}
 
 /**
@@ -78,14 +224,11 @@ class ShopSpecialTest extends CakeTestCase {
 						'ShopSpecial' => array(
 							'id' => 'special-multi-option',
 							'shop_product_id' => 'multi-option',
-							'discount' => 10,
-							'amount' => null,
+							'discount' => 1,
+							'amount' => 10,
 							'start_date' => '2012-09-06 00:00:00',
 							'end_date' => '2050-10-06 23:59:59',
-							'ShopImage' => array(
-								'id' => 'image-special-multi-option',
-								'image' => 'image-special-multi-option.png'
-							)
+							'free_shipping' => false
 						)
 					)
 				)
@@ -97,14 +240,11 @@ class ShopSpecialTest extends CakeTestCase {
 						'ShopSpecial' => array(
 							'id' => 'special-multi-option',
 							'shop_product_id' => 'multi-option',
-							'discount' => 10,
-							'amount' => null,
+							'discount' => 1,
+							'amount' => 10,
 							'start_date' => '2012-09-06 00:00:00',
 							'end_date' => '2050-10-06 23:59:59',
-							'ShopImage' => array(
-								'id' => 'image-special-multi-option',
-								'image' => 'image-special-multi-option.png'
-							)
+							'free_shipping' => false
 						)
 					)
 				)
@@ -139,14 +279,11 @@ class ShopSpecialTest extends CakeTestCase {
 					array(
 						'id' => 'special-multi-option',
 						'shop_product_id' => 'multi-option',
-						'discount' => 10,
-						'amount' => null,
+						'discount' => 1,
+						'amount' => 10,
 						'start_date' => '2012-09-06 00:00:00',
 						'end_date' => '2050-10-06 23:59:59',
-						'ShopImage' => array(
-							'id' => 'image-special-multi-option',
-							'image' => 'image-special-multi-option.png'
-						)
+						'free_shipping' => false
 					)
 				)
 			),
@@ -156,14 +293,11 @@ class ShopSpecialTest extends CakeTestCase {
 					array(
 						'id' => 'special-multi-option',
 						'shop_product_id' => 'multi-option',
-						'discount' => 10,
-						'amount' => null,
+						'discount' => 1,
+						'amount' => 10,
 						'start_date' => '2012-09-06 00:00:00',
 						'end_date' => '2050-10-06 23:59:59',
-						'ShopImage' => array(
-							'id' => 'image-special-multi-option',
-							'image' => 'image-special-multi-option.png'
-						)
+						'free_shipping' => false
 					)
 				)
 			)

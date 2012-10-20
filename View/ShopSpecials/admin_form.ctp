@@ -29,6 +29,7 @@
 
 		$contents = array(
 			implode('', array(
+				$this->Form->input('name'),
 				$this->Form->input('amount'),
 				$this->Form->input('discount'),
 				$this->Form->input('free_shipping'),
