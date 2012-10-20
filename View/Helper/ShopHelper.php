@@ -88,7 +88,7 @@ class ShopHelper extends AppHelper {
  * @return string
  */
 	public function adminCurrency($amount) {
-		return CakeNumber::currency($amount, 'GBP');
+		return self::_currencyDisplay($amount, 'GBP');
 	}
 
 /**
@@ -105,7 +105,12 @@ class ShopHelper extends AppHelper {
  */
 	public function currency($amount, $to = null) {
 		App::uses('ShopCurrencyLib', 'Shop.Lib');
-		return ShopCurrencyLib::convert($amount, ShopCurrencyLib::addFormat($to));
+		$to = ShopCurrencyLib::addFormat($to);
+		return self::_currencyDisplay(ShopCurrencyLib::convert($amount, $to), $to);
+	}
+
+	protected function _currencyDisplay($amount, $currency) {
+		return CakeNumber::currency($amount, $currency);
 	}
 
 /**

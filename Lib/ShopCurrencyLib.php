@@ -77,7 +77,7 @@ class ShopCurrencyLib {
  */
 	public function addFormat($currency) {
 		$currency = ClassRegistry::init('Shop.ShopCurrency')->find('currency', array(
-			'currency' => $currency
+			'currency' => self::getCurrency($currency)
 		));
 		$currency = current($currency);
 		$changeFields = array(

@@ -10,7 +10,8 @@ App::uses('ShopHelper', 'Shop.View/Helper');
 class ShopHelperTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.routes.route',
-		'plugin.themes.theme'
+		'plugin.themes.theme',
+		'plugin.shop.shop_currency'
 	);
 /**
  * setUp method
@@ -30,6 +31,7 @@ class ShopHelperTest extends CakeTestCase {
  */
 	public function tearDown() {
 		unset($this->Shop);
+		CakeSession::destroy();
 
 		parent::tearDown();
 	}
@@ -219,6 +221,8 @@ class ShopHelperTest extends CakeTestCase {
  * @dataProvider currencyDataProvider
  */
 	public function testCurrency($data, $expected) {
+		$result = $this->Shop->currency($data['amount'], $data['to']);
+		$this->assertEquals($expected, $result);
 
 	}
 
@@ -229,9 +233,26 @@ class ShopHelperTest extends CakeTestCase {
  */
 	public function currencyDataProvider() {
 		return array(
-			array(
-				'',
-				''
+			'default' => array(
+				array(
+					'amount' => 100.00,
+					'to' => null
+				),
+				'£100.00'
+			),
+			'gbp' => array(
+				array(
+					'amount' => 100.00,
+					'to' => 'gbp'
+				),
+				'£100.00'
+			),
+			'usd' => array(
+				array(
+					'amount' => 100.00,
+					'to' => 'usd'
+				),
+				'$159.99'
 			)
 		);
 	}
@@ -239,157 +260,316 @@ class ShopHelperTest extends CakeTestCase {
 /**
  * @brief test admin status
  * 
+ * @dataProvider adminStatusMissingDataProvider
+ */
+	public function testAdminStatusMissing($data, $expected) {
+		$expected = array(
+			array('img' => array(
+				'src' => '/img/core/icons/status/inactive.png',
+				'width' => '20px',
+				'class' => 'icon-status',
+				'title' => sprintf('Missing data :: Unable to determin the status of the product (Missing %s)', $expected),
+				'alt' => 'Off'
+			))
+		);
+		$data = array_merge(array(
+			'ShopProduct' => array(),
+			'ShopBrand' => array(),
+			'ShopProductType' => array(),
+			'ShopSupplier' => array()
+		), $data);
+
+		$result = $this->Shop->adminStatus($data);
+		$this->assertTags($result, $expected);
+	}
+
+/**
+ * @brief admin status missing data provider
+ * 
+ * @return array
+ */
+	public function adminStatusMissingDataProvider() {
+		return array(
+			'product status' => array(
+				array(),
+				'product status'
+			),
+			'product available date' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => null
+					),
+				),
+				'product available date'
+			),
+			'brand' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => null,
+						'available' => null
+					),
+				),
+				'brand'
+			),
+			'product type' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => null,
+						'available' => null
+					),
+					'ShopBrand' => array(
+						'active' => null
+					),
+				),
+				'product type'
+			),
+			'supplier' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => null,
+						'available' => null
+					),
+					'ShopBrand' => array(
+						'active' => null
+					),
+					'ShopProductType' => array(
+						'active' => null
+					),
+				),
+				'supplier'
+			),
+			'cateogry status' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => null,
+						'available' => null
+					),
+					'ShopBrand' => array(
+						'active' => null
+					),
+					'ShopProductType' => array(
+						'active' => null
+					),
+					'ShopSupplier' => array(
+						'active' => null
+					)
+				),
+				'cateogry status'
+			)
+		);
+	}
+
+/**
+ * @brief test admin status
+ *
  * @dataProvider adminStatusDataProvider
  */
 	public function testAdminStatus($data, $expected) {
-
+		$result = $this->Shop->adminStatus($data);
+		$this->assertTags($result, $expected);
 	}
 
+/**
+ * @brief admin status data provider
+ * 
+ * @return array
+ */
 	public function adminStatusDataProvider() {
-		$product = array(
-			'ShopProduct' => array(
-				'id' => 'active',
-				'name' => 'active',
-				'slug' => 'active',
-				'rating' => '1',
-				'rating_count' => '1',
-				'views' => '5',
-				'sales' => '1',
-				'active' => true,
-				'modified' => '2012-10-05 01:14:47',
-				'available' => '2012-10-05 01:14:47',
-				'category_active' => true,
-				'total_stock' => '25',
-			),
-			'ShopProductType' => array(
-				'id' => 'shirts',
-				'name' => 'shirts',
-				'slug' => 'shirts',
-				'active' => true,
-			),
-			'ShopBrand' => array(
-				'id' => 'inhouse',
-				'name' => 'inhouse',
-				'slug' => 'inhouse',
-				'active' => true,
-			),
-			'ShopImage' => array(
-				'id' => 'image-product-active',
-				'image' => 'image-product-active.png',
-			),
-			'ShopPrice' => array(
-				'id' => 'active',
-				'selling' => '12.00000',
-				'retail' => '15.00000',
-				'cost' => '10.00000',
-			),
-			'ShopSupplier' => array(
-				'id' => 'supplier-1',
-				'name' => 'supplier-1',
-				'active' => true,
-			),
-			'ShopCategory' => array(
-				array(
-					'id' => 'active',
-					'name' => 'active',
-					'slug' => 'active',
-					'shop_product_id' => 'active',
-				),
-			),
-			'ShopSpecial' => array(),
-			'ShopSpotlight' => array(),
-			'ShopOption' => array(
-				array(
-					'id' => 'option-size',
-					'name' => 'option-size',
-					'slug' => 'option-size',
-					'description' => 'some descriptive text about option-size',
-					'required' => '1',
-					'shop_product_id' => 'active',
-					'ShopOptionValue' => array(
-						array(
-							'id' => 'option-size-large',
-							'name' => 'option-size-large',
-							'description' => 'some text about option-size-large',
-							'shop_option_id' => 'option-size',
-							'product_code' => 'l',
-							'ShopPrice' => array(
-								'id' => 'option-value-large',
-								'selling' => '3.00000',
-								'retail' => '4.00000',
-							),
-							'ShopSize' => array(
-								'id' => 'option-value-size-large',
-								'model' => 'Shop.ShopOptionValue',
-								'foreign_key' => 'option-size-large',
-								'product_width' => '1.50000',
-								'product_height' => '1.50000',
-								'product_length' => '1.50000',
-								'shipping_width' => '2.50000',
-								'shipping_height' => '2.50000',
-								'shipping_length' => '2.50000',
-								'product_weight' => '50.00000',
-								'shipping_weight' => '65.00000',
-							),
-						),
-						array(
-							'id' => 'option-size-medium',
-							'name' => 'option-size-medium',
-							'description' => 'some text about option-size-medium',
-							'shop_option_id' => 'option-size',
-							'product_code' => 'm',
-							'ShopPrice' => array(
-								'id' => NULL,
-								'selling' => NULL,
-								'retail' => NULL,
-							),
-							'ShopSize' => array(
-								'id' => NULL,
-								'model' => NULL,
-								'foreign_key' => NULL,
-								'product_width' => NULL,
-								'product_height' => NULL,
-								'product_length' => NULL,
-								'shipping_width' => NULL,
-								'shipping_height' => NULL,
-								'shipping_length' => NULL,
-								'product_weight' => NULL,
-								'shipping_weight' => NULL,
-							),
-						),
-						array(
-							'id' => 'option-size-small',
-							'name' => 'option-size-small',
-							'description' => 'some text about option-size-small',
-							'shop_option_id' => 'option-size',
-							'product_code' => 's',
-							'ShopPrice' => array(
-								'id' => NULL,
-								'selling' => NULL,
-								'retail' => NULL,
-							),
-							'ShopSize' => array(
-								'id' => NULL,
-								'model' => NULL,
-								'foreign_key' => NULL,
-								'product_width' => NULL,
-								'product_height' => NULL,
-								'product_length' => NULL,
-								'shipping_width' => NULL,
-								'shipping_height' => NULL,
-								'shipping_length' => NULL,
-								'product_weight' => NULL,
-								'shipping_weight' => NULL,
-							),
-						)
-					)
-				)
-			)
-		);
 		return array(
-			array(
-				'',
-				''
+			'all-inactive' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => false,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => false
+					),
+					'ShopBrand' => array(
+						'active' => false
+					),
+					'ShopProductType' => array(
+						'active' => false
+					),
+					'ShopSupplier' => array(
+						'active' => false
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Product type has been disabled&lt;/li&gt;&lt;li &gt;Supplier has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'supplier' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => false,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => false
+					),
+					'ShopBrand' => array(
+						'active' => false
+					),
+					'ShopProductType' => array(
+						'active' => false
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Product type has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'product-type' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => false,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => false
+					),
+					'ShopBrand' => array(
+						'active' => false
+					),
+					'ShopProductType' => array(
+						'active' => true
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'brand' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => false,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => false
+					),
+					'ShopBrand' => array(
+						'active' => true
+					),
+					'ShopProductType' => array(
+						'active' => true
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'product' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => true,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => false
+					),
+					'ShopBrand' => array(
+						'active' => true
+					),
+					'ShopProductType' => array(
+						'active' => true
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'category' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => true,
+						'available' => '2050-01-01 00:00:00',
+						'category_active' => true
+					),
+					'ShopBrand' => array(
+						'active' => true
+					),
+					'ShopProductType' => array(
+						'active' => true
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					),
+					'ShopCategory' => array(
+						'stuff'
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/inactive.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;/ul&gt;',
+						'alt' => 'Off'
+					))
+				)
+			),
+			'all-active' => array(
+				array(
+					'ShopProduct' => array(
+						'active' => true,
+						'available' => '2010-01-01 00:00:00',
+						'category_active' => true
+					),
+					'ShopBrand' => array(
+						'active' => true
+					),
+					'ShopProductType' => array(
+						'active' => true
+					),
+					'ShopSupplier' => array(
+						'active' => true
+					),
+					'ShopCategory' => array(
+						'stuff'
+					)
+				),
+				array(
+					array('img' => array(
+						'src' => '/img/core/icons/status/active.png',
+						'width' => '20px',
+						'class' => 'icon-status',
+						'title' => 'Available :: This product is available to customers for purchase',
+						'alt' => 'On'
+					))
+				)
 			)
 		);
 	}
@@ -421,14 +601,12 @@ class ShopHelperTest extends CakeTestCase {
 					array('div' => array('class' => 'price')),
 						array('span' => array(
 							'class' => 'cost', 
-							'title' => 'Price :: &lt;ul  &gt;&lt;li &gt;Cost: &amp;#163;10.00&lt;/li&gt;&lt;li ' .
-								'&gt;Selling: &amp;#163;12.00&lt;/li&gt;&lt;li &gt;Markup: 2 (20)&lt;/li&gt;&lt;li ' . 
-								'&gt;Retail: &amp;#163;15.00&lt;/li&gt;&lt;/ul&gt;'
+							'title' => 'Price :: &lt;ul  &gt;&lt;li &gt;Cost: £10.00&lt;/li&gt;&lt;li &gt;Selling: £12.00&lt;/li&gt;&lt;li &gt;Markup: 2 (20)&lt;/li&gt;&lt;li &gt;Retail: £15.00&lt;/li&gt;&lt;/ul&gt;'
 						)),
-							'&#163;10.00',
+							'£10.00',
 						'/span',
 						array('span' => array('class' => 'selling')),
-							'&#163;12.00',
+							'£12.00',
 						'/span',
 					'/div'
 				)
@@ -464,7 +642,7 @@ class ShopHelperTest extends CakeTestCase {
 				array(
 					array('div' => array('class' => 'markup')),
 						array('span' => array('class' => 'amount')),
-							'&#163;2.00',
+							'£2.00',
 						'/span',
 						array('span' => array('class' => 'percentage')),
 							'20.00%',
@@ -483,7 +661,7 @@ class ShopHelperTest extends CakeTestCase {
 				array(
 					array('div' => array('class' => 'markup')),
 						array('span' => array('class' => 'amount')),
-							'(&#163;2.00)',
+							'-£2.00',
 						'/span',
 						array('span' => array('class' => 'percentage')),
 							'-16.67%',
@@ -502,7 +680,7 @@ class ShopHelperTest extends CakeTestCase {
 				array(
 					array('div' => array('class' => 'markup')),
 						array('span' => array('class' => 'amount')),
-							'&#163;0.00',
+							'0',
 						'/span',
 						array('span' => array('class' => 'percentage')),
 							'0.00%',
