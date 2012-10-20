@@ -37,9 +37,12 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 				));
 
 				$cols[$link] = array(
-					'style' => 'width: 125px'
+					'style' => 'width: 90px'
 				);
 			}
+			$cols[__d('shop', 'Total')] = array(
+				'style' => 'width: 110px'
+			);
 			echo $this->Infinitas->adminTableHeader(array_merge(
 				array(
 					$this->Paginator->sort('ShopProduct.name', __d('shop', 'Product')),
@@ -59,6 +62,7 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 						?>&nbsp;
 					</td> 
 					<?php
+						$stock = $value = 0;
 						foreach($shopBranches as $shopBranchId => $shopBranch) {
 							$shopBranchStock['ShopBranchStock'][$shopBranchId] = !empty($shopBranchStock['ShopBranchStock'][$shopBranchId]) ? $shopBranchStock['ShopBranchStock'][$shopBranchId] : 0;
 							echo sprintf('<td>%s&nbsp;</td>', $this->Html->link(
@@ -70,7 +74,11 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 								),
 								array('escape' => false)
 							));
+
+							$stock += $shopBranchStock['ShopBranchStock'][$shopBranchId];
+							$value += $shopBranchStock['ShopProduct']['selling'];
 						}
+						echo sprintf('<td>%s&nbsp;</td>', $this->Shop->stockValue($stock, $value));
 					?>
 				</tr><?php
 			}

@@ -728,8 +728,8 @@ class ShopBranchStockTest extends CakeTestCase {
 					'selling' => '12.000'
 				),
 				'ShopBranchStock' => array(
-					'branch-stock-1' => 10,
-					'branch-stock-2' => 15
+					'branch-1' => 10,
+					'branch-2' => 15
 				)
 			),
 			array(
@@ -739,7 +739,7 @@ class ShopBranchStockTest extends CakeTestCase {
 					'selling' => null
 				),
 				'ShopBranchStock' => array(
-					'branch-stock-3' => 0
+					'branch-1' => 0
 				)
 			)
 		);

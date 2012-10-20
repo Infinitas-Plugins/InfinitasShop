@@ -53,16 +53,12 @@ class ShopBranchStocksController extends ShopAppController {
 			'ShopBranch.name'
 		);
 
-		$shopBranches = $this->{$this->modelClass}->find('list', array(
+		$shopBranches = $this->{$this->modelClass}->ShopBranch->find('list', array(
 			'fields' => array(
-				$this->{$this->modelClass}->alias . '.' . $this->{$this->modelClass}->primaryKey,
+				$this->{$this->modelClass}->ShopBranch->alias . '.' . $this->{$this->modelClass}->ShopBranch->primaryKey,
 				$this->{$this->modelClass}->ShopBranch->ContactBranch->alias . '.' . $this->{$this->modelClass}->ShopBranch->ContactBranch->displayField
 			),
 			'joins' => array(
-				$this->{$this->modelClass}->autoJoinModel(array(
-					'model' => $this->{$this->modelClass}->ShopBranch->fullModelName(),
-					'type' => 'left'
-				)),
 				$this->{$this->modelClass}->ShopBranch->autoJoinModel(array(
 					'from' => $this->{$this->modelClass}->ShopBranch->fullModelName(),
 					'model' => $this->{$this->modelClass}->ShopBranch->ContactBranch->fullModelName(),

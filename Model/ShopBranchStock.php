@@ -387,6 +387,7 @@ class ShopBranchStock extends ShopAppModel {
 		$shopBranchStocks = $this->find('all', array(
 			'fields' => array(
 				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.shop_branch_id',
 				$this->alias . '.shop_product_id',
 				$this->alias . '.stock'
 			),
@@ -394,6 +395,7 @@ class ShopBranchStock extends ShopAppModel {
 				$this->alias . '.shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->ShopProduct->alias, $this->ShopProduct->primaryKey))
 			)
 		));
+
 		foreach($results as &$result) {
 			$result[$this->alias] = Hash::combine(
 				Hash::extract($shopBranchStocks, sprintf(
@@ -401,7 +403,7 @@ class ShopBranchStock extends ShopAppModel {
 					$this->alias,
 					$result[$this->ShopProduct->alias][$this->ShopProduct->primaryKey]
 				)),
-				'{n}.' . $this->primaryKey,
+				'{n}.shop_branch_id',
 				'{n}.stock'
 			);
 		}
