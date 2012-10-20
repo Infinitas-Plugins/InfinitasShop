@@ -32,6 +32,15 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
+ * @brief test set session exception
+ * 
+ * @expectedException InvalidArgumentException
+ */
+	public function testSetSessionException() {
+		ShopCurrencyLib::setSession('gb');
+	}
+
+/**
  * @brief test get currency
  */
 	public function testGetCurrency() {
@@ -67,6 +76,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
  */
 	public function setCurrencyDataProvider() {
 		return array(
+			'null' => array(null, '£1,000.00'),
 			'gbp' => array('gbp', '£1,000.00'),
 			'usd' => array('usd', '$1,000.00'),
 			'eur' => array('eur', '€1.000,000'),
@@ -109,5 +119,19 @@ class ShopCurrencyLibTest extends CakeTestCase {
 			array('usd', 1599.9),
 			array('eur', 1242.5),
 		);
+	}
+
+/**
+ * @brief test fetch update
+ */
+	public function testFetchUpdate() {
+		$result = ShopCurrencyLib::fetchUpdate('GBP', 'USD');
+		$this->assertTrue($result > 1);
+
+		$result = ShopCurrencyLib::fetchUpdate('USD', 'GBP');
+		$this->assertTrue($result < 1);
+
+		$result = ShopCurrencyLib::fetchUpdate('USD', 'FAKE');
+		$this->assertFalse($result);
 	}
 }

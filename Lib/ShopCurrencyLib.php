@@ -116,18 +116,6 @@ class ShopCurrencyLib {
 	}
 
 /**
- * @brief update the currencies
- *
- * figures out what needs updating. anything that has not changed is dropped
- * 
- * @param array $currencies (by reference) list of currencies being updated
- * 
- * @return array 
- */
-	public static function update(&$currencies) {
-	}
-
-/**
  * @brief fetch the updated currencies
  * 
  * @param string $from the currency being converted from
@@ -146,10 +134,6 @@ class ShopCurrencyLib {
 
 		if(!empty($result['error'])) {
 			CakeLog::write('shop', $result['error']);
-			return false;
-		}
-
-		if(empty($result['rhs'])) {
 			return false;
 		}
 
