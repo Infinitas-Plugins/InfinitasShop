@@ -143,6 +143,19 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
+ * @brief attach behaviors
+ *
+ * @param Event $Event
+ */
+	public function onAttachBehaviors(Event $Event) {
+		if($Event->Handler->shouldAutoAttachBehavior()) {
+			if ($Event->Handler->name == 'ShopProduct') {
+				$Event->Handler->Behaviors->attach('Shop.Specials');
+			}
+		}
+	}
+
+/**
  * @brief get css that needs loading
  *
  * @param Event $event the event
