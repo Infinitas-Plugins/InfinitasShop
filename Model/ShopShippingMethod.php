@@ -106,7 +106,7 @@ class ShopShippingMethod extends ShopAppModel {
  * 
  * @return array
  */
-	public function _findShipping($state, array $query, array $results = array()) {
+	protected function _findShipping($state, array $query, array $results = array()) {
 		if($state == 'before') {
 
 			$query['fields'] = array_merge(

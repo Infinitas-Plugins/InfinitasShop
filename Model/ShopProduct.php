@@ -543,7 +543,7 @@ class ShopProduct extends ShopAppModel {
 		return $results;
 	}
 
-	public function _findAdminPaginated($state, array $query, array $results = array()) {
+	protected function _findAdminPaginated($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$query['admin'] = true;
 
@@ -627,7 +627,7 @@ class ShopProduct extends ShopAppModel {
  *
  * @return array
  */
-	public function _findProductShipping($state, array $query, array $results = array()) {
+	protected function _findProductShipping($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			return self::_findProduct($state, $query);
 		}
