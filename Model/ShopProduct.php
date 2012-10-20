@@ -205,6 +205,9 @@ class ShopProduct extends ShopAppModel {
 
 /**
  * @brief overload the construct for translated validation messages
+ *
+ * A number of virtual fields are made available to the product model that contains 
+ * usefull information such as markups and margin.
  * 
  * @param boolean $id    [description]
  * @param [type]  $table [description]
@@ -214,6 +217,22 @@ class ShopProduct extends ShopAppModel {
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		$this->virtualFields['markup_amount'] = String::insert(':ShopPrice.selling - :ShopPrice.cost', array(
+			'ShopPrice' => $this->ShopPrice->alias
+		));
+
+		$this->virtualFields['markup_percentage'] = String::insert('ROUND(((:ShopPrice.selling - :ShopPrice.cost) / :ShopPrice.cost) * 100, 3)', array(
+			'ShopPrice' => $this->ShopPrice->alias
+		));
+
+		$this->virtualFields['margin'] = String::insert('ROUND(((:ShopPrice.selling - :ShopPrice.cost) / :ShopPrice.selling) * 100, 3)', array(
+			'ShopPrice' => $this->ShopPrice->alias
+		));
+
+		$this->virtualFields['conversion_rate'] = String::insert('ROUND((:ShopProduct.sales / :ShopProduct.views) * 100, 3)', array(
+			'ShopProduct' => $this->alias
+		));
 
 		$this->validate = array(
 			'name' => array(

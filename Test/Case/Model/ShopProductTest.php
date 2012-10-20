@@ -196,6 +196,46 @@ class ShopProductTest extends CakeTestCase {
 		);
 	}
 
+	public function testVirtualFields() {
+		$id = 'active';
+
+		$expected = '20.000';
+		$result = $this->{$this->modelClass}->field('conversion_rate', array('ShopProduct.id' => $id));
+		$this->assertEquals($expected, $result);
+
+		$this->{$this->modelClass}->id = $id;
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('sales', 5));
+
+		$expected = '100.000';
+		$result = $this->{$this->modelClass}->field('conversion_rate', array('ShopProduct.id' => $id));
+		$this->assertEquals($expected, $result);
+
+		$expected = '2.000';
+		$result = $this->{$this->modelClass}->find('first', array(
+			'fields' => array('markup_amount'),
+			'conditions' => array('ShopProduct.id' => $id),
+			'joins' => array($this->{$this->modelClass}->autoJoinModel($this->{$this->modelClass}->ShopPrice))
+		));
+		$this->assertEquals($expected, $result[$this->modelClass]['markup_amount']);
+
+		$expected = '20.000';
+		$result = $this->{$this->modelClass}->find('first', array(
+			'fields' => array('markup_percentage'),
+			'conditions' => array('ShopProduct.id' => $id),
+			'joins' => array($this->{$this->modelClass}->autoJoinModel($this->{$this->modelClass}->ShopPrice))
+		));
+		$this->assertEquals($expected, $result[$this->modelClass]['markup_percentage']);
+
+		$expected = '16.667';
+		$result = $this->{$this->modelClass}->find('first', array(
+			'fields' => array('margin'),
+			'conditions' => array('ShopProduct.id' => $id),
+			'joins' => array($this->{$this->modelClass}->autoJoinModel($this->{$this->modelClass}->ShopPrice))
+		));
+		$this->assertEquals($expected, $result[$this->modelClass]['margin']);
+
+	}
+
 /**
  * @brief find paginated
  *
