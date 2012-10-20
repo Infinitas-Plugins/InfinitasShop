@@ -74,7 +74,8 @@ class ShopSpecial extends ShopAppModel {
 				),
 				'validateInTheFuture' => array(
 					'rule' => 'validateInTheFuture',
-					'message' => __d('shop', 'The start date should be in the future')
+					'message' => __d('shop', 'The start date should be in the future'),
+					'on' => 'create'
 				)
 			),
 			'end_date' => array(

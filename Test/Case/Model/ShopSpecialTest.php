@@ -121,6 +121,18 @@ class ShopSpecialTest extends CakeTestCase {
 					'start_date' => '2025-01-01 00:00:00',
 					'end_date' => '2025-01-01 00:00:01'
 				)
+			),
+			'start-is-in-the-past-update' => array(
+				array(
+					'id' => 'special-multi-option',
+					'name' => 'foo bar',
+					'start_date' => '2012-01-01 00:00:01',
+				),
+				array(
+					'name' => 'foo bar',
+					'start_date' => '2012-01-01 00:00:01',
+					'end_date' => '2050-10-06 23:59:59'
+				)
 			)
 		);
 	}
@@ -176,7 +188,7 @@ class ShopSpecialTest extends CakeTestCase {
 					'The end date should be after the start date'
 				)
 			),
-			'star-is-in-the-past' => array(
+			'start-is-in-the-past' => array(
 				array(
 					'start_date' => '2012-01-01 00:00:01',
 				),

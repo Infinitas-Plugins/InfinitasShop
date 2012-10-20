@@ -37,6 +37,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 						'class' => 'first',
 						'style' => 'width:25px;'
 					),
+					$this->Paginator->sort('name'),
 					$this->Paginator->sort('amount'),
 					$this->Paginator->sort('free_shipping'),
 					$this->Paginator->sort('start_date') => array(
@@ -57,6 +58,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 			foreach ($shopSpecials as $shopSpecial) { ?>
 				<tr class="<?php echo $this->Infinitas->rowClass(); ?>">
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopSpecial); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->adminQuickLink($shopSpecial['ShopSpecial']); ?>&nbsp;</td>
 					<td>
 						<?php 
 							if($shopSpecial['ShopSpecial']['discount']) {
@@ -74,8 +76,8 @@ echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
 							)); 
 						?>&nbsp;
 					</td>
-					<td><?php echo $this->Infinitas->date($shopSpecial['ShopSpecial']['start_date'] . ' 00:00:00', 'nice'); ?>&nbsp;</td>
-					<td><?php echo $this->Infinitas->date($shopSpecial['ShopSpecial']['end_date'] . ' 23:59:59', 'nice'); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->date($shopSpecial['ShopSpecial']['start_date'], 'nice'); ?>&nbsp;</td>
+					<td><?php echo $this->Infinitas->date($shopSpecial['ShopSpecial']['end_date'], 'nice'); ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->status($shopSpecial['ShopSpecial']['active']); ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopSpecial['ShopSpecial']); ?>&nbsp;</td>
 				</tr><?php
