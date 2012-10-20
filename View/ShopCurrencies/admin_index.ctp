@@ -48,6 +48,7 @@ echo $this->Filter->alphabetFilter();
 					__d('shop', 'Positive'),
 					__d('shop', 'Negative'),
 					__d('shop', 'Zero'),
+					__d('shop', 'HTML'),
 					__d('shop', 'Default'),
 					$this->Paginator->sort('modified') => array(
 						'style' => 'width:75px;'
@@ -66,6 +67,7 @@ echo $this->Filter->alphabetFilter();
 					<td><?php echo $this->Shop->currency(5000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->currency(-5000, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
 					<td><?php echo $this->Shop->currency(0, $shopCurrency['ShopCurrency']['code']); ?>&nbsp;</td>
+					<td><?php echo h($this->Shop->currency(5000, $shopCurrency['ShopCurrency']['code'])); ?>&nbsp;</td>
 					<td>
 						<?php
 							echo $this->Infinitas->status((float)$shopCurrency['ShopCurrency']['factor'] == 1, array(
