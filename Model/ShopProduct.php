@@ -208,7 +208,11 @@ class ShopProduct extends ShopAppModel {
  *
  * A number of virtual fields are made available to the product model that contains 
  * usefull information such as markups and margin.
- * 
+ * 	- markup_amount: the value amount of the markup (negative means product is selling at a loss)
+ *  - markup_percentage: the % amount of markup (negative means product is selling at a loss)
+ *  - margin: the % of margin for the product
+ *  - conversion_rate: the rate of views to purchases made.
+ *  
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
