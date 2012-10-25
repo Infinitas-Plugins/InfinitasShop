@@ -1,6 +1,6 @@
 <?php
 $value = null;
-if(!empty($this->request->params['pass'])) {
+if($this->request->params['action'] == 'search' && !empty($this->request->params['pass'])) {
 	$value = current($this->request->params['pass']);
 }
 
