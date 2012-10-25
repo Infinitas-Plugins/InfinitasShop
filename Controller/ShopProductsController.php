@@ -30,10 +30,14 @@ class ShopProductsController extends ShopAppController {
 
 /**
  * @brief product search
+ *
+ * If a simple search is done (single field) a PRG (post redirect get) is done so
+ * that search results can be linked and saved.
  */
 	public function search() {
 		if($this->request->is('post')) {
-			if(!empty($this->request->data[$this->modelClass]) && count($this->request->data[$this->modelClass]) == 1) {
+			$simpleSearch = !empty($this->request->data[$this->modelClass]) && count($this->request->data[$this->modelClass]) == 1;
+			if($simpleSearch) {
 				$this->redirect(array(
 					'action' => 'search',
 					current($this->request->data[$this->modelClass])
@@ -56,6 +60,16 @@ class ShopProductsController extends ShopAppController {
 		}
 	}
 
+/**
+ * @brief view an index of the products
+ *
+ * This should generally be accompanied by a category slug so that a sub set of
+ * products are displayed.
+ *
+ * If no category is present all products will be paginated.
+ *
+ * @return void
+ */
 	public function index() {
 		if(empty($this->request->category)) {
 			$this->request->category = null;
@@ -83,7 +97,12 @@ class ShopProductsController extends ShopAppController {
 					'slug' => null
 				));
 			}
+			if(!empty($currentCategory['ShopCategory']['id'])) {
+				$this->set('seoMetaDescription', $currentCategory['ShopCategory']['description']);
+			}
 		}
+
+		$this->_canonicalUrl();
 
 
 		$this->set(compact('shopProducts', 'shopCategories', 'currentCategory', 'parentCategory', 'categoryPath'));
@@ -91,6 +110,37 @@ class ShopProductsController extends ShopAppController {
 
 	public function view() {
 
+	}
+
+/**
+ * @brief set the canonical url
+ *
+ * If the current url matches the calculated canonical url then indexing will be
+ * set to true allowing spiders to index the page. If it does not mathc
+ * (pagination etc) it will set to false so that the page is not indexed.
+ *
+ * @return void
+ */
+	protected function _canonicalUrl() {
+		$url = array(
+			'plugin' => 'shop',
+			'controller' => 'shop_products',
+			'action' => $this->request->params['action']
+		);
+		if(!empty($this->request->category)) {
+			$url['category'] = $this->request->category;
+		}
+		if(!empty($this->request->slug)) {
+			$url['slug'] = $this->request->slug;
+		}
+		if($this->request->params['action'] == 'search' && !empty($this->request->params['pass'][0])) {
+			$url[] = $this->request->params['pass'][0];
+		}
+
+		if(InfinitasRouter::url($url, false) !== $this->request->here) {
+			$this->set('seoContentIndex', false);
+		}
+		$this->set('seoCanonicalUrl', $url);
 	}
 
 /**
