@@ -18,7 +18,10 @@ class ShopCategory extends ShopAppModel {
 	public $displayField = 'name';
 
 	public $findMethods = array(
-		'related' => true
+		'related' => true,
+		'level' => true,
+		'current' => true,
+		'parent' => true
 	);
 
 /**
@@ -92,7 +95,7 @@ class ShopCategory extends ShopAppModel {
 
 /**
  * @brief overload construct for translated validation messages
- * 
+ *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
@@ -120,22 +123,36 @@ class ShopCategory extends ShopAppModel {
 		);
 	}
 
+	public function getPath($id = null, $fields = null, $recursive = null) {
+		unset($this->virtualFields['shop_product_id']);
+		if($id) {
+			$id = $this->field($this->primaryKey, array(
+				'or' => array(
+					$this->fullFieldName($this->primaryKey) => $id,
+					$this->fullFieldName('slug') => $id
+				)
+			));
+		}
+
+		return parent::getPath($id, $fields, $recursive);
+	}
+
 /**
  * @brief after saving figure out the path depth
- * 
+ *
  * @param  boolean $created was the record created (true) or modified (false)
- * 
+ *
  * @return ShopAppModel::afterSave()
  */
 	public function afterSave($created) {
 		$this->saveField(
-			'path_depth', 
+			'path_depth',
 			count($this->getPath($this->id)) - 1,
 			array(
 				'callbacks' => false
 			)
 		);
-		
+
 		return parent::afterSave($created);
 	}
 
@@ -197,6 +214,140 @@ class ShopCategory extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+	protected function _findLevel($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName($this->primaryKey),
+				$this->fullFieldName($this->displayField),
+				$this->fullFieldName('slug'),
+				$this->fullFieldName('parent_id'),
+				$this->fullFieldName('lft'),
+				$this->fullFieldName('rght'),
+				$this->ShopImage->fullFieldName($this->ShopImage->primaryKey),
+				$this->ShopImage->fullFieldName('image'),
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->fullFieldName('active') => 1
+			));
+
+			if(empty($query[0])) {
+				$query['conditions'] = array_merge((array)$query['conditions'], array(
+					'or' => array(
+						$this->fullFieldName('parent_id') => null,
+						$this->fullFieldName('parent_id') => ''
+					)
+				));
+			} else {
+				$query['conditions'] = array_merge((array)$query['conditions'], array(
+					$this->fullFieldName('parent_id') => $this->field('id', array(
+						$this->fullFieldName('slug') => $query[0]
+					))
+				));
+			}
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
+			return $query;
+		}
+
+		return $results;
+	}
+
+/**
+ * @brief get details of the passed in category
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findCurrent($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findSingleCategory($state, $query);
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName('description'),
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->fullFieldName('slug') => $query[0]
+			));
+
+			return $query;
+		}
+
+		return self::_findSingleCategory($state, $query, $results);
+	}
+
+/**
+ * @brief get details for the parent of the passed in category
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findParent($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findSingleCategory($state, $query);
+
+			$this->virtualFields['name'] = sprintf('"%s"', __d('shop', 'Parent Category'));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->fullFieldName($this->primaryKey) => $this->field('parent_id', array(
+					$this->fullFieldName('slug') => $query[0]
+				))
+			));
+
+			return $query;
+		}
+
+		unset($this->virtualFields['name']);
+
+		return self::_findSingleCategory($state, $query, $results);
+	}
+
+/**
+ * @brief shared code for getting category details
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findSingleCategory($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query[0])) {
+				throw new InvalidArgumentException('No category specified');
+			}
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName($this->primaryKey),
+				$this->fullFieldName($this->displayField),
+				$this->fullFieldName('slug'),
+				$this->ShopImage->fullFieldName($this->ShopImage->primaryKey),
+				$this->ShopImage->fullFieldName($this->ShopImage->displayField),
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->fullFieldName('active') => 1
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
+
+			$query['limit'] = 1;
+
+			return $query;
+		}
+
+		return current($results);
 	}
 
 }
