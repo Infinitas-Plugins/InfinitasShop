@@ -9,7 +9,7 @@
  */
 class ShopImage extends ShopAppModel {
 	public $displayField = 'image';
-	
+
 /**
  * @brief behaviors that are attached
  *
@@ -108,6 +108,34 @@ class ShopImage extends ShopAppModel {
 		$this->validate = array(
 
 		);
+	}
+
+	public function afterFind(array $results, $primary) {
+		$noImage = $this->emptyFilePath();
+		$sizes = $this->uploadImageSizes('image');
+
+		foreach($results as &$result) {
+			if(empty($result[$this->alias]) || !array_key_exists($this->displayField, $result[$this->alias])) {
+				continue;
+			}
+
+			$result[$this->alias][$this->displayField . '_full'] = $this->uploadImageUrl(
+				$this->displayField,
+				$result[$this->alias][$this->primaryKey],
+				$result[$this->alias][$this->displayField]
+			);
+
+			foreach($sizes as $size) {
+				$result[$this->alias][$this->displayField . '_' . $size] = $this->uploadImageUrl(
+					$this->displayField,
+					$result[$this->alias][$this->primaryKey],
+					$result[$this->alias][$this->displayField],
+					$size
+				);
+			}
+		}
+
+		return $results;
 	}
 
 }
