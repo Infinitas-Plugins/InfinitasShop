@@ -306,7 +306,7 @@ class ShopHelper extends AppHelper {
 	public function categoryList($shopCategories, array $options = array(), $isChild = false) {
 		foreach($shopCategories as &$category) {
 			$name = $category['ShopCategory']['name'];
-			if(Configure::read('Shop.display_category_count')) {
+			if(Configure::read('Shop.display_category_count') && array_key_exists('shop_product_count', $category['ShopCategory'])) {
 				$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
 			}
 
@@ -314,14 +314,20 @@ class ShopHelper extends AppHelper {
 			$liOptions = array();
 			$linkOptions = array('escape' => false);
 			if(!empty($category['children'])) {
-				$name = sprintf('%s%s', $name, $this->Html->tag('b', '', array('class' => 'caret')));
+				$thisCategory = array('ShopCategory' => $category['ShopCategory'], 'children' => array());
+				$thisCategory['ShopCategory']['name'] = __d('shop', 'View All');
+				unset($thisCategory['ShopCategory']['shop_product_count']);
+				array_unshift($category['children'], $thisCategory);
+
 				$children = self::categoryList($category['children'], array('class' => 'dropdown-menu'), true);
 				$liOptions['class'] = 'dropdown';
 				$linkOptions = array_merge($linkOptions, array(
 					'class' => 'dropdown-toggle',
 					'data-toggle' => 'dropdown'
 				));
-				if($isChild) {
+				if(!$isChild) {
+					$name = sprintf('%s%s', $name, $this->Html->tag('b', '', array('class' => 'caret')));
+				} else if($isChild) {
 					$liOptions['class'] = 'dropdown-submenu';
 				}
 			}
