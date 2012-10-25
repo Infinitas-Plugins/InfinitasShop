@@ -8,7 +8,8 @@ App::uses('ShopAppModel', 'Shop.Model');
 class ShopCurrency extends ShopAppModel {
 	public $findMethods = array(
 		'currency' => true,
-		'conversions' => true
+		'conversions' => true,
+		'switch' => true
 	);
 
 /**
@@ -113,6 +114,19 @@ class ShopCurrency extends ShopAppModel {
 			$return[strtoupper($result[$this->alias]['code'])] = $result[$this->alias]['factor'];
 		}
 		return $return;
+	}
+
+	protected function _findSwitch($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName($this->primaryKey),
+				$this->fullFieldName($this->displayField),
+				$this->fullFieldName('code'),
+			));
+			return $query;
+		}
+
+		return $results;
 	}
 
 /**
