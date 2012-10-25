@@ -3,6 +3,7 @@ class ShopHelper extends AppHelper {
 	public $helpers = array(
 		'Text',
 		'Html',
+		'Form',
 		'Libs.Infinitas',
 		'Libs.Design'
 	);
@@ -97,10 +98,10 @@ class ShopHelper extends AppHelper {
  * Will use the currency from the session or store default.
  *
  * @see ShopCurrencyLib::convert()
- * 
+ *
  * @param float $amount the amount being converted
  * @param string $to the currency being displayed in
- * 
+ *
  * @return string
  */
 	public function currency($amount, $to = null) {
@@ -117,10 +118,10 @@ class ShopHelper extends AppHelper {
  * @brief display the stock quantity / value
  *
  * returns html markup for swtiching between stock count and value
- * 
+ *
  * @param float $quantity the number of items in stock
  * @param float $price the value of a single item
- * 
+ *
  * @return string
  */
 	public function stockValue($quantity, $price) {
@@ -146,9 +147,9 @@ class ShopHelper extends AppHelper {
  *
  * If any of the fields required for figuring out the status are not available 'disabled'
  * symbol is returned with details of the missing data
- * 
+ *
  * @param  array $product the product from a find, must include all details to determin the status
- * 
+ *
  * @return string
  */
 	public function adminStatus(array &$product) {
@@ -230,9 +231,9 @@ class ShopHelper extends AppHelper {
 
 /**
  * @brief display the cost details for a price
- * 
+ *
  * @param array $shopPrice the price details
- * 
+ *
  * @return string
  */
 	public function adminPrice(array &$shopPrice) {
@@ -254,9 +255,9 @@ class ShopHelper extends AppHelper {
 
 /**
  * @brief build markup info switch html
- * 
+ *
  * @param  array $shopPrice the pricing information
- * 
+ *
  * @return string
  */
 	public function adminMarkup(array &$shopPrice) {
@@ -268,10 +269,10 @@ class ShopHelper extends AppHelper {
 
 /**
  * @brief calculate the markup of a price
- * 
+ *
  * @param  array $shopPrice the pricing information
  * @param  boolean $percent calculate as a percentacge or value
- * 
+ *
  * @return string
  */
 	protected function _markup(array $shopPrice, $percent = false) {
@@ -279,7 +280,166 @@ class ShopHelper extends AppHelper {
 		if(!$percent) {
 			return $markup;
 		}
-		
+		if($shopPrice['cost'] == 0) {
+			$shopPrice['cost'] = .01;
+		}
+
 		return ($markup / $shopPrice['cost']) * 100;
 	}
+
+/**
+ * @brief build a nested category nav
+ *
+ * Generally should not pass a third param as that is used internally to set the
+ * correct classes on child elements.
+ *
+ * @code
+ *	$this->Shop->categoryList($categories, array('class' => 'foobar'));
+ * @endcode
+ *
+ * @param array $shopCategories nested list of categories
+ * @param array $options options for the ul
+ * @param boolean $isChild this is for internal use
+ *
+ * @return string
+ */
+	public function categoryList($shopCategories, array $options = array(), $isChild = false) {
+		foreach($shopCategories as &$category) {
+			$name = $category['ShopCategory']['name'];
+			if(Configure::read('Shop.display_category_count')) {
+				$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
+			}
+
+			$children = null;
+			$liOptions = array();
+			$linkOptions = array('escape' => false);
+			if(!empty($category['children'])) {
+				$name = sprintf('%s%s', $name, $this->Html->tag('b', '', array('class' => 'caret')));
+				$children = self::categoryList($category['children'], array('class' => 'dropdown-menu'), true);
+				$liOptions['class'] = 'dropdown';
+				$linkOptions = array_merge($linkOptions, array(
+					'class' => 'dropdown-toggle',
+					'data-toggle' => 'dropdown'
+				));
+				if($isChild) {
+					$liOptions['class'] = 'dropdown-submenu';
+				}
+			}
+			$item = $this->Html->link($name, array(
+				'plugin' => 'shop',
+				'controller' => 'shop_products',
+				'action' => 'index',
+				'category' => $category['ShopCategory']['slug']
+			), $linkOptions);
+
+
+			$category = $this->Html->tag('li', $item . $children, $liOptions);
+		}
+
+		return $this->Html->tag('ul', implode('', $shopCategories), $options);
+	}
+
+/**
+ * @brief generate information links
+ *
+ * @param string $title the heading of the box being generated
+ * @param array $links key value array of title => url
+ *
+ * @return type
+ */
+	public function infoLinks($title, array $links) {
+		foreach($links as $title => &$link) {
+			$link = $this->Html->link($title, $link);
+		}
+
+		return $this->Html->tag('div', implode('', array(
+			$this->Html->tag('h4', $title),
+			$this->Design->arrayToList($links, array('ul' => 'unstyled'))
+		)), array('class' => 'span3'));
+	}
+
+/**
+ * @brief generate the breadcrumbs for the category path
+ *
+ * @code
+ *	$this->Shop->categoryBreadcrumbs($categories);
+ *	// [cat 1 / cat 2 / cat 3]
+ *
+ *	$this->Shop->categoryBreadcrumbs($categories, $prodcut);
+ *	// [cat 1 / cat 2 / cat 3 / $product]
+ * @endcode
+ *
+ * @param array $categories list of categories
+ * @param string $product optional name of the product being viewd
+ *
+ * @return string
+ */
+	public function categoryBreadcrumbs(array $categories, $product = null) {
+		if(empty($categories)) {
+			return;
+		}
+
+		$divider = $this->Html->tag('span', '/', array('class' => 'divider'));
+
+		$count = count($categories);
+		if(!empty($product)) {
+			$count++;
+		}
+
+		foreach($categories as $k => &$category) {
+			if($k + 1 == $count) {
+				$category = $category['ShopCategory']['name'];
+				continue;
+			}
+
+			$url = array(
+				'plugin' => 'shop',
+				'controller' => 'shop_products',
+				'action' => 'index',
+				'category' => $category['ShopCategory']['slug']
+			);
+			$options = array('escape' => false);
+			$category = $this->Html->link($category['ShopCategory']['name'], $url, $options) . $divider;
+		}
+
+		array_unshift($categories, $this->Html->link(__d('shop', 'Home'), '/') . $divider);
+
+		if(!empty($product)) {
+			$categories[] = $product;
+		}
+
+		return $this->Design->arrayToList($categories, array('ul' => 'breadcrumb'));
+	}
+
+	public function addToCart(array $product, array $options = array()) {
+		return implode('', array(
+			$this->Form->create('ShopList', array('url' => array(
+				'plugin' => 'shop',
+				'controller' => 'shop_lists',
+				'action' => 'add'
+			))),
+				$this->Form->hidden('ShopList.product_id', array(
+					'value' => $product['id']
+				)),
+				$this->Form->submit(__d('shop', 'Add to Cart'), $options),
+			$this->Form->end()
+		));
+	}
+
+/**
+ * @brief generate the pricing information
+ *
+ * @param array $product
+ * @return type
+ */
+	public function price(array $product) {
+		if(empty($product['ShopPrice']['selling'])) {
+			return __d('shop', 'Call for price');
+		}
+
+		return $this->Html->tag('span', $this->currency($product['ShopPrice']['selling']), array(
+			'class' => 'price price-now'
+		));
+	}
+
 }
