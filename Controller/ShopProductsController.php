@@ -18,6 +18,81 @@
  */
 
 class ShopProductsController extends ShopAppController {
+	public function beforeFilter() {
+		parent::beforeFilter();
+
+		$this->notice['no_search'] = array(
+			'message' => __d('shop', 'No search string provided'),
+			'level' => 'warning',
+			'redirect' => ''
+		);
+	}
+
+/**
+ * @brief product search
+ */
+	public function search() {
+		if($this->request->is('post')) {
+			if(!empty($this->request->data[$this->modelClass]) && count($this->request->data[$this->modelClass]) == 1) {
+				$this->redirect(array(
+					'action' => 'search',
+					current($this->request->data[$this->modelClass])
+				));
+			}
+		}
+
+		if($this->request->is('get')) {
+			if(empty($this->request->params['pass'])) {
+				$this->notice('no_search');
+			}
+
+			$this->Paginator->settings = array(
+				'search',
+				'search' => current($this->request->params['pass'])
+			);
+
+			$this->_productList();
+			return $this->render('index');
+		}
+	}
+
+	public function index() {
+		if(empty($this->request->category)) {
+			$this->request->category = null;
+		}
+		$this->Paginator->settings = array(
+			'paginated',
+			'category' => $this->request->category
+		);
+
+		$this->_productList();
+	}
+
+	protected function _productList() {
+		$shopProducts = $this->Paginator->paginate(null, $this->Filter->filter);
+		$shopCategories = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->find('level', $this->request->category);
+
+		$currentCategory = $parentCategory = $categoryPath = array();
+		if($this->request->category) {
+			$currentCategory = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->find('current', $this->request->category);
+			$parentCategory = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->find('parent', $this->request->category);
+			$categoryPath = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->getPath($this->request->category);
+			if(empty($parentCategory)) {
+				$parentCategory = array('ShopCategory' => array(
+					'name' => __d('shop', 'All Categories'),
+					'slug' => null
+				));
+			}
+		}
+
+
+		$this->set(compact('shopProducts', 'shopCategories', 'currentCategory', 'parentCategory', 'categoryPath'));
+	}
+
+	public function view() {
+
+	}
+
 /**
  * @brief the index method
  *
