@@ -266,6 +266,7 @@ class ShopBranchStock extends ShopAppModel {
 				));
 
 				if(empty($stock[$k]['shop_branch_stock_id'])) {
+					$this->create();
 					$this->save(array(
 						'shop_product_id' => $v['shop_product_id'],
 						'shop_branch_id' => $v['shop_branch_id'],
