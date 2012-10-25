@@ -13,13 +13,14 @@ class ShopSize extends ShopAppModel {
  */
 	public $belongsTo = array(
 		'ShopProduct' => array(
-			'className' => 'Shop.ShopProduct'
+			'className' => 'Shop.ShopProduct',
+			'foreignKey' => 'foreign_key'
 		)
 	);
 
 /**
  * @brief overload construct to translate validation messages
- * 
+ *
  * @param type $id
  * @param type $table
  * @param type $ds
