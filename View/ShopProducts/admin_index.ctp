@@ -70,9 +70,11 @@ echo $this->Filter->alphabetFilter();
 					</td>
 					<td>
 						<?php 
-							echo sprintf('%s<br/>%s', 
-								$this->Html->adminQuickLink($shopProduct['ShopProduct']),
-								$shopProduct['ShopImage']['id']
+							echo sprintf('%s<br/>%s',
+								$this->Html->image($shopProduct['ShopImage']['image_small'], array(
+									'width' => 70
+								)), 
+								$this->Html->adminQuickLink($shopProduct['ShopProduct'])
 							);
 						?>&nbsp;
 					</td>
