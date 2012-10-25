@@ -14,8 +14,6 @@ class ShopCategoriesProduct extends ShopAppModel {
  */
 	public $validate = array();
 
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
 /**
  * belongsTo associations
  *
@@ -39,8 +37,8 @@ class ShopCategoriesProduct extends ShopAppModel {
 	);
 
 /**
- * @brief overload consturct for translated validation 
- * 
+ * @brief overload consturct for translated validation
+ *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
@@ -57,7 +55,7 @@ class ShopCategoriesProduct extends ShopAppModel {
 					'message' => __d('shop', 'The selected category does not exist'),
 					'allowEmpty' => false,
 					'required' => true,
-				),
+				)
 			),
 			'shop_product_id' => array(
 				'validateRecordExists' => array(
@@ -65,8 +63,8 @@ class ShopCategoriesProduct extends ShopAppModel {
 					'message' => __d('shop', 'The selected product does not exist'),
 					'allowEmpty' => false,
 					'required' => true,
-				),
-			),
+				)
+			)
 		);
 	}
 }
