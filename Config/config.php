@@ -1,7 +1,8 @@
 <?php
 	$config['Shop'] = array(
 		'currency' => 'GBP',
-		
+		'display_category_count' => true,
+
 		'allow_ratings' => true,
 		'allow_comments' => true,
 		'payment_terms' => array(
