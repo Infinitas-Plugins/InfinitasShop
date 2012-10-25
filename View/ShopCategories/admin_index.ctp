@@ -42,7 +42,6 @@ echo $this->Filter->alphabetFilter();
 						'style' => 'width:25px;'
 					),
 					$this->Paginator->sort('name'),
-					$this->Paginator->sort('ParentShopCategory.name', __d('shop', 'Parent')),
 					$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')),
 					$this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
 						'style' => 'width:50px;'
@@ -70,15 +69,6 @@ echo $this->Filter->alphabetFilter();
             					echo '<b>', str_repeat('- ', $shopCategory['ShopCategory']['path_depth']), ' |</b> ';
             				}
 							echo $this->Html->adminQuickLink($shopCategory['ShopCategory']);
-						?>&nbsp;
-					</td>
-					<td>
-						<?php
-							echo $this->Html->link($shopCategory['ParentShopCategory']['name'], array(
-								'controller' => 'shop_categories',
-								'action' => 'view',
-								$shopCategory['ParentShopCategory']['id']
-							));
 						?>&nbsp;
 					</td>
 					<td>
