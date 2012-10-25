@@ -202,4 +202,52 @@ class ShopEvents extends AppEvents {
 		ClassRegistry::init('Shop.ShopCurrency')->updateCurrencies();
 	}
 
+	public function onRouteParse(Event $Event, $data) {
+		if($data['plugin'] != 'shop') {
+			return false;
+		}
+		$shopAdmin = !empty($data['prefix']) && $data['prefix'] == 'admin';
+		if($shopAdmin) {
+			return $data;
+		}
+
+
+		$controllers = array(
+			'shop_products'
+		);
+		if(!in_array($data['controller'], $controllers)) {
+			return $data;
+		}
+
+		$ShopProduct = ClassRegistry::init('Shop.ShopProduct');
+		if($data['controller'] == 'shop_products' && !empty($data['slug'])) {
+			$count = $ShopProduct->find('count', array(
+				'conditions' => array(
+					$ShopProduct->alias . '.slug' => $data['slug'],
+					$ShopProduct->alias . '.active' => 1,
+				)
+			));
+
+			if(!$count) {
+				return false;
+			}
+		}
+
+		$ShopCategory = ClassRegistry::init('Shop.ShopCategory');
+		if($data['controller'] == 'shop_products' && !empty($data['category'])) {
+			$count = $ShopCategory->find('count', array(
+				'conditions' => array(
+					$ShopCategory->alias . '.slug' => $data['category'],
+					$ShopCategory->alias . '.active' => 1,
+				)
+			));
+
+			if(!$count) {
+				return false;
+			}
+		}
+
+		return $data;
+	}
+
 }
