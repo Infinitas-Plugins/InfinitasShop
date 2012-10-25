@@ -99,7 +99,10 @@
 					'label' => __d('shop', 'Product Type'),
 					'empty' => __d('shop', 'Use category type')
 				)),
-				$this->Form->input('shop_image_id', array('label' => 'Default Image')),
+				$this->Form->input('product_code'),
+				$this->Form->input('shop_image_id', array(
+					'label' => __d('shop', 'Default Image')
+				)),
 				$this->Form->input('available', array(
 					'default' => date('Y-m-d H:i:s'),
 					'empty' => false
