@@ -4,6 +4,7 @@
  *
  * @property ShopImage $ShopImage
  * @property ShopSupplier $ShopSupplier
+ * @property ShopBrand $ShopBrand
  * @property ShopBranchStock $ShopBranchStock
  * @property ShopCategoriesProduct $ShopCategoriesProduct
  * @property ShopImagesProduct $ShopImagesProduct
@@ -39,7 +40,8 @@ class ShopProduct extends ShopAppModel {
 		'specials' => true,
 		'spotlights' => true,
 		'mostViewed' => true,
-		'mostPurchased' => true
+		'mostPurchased' => true,
+		'search' => true
 	);
 
 /**
@@ -206,13 +208,13 @@ class ShopProduct extends ShopAppModel {
 /**
  * @brief overload the construct for translated validation messages
  *
- * A number of virtual fields are made available to the product model that contains 
+ * A number of virtual fields are made available to the product model that contains
  * usefull information such as markups and margin.
  * 	- markup_amount: the value amount of the markup (negative means product is selling at a loss)
  *  - markup_percentage: the % amount of markup (negative means product is selling at a loss)
  *  - margin: the % of margin for the product
  *  - conversion_rate: the rate of views to purchases made.
- *  
+ *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
@@ -221,6 +223,10 @@ class ShopProduct extends ShopAppModel {
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		$this->order = array(
+			$this->fullFieldName($this->displayField) => 'asc'
+		);
 
 		$this->virtualFields['markup_amount'] = String::insert(':ShopPrice.selling - :ShopPrice.cost', array(
 			'ShopPrice' => $this->ShopPrice->alias
@@ -591,6 +597,75 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
+ * @brief custom find method for product search
+ *
+ * There are a number of ways to do searches.
+ * - Normal search: `query` the default will do a query with `field LIKE "%query%"`
+ *		Search will be 'OR' based
+ * - Specify the wild card: `%uery`, `quer%` or `qu%ry` will do a query with `field LIKE "quer%"`
+ * - Specify not: If first char is ! the query will be `field NOT LIKE "query"`.
+ *		wildcard can also be included, search will be 'AND' based
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findSearch($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query['search'])) {
+				throw new InvalidArgumentException(__d('shop', 'No search string provided'));
+			}
+
+			$like = 'LIKE';
+			$opperator = 'or';
+			if(substr($query['search'], 0, 1) == '!') {
+				$like = 'NOT LIKE';
+				$opperator = 'and';
+				$query['search'] = substr($query['search'], 1);
+			}
+
+			$match = '%:search%';
+			if(strstr($query['search'], '%')) {
+				$match = ':search';
+			}
+
+			$search = array(
+				'%'
+			);
+			$replace = array(
+				'---WILDCARD---'
+			);
+			$query['search'] = str_replace($search, $replace, $query['search']);
+			$query['search'] = Sanitize::escape($query['search']);
+			$query['search'] = str_replace($replace, $search, $query['search']);
+
+			$like = sprintf(' %s "%s"', $like, String::insert($match, array('search' => $query['search'])));
+			$conditions = array(
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.product_code',
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->displayField,
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField,
+				'ActiveCategory.' . $this->ShopCategoriesProduct->ShopCategory->displayField,
+			);
+			foreach($conditions as &$condition) {
+				$condition .= $like;
+			}
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$opperator => $conditions
+			));
+
+			return self::_findPaginated($state, $query);
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
  * @brief find paginated list of products
  *
  * @param string $state
@@ -602,6 +677,8 @@ class ShopProduct extends ShopAppModel {
 	protected function _findPaginated($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$query = $this->_findBasics($state, $query);
+
+			$query['fields'][] = $this->fullFieldName('description');
 
 			$query['group'] = array_merge(
 				(array)$query['group'],
@@ -893,7 +970,7 @@ class ShopProduct extends ShopAppModel {
 	protected function _findBasics($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
-			
+
 			$query['fields'] = array_merge(
 				array(
 					'DISTINCT(ActiveCategory.id)',
@@ -929,6 +1006,15 @@ class ShopProduct extends ShopAppModel {
 				$this->_activeOnlyConditions($query);
 			}
 
+			if(!empty($query['category'])) {
+				$query['conditions'] = array_merge((array)$query['conditions'], array(
+					'or' => array(
+						'ActiveCategory.id' => $query['category'],
+						'ActiveCategory.slug' => $query['category']
+					)
+				));
+			}
+
 			$query['joins'] = array_filter($query['joins']);
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
@@ -952,9 +1038,9 @@ class ShopProduct extends ShopAppModel {
 
 /**
  * @brief build the conditions to find only active products
- * 
+ *
  * @param array $query the query being run (passed by reference)
- * 
+ *
  * @return void
  */
 	protected function _activeOnlyConditions(array &$query) {
@@ -984,9 +1070,9 @@ class ShopProduct extends ShopAppModel {
  * @brief save product details
  *
  * Saves a product and (when required) creates the stock listing.
- * 
+ *
  * @param array $product the details of the product to be saved
- * 
+ *
  * @return boolean
  */
 	public function saveProduct($product) {
@@ -1008,16 +1094,17 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		$saved = (bool)$this->saveAll($product);
+		$productId = $this->id;
 
 		if(!empty($shopCategories)) {
 			$this->ShopCategoriesProduct->deleteAll(array(
-				'shop_product_id' => $this->id
+				'shop_product_id' => $productId
 			));
 
 			foreach($shopCategories as $k => $category) {
 				$shopCategories[$k] = array(
 					'shop_category_id' => $category,
-					'shop_product_id' => $this->id
+					'shop_product_id' => $productId
 				);
 			}
 
@@ -1026,7 +1113,7 @@ class ShopProduct extends ShopAppModel {
 		}
 		if($create) {
 			foreach($shopBranchStock as &$stock) {
-				$stock['shop_product_id'] = $this->id;
+				$stock['shop_product_id'] = $productId;
 				$stock['notes'] = __d('shop', 'Initial stock (created product)');
 			}
 			$saved = $saved && $this->ShopBranchStock->addStock($shopBranchStock);
