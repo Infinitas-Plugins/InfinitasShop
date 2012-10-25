@@ -19,6 +19,15 @@
 
 class ShopBrand extends ShopAppModel {
 /**
+ * @brief find methods
+ *
+ * @var array
+ */
+	public $findMethods = array(
+		'brands' => true
+	);
+
+/**
  * @brief Validation rules
  *
  * @var array
@@ -27,7 +36,7 @@ class ShopBrand extends ShopAppModel {
 
 /**
  * @brief behaviors that are attached
- * 
+ *
  * @var array
  */
 	public $actsAs = array(
@@ -111,5 +120,24 @@ class ShopBrand extends ShopAppModel {
 				)
 			)
 		);
+	}
+
+	protected function _findBrands($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->fullFieldName($this->primaryKey),
+				$this->fullFieldName($this->displayField),
+				$this->fullFieldName('slug'),
+				$this->fullFieldName('image_thumb'),
+				$this->fullFieldName('image_medium'),
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->fullFieldName('active') => 1
+			));
+			return $query;
+		}
+
+		return $results;
 	}
 }
