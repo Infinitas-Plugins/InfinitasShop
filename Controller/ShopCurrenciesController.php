@@ -20,7 +20,7 @@
 class ShopCurrenciesController extends ShopAppController {
 /**
  * @brief overlaod beforeFilter to add some notices
- * 
+ *
  * @return void
  */
 	public function beforeFilter() {
@@ -36,6 +36,33 @@ class ShopCurrenciesController extends ShopAppController {
 			'redirect' => true,
 			'level' => 'warning'
 		);
+	}
+
+/**
+ * @brief change the currency being displayed
+ *
+ * Change the currency that products are displayed in
+ *
+ * @return void
+ */
+	public function change() {
+		$this->saveRedirectMarker();
+
+		if(empty($this->request->code)) {
+			$this->notice(__d('shop', 'No currency selected'), array(
+				'level' => 'warning',
+				'redirect' => ''
+			));
+		}
+
+		try {
+			ShopCurrencyLib::setCurrency($this->request->code);
+			$this->notice(__d('shop', 'Your currency has been changed'), array(
+				'redirect' => ''
+			));
+		} catch(Exception $e) {
+			$this->notice($e);
+		}
 	}
 
 /**
@@ -61,7 +88,7 @@ class ShopCurrenciesController extends ShopAppController {
 
 /**
  * @brief overload the mass actions for the update method
- * 
+ *
  * @return void
  */
 	public function admin_mass() {
@@ -74,14 +101,14 @@ class ShopCurrenciesController extends ShopAppController {
 
 /**
  * @brief manually update the currency exchange rates
- * 
+ *
  * @return void
  */
 	protected function _update() {
 		if($this->{$this->modelClass}->updateCurrencies(true)) {
 			$this->notice('updated');
-		} 
+		}
 		$this->notice('not_updated');
 	}
-	
+
 }
