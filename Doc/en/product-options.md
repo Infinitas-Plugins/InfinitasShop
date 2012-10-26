@@ -1,0 +1,1 @@
+> Eg: You have a product `t-shirt` which has a colour option (`red`, `blue` and `white`) and size option (`small` and `large`). For simplicity we will assume the **product option** codes are the same as the names. Some one purchase a `t-shirt`, the product code would be generated 
