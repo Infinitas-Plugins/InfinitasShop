@@ -29,9 +29,9 @@ class ShopProductTypesController extends ShopAppController {
  */
 	public function admin_index() {
 		$this->Paginator->settings = array(
-			'contain' => array(
-				'ShopProduct',
-				'ShopCategory'
+			'joins' => array(
+				//$this->{$this->modelClass}->autoJoinModel('Shop.ShopProduct'),
+				//$this->{$this->modelClass}->autoJoinModel('Shop.ShopCategory'),
 			)
 		);
 
@@ -42,6 +42,6 @@ class ShopProductTypesController extends ShopAppController {
 			'name',
 		);
 
-		$this->set(compact('shopProductTypes', 'filterOptions'));
+		$this->set(compact('filterOptions', 'shopProductTypes'));
 	}
 }
