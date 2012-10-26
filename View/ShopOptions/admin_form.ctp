@@ -15,7 +15,7 @@
 	 * Redistributions of files must retain the above copyright notice.
 	 */
 	echo $this->Form->create();
-		echo $this->Infinitas->adminEditHead(); 
+		echo $this->Infinitas->adminEditHead();
 		echo $this->Form->input('id');
 
 		$smallField = array('div' => false, 'error' => false, 'label' => false);
@@ -38,7 +38,7 @@
 			);
 		}
 		$table = sprintf(
-			'<div class="table"><table class="listing" cellpadding="0" cellspacing="0">%s%s</table></div>', 
+			'<div class="table"><table class="listing" cellpadding="0" cellspacing="0">%s%s</table></div>',
 			$this->Infinitas->adminTableHeader(array(
 				__d('shop', 'Name'),
 				__d('shop', 'Code') => array(
@@ -56,13 +56,15 @@
 
 		$tabs = array(
 			__d('shop', 'Option'),
-			__d('shop', 'Values')
+			__d('shop', 'Values'),
+			__d('shop', 'Affects')
 		);
 
 		$this->request->data['ShopOptionValue'] = array();
 		$contents = array(
 			implode('', array(
 				$this->Form->input('name'),
+				$this->Form->input('slug'),
 				$this->Infinitas->wysiwyg('ShopOption.description'),
 				$this->Form->input('required', array('type' => 'checkbox'))
 			)),
@@ -99,7 +101,15 @@
 						$this->Form->input('ShopSize.0.shipping_weight', $smallField + array('placeholder' => __d('shop', 'Weight (g)'))),
 					)), array('class' => 'input tiny'))
 				)), array('class' => 'option-value'))
-			))
+			)),
+			implode('', array(
+				$this->Form->input('ShopProductType', array(
+					'selected' => Hash::extract($this->request->data, 'ShopProductTypesOption.{n}.shop_product_type_id'),
+					'multiple' => true,
+					'label' => __d('shop', 'Product Types'),
+					'style' => 'height: 200px'
+				))
+			)),
 		);
 
 		echo $this->Design->tabs($tabs, $contents);

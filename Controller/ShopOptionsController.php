@@ -59,7 +59,7 @@ class ShopOptionsController extends ShopAppController {
  *
  * Show detailed information on a single ShopOption
  *
- * @todo update the documentation 
+ * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
@@ -105,7 +105,7 @@ class ShopOptionsController extends ShopAppController {
 			foreach($this->request->data['ShopOptionValue'] as $k => $optionValue) {
 				if(empty($optionValue['name'])) {
 					unset(
-						$this->request->data['ShopOptionValue'][$k], 
+						$this->request->data['ShopOptionValue'][$k],
 						$this->request->data['ShopPrice'][$k],
 						$this->request->data['ShopSize'][$k]
 					);
@@ -116,10 +116,14 @@ class ShopOptionsController extends ShopAppController {
 			'contain' => array(
 				'ShopOptionValue' => array(
 					'ShopPrice',
-					'ShopSize'
-				)
+					'ShopSize',
+				),
+				'ShopProductTypesOption'
 			)
 		));
 
+		$shopProductTypes = $this->{$this->modelClass}->ShopProductTypesOption->ShopProductType->find('list');
+		$this->set(compact('shopProductTypes'));
 	}
+
 }
