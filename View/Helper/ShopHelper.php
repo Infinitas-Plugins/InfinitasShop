@@ -418,6 +418,34 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function addToCart(array $product, array $options = array()) {
+		$productOptions = Hash::extract($product, 'ShopOption.{n}.required');
+		$optionCount = count($productOptions);
+		$requiredOptionCount = count(array_filter($productOptions));
+		if($this->request->params['action'] != 'view' && $optionCount) {
+			$buttonType = 'btn-success';
+			$linkText = __dn('shop', '%d option', '%d options', $optionCount, $optionCount);
+			if($requiredOptionCount && $requiredOptionCount < $optionCount) {
+				$buttonType = 'btn-warning';
+				$linkText = implode(', ', array(
+					$linkText,
+					__d('shop', '%d required', $requiredOptionCount)
+				));
+			}
+
+			return $this->Html->link($linkText, array(
+				'plugin' => 'shop',
+				'controller' => 'shop_products',
+				'action' => 'view',
+				'category' => $product['ShopCategory'][0]['slug'],
+				'slug' => $product['ShopProduct']['slug']
+			), array('class' => array(
+				'btn',
+				'btn-small',
+				$buttonType,
+				'pull-right'
+			)));
+		}
+
 		return implode('', array(
 			$this->Form->create('ShopList', array('url' => array(
 				'plugin' => 'shop',
@@ -425,7 +453,7 @@ class ShopHelper extends AppHelper {
 				'action' => 'add'
 			))),
 				$this->Form->hidden('ShopList.product_id', array(
-					'value' => $product['id']
+					'value' => $product['ShopProduct']['id']
 				)),
 				$this->Form->submit(__d('shop', 'Add to Cart'), $options),
 			$this->Form->end()
