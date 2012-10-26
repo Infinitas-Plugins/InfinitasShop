@@ -95,6 +95,7 @@
 		$contents = array(
 			implode('', array(
 				$this->Form->input('name'),
+				$this->Form->input('slug'),
 				$this->Form->input('shop_product_type_id', array(
 					'label' => __d('shop', 'Product Type'),
 					'empty' => __d('shop', 'Use category type')

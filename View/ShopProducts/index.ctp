@@ -25,7 +25,7 @@ foreach($shopProducts as &$shopProduct) {
 			$this->Html->tag('h5', $this->Html->link($shopProduct['ShopProduct']['name'], $url)),
 			$this->Html->tag('p', $this->Text->truncate(strip_tags($shopProduct['ShopProduct']['description'])), array('class' => 'description')),
 			$this->Html->tag('p', $this->Shop->price($shopProduct), array('class' => 'price')),
-			$this->Shop->addToCart($shopProduct['ShopProduct'], array(
+			$this->Shop->addToCart($shopProduct, array(
 				'class' => 'pull-right'
 			))
 		))),
