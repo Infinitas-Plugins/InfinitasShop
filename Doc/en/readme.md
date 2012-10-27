@@ -1,0 +1,1 @@
+The Infinitas Shop plugin provides eCommerce capabilities to any Infinitas powered website. The Shop plugin has a number of powerful features for creating and maintaining online shops.
