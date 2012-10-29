@@ -81,14 +81,24 @@ class ShopImagesProductTest extends CakeTestCase {
 						'ShopImage' => array(
 							'id' => 'shared-image-1',
 							'image' => 'shared-image-1.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-1/shared-image-1.png',
+							'image_large' => '/files/shop_image/image/shared-image-1/large_shared-image-1.png',
+							'image_medium' => '/files/shop_image/image/shared-image-1/medium_shared-image-1.png',
+							'image_small' => '/files/shop_image/image/shared-image-1/small_shared-image-1.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-1/thumb_shared-image-1.png'
 						)
 					),
 					array(
 						'ShopImage' => array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					)
 				)
@@ -100,7 +110,12 @@ class ShopImagesProductTest extends CakeTestCase {
 						'ShopImage' => array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'multi-category'
+							'shop_product_id' => 'multi-category',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					)
 				)
@@ -112,21 +127,36 @@ class ShopImagesProductTest extends CakeTestCase {
 						'ShopImage' => array(
 							'id' => 'shared-image-1',
 							'image' => 'shared-image-1.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-1/shared-image-1.png',
+							'image_large' => '/files/shop_image/image/shared-image-1/large_shared-image-1.png',
+							'image_medium' => '/files/shop_image/image/shared-image-1/medium_shared-image-1.png',
+							'image_small' => '/files/shop_image/image/shared-image-1/small_shared-image-1.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-1/thumb_shared-image-1.png'
 						)
 					),
 					array(
 						'ShopImage' => array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					),
 					array(
 						'ShopImage' => array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'multi-category'
+							'shop_product_id' => 'multi-category',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					)
 				)
@@ -164,12 +194,22 @@ class ShopImagesProductTest extends CakeTestCase {
 					array(
 						'id' => 'shared-image-1',
 						'image' => 'shared-image-1.png',
-						'shop_product_id' => 'active'
+						'shop_product_id' => 'active',
+						'image_full' => '/files/shop_image/image/shared-image-1/shared-image-1.png',
+						'image_large' => '/files/shop_image/image/shared-image-1/large_shared-image-1.png',
+						'image_medium' => '/files/shop_image/image/shared-image-1/medium_shared-image-1.png',
+						'image_small' => '/files/shop_image/image/shared-image-1/small_shared-image-1.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-1/thumb_shared-image-1.png'
 					),
 					array(
 						'id' => 'shared-image-2',
 						'image' => 'shared-image-2.png',
-						'shop_product_id' => 'active'
+						'shop_product_id' => 'active',
+						'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+						'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+						'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+						'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 					)
 				)
 			),
@@ -179,7 +219,12 @@ class ShopImagesProductTest extends CakeTestCase {
 					array(
 						'id' => 'shared-image-2',
 						'image' => 'shared-image-2.png',
-						'shop_product_id' => 'multi-category'
+						'shop_product_id' => 'multi-category',
+						'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+						'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+						'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+						'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 					)
 				)
 			),
@@ -189,17 +234,32 @@ class ShopImagesProductTest extends CakeTestCase {
 					array(
 						'id' => 'shared-image-1',
 						'image' => 'shared-image-1.png',
-						'shop_product_id' => 'active'
+						'shop_product_id' => 'active',
+						'image_full' => '/files/shop_image/image/shared-image-1/shared-image-1.png',
+						'image_large' => '/files/shop_image/image/shared-image-1/large_shared-image-1.png',
+						'image_medium' => '/files/shop_image/image/shared-image-1/medium_shared-image-1.png',
+						'image_small' => '/files/shop_image/image/shared-image-1/small_shared-image-1.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-1/thumb_shared-image-1.png'
 					),
 					array(
 						'id' => 'shared-image-2',
 						'image' => 'shared-image-2.png',
-						'shop_product_id' => 'active'
+						'shop_product_id' => 'active',
+						'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+						'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+						'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+						'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 					),
 					array(
 						'id' => 'shared-image-2',
 						'image' => 'shared-image-2.png',
-						'shop_product_id' => 'multi-category'
+						'shop_product_id' => 'multi-category',
+						'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+						'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+						'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+						'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+						'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 					)
 				)
 			)
