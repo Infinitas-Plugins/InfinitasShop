@@ -38,7 +38,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_products_option_value_ignore',
 		'plugin.shop.shop_products_option_value_override',
 
-		'plugin.shop.contact_address',
+		'plugin.shop.shop_contact_address',
 
 		'plugin.shop.core_user',
 		'plugin.shop.core_group',
@@ -97,7 +97,7 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test validation A
- * 
+ *
  * @dataProvider validationBDataProvider
  */
 	public function testValidationB($data, $expected) {
@@ -111,7 +111,7 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief validation A data provider
- * 
+ *
  * @return array
  */
 	public function validationBDataProvider() {
@@ -145,7 +145,7 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief test validation C
- * 
+ *
  * @dataProvider validationCDataProvider
  */
 	public function testValidationC($data) {
@@ -155,7 +155,7 @@ class ShopProductTest extends CakeTestCase {
 
 /**
  * @brief validation C data provider
- * 
+ *
  * @return array
  */
 	public function validationCDataProvider() {
@@ -1563,18 +1563,18 @@ class ShopProductTest extends CakeTestCase {
  * brand - active when:
  * 	not specified
  * 	brand active
- * 	
+ *
  * product type - active when:
  * 	not specified
  * 	product type active
- * 	
+ *
  * supplier - active when:
  * 	not specified
  * 	supplier active
- * 	
+ *
  * @todo categories - active when:
- * 	category active 
- * 
+ * 	category active
+ *
  */
 	public function testThingsThatMakeProductsInactive() {
 		$id = 'active';
@@ -1583,7 +1583,7 @@ class ShopProductTest extends CakeTestCase {
 		$product = function($id) use($Model) {
 			$product = $Model->find('product', $id);
 
-			return !empty($product[$Model->alias][$Model->primaryKey]) && 
+			return !empty($product[$Model->alias][$Model->primaryKey]) &&
 				$product[$Model->alias][$Model->primaryKey] == $id;
 		};
 		$this->assertTrue($product($id));
@@ -1641,7 +1641,7 @@ class ShopProductTest extends CakeTestCase {
 		);
 		$results = Hash::extract($this->{$this->modelClass}->find('paginated'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $results);
-		
+
 		$expected = array(
 			'active',
 			'inactive',

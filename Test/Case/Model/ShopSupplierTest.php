@@ -14,7 +14,7 @@ class ShopSupplierTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_supplier',
-		'plugin.shop.contact_address',
+		'plugin.shop.shop_contact_address',
 		'plugin.shop.shop_branch_stock_log',
 		'plugin.shop.shop_product',
 		'plugin.view_counter.view_counter_view'

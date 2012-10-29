@@ -3,7 +3,13 @@
  * ContactAddressFixture
  *
  */
-class ContactAddressFixture extends CakeTestFixture {
+class ShopContactAddressFixture extends CakeTestFixture {
+/**
+ * @brief table to use
+ *
+ * @var string
+ */
+	public $table = 'contact_addresses';
 
 /**
  * Fields

@@ -3,7 +3,13 @@
  * ContactBranchFixture
  *
  */
-class ContactBranchFixture extends CakeTestFixture {
+class ShopContactBranchFixture extends CakeTestFixture {
+/**
+ * @brief table to use
+ *
+ * @var string
+ */
+	public $table = 'contact_branches';
 
 /**
  * Fields
