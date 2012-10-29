@@ -44,7 +44,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.core_group',
 
 		'plugin.view_counter.view_counter_view',
-		'plugin.management.trash',
+		'plugin.trash.trash',
 		'plugin.management.ticket',
 		'plugin.installer.plugin'
 	);
@@ -309,7 +309,8 @@ class ShopProductTest extends CakeTestCase {
 							'rating_count' => 1,
 							'views' => 5,
 							'sales' => 1,
-							'active' => true
+							'active' => true,
+							'description' => 'active desc'
 						),
 						'ShopBrand' => array(
 							'id' => 'inhouse',
@@ -323,7 +324,12 @@ class ShopProductTest extends CakeTestCase {
 						),
 						'ShopImage' => array(
 							'id' => 'image-product-active',
-							'image' => 'image-product-active.png'
+							'image' => 'image-product-active.png',
+							'image_full' => '/files/shop_image/image/image-product-active/image-product-active.png',
+							'image_large' => '/files/shop_image/image/image-product-active/large_image-product-active.png',
+							'image_medium' => '/files/shop_image/image/image-product-active/medium_image-product-active.png',
+							'image_small' => '/files/shop_image/image/image-product-active/small_image-product-active.png',
+							'image_thumb' => '/files/shop_image/image/image-product-active/thumb_image-product-active.png'
 						),
 						'ShopPrice' => array(
 							'id' => 'active',
@@ -560,7 +566,15 @@ class ShopProductTest extends CakeTestCase {
 			$expected = array_merge(
 				array(
 					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
-					'ShopImage' => array('id' => null, 'image' => null),
+					'ShopImage' => array(
+						'id' => null, 
+						'image' => null,
+						'image_full' => '/filemanager/img/no-image.png',
+						'image_large' => '/filemanager/img/no-image.png',
+						'image_medium' => '/filemanager/img/no-image.png',
+						'image_small' => '/filemanager/img/no-image.png',
+						'image_thumb' => '/filemanager/img/no-image.png'
+					),
 					'ShopBranchStock' => array(),
 					'ShopSpecial' => array(),
 					'ShopSpotlight' => array(),
@@ -646,18 +660,33 @@ class ShopProductTest extends CakeTestCase {
 					),
 					'ShopImage' => array(
 						'id' => 'image-product-active',
-						'image' => 'image-product-active.png'
+						'image' => 'image-product-active.png',
+						'image_full' => '/files/shop_image/image/image-product-active/image-product-active.png',
+						'image_large' => '/files/shop_image/image/image-product-active/large_image-product-active.png',
+						'image_medium' => '/files/shop_image/image/image-product-active/medium_image-product-active.png',
+						'image_small' => '/files/shop_image/image/image-product-active/small_image-product-active.png',
+						'image_thumb' => '/files/shop_image/image/image-product-active/thumb_image-product-active.png'
 					),
 					'ShopImagesProduct' => array(
 						array(
 							'id' => 'shared-image-1',
 							'image' => 'shared-image-1.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-1/shared-image-1.png',
+							'image_large' => '/files/shop_image/image/shared-image-1/large_shared-image-1.png',
+							'image_medium' => '/files/shop_image/image/shared-image-1/medium_shared-image-1.png',
+							'image_small' => '/files/shop_image/image/shared-image-1/small_shared-image-1.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-1/thumb_shared-image-1.png'
 						),
 						array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'active'
+							'shop_product_id' => 'active',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					),
 					'ShopCategory' => array(array(
@@ -808,7 +837,12 @@ class ShopProductTest extends CakeTestCase {
 						array(
 							'id' => 'shared-image-2',
 							'image' => 'shared-image-2.png',
-							'shop_product_id' => 'multi-category'
+							'shop_product_id' => 'multi-category',
+							'image_full' => '/files/shop_image/image/shared-image-2/shared-image-2.png',
+							'image_large' => '/files/shop_image/image/shared-image-2/large_shared-image-2.png',
+							'image_medium' => '/files/shop_image/image/shared-image-2/medium_shared-image-2.png',
+							'image_small' => '/files/shop_image/image/shared-image-2/small_shared-image-2.png',
+							'image_thumb' => '/files/shop_image/image/shared-image-2/thumb_shared-image-2.png'
 						)
 					)
 				)
@@ -906,8 +940,13 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'complex-options'
 					),
 					'ShopImage' => array(
-						'id' => 'image-product-multi-option',
-						'image' => 'image-product-multi-option.png'
+						'id' => 'image-product-multi-option',	
+						'image' => 'image-product-multi-option.png',
+						'image_full' => '/files/shop_image/image/image-product-multi-option/image-product-multi-option.png',
+						'image_large' => '/files/shop_image/image/image-product-multi-option/large_image-product-multi-option.png',
+						'image_medium' => '/files/shop_image/image/image-product-multi-option/medium_image-product-multi-option.png',
+						'image_small' => '/files/shop_image/image/image-product-multi-option/small_image-product-multi-option.png',
+						'image_thumb' => '/files/shop_image/image/image-product-multi-option/thumb_image-product-multi-option.png'
 					),
 					'ShopCategory' => array(array(
 						'id' => 'active',
@@ -1028,7 +1067,12 @@ class ShopProductTest extends CakeTestCase {
 							'end_date' => '2050-10-06 23:59:59',
 							'ShopImage' => array(
 								'id' => 'image-spotlight-multi-option',
-								'image' => 'image-spotlight-multi-option.png'
+								'image' => 'image-spotlight-multi-option.png',
+								'image_full' => '/files/shop_image/image/image-spotlight-multi-option/image-spotlight-multi-option.png',
+								'image_large' => '/files/shop_image/image/image-spotlight-multi-option/large_image-spotlight-multi-option.png',
+								'image_medium' => '/files/shop_image/image/image-spotlight-multi-option/medium_image-spotlight-multi-option.png',
+								'image_small' => '/files/shop_image/image/image-spotlight-multi-option/small_image-spotlight-multi-option.png',
+								'image_thumb' => '/files/shop_image/image/image-spotlight-multi-option/thumb_image-spotlight-multi-option.png'
 							)
 						)
 					),
@@ -1388,7 +1432,12 @@ class ShopProductTest extends CakeTestCase {
 						),
 						'ShopImage' => array(
 							'id' => 'image-product-active',
-							'image' => 'image-product-active.png'
+							'image' => 'image-product-active.png',
+							'image_full' => '/files/shop_image/image/image-product-active/image-product-active.png',
+							'image_large' => '/files/shop_image/image/image-product-active/large_image-product-active.png',
+							'image_medium' => '/files/shop_image/image/image-product-active/medium_image-product-active.png',
+							'image_small' => '/files/shop_image/image/image-product-active/small_image-product-active.png',
+							'image_thumb' => '/files/shop_image/image/image-product-active/thumb_image-product-active.png'
 						),
 						'ShopPrice' => array(
 							'id' => 'active',
@@ -1476,7 +1525,12 @@ class ShopProductTest extends CakeTestCase {
 						),
 						'ShopImage' => array(
 							'id' => 'image-product-multi-option',
-							'image' => 'image-product-multi-option.png'
+							'image' => 'image-product-multi-option.png',
+							'image_full' => '/files/shop_image/image/image-product-multi-option/image-product-multi-option.png',
+							'image_large' => '/files/shop_image/image/image-product-multi-option/large_image-product-multi-option.png',
+							'image_medium' => '/files/shop_image/image/image-product-multi-option/medium_image-product-multi-option.png',
+							'image_small' => '/files/shop_image/image/image-product-multi-option/small_image-product-multi-option.png',
+							'image_thumb' => '/files/shop_image/image/image-product-multi-option/thumb_image-product-multi-option.png'
 						),
 						'ShopPrice' => array(
 							'id' => 'multi-option',

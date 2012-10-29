@@ -82,7 +82,12 @@ class ShopSpotlightTest extends CakeTestCase {
 							'end_date' => '2050-10-06 23:59:59',
 							'ShopImage' => array(
 								'id' => 'image-spotlight-multi-option',
-								'image' => 'image-spotlight-multi-option.png'
+								'image' => 'image-spotlight-multi-option.png',
+								'image_full' => '/files/shop_image/image/image-spotlight-multi-option/image-spotlight-multi-option.png',
+								'image_large' => '/files/shop_image/image/image-spotlight-multi-option/large_image-spotlight-multi-option.png',
+								'image_medium' => '/files/shop_image/image/image-spotlight-multi-option/medium_image-spotlight-multi-option.png',
+								'image_small' => '/files/shop_image/image/image-spotlight-multi-option/small_image-spotlight-multi-option.png',
+								'image_thumb' => '/files/shop_image/image/image-spotlight-multi-option/thumb_image-spotlight-multi-option.png'
 							)
 						)
 					)
@@ -99,7 +104,12 @@ class ShopSpotlightTest extends CakeTestCase {
 							'end_date' => '2050-10-06 23:59:59',
 							'ShopImage' => array(
 								'id' => 'image-spotlight-multi-option',
-								'image' => 'image-spotlight-multi-option.png'
+								'image' => 'image-spotlight-multi-option.png',
+								'image_full' => '/files/shop_image/image/image-spotlight-multi-option/image-spotlight-multi-option.png',
+								'image_large' => '/files/shop_image/image/image-spotlight-multi-option/large_image-spotlight-multi-option.png',
+								'image_medium' => '/files/shop_image/image/image-spotlight-multi-option/medium_image-spotlight-multi-option.png',
+								'image_small' => '/files/shop_image/image/image-spotlight-multi-option/small_image-spotlight-multi-option.png',
+								'image_thumb' => '/files/shop_image/image/image-spotlight-multi-option/thumb_image-spotlight-multi-option.png'
 							)
 						)
 					)
@@ -139,7 +149,12 @@ class ShopSpotlightTest extends CakeTestCase {
 						'end_date' => '2050-10-06 23:59:59',
 						'ShopImage' => array(
 							'id' => 'image-spotlight-multi-option',
-							'image' => 'image-spotlight-multi-option.png'
+							'image' => 'image-spotlight-multi-option.png',
+							'image_full' => '/files/shop_image/image/image-spotlight-multi-option/image-spotlight-multi-option.png',
+							'image_large' => '/files/shop_image/image/image-spotlight-multi-option/large_image-spotlight-multi-option.png',
+							'image_medium' => '/files/shop_image/image/image-spotlight-multi-option/medium_image-spotlight-multi-option.png',
+							'image_small' => '/files/shop_image/image/image-spotlight-multi-option/small_image-spotlight-multi-option.png',
+							'image_thumb' => '/files/shop_image/image/image-spotlight-multi-option/thumb_image-spotlight-multi-option.png'
 						)
 					)
 				)
@@ -154,7 +169,13 @@ class ShopSpotlightTest extends CakeTestCase {
 						'end_date' => '2050-10-06 23:59:59',
 						'ShopImage' => array(
 							'id' => 'image-spotlight-multi-option',
-							'image' => 'image-spotlight-multi-option.png'
+							'image' => 'image-spotlight-multi-option.png',
+							'image_full' => '/files/shop_image/image/image-spotlight-multi-option/image-spotlight-multi-option.png',
+							'image_large' => '/files/shop_image/image/image-spotlight-multi-option/large_image-spotlight-multi-option.png',
+							'image_medium' => '/files/shop_image/image/image-spotlight-multi-option/medium_image-spotlight-multi-option.png',
+							'image_small' => '/files/shop_image/image/image-spotlight-multi-option/small_image-spotlight-multi-option.png',
+							'image_thumb' => '/files/shop_image/image/image-spotlight-multi-option/thumb_image-spotlight-multi-option.png'
+
 						)
 					)
 				)
