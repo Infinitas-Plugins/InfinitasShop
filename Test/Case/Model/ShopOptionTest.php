@@ -493,7 +493,7 @@ class ShopOptionTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		$this->assertTrue((bool)$this->{$this->modelClass}->ShopProductTypesOption->save(array(
-			'id' => 'product-option-complex-options-size',
+			'id' => 'product-option-comp-options-size',
 			'ordering' => 2
 		), false));
 

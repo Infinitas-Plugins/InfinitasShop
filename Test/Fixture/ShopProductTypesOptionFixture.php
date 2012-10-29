@@ -40,7 +40,7 @@ class ShopProductTypesOptionFixture extends CakeTestFixture {
 			'ordering' => 1
 		),
 		array(
-			'id' => 'product-option-complex-options-size',
+			'id' => 'product-option-comp-options-size',
 			'shop_option_id' => 'option-size',
 			'shop_product_type_id' => 'complex-options',
 			'created' => '2012-10-06 23:43:42',
