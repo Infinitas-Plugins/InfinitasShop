@@ -66,8 +66,8 @@ class ShopSpecialTest extends CakeTestCase {
 				array('name' => 'foo bar'),
 				array(
 					'name' => 'foo bar',
-					'start_date' => '0000-00-00 00:00:00',
-					'end_date' => '0000-00-00 00:00:00'
+					'start_date' => null,
+					'end_date' => null
 				)
 			),
 			'start-date' => array(
@@ -85,7 +85,7 @@ class ShopSpecialTest extends CakeTestCase {
 				array(
 					'name' => 'foo bar',
 					'start_date' => '2025-01-01 00:00:00',
-					'end_date' => '0000-00-00 00:00:00'
+					'end_date' => null
 				)
 			),
 			'end-date' => array(
@@ -95,7 +95,7 @@ class ShopSpecialTest extends CakeTestCase {
 				),
 				array(
 					'name' => 'foo bar',
-					'start_date' => '0000-00-00 00:00:00',
+					'start_date' => null,
 					'end_date' => '2025-01-01 00:00:00',
 				)
 			),
@@ -106,7 +106,7 @@ class ShopSpecialTest extends CakeTestCase {
 				),
 				array(
 					'name' => 'foo bar',
-					'start_date' => '0000-00-00 00:00:00',
+					'start_date' => null,
 					'end_date' => '2025-01-01 00:00:00',
 				)
 			),
