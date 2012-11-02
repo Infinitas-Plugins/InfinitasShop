@@ -1,1 +1,1 @@
-##user types
+User types allows store owners to configure groups of customers such as `wholesale` or similar with pre configured discounts. There is no limit to the number of user types and are fairly simple to configure with just a `name` and `discount` required.
