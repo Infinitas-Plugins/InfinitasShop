@@ -466,14 +466,72 @@ class ShopHelper extends AppHelper {
  * @param array $product
  * @return type
  */
-	public function price(array $product) {
+	public function price(array $product, $span = true) {
 		if(empty($product['ShopPrice']['selling'])) {
 			return __d('shop', 'Call for price');
+		}
+
+		if(!$span) {
+			return $this->currency($product['ShopPrice']['selling']);
 		}
 
 		return $this->Html->tag('span', $this->currency($product['ShopPrice']['selling']), array(
 			'class' => 'price price-now'
 		));
+	}
+
+	public function sizeTable(array $product) {
+		foreach($product['ShopSize'] as $key => &$size) {
+			$skip = strstr($key, 'shipping') === false &&
+				strstr($key, 'product') === false;
+			if($skip) {
+				continue;
+			}
+
+			if(strstr($key, 'weight')) {
+				$size = __d('shop', '%s g', round($size, 2));
+				continue;
+			}
+			$size = __d('shop', '%s mm', round($size, 2));
+		}
+		return $this->Html->tag('table', implode('', array(
+			$this->Html->tag('caption', __d('shop', '%s size information', $product['ShopProduct']['name'])),
+			$this->Html->tag('thead', implode('', array(
+				$this->Html->tag('tr', implode('', array(
+					$this->Html->tag('th', ''),
+					$this->Html->tag('th', __d('shop', 'Product'), array(
+						'width' => '150px',
+						'class' => 'size'
+					)),
+					$this->Html->tag('th', __d('shop', 'Shipping'), array(
+						'width' => '150px',
+						'class' => 'size'
+					)),
+				)))
+			))),
+			$this->Html->tag('tbody', implode('', array(
+				$this->Html->tag('tr', implode('', array(
+					$this->Html->tag('th', __d('shop', 'Width')),
+					$this->Html->tag('td', $product['ShopSize']['product_width']),
+					$this->Html->tag('td', $product['ShopSize']['shipping_width']),
+				))),
+				$this->Html->tag('tr', implode('', array(
+					$this->Html->tag('th', __d('shop', 'Length')),
+					$this->Html->tag('td', $product['ShopSize']['product_length']),
+					$this->Html->tag('td', $product['ShopSize']['shipping_length']),
+				))),
+				$this->Html->tag('tr', implode('', array(
+					$this->Html->tag('th', __d('shop', 'Height')),
+					$this->Html->tag('td', $product['ShopSize']['product_height']),
+					$this->Html->tag('td', $product['ShopSize']['shipping_height']),
+				))),
+				$this->Html->tag('tr', implode('', array(
+					$this->Html->tag('th', __d('shop', 'Weight')),
+					$this->Html->tag('td', $product['ShopSize']['product_weight']),
+					$this->Html->tag('td', $product['ShopSize']['shipping_weight']),
+				)))
+			)))
+		)), array('class' => 'table table-striped table-hover table-condensed sizes'));
 	}
 
 }
