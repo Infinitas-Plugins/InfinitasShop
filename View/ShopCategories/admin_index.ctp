@@ -22,10 +22,7 @@ $massActions = $this->Infinitas->massActionButtons(
 		'edit',
 		'toggle',
 		'copy',
-		'delete',
-
-		// other methods available
-		// 'unlock',
+		'delete'
 	)
 );
 
@@ -41,9 +38,10 @@ echo $this->Filter->alphabetFilter();
 						'class' => 'first',
 						'style' => 'width:25px;'
 					),
+					__d('shop', 'Image'),
 					$this->Paginator->sort('name'),
 					$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')),
-					$this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
+					$this->Paginator->sort('shop_product_count', __d('shop', 'Products')) => array(
 						'style' => 'width:50px;'
 					),
 					$this->Paginator->sort('active') => array(
@@ -60,13 +58,15 @@ echo $this->Filter->alphabetFilter();
 					<td><?php echo $this->Infinitas->massActionCheckBox($shopCategory); ?>&nbsp;</td>
 					<td>
 						<?php
-							echo $this->Html->link($shopCategory['ShopImage']['id'], array(
-								'controller' => 'shop_images',
-								'action' => 'view',
-								$shopCategory['ShopImage']['id']
+							echo $this->Html->image($shopCategory['ShopImage']['image_small'], array(
+								'width' => 75
 							));
+						?>&nbsp;
+					</td>
+					<td>
+						<?php
             				if ($shopCategory['ShopCategory']['path_depth'] >= 1) {
-            					echo '<b>', str_repeat('- ', $shopCategory['ShopCategory']['path_depth']), ' |</b> ';
+            					echo sprintf('<b>%s |</b> ', str_repeat('- ', $shopCategory['ShopCategory']['path_depth']));
             				}
 							echo $this->Html->adminQuickLink($shopCategory['ShopCategory']);
 						?>&nbsp;
@@ -80,7 +80,19 @@ echo $this->Filter->alphabetFilter();
 							));
 						?>&nbsp;
 					</td>
-					<td><?php echo $shopCategory['ShopCategory']['product_count']; ?>&nbsp;</td>
+					<td>
+						<?php
+							if(!$shopCategory['ShopCategory']['shop_product_count']) {
+								$shopCategory['ShopCategory']['shop_product_count'] = '-';
+							}
+
+							echo $this->Html->link($shopCategory['ShopCategory']['shop_product_count'], array(
+								'controller' => 'shop_products',
+								'action' => 'index',
+								'ShopCategory.id' => $shopCategory['ShopCategory']['id']
+							))
+						?>&nbsp;
+					</td>
 					<td>
 						<?php
 							echo $this->Infinitas->status($shopCategory['ShopCategory']['active'], array(
