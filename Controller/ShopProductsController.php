@@ -109,7 +109,14 @@ class ShopProductsController extends ShopAppController {
 	}
 
 	public function view() {
+		if(empty($this->request->slug) || empty($this->request->category)) {
+			$this->notice('not_found');
+		}
 
+		$shopProduct = $this->{$this->modelClass}->find('product', $this->request->slug);
+		$categoryPath = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->getPath($this->request->category);
+		
+		$this->set(compact('shopProduct', 'categoryPath'));
 	}
 
 /**
