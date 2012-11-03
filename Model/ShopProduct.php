@@ -41,6 +41,7 @@ class ShopProduct extends ShopAppModel {
 		'spotlights' => true,
 		'mostViewed' => true,
 		'mostPurchased' => true,
+		'recentlyViewed' => true,
 		'search' => true
 	);
 
@@ -407,6 +408,27 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.created' => 'desc',
 			);
 
+			return $query;
+		}
+
+		return self::_findPaginated($state, $query, $results);
+	}
+
+/**
+ * @brief get a list of recently viewed products
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	public function _findRecentlyViewed($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$query = self::_findPaginated($state, $query);
+
+			$sessionName = 'Viewable.' . $this->alias;
+			$query['conditions'][$this->alias . '.' . $this->primaryKey] = array_keys((array)CakeSession::read($sessionName));
 			return $query;
 		}
 
@@ -830,6 +852,9 @@ class ShopProduct extends ShopAppModel {
 				(array)$query['fields'],
 				array(
 					$this->alias . '.product_code',
+					$this->alias . '.description',
+					$this->alias . '.specifications',
+					$this->alias . '.available',
 					$this->ShopSize->alias . '.*',
 				)
 			);
@@ -839,12 +864,11 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.slug' => $query[0]
 			);
 
-			$query['joins'] = array_merge(
-				(array)$query['joins'],
-				array(
-					$this->autoJoinModel($this->ShopSize->fullModelName())
-				)
-			);
+			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());
+
+
+			$this->unBindModel(array('hasOne' => array('ShopCurrentSpecial')), false);
+
 
 			$query['limit'] = 1;
 
