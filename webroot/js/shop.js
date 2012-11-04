@@ -27,6 +27,36 @@ $(document).ready(function() {
 		if($this.val()) {
 			$('.options .alert').hide();
 			$this.removeClass('error');
+			highlightOption();
 		}
 	});
+
+	$('table.options a').on('click', function() {
+		var $this = $(this),
+			optionSelect = $('#' + $this.data('option-id')),
+			optionValue = $this.data('value-id');
+
+		optionSelect.val(optionValue);
+		$('html, body').animate({
+			scrollTop: optionSelect.parent().parent().offset().top - 50
+		}, 500);
+		highlightOption();
+		return false;
+	});
 });
+
+function highlightOption() {
+	var rowClass = 'info',
+	$options = $('[name*="data[ShopOption]"]');
+	if(!$options.length) {
+		return;
+	}
+
+	$('.options tr').removeClass(rowClass);
+	$.each($options, function(k, v) {
+		var value = $(v).val();
+		if(value) {
+			$('tr.' + value).addClass(rowClass);
+		}
+	});
+}

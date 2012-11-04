@@ -7,6 +7,7 @@ echo $this->Form->input('quantity', array(
 	'value' => 1,
 	'class' => 'quantity',
 	'div' => false,
-	'label' => false
+	'label' => false,
+	'type' => 'number'
 ));
 echo $this->Html->tag('hr');

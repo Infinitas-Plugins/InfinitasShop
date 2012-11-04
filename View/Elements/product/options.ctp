@@ -13,6 +13,7 @@ foreach($shopProduct['ShopOption'] as $option) {
 		'name' => sprintf('data[ShopOption][%s]', $option['id']),
 		'type' => 'select',
 		'empty' => $option['name'],
+		'id' => $option['id'],
 		'options' => $optionValues,
 		'selected' => !$required ? key($optionValues) : null,
 		'class' => $required,

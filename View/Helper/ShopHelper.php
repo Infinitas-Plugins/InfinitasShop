@@ -480,6 +480,64 @@ class ShopHelper extends AppHelper {
 		));
 	}
 
+	public function optionPrice($optionPrice) {
+		if(!$optionPrice) {
+			return $this->Html->tag('span', '-', array(
+				'title' => __d('shop', 'No change')
+			));
+		}
+
+		return $this->currency($optionPrice);
+	}
+
+	public function calculatedSize($productSize, $optionSize, $shipping = false) {
+		$optionSize = array_filter($optionSize);
+		if(empty($optionSize)) {
+			return $this->Html->tag('span', '-', array(
+				'title' => __d('shop', 'No change')
+			));
+		}
+
+		foreach($optionSize as $k => $v) {
+			if($shipping && strstr($k, 'shipping') === false) {
+				continue;
+			}
+
+			if(!$shipping && strstr($k, 'product') === false) {
+				continue;
+			}
+
+			$productSize[$k] += $v;
+		}
+
+		return sprintf('%s (% g)', $this->size($productSize, $shipping), round($info[$prefix . '_weight'], 2));
+	}
+
+	public function size($info, $shipping = false) {
+		$prefix = 'product';
+		if($shipping) {
+			$prefix = 'shipping';
+		}
+		return sprintf($this->_sizeTemplate(),
+			round($info[$prefix . '_length'], 2),
+			round($info[$prefix . '_width'], 2),
+			round($info[$prefix . '_height'], 2)
+		);
+	}
+
+	public function sizeLabel() {
+		return sprintf($this->_sizeTemplate(),
+			__d('shop', 'l'),
+			__d('shop', 'w'),
+			__d('shop', 'h')
+		);
+	}
+
+	protected function _sizeTemplate() {
+		$x = $this->Html->tag('strong', 'x');
+		return sprintf('%%s %s %%s %s %%s', $x, $x);
+	}
+
 	public function sizeTable(array $product) {
 		foreach($product['ShopSize'] as $key => &$size) {
 			$skip = strstr($key, 'shipping') === false &&
