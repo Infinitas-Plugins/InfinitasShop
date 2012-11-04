@@ -43,6 +43,13 @@ $(document).ready(function() {
 		highlightOption();
 		return false;
 	});
+
+	$('.background-change').on('click', function() {
+		var $this = $(this);
+
+		$('.modal-body img', $this.parent().parent()).css('background-color', $this.data('colour'));
+		return false;
+	});
 });
 
 function highlightOption() {
