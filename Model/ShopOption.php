@@ -221,7 +221,7 @@ class ShopOption extends ShopAppModel {
 
 			$result[$this->alias][$this->ShopOptionValue->alias] = Hash::extract(
 				$options,
-				sprintf('{n}[id=/%s/]', $result[$this->alias][$this->primaryKey])
+				sprintf('{n}[shop_option_id=/%s/]', $result[$this->alias][$this->primaryKey])
 			);
 			foreach($result[$this->alias][$this->ShopOptionValue->alias] as $k => &$optionValue) {
 				foreach($optionValue['ProductOptionValueIgnore'] as $kk => $ignore) {

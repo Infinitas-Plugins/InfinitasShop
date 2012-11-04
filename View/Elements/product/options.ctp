@@ -5,14 +5,17 @@ if(empty($shopProduct['ShopOption'])) {
 
 $options = array();
 foreach($shopProduct['ShopOption'] as $option) {
+	$required = $option['required'] ? 'required' : null;
+	$optionValues = Hash::combine($option, 'ShopOptionValue.{n}.id', 'ShopOptionValue.{n}.name');
 	$options[] = $this->Form->input($option['id'], array(
 		'label' => false,
 		'div' => false,
 		'name' => sprintf('data[ShopOption][%s]', $option['id']),
 		'type' => 'select',
 		'empty' => $option['name'],
-		'options' => Hash::combine($option, 'ShopOptionValue.{n}.id', 'ShopOptionValue.{n}.name'),
-		'class' => $option['required'] ? 'required' : null,
+		'options' => $optionValues,
+		'selected' => !$required ? key($optionValues) : null,
+		'class' => $required,
 		'title' => trim(strip_tags($option['description']))
 	));
 }
