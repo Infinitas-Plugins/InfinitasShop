@@ -567,7 +567,7 @@ class ShopProductTest extends CakeTestCase {
 				array(
 					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
 					'ShopImage' => array(
-						'id' => null, 
+						'id' => null,
 						'image' => null,
 						'image_full' => '/filemanager/img/no-image.png',
 						'image_large' => '/filemanager/img/no-image.png',
@@ -646,7 +646,10 @@ class ShopProductTest extends CakeTestCase {
 						'rating_count' => 1,
 						'views' => 5,
 						'sales' => 1,
-						'active' => true
+						'active' => true,
+						'description' => 'active desc',
+						'specifications' => 'active specs',
+						'available' => '2012-10-05 01:14:47'
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',
@@ -810,7 +813,10 @@ class ShopProductTest extends CakeTestCase {
 						'rating_count' => 1,
 						'views' => 30,
 						'sales' => 100,
-						'active' => true
+						'active' => true,
+						'description' => 'multi-category desc',
+						'specifications' => 'multi-category specs',
+						'available' => '2012-10-05 01:14:47'
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -860,7 +866,10 @@ class ShopProductTest extends CakeTestCase {
 						'rating_count' => 1,
 						'views' => 20,
 						'sales' => 1,
-						'active' => true
+						'active' => true,
+						'description' => 'multi-category-mixed-state desc',
+						'specifications' => 'multi-category-mixed-state specs',
+						'available' => '2012-10-05 01:14:47'
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -893,7 +902,10 @@ class ShopProductTest extends CakeTestCase {
 						'rating_count' => 1,
 						'views' => 1,
 						'sales' => 1,
-						'active' => true
+						'active' => true,
+						'description' => 'multi-category-parent-inactive desc',
+						'specifications' => 'multi-category-parent-inactive specs',
+						'available' => '2012-10-05 01:14:47'
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -927,7 +939,10 @@ class ShopProductTest extends CakeTestCase {
 						'rating_count' => 1,
 						'views' => 100,
 						'sales' => 25,
-						'active' => true
+						'active' => true,
+						'description' => 'multi-option desc',
+						'specifications' => 'multi-option specs',
+						'available' => '2012-10-05 01:14:47'
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -940,7 +955,7 @@ class ShopProductTest extends CakeTestCase {
 						'slug' => 'complex-options'
 					),
 					'ShopImage' => array(
-						'id' => 'image-product-multi-option',	
+						'id' => 'image-product-multi-option',
 						'image' => 'image-product-multi-option.png',
 						'image_full' => '/files/shop_image/image/image-product-multi-option/image-product-multi-option.png',
 						'image_large' => '/files/shop_image/image/image-product-multi-option/large_image-product-multi-option.png',
