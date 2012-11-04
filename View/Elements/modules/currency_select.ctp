@@ -5,19 +5,20 @@
 if(empty($shopCurrencies)) {
 	return;
 }
-
+$field = Configure::read('Shop.currency_select');
 foreach($shopCurrencies as &$currency) {
 	$code = $currency['ShopCurrency']['code'];
 	$currency = $this->Html->link(
-		$currency['ShopCurrency']['code'],
+		$currency['ShopCurrency'][$field],
 		array(
 			'plugin' => 'shop',
 			'controller' => 'shop_currencies',
 			'action' => 'change',
-			'code' => $currency['ShopCurrency']['code']
+			'code' => $code
 		),
 		array(
-			'title' => $currency['ShopCurrency']['name']
+			'title' => $currency['ShopCurrency']['name'],
+			'escape' => false
 		)
 	);
 	$currency = $this->Html->tag('li', $currency, array(

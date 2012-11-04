@@ -20,6 +20,8 @@ This module will use the tree structure of the categories to build a navigation 
 
 This module provides links to switch the display currency used in the store. These links will affect what currency the user sees when viewing products. There is configuration to change how the links are displayed.
 
+Change the `Shop.currency\_select` option in the Configs to change the currency select link text. Valid options are `name`, `code` or `whole\symbol`
+
 #### Footer
 
 This module will display various links that are usually found in shopping sites such as shipping information and contact details. The links are mostly to content pages in the Cms plugin and will need to be created or they will display 404 errors.

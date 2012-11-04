@@ -1,6 +1,7 @@
 <?php
 $config['Shop'] = array(
 	'currency' => 'GBP',
+	'currency_select' => 'whole_symbol',
 	'display_category_count' => true,
 	'robots' => array(
 		'index' => array(

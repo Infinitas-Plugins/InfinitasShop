@@ -122,6 +122,7 @@ class ShopCurrency extends ShopAppModel {
 				$this->fullFieldName($this->primaryKey),
 				$this->fullFieldName($this->displayField),
 				$this->fullFieldName('code'),
+				$this->fullFieldName('whole_symbol'),
 			));
 			return $query;
 		}
