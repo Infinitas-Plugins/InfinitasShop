@@ -8,7 +8,7 @@ $(document).ready(function() {
 		var error = false;
 		$.each(options, function(k, v) {
 			var option = $(v);
-			if(option.hasClass('required') && !option.val()) {
+			if(!option.val()) {
 				option.addClass('error');
 				error = true;
 			}
@@ -50,7 +50,30 @@ $(document).ready(function() {
 		$('.modal-body img', $this.parent().parent()).css('background-color', $this.data('colour'));
 		return false;
 	});
+
+	productFilter();
 });
+
+function productFilter() {
+	var priceSlider = $('.price-slider'),
+		priceMin = $('#ShopProductPriceMin'),
+		priceMax = $('#ShopProductPriceMax');
+
+	var min = parseInt(priceMin.val()),
+		max = parseInt(priceMax.val());
+
+	priceSlider.slider({
+		range: true,
+		min: min,
+		max: max,
+		values: [min, max],
+		slide: function(event, ui) {
+			debug(ui.values);
+			priceMin.val(ui.values[0]);
+			priceMax.val(ui.values[1]);
+		}
+	});
+}
 
 function highlightOption() {
 	var rowClass = 'info',

@@ -42,7 +42,8 @@ class ShopProduct extends ShopAppModel {
 		'mostViewed' => true,
 		'mostPurchased' => true,
 		'recentlyViewed' => true,
-		'search' => true
+		'search' => true,
+		'possibleOptions' => true
 	);
 
 /**
@@ -1058,6 +1059,70 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+	protected function _findPossibleOptions($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			$this->_activeOnlyConditions($query);
+			if(!empty($query['category'])) {
+				$query['conditions'][]['or'] = array(
+					'ActiveCategory.slug' => $query['category'],
+					'ActiveCategory.id' => $query['category']
+				);
+			}
+
+			$this->virtualFields['product_count'] = sprintf('SUM(%s.%s)',
+				$this->alias,
+				$this->primaryKey
+			);
+
+			$query['fields'] = array(
+				$this->ShopProductType->ShopProductTypesOption->ShopOption->alias . '.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->primaryKey,
+				'product_count'
+			);
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductType->fullModelName(),
+				'model' => $this->ShopProductType->ShopProductTypesOption->fullModelName()
+			));
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductType->ShopProductTypesOption->fullModelName(),
+				'model' => $this->ShopProductType->ShopProductTypesOption->ShopOption->fullModelName(),
+				'type' => 'right'
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopBrand->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopCategoriesProduct->fullModelName(),
+				'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
+				'alias' => 'ActiveCategory'
+			));
+
+			$query['group'] = array(
+				$this->ShopProductType->ShopProductTypesOption->ShopOption->alias . '.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->primaryKey
+			);
+
+			return $query;
+		}
+
+		$options = array(
+			'extract' => true,
+			'conditions' => array(
+				$this->ShopProductType->ShopProductTypesOption->ShopOption->alias . '.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->primaryKey => array_values(Hash::flatten($results))
+			)
+		);
+		$options = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
+		$counts = Hash::combine($results, '{n}.ShopOption.id', '{n}.ShopProduct.product_count');
+		foreach($options as &$option) {
+			$option['product_count'] = $counts[$option['id']];
+		}
+
+		return array(
+			'ShopOption' => $options
+		);
 	}
 
 /**

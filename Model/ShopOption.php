@@ -93,7 +93,7 @@ class ShopOption extends ShopAppModel {
  */
 	protected function _findOptions($state, array $query, array $results = array()) {
 		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+			if(empty($query['shop_product_id']) && empty($query['conditions'])) {
 				throw new InvalidArgumentException('No product specified');
 			}
 
@@ -116,10 +116,13 @@ class ShopOption extends ShopAppModel {
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array(
-					$this->alias . '.' . $this->primaryKey . ' IS NOT NULL',
-					$productIdField => $query['shop_product_id'],
+					$this->alias . '.' . $this->primaryKey . ' IS NOT NULL'
 				)
 			);
+
+			if(!empty($query['shop_product_id'])) {
+				$query['conditions'][$productIdField] = $query['shop_product_id'];
+			}
 
 			$query['joins'][] = $this->autoJoinModel(array(
 				'model' => $this->ShopProductTypesOption->fullModelName(),
@@ -169,6 +172,12 @@ class ShopOption extends ShopAppModel {
 			$query['order'] = array(
 				$this->ShopProductTypesOption->alias . '.ordering' => 'asc'
 			);
+
+			if(empty($query['shop_product_id'])) {
+				$query['group'] = array(
+					$this->alias . '.' . $this->primaryKey
+				);
+			}
 
 			return $query;
 		}

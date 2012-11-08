@@ -40,7 +40,7 @@ class ShopComponent extends InfinitasComponent {
 
 	protected function _moduleData(Controller $Controller) {
 		$ShopProduct = ClassRegistry::init('Shop.ShopProduct');
-		
+
 		$shopRecentlyViewed = $ShopProduct->find('recentlyViewed', array(
 			'limit' => 5
 		));
@@ -51,8 +51,16 @@ class ShopComponent extends InfinitasComponent {
 			'limit' => 5
 		));
 
+		$category = null;
+		if($Controller->request->category) {
+			$category = $Controller->request->category;
+		}
+		$shopFilterOptions = $ShopProduct->find('possibleOptions', array(
+			'category' => $category
+		));
+
 		//$shopRelatedCategories = $ShopProduct->ShopCategoriesProduct->ShopCategory->find('all');
 
-		$Controller->set(compact('shopRecentlyViewed', 'shopNewProducts', 'shopPopularProducts', 'shopRelatedCategories'));
+		$Controller->set(compact('shopRecentlyViewed', 'shopNewProducts', 'shopPopularProducts', 'shopRelatedCategories', 'shopFilterOptions'));
 	}
 }
