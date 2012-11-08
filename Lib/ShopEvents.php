@@ -149,7 +149,7 @@ class ShopEvents extends AppEvents {
  */
 	public function onAttachBehaviors(Event $Event) {
 		if($Event->Handler->shouldAutoAttachBehavior()) {
-			if ($Event->Handler->name == 'ShopProduct') {
+			if ($Event->Handler instanceof ShopProduct) {
 				$Event->Handler->Behaviors->attach('Shop.Specials');
 			}
 		}
