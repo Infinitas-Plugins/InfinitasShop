@@ -250,4 +250,57 @@ class ShopEvents extends AppEvents {
 		return $data;
 	}
 
+/**
+ * @brief get tracking variables
+ *
+ * @param Event $event the event being triggered
+ *
+ * @return array
+ */
+	public function onTrackingVariables(Event $Event) {
+		$return = array();
+
+		$guestId = CakeSession::read('Shop.Guest.id');
+		if($guestId) {
+			$return[] = array(
+				'name' => 'guestId',
+				'value' => $guestId,
+				'scope' => 'visit'
+			);
+		}
+
+		if($Event->Handler->request->params['plugin'] !== 'shop') {
+			return $return;
+		}
+
+		$return[] = array(
+			'name' => 'currency',
+			'value' => ShopCurrencyLib::getCurrency(),
+			'scope' => 'visit'
+		);
+
+		$return[] = array(
+			'name' => 'listId',
+			'value' => ClassRegistry::init('Shop.ShopList')->currentListId(true),
+			'scope' => 'page'
+		);
+
+		if(!empty($Event->Handler->request->category)) {
+			if(!empty($Event->Handler->request->slug)) {
+				$return[] = array(
+					'name' => 'product',
+					'value' => $Event->Handler->request->slug,
+					'scope' => 'page'
+				);
+			}
+			$return[] = array(
+				'name' => 'category',
+				'value' => $Event->Handler->request->category,
+				'scope' => 'page'
+			);
+		}
+
+		return $return;
+	}
+
 }
