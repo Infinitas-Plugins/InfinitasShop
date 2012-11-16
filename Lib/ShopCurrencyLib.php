@@ -19,7 +19,7 @@ class ShopCurrencyLib {
  *
  * @return string
  */
-	public function getCurrency($to = null) {
+	public static function getCurrency($to = null) {
 		if($to) {
 			return strtoupper($to);
 		}
@@ -35,7 +35,7 @@ class ShopCurrencyLib {
  *
  * @return string
  */
-	public function defaultCurrency() {
+	public static function defaultCurrency() {
 		return strtoupper(Configure::read(self::$_sessionKey));
 	}
 
@@ -46,7 +46,7 @@ class ShopCurrencyLib {
  *
  * @return see CakeSession::write()
  */
-	public function setSession($currency) {
+	public static function setSession($currency) {
 		if(strlen($currency) !== 3) {
 			throw new InvalidArgumentException('Invalid currency code');
 		}
@@ -75,7 +75,7 @@ class ShopCurrencyLib {
  *
  * @return CakeNumber::addFormat()
  */
-	public function addFormat($currency) {
+	public static function addFormat($currency) {
 		$currency = ClassRegistry::init('Shop.ShopCurrency')->find('currency', array(
 			'currency' => self::getCurrency($currency)
 		));
@@ -117,13 +117,13 @@ class ShopCurrencyLib {
 
 /**
  * @brief fetch the updated currencies
- * 
+ *
  * @param string $from the currency being converted from
  * @param string $to the currency being converted to
- * 
+ *
  * @return float
  */
-	public function fetchUpdate($from, $to) {
+	public static function fetchUpdate($from, $to) {
 		App::uses('HttpSocket', 'Network/Http');
 		$HttpSocket = new HttpSocket();
 		$result = json_decode(str_replace(

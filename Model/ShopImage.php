@@ -110,7 +110,7 @@ class ShopImage extends ShopAppModel {
 		);
 	}
 
-	public function afterFind(array $results, $primary) {
+	public function afterFind($results, $primary = false) {
 		$noImage = $this->emptyFilePath();
 		$sizes = $this->uploadImageSizes('image');
 
