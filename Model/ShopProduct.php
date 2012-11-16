@@ -793,7 +793,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brife figure out the max values for the passed in product
+ * figure out the max values for the passed in product
  *
  * @param array $results the fesults of a find
  *
