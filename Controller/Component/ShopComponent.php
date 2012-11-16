@@ -14,6 +14,9 @@ class ShopComponent extends InfinitasComponent {
 		if(isset($Controller->request->params['admin']) && $Controller->request->params['admin']) {
 			return parent::beforeRender($Controller);
 		}
+		if(!$Controller->Session->read('Shop.Guest.id')) {
+			CakeSession::write('Shop.Guest.id', String::uuid());
+		}
 
 		$shopCurrencies = ClassRegistry::init('Shop.ShopCurrency')->find('switch');
 		$shopCategoriesNav = ClassRegistry::init('Shop.ShopCategory')->find('threaded', array(
