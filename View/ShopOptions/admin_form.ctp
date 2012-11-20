@@ -26,8 +26,7 @@
 		$table = array();
 		foreach($this->request->data['ShopOptionValue'] as $shopOptionValue) {
 			$table[] = sprintf(
-				'<tr class="%s"><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td></tr>',
-				$this->Infinitas->rowClass(),
+				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td></tr>',
 				__d('shop', 'Details :: %s', $shopOptionValue['description']),
 				$shopOptionValue['name'],
 				$shopOptionValue['product_code'],
@@ -38,7 +37,7 @@
 			);
 		}
 		$table = sprintf(
-			'<div class="table"><table class="listing" cellpadding="0" cellspacing="0">%s%s</table></div>',
+			'<div class="table"><table class="listing">%s%s</table></div>',
 			$this->Infinitas->adminTableHeader(array(
 				__d('shop', 'Name'),
 				__d('shop', 'Code') => array(
