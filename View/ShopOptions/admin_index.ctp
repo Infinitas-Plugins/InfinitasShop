@@ -44,7 +44,7 @@ echo $this->Filter->alphabetFilter();
 			<tr>
 				<td><?php echo $this->Infinitas->massActionCheckBox($shopOption); ?>&nbsp;</td>
 				<td><?php echo $this->Html->adminQuickLink($shopOption['ShopOption']); ?>&nbsp;</td>
-				<td><?php echo $shopOption['ShopOption']['shop_option_value_count']; ?>&nbsp;</td>
+				<td><?php echo $this->Design->count($shopOption['ShopOption']['shop_option_value_count']); ?>&nbsp;</td>
 				<td>
 					<?php
 						echo $this->Infinitas->status($shopOption['ShopOption']['required'], array(

@@ -59,7 +59,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td><?php echo $this->Text->autoLinkEmails($shopSupplier['ShopSupplier']['email']); ?>&nbsp;</td>
 				<td><?php echo $shopSupplier['ShopSupplier']['phone']; ?>&nbsp;</td>
-				<td><?php echo $shopSupplier['ShopSupplier']['product_count']; ?>&nbsp;</td>
+				<td><?php echo $this->Design->count($shopSupplier['ShopSupplier']['product_count']); ?>&nbsp;</td>
 				<td><?php echo $shopSupplier['ShopSupplier']['terms']; ?>&nbsp;</td>
 				<td>
 					<?php
