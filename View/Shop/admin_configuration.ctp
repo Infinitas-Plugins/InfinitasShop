@@ -4,25 +4,25 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Types'),
 			'description' => __d('shop', 'Manage product types'),
-			'icon' => '/shop/img/icons/product_types.png',
+			'icon' => 'indent-left',
 			'dashboard' => array('controller' => 'shop_product_types', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Options'),
 			'description' => __d('shop', 'Manage product options'),
-			'icon' => '/shop/img/icons/options.png',
+			'icon' => 'list-alt',
 			'dashboard' => array('controller' => 'shop_options', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Attributes'),
 			'description' => __d('shop', 'Manage store attributes'),
-			'icon' => '/shop/img/icons/attributes.png',
+			'icon' => 'check',
 			'dashboard' => array('controller' => 'shop_attributes', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Currencies'),
 			'description' => __d('shop', 'Manage store currencies'),
-			'icon' => '/shop/img/icons/currency.png',
+			'icon' => 'money',
 			'dashboard' => array('controller' => 'shop_currencies', 'action' => 'index')
 		),
 	),
@@ -30,13 +30,13 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Images'),
 			'description' => __d('shop', 'Manage store images'),
-			'icon' => '/shop/img/icons/images.png',
+			'icon' => 'picture',
 			'dashboard' => array('controller' => 'shop_images', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Downloads'),
 			'description' => __d('shop', 'Manage store downloads'),
-			'icon' => '/shop/img/icons/downloads.png',
+			'icon' => 'download-alt',
 			'dashboard' => array('controller' => 'shop_downloads', 'action' => 'index')
 		),
 	),
@@ -44,37 +44,37 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Branches'),
 			'description' => __d('shop', 'Manage store branches'),
-			'icon' => '/shop/img/icons/branches.png',
+			'icon' => 'briefcase',
 			'dashboard' => array('controller' => 'shop_branches', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Suppliers'),
 			'description' => __d('shop', 'Manage store suppliers'),
-			'icon' => '/shop/img/icons/suppliers.png',
+			'icon' => 'globe',
 			'dashboard' => array('controller' => 'shop_suppliers', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Brands'),
 			'description' => __d('shop', 'Manage product brands'),
-			'icon' => '/shop/img/icons/manufacturers.png',
+			'icon' => 'th',
 			'dashboard' => array('controller' => 'shop_brands', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Payments'),
 			'description' => __d('shop', 'Manage store payments'),
-			'icon' => '/shop/img/icons/payment.png',
+			'icon' => 'credit-card',
 			'dashboard' => array('controller' => 'shop_payment_methods', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Shipping'),
 			'description' => __d('shop', 'Manage store shipping'),
-			'icon' => '/shop/img/icons/shipping.png',
+			'icon' => 'truck',
 			'dashboard' => array('controller' => 'shop_shipping_methods', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Status'),
 			'description' => __d('shop', 'Manage order statuses'),
-			'icon' => '/shop/img/icons/order_status.png',
+			'icon' => 'time',
 			'dashboard' => array('controller' => 'shop_order_statuses', 'action' => 'index')
 		)
 	)

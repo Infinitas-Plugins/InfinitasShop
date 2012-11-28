@@ -9,7 +9,7 @@ class ShopEvents extends AppEvents {
 		return array(
 			'name' => 'Shop',
 			'description' => 'Online eCommerce',
-			'icon' => '/shop/img/icon.png',
+			'icon' => 'shopping-cart',
 			'author' => 'Infinitas',
 			'dashboard' => array(
 				'plugin' => 'shop',

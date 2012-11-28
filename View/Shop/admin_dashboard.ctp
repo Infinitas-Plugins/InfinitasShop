@@ -26,19 +26,19 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Clients'),
 			'description' => __d('shop', 'Manage clients'),
-			'icon' => '/users/img/icon.png',
+			'icon' => 'user',
 			'dashboard' => array('controller' => 'shop_products', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Categories'),
 			'description' => __d('shop', 'Manage store categories'),
-			'icon' => '/contents/img/categories.png',
+			'icon' => 'folder-open',
 			'dashboard' => array('controller' => 'shop_categories', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Config'),
 			'description' => __d('shop', 'Manage store configuration'),
-			'icon' => '/configs/img/icon.png',
+			'icon' => 'cogs',
 			'dashboard' => array('controller' => 'shop', 'action' => 'configuration')
 		),
 	),
@@ -46,25 +46,25 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Products'),
 			'description' => __d('shop', 'Manage store products'),
-			'icon' => '/shop/img/icons/products.png',
+			'icon' => 'barcode',
 			'dashboard' => array('controller' => 'shop_products', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Specials'),
 			'description' => __d('shop', 'Manage store specials'),
-			'icon' => '/shop/img/icons/specials.png',
+			'icon' => 'bullhorn',
 			'dashboard' => array('controller' => 'shop_specials', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Featured'),
 			'description' => __d('shop', 'Manage store products'),
-			'icon' => '/shop/img/icons/featured.png',
+			'icon' => 'certificate',
 			'dashboard' => array('controller' => 'shop_spotlights', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Stock'),
 			'description' => __d('shop', 'Manage store stock'),
-			'icon' => '/shop/img/icons/stock.png',
+			'icon' => 'tasks',
 			'dashboard' => array('controller' => 'shop_branch_stocks', 'action' => 'index')
 		),
 	),
@@ -72,13 +72,13 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Orders'),
 			'description' => __d('shop', 'Manage store orders'),
-			'icon' => '/shop/img/icons/orders.png',
+			'icon' => 'bar-chart',
 			'dashboard' => array('controller' => 'shop_orders', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Carts'),
 			'description' => __d('shop', 'Manage store carts'),
-			'icon' => '/shop/img/icons/cart.png',
+			'icon' => 'shopping-cart',
 			'dashboard' => array('controller' => 'shop_lists', 'action' => 'index')
 		),
 	)
