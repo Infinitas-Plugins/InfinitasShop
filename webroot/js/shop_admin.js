@@ -17,9 +17,9 @@ $('a .rate.add').live('click', function() {
 	$counter = $type == 'insurance' ? $('#ShopShippingMethodValueInsuranceCounter') : $('#ShopShippingMethodValueRatesCounter');
 	$count = $counter.val();
 
-	var $html = '<div class="tiny">' + 
-		'<input name="data[ShopShippingMethodValue][' + $type + '][' + $count.toString() + '][limit]" placeholder="Limit ($)" type="text" id="ShopShippingMethodValueLimit">' + 
-		'<input name="data[ShopShippingMethodValue][' + $type + '][' + $count.toString()  + '][rate]" placeholder="Rate ($)" type="text" id="ShopShippingMethodValueRate">' + 
+	var $html = '<div class="tiny">' +
+		'<input name="data[ShopShippingMethodValue][' + $type + '][' + $count.toString() + '][limit]" placeholder="Limit ($)" type="text" id="ShopShippingMethodValueLimit">' +
+		'<input name="data[ShopShippingMethodValue][' + $type + '][' + $count.toString()  + '][rate]" placeholder="Rate ($)" type="text" id="ShopShippingMethodValueRate">' +
 		'<a href="#"><img src="/img/core/icons/actions/remove.png" width="20px" class="rate remove" alt=""></a>' +
 	'</div>';
 	$tab.append($html);
@@ -32,4 +32,8 @@ $('div.stock-value, div.price, div.markup').hover(function() {
 	$('span', this).toggle();
 }, function() {
 	$('span', this).toggle();
+});
+
+$('.imageSelector').imageSelector({
+
 });

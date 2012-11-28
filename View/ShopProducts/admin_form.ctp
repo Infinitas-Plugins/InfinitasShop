@@ -70,7 +70,7 @@
 								'controller' => 'shop_branches',
 								'action' => 'edit',
 								$branch['ShopBranch']['id']
-							)), 
+							)),
 							$this->Html->link($branch['Manager']['full_name'], array(
 								'plugin' => 'users',
 								'controller' => 'users',
@@ -111,7 +111,7 @@
 				$this->Form->input('ShopCategoriesProduct', array(
 					'options' => $shopCategories,
 					'label' => __d('shop', 'Categories'),
-					'multiple' => true, 
+					'multiple' => true,
 					'empty' => false,
 					'name' => 'data[ShopCategoriesProduct]',
 					'selected' => Hash::extract($this->request->data, 'ShopCategoriesProduct.{n}.shop_category_id'),
@@ -127,7 +127,12 @@
 				$this->Form->input('ShopImagesProduct', array(
 					'options' => $shopImages,
 					'multiple' => 'checkbox',
-					'empty' => false
+					'label' => __d('shop', 'Additional Images'),
+					'empty' => false,
+					'div' => array(
+						'class' => 'imageSelector',
+						'data-path' => '/files/shop_image/image/'
+					)
 				))
 			)),
 			implode('', array(
