@@ -5,7 +5,7 @@ class ShopEvents extends AppEvents {
  *
  * @return array
  */
-	public function onPluginRollCall() {
+	public function onPluginRollCall(Event $Event) {
 		return array(
 			'name' => 'Shop',
 			'description' => 'Online eCommerce',
@@ -22,7 +22,7 @@ class ShopEvents extends AppEvents {
 /**
  * @brief the admin menu
  *
- * @param Event $event the Event
+ * @param Event $Event the Event
  *
  * @return array
  */
@@ -63,7 +63,7 @@ class ShopEvents extends AppEvents {
  *
  * @return array
  */
-	public function onSetupCache() {
+	public function onSetupCache(Event $Event) {
 		return array(
 			'name' => 'shop',
 			'config' => array(
@@ -79,12 +79,12 @@ class ShopEvents extends AppEvents {
 /**
  * @brief figure out a url slug
  *
- * @param Event $event the Event
+ * @param Event $Event the Event
  * @param array $data the data used to build a url
  *
  * @return array
  */
-	public function onSlugUrl(Event $event, $data) {
+	public function onSlugUrl(Event $Event, $data = null, $type = null) {
 		switch($data['type']) {
 			case 'products':
 				return array(
@@ -111,12 +111,12 @@ class ShopEvents extends AppEvents {
 /**
  * @brief sort out the guest data once the user logs in
  *
- * @param Event $event the event
+ * @param Event $Event the event
  * @param array data passed in
  *
  * @return array
  */
-	public function onUserLogin(Event $event, $data) {
+	public function onUserLogin(Event $Event, $data) {
 
 	}
 
@@ -125,7 +125,7 @@ class ShopEvents extends AppEvents {
  *
  * @return array
  */
-	public function onRequireHelpersToLoad() {
+	public function onRequireHelpersToLoad(Event $Event) {
 		return array(
 			'Shop.Shop'
 		);
@@ -136,7 +136,7 @@ class ShopEvents extends AppEvents {
  *
  * @return array
  */
-	public function onRequireComponentsToLoad() {
+	public function onRequireComponentsToLoad(Event $Event) {
 		return array(
 			'Shop.Shop'
 		);
@@ -158,12 +158,12 @@ class ShopEvents extends AppEvents {
 /**
  * @brief get css that needs loading
  *
- * @param Event $event the event
+ * @param Event $Event the event
  *
  * @return array
  */
-	public function onRequireCssToLoad(Event $event) {
-		if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
+	public function onRequireCssToLoad(Event $Event) {
+		if($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
 			);
@@ -177,12 +177,12 @@ class ShopEvents extends AppEvents {
 /**
  * @brief get js that needs loading
  *
- * @param Event $event the event
+ * @param Event $Event the event
  *
  * @return array
  */
-	public function onRequireJavascriptToLoad(Event $event) {
-		if($event->Handler->request->params['admin'] || $event->Handler->request->params['plugin'] != 'shop') {
+	public function onRequireJavascriptToLoad(Event $Event) {
+		if($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
 			);
@@ -202,7 +202,7 @@ class ShopEvents extends AppEvents {
 		ClassRegistry::init('Shop.ShopCurrency')->updateCurrencies();
 	}
 
-	public function onRouteParse(Event $Event, $data) {
+	public function onRouteParse(Event $Event, $data = null) {
 		if($data['plugin'] != 'shop') {
 			return false;
 		}
@@ -253,7 +253,7 @@ class ShopEvents extends AppEvents {
 /**
  * @brief get tracking variables
  *
- * @param Event $event the event being triggered
+ * @param Event $Event the event being triggered
  *
  * @return array
  */

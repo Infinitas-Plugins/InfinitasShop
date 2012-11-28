@@ -149,9 +149,9 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief validate the field is a float type
- * 
+ *
  * @param array $field the data being validated
- * 
+ *
  * @return boolean
  */
 	public function validateFloatAboveZero(array $field) {
@@ -161,13 +161,13 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief parse the insurance and rates for the backend CRUD
- * 
+ *
  * @param array|boolean $results the results from a find
  * @param boolean $primary is this find on the model or from a relation
- * 
- * @return array|boolean 
+ *
+ * @return array|boolean
  */
-	public function afterFind($results, $primary) {
+	public function afterFind($results, $primary = false) {
 		if($this->findQueryType == 'first') {
 			foreach($results as &$result) {
 				self::_explode($result[$this->alias]['insurance']);
@@ -180,12 +180,12 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief implode the rates before validation/saving
- * 
+ *
  * @param array $options options for validation see Model::beforeValidate()
- * 
+ *
  * @return boolean
  */
-	public function beforeValidate(array $options) {
+	public function beforeValidate($options = array()) {
 		if(!empty($this->data[$this->alias]['rates'])) {
 			$this->_implode($this->data[$this->alias]['rates']);
 		}
@@ -197,13 +197,13 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief find shipping values
- * 
+ *
  * @param string $state before or after
  * @param array $query the query being performed
  * @param array $results the results from the find
  *
  * @throws InvalidArgumentException
- * 
+ *
  * @return array
  */
 	protected function _findValues($state, array $query, array $results = array()) {
@@ -272,10 +272,10 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief parse the shipping values into arrays
- * 
+ *
  * @param string $values values (passed by reference)
  * @param  boolean $insurance insurance or shipping
- * 
+ *
  * @return void
  */
 	protected function _explode(&$values) {
@@ -299,9 +299,9 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 /**
  * @brief implode the values for sotrage
- * 
+ *
  * @param array $values the data to be imploded
- * 
+ *
  * @return void
  */
 	protected function _implode(&$values) {

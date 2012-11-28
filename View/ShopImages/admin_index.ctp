@@ -15,18 +15,13 @@
  * Redistributions of files must retain the above copyright notice.
  */
 echo $this->Form->create(null, array('action' => 'mass'));
-
-$massActions = $this->Infinitas->massActionButtons(
-	array(
-		'add',
-		'edit',
-		'toggle',
-		'copy',
-		'delete'
-	)
-);
-
-echo $this->Infinitas->adminIndexHead($filterOptions, $massActions);
+echo $this->Infinitas->adminIndexHead($filterOptions, array(
+	'add',
+	'edit',
+	'toggle',
+	'copy',
+	'delete'
+));
 echo $this->Filter->alphabetFilter();
 ?>
 <div class="dashboard">

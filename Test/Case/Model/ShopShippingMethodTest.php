@@ -36,9 +36,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_special',
+		'plugin.shop.shop_products_special',
 		'plugin.shop.shop_spotlight',
 		'plugin.shop.shop_supplier',
-		
+
 		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view',
 	);
@@ -67,10 +68,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief test find shipping
- * 
+ *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
- * 
+ *
  * @dataProvider findShippingDataProvider
  */
 	public function testFindShipping($data, $expected) {
@@ -91,7 +92,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief find shipping data provider
- * 
+ *
  * @return array
  */
 	public function findShippingDataProvider() {
@@ -304,10 +305,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief test product
- * 
+ *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
- * 
+ *
  * @dataProvider productDataProvider
  */
 	public function testProduct($data, $expected) {
@@ -320,7 +321,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief product data provider
- * 
+ *
  * @return array
  */
 	public function productDataProvider() {
@@ -356,10 +357,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief test product list
- * 
+ *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
- * 
+ *
  * @dataProvider productListDataProvider
  */
 	public function testProductList($data, $expected) {
@@ -394,7 +395,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 /**
  * @brief product list data provider
- * 
+ *
  * @return array
  */
 	public function productListDataProvider() {
