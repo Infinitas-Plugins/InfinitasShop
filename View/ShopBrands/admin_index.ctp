@@ -33,14 +33,14 @@ echo $this->Filter->alphabetFilter();
 			),
 			$this->Paginator->sort('name'),
 			$this->Paginator->sort('shop_product_count', __d('shop', 'Products')) => array(
-				'style' => 'width:50px;'
-			),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:50px;'
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:75px;'
+				'class' => 'date'
 			),
+			$this->Paginator->sort('active', __d('shop', 'Status')) => array(
+				'class' => 'small'
+			)
 		));
 
 		foreach ($shopBrands as $shopBrand) { ?>
@@ -66,8 +66,8 @@ echo $this->Filter->alphabetFilter();
 						))
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Infinitas->status($shopBrand['ShopBrand']['active']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopBrand['ShopBrand']); ?></td>
+				<td><?php echo $this->Infinitas->status($shopBrand['ShopBrand']['active']); ?>&nbsp;</td>
 			</tr><?php
 		}
 	?>

@@ -32,15 +32,17 @@ echo $this->Filter->alphabetFilter('Contact.ContactBranch');
 				'class' => 'first'
 			),
 			$this->Paginator->sort('ContactBranch.name', __d('shop', 'Branch')),
-			$this->Paginator->sort('manager_id'),
-			$this->Paginator->sort('ordering') => array(
-				'style' => 'width:75px'
+			$this->Paginator->sort('manager_id') => array(
+				'class' => 'larger'
 			),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:75px'
+			$this->Paginator->sort('ordering') => array(
+				'class' => 'small'
+			),
+			$this->Paginator->sort('active', __d('shop', 'Status')) => array(
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px'
+				'class' => 'date'
 			)
 		));
 

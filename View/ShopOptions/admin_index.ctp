@@ -31,12 +31,14 @@ echo $this->Filter->alphabetFilter();
 				'class' => 'first'
 			),
 			$this->Paginator->sort('name'),
-			$this->Paginator->sort('shop_option_value_count', 'Options'),
+			$this->Paginator->sort('shop_option_value_count', 'Options') => array(
+				'class' => 'small'
+			),
 			$this->Paginator->sort('required') => array(
-				'style' => 'width:50px;'
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px;'
+				'class' => 'date'
 			),
 		));
 

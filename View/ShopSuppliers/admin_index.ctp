@@ -33,16 +33,20 @@ echo $this->Filter->alphabetFilter();
 			),
 			$this->Paginator->sort('name'),
 			$this->Paginator->sort('email'),
-			$this->Paginator->sort('phone'),
-			$this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
-				'style' => 'width:75px;'
+			$this->Paginator->sort('phone') => array(
+				'class' => 'larger'
 			),
-			$this->Paginator->sort('terms'),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:50px;'
+			$this->Paginator->sort('product_count', __d('shop', 'Products')) => array(
+				'class' => 'small'
+			),
+			$this->Paginator->sort('terms') => array(
+				'class' => 'large'
+			),
+			$this->Paginator->sort('active', __d('shop', 'Status')) => array(
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px;'
+				'class' => 'date'
 			),
 		));
 
@@ -57,14 +61,20 @@ echo $this->Filter->alphabetFilter();
 						);
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Text->autoLinkEmails($shopSupplier['ShopSupplier']['email']); ?>&nbsp;</td>
+				<td>
+					<?php
+						if($shopSupplier['ShopSupplier']['email']) {
+							echo $this->Shop->emailLink($shopSupplier['ShopSupplier']['email']);
+							echo $shopSupplier['ShopSupplier']['email'];
+						}
+					?>&nbsp;
+				</td>
 				<td><?php echo $shopSupplier['ShopSupplier']['phone']; ?>&nbsp;</td>
 				<td><?php echo $this->Design->count($shopSupplier['ShopSupplier']['product_count']); ?>&nbsp;</td>
 				<td><?php echo $shopSupplier['ShopSupplier']['terms']; ?>&nbsp;</td>
 				<td>
 					<?php
 						echo $this->Infinitas->status($shopSupplier['ShopSupplier']['active'], array(
-							'title_yes' => __d('shop', 'Status :: Supplier is active'),
 							'title_no' => __d('shop', 'Status :: Supplier is disabled, products will no longer be displayed'),
 						));
 					?>&nbsp;

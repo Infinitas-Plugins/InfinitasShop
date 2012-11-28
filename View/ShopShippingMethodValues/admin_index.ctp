@@ -31,16 +31,26 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 				'class' => 'first'
 			),
 			$this->Paginator->sort('name'),
-			$this->Paginator->sort('surcharge'),
-			$this->Paginator->sort('delivery_time'),
-			$this->Paginator->sort('total_minimum', __d('shop', 'Order Min')),
-			$this->Paginator->sort('total_maximum', __d('shop', 'Order Max')),
-			$this->Paginator->sort('require_login', __d('shop', 'Guests')),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:50px;'
+			$this->Paginator->sort('delivery_time') => array(
+				'class' => 'large'
+			),
+			$this->Paginator->sort('surcharge') => array(
+				'class' => 'large'
+			),
+			$this->Paginator->sort('total_minimum', __d('shop', 'Order Min')) => array(
+				'class' => 'large'
+			),
+			$this->Paginator->sort('total_maximum', __d('shop', 'Order Max')) => array(
+				'class' => 'large'
+			),
+			$this->Paginator->sort('require_login', __d('shop', 'Guests')) => array(
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:75px;'
+				'class' => 'date'
+			),
+			$this->Paginator->sort('active') => array(
+				'class' => 'small'
 			),
 		));
 
@@ -48,6 +58,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 			<tr>
 				<td><?php echo $this->Infinitas->massActionCheckBox($value); ?>&nbsp;</td>
 				<td><?php echo $this->Html->adminQuickLink($value['ShopShippingMethodValue']); ?>&nbsp;</td>
+				<td><?php echo $this->Shop->timeEstimate($value['ShopShippingMethodValue']['delivery_time']); ?>&nbsp;</td>
 				<td>
 					<?php
 						if(!$value['ShopShippingMethodValue']['surcharge']) {
@@ -57,7 +68,6 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 						}
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Shop->timeEstimate($value['ShopShippingMethodValue']['delivery_time']); ?>&nbsp;</td>
 				<td>
 					<?php
 						if(!$value['ShopShippingMethodValue']['total_minimum']) {
@@ -80,14 +90,14 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 					<?php
 						echo $this->Infinitas->status(!$value['ShopShippingMethodValue']['require_login'], array(
 							'title_yes' => __d('infinitas', 'Login :: This shipping option is available for all users'),
-							'title_no' => __d('infinitas', 'Login :: This shipping option requires users to be logged in')
+							'title_no' => false
 						));
 					?>&nbsp;
 				</td>
+				<td><?php echo $this->Infinitas->date($value['ShopShippingMethodValue']); ?></td>
 				<td>
 					<?php
 						$status = array(
-							'title_yes' => __d('shop', 'Acitve :: This option is active'),
 							'title_no' => __d('shop', 'Not Active :: This shipping option value is currently disabled')
 						);
 						if(!$value['ShopShippingMethod']['active']) {
@@ -97,7 +107,6 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 						echo $this->Infinitas->status($value['ShopShippingMethodValue']['active'] && $value['ShopShippingMethod']['active'], $status);
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Infinitas->date($value['ShopShippingMethodValue']); ?></td>
 			</tr><?php
 		}
 	?>

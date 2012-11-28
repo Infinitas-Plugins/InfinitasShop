@@ -31,16 +31,18 @@ echo $this->Filter->alphabetFilter();
 			$this->Form->checkbox('all') => array(
 				'class' => 'first'
 			),
-			$this->Paginator->sort('ShopSupplier.name', __d('shop', 'Supplier')),
+			$this->Paginator->sort('ShopSupplier.name', __d('shop', 'Supplier')) => array(
+				'class' => 'larger'
+			),
 			$this->Paginator->sort('name'),
 			$this->Paginator->sort('shop_shipping_method_value_count', __d('shop', 'Tiers')) => array(
-				'style' => 'width:50px;'
-			),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:50px;'
+				'class' => 'small'
 			),
 			$this->Paginator->sort('created') => array(
-				'style' => 'width:75px;'
+				'class' => 'date'
+			),
+			$this->Paginator->sort('active', __d('shop', 'Status')) => array(
+				'class' => 'small'
 			),
 		));
 
@@ -70,8 +72,8 @@ echo $this->Filter->alphabetFilter();
 						));
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Infinitas->status($shopShippingMethod['ShopShippingMethod']['active']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopShippingMethod['ShopShippingMethod']); ?>&nbsp;</td>
+				<td><?php echo $this->Infinitas->status($shopShippingMethod['ShopShippingMethod']['active']); ?>&nbsp;</td>
 			</tr><?php
 		}
 	?>

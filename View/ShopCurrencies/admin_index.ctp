@@ -33,15 +33,19 @@ echo $this->Filter->alphabetFilter();
 					'class' => 'first'
 				),
 				$this->Paginator->sort('name'),
-				$this->Paginator->sort('code'),
+				$this->Paginator->sort('code') => array(
+					'class' => 'small'
+				),
 				$this->Paginator->sort('factor', __d('shop', 'Exchange Rate')),
 				__d('shop', 'Positive'),
 				__d('shop', 'Negative'),
 				__d('shop', 'Zero'),
-				__d('shop', 'HTML'),
-				__d('shop', 'Default'),
+				__d('shop', 'Unescaped'),
+				__d('shop', 'Default') => array(
+					'class' => 'small'
+				),
 				$this->Paginator->sort('modified') => array(
-					'style' => 'width:75px;'
+					'class' => 'date'
 				),
 			)
 		);
@@ -62,7 +66,7 @@ echo $this->Filter->alphabetFilter();
 					<?php
 						echo $this->Infinitas->status((float)$shopCurrency['ShopCurrency']['factor'] == 1, array(
 							'title_yes' => __d('shop', 'Default :: This is configured as the store default'),
-							'title_no' => __d('shop', 'Default :: This is not the default currency'),
+							'title_no' => false,
 						));
 					?>&nbsp;
 				</td>

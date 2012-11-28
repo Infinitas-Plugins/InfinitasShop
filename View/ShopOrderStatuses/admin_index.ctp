@@ -31,13 +31,13 @@ echo $this->Filter->alphabetFilter();
 			),
 			$this->Paginator->sort('name'),
 			$this->Paginator->sort('shop_order_count', __d('shop', 'Orders')) => array(
-				'style' => 'width:100px;'
-			),
-			$this->Paginator->sort('status') => array(
-				'style' => 'width:100px;'
+				'class' => 'small'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px;'
+				'class' => 'date'
+			),
+			$this->Paginator->sort('status') => array(
+				'class' => 'large'
 			),
 		));
 
@@ -57,8 +57,30 @@ echo $this->Filter->alphabetFilter();
 						));
 					?>&nbsp;
 				</td>
-				<td><?php echo $statuses[$shopOrderStatus['ShopOrderStatus']['status']]; ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopOrderStatus['ShopOrderStatus']); ?></td>
+				<td>
+					<?php
+						$label = null;
+						switch ($statuses[$shopOrderStatus['ShopOrderStatus']['status']]) {
+							case 'Canceled';
+							case 'Reversed';
+								$label = 'warning';
+								break;
+
+							case 'Processing';
+								$label = 'info';
+								break;
+
+							case 'Processed':
+							case 'Completed':
+								$label = 'success';
+								break;
+						}
+						echo $this->Design->label($statuses[$shopOrderStatus['ShopOrderStatus']['status']], array(
+							'class' => 'label-' . $label
+						));
+					?>&nbsp;
+				</td>
 			</tr><?php
 		}
 	?>

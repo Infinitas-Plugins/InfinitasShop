@@ -26,10 +26,10 @@
 		$table = array();
 		foreach($this->request->data['ShopOptionValue'] as $shopOptionValue) {
 			$table[] = sprintf(
-				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td></tr>',
+				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s</td><td>%s&nbsp;</td></tr>',
 				__d('shop', 'Details :: %s', $shopOptionValue['description']),
 				$shopOptionValue['name'],
-				$shopOptionValue['product_code'],
+				$this->Design->label($shopOptionValue['product_code']),
 				$this->Infinitas->date($shopOptionValue),
 				implode('', array(
 					'D'
@@ -37,17 +37,17 @@
 			);
 		}
 		$table = sprintf(
-			'<div class="table"><table class="listing">%s%s</table></div>',
+			'<table class="listing"><thead>%s</thead><tbody>%s</tbody></table>',
 			$this->Infinitas->adminTableHeader(array(
 				__d('shop', 'Name'),
 				__d('shop', 'Code') => array(
-					'style' => 'width: 150px;'
+					'class' => 'large'
 				),
 				__d('shop', 'Updated') => array(
-					'style' => 'width: 100px;'
+					'class' => 'date'
 				),
 				__d('shop', 'Actions') => array(
-					'style' => 'width: 100px;'
+					'class' => 'large'
 				)
 			), false),
 			implode('', $table)
@@ -63,7 +63,9 @@
 		$contents = array(
 			implode('', array(
 				$this->Form->input('name'),
-				$this->Form->input('slug'),
+				$this->Form->input('slug', array(
+					'label' => __d('shop', 'Alias')
+				)),
 				$this->Infinitas->wysiwyg('ShopOption.description'),
 				$this->Form->input('required', array('type' => 'checkbox'))
 			)),

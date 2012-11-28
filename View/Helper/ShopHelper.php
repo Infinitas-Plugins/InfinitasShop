@@ -31,7 +31,8 @@ class ShopHelper extends AppHelper {
 		$options = array_merge(array(
 			'escape' => false,
 			'title' => $email,
-			'target' => '_blank'
+			'target' => '_blank',
+			'class' => 'icon'
 		), $options);
 
 		if(!$icon) {
@@ -39,10 +40,7 @@ class ShopHelper extends AppHelper {
 		}
 
 		return $this->Html->link(
-			$this->Html->image('Emails.icon.png', array(
-				'width' => 24,
-				'alt' => __d('shop', 'Email')
-			)),
+			$this->Design->icon('envelope'),
 			'mailto:' . $email,
 			$options
 		);

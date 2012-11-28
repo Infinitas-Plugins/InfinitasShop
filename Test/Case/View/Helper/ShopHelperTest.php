@@ -60,8 +60,9 @@ class ShopHelperTest extends CakeTestCase {
 					'config' => array()
 				),
 				array(
-					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'bob@bob.com', 'target' => '_blank')),
-					array('img' => array('src' => '/emails/img/icon.png', 'width' => 24, 'alt' => 'Email')),
+					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'bob@bob.com', 'target' => '_blank', 'class' => 'icon')),
+						array('i' => array('class' => 'icon-envelope')),
+						'/i',
 					'/a'
 				)
 			),
@@ -72,8 +73,8 @@ class ShopHelperTest extends CakeTestCase {
 					'config' => array()
 				),
 				array(
-					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'bob@bob.com', 'target' => '_blank')),
-					'bob@bob.com',
+					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'bob@bob.com', 'target' => '_blank', 'class' => 'icon')),
+						'bob@bob.com',
 					'/a'
 				)
 			),
@@ -87,8 +88,9 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'Awesome title', 'target' => '_self')),
-					array('img' => array('src' => '/emails/img/icon.png', 'width' => 24, 'alt' => 'Email')),
+					array('a' => array('href' => 'mailto:bob@bob.com', 'title' => 'bob@bob.com', 'title' => 'Awesome title', 'target' => '_self', 'class' => 'icon')),
+						array('i' => array('class' => 'icon-envelope')),
+						'/i',
 					'/a'
 				)
 			)

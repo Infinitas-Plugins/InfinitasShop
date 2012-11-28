@@ -1,14 +1,36 @@
 .option-value {
 	border: 1px solid #CFCFCF;
 	margin-bottom: 15px;
+	padding: 10px;
+}
+
+.option-value input {
+	margin-right: 10px;
+}
+.option-value .smaller input {
+	width: 47%;
+	float: left;
+}
+
+.option-value textarea {
+	width: 97%;
 }
 
 td img {
 	vertical-align: middle;
 }
 
+.tiny {
+	clear: both;
+}
 .tiny img.remove {
 	padding-top: 13px;
+}
+
+.tiny input {
+	width: 100px;
+	float: left;
+	margin-right: 10px;
 }
 
 .shop_images .image {

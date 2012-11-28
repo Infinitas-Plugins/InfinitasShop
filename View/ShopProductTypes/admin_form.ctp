@@ -25,7 +25,9 @@
 		$contents = array(
 			implode('', array(
 				$this->Form->input('name'),
-				$this->Form->input('slug'),
+				$this->Form->input('slug', array(
+					'label' => __d('shop', 'Alias')
+				)),
 				$this->Form->input('active'),
 			))
 		);

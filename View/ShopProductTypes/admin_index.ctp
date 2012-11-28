@@ -32,11 +32,11 @@ echo $this->Filter->alphabetFilter();
 				'class' => 'first'
 			),
 			$this->Paginator->sort('name'),
-			$this->Paginator->sort('active') => array(
-				'style' => 'width:75px;'
-			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px;'
+				'class' => 'date'
+			),
+			$this->Paginator->sort('active') => array(
+				'class' => 'small'
 			),
 		));
 
@@ -44,15 +44,14 @@ echo $this->Filter->alphabetFilter();
 			<tr>
 				<td><?php echo $this->Infinitas->massActionCheckBox($shopProductType); ?>&nbsp;</td>
 				<td><?php echo $this->Html->adminQuickLink($shopProductType['ShopProductType']); ?>&nbsp;</td>
+				<td><?php echo $this->Infinitas->date($shopProductType['ShopProductType']); ?></td>
 				<td>
 					<?php
 						echo $this->Infinitas->status($shopProductType['ShopProductType']['active'], array(
-							'title_yes' => __d('shop', 'Active :: The product type is active'),
 							'title_no' => __d('shop', 'Inactive :: Products of this type will not be available for purchase')
 						));
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Infinitas->date($shopProductType['ShopProductType']); ?></td>
 			</tr><?php
 		}
 	?>
