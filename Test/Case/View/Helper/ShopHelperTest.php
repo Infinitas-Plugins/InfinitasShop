@@ -48,7 +48,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief email link data provider
- * 
+ *
  * @return array
  */
 	public function emailLinkDataProvider() {
@@ -107,7 +107,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief time estimate data porvider
- * 
+ *
  * @return array
  */
 	public function timeEstimateDataProvider() {
@@ -135,7 +135,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief admin currency data provider
- * 
+ *
  * @return array
  */
 	public function adminCurrencyDataProvider() {
@@ -159,7 +159,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief stock value data provider
- * 
+ *
  * @return array
  */
 	public function stockValueDataProvider() {
@@ -217,7 +217,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief test currency
- * 
+ *
  * @dataProvider currencyDataProvider
  */
 	public function testCurrency($data, $expected) {
@@ -227,8 +227,8 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief currency data provider 
- * 
+ * @brief currency data provider
+ *
  * @return array
  */
 	public function currencyDataProvider() {
@@ -259,18 +259,22 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief test admin status
- * 
+ *
  * @dataProvider adminStatusMissingDataProvider
  */
 	public function testAdminStatusMissing($data, $expected) {
 		$expected = array(
-			array('img' => array(
-				'src' => '/img/core/icons/status/inactive.png',
-				'width' => '20px',
-				'class' => 'icon-status',
+			array('a' => array(
+				'href' => '/#',
+				'class' => 'icon status',
 				'title' => sprintf('Missing data :: Unable to determin the status of the product (Missing %s)', $expected),
 				'alt' => 'Off'
-			))
+			)),
+				array('i' => array(
+					'class' => 'icon-off'
+				)),
+				'/i',
+			'/a'
 		);
 		$data = array_merge(array(
 			'ShopProduct' => array(),
@@ -285,7 +289,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief admin status missing data provider
- * 
+ *
  * @return array
  */
 	public function adminStatusMissingDataProvider() {
@@ -366,12 +370,15 @@ class ShopHelperTest extends CakeTestCase {
  */
 	public function testAdminStatus($data, $expected) {
 		$result = $this->Shop->adminStatus($data);
+		if(!$expected) {
+			return $this->assertNull($result);
+		}
 		$this->assertTags($result, $expected);
 	}
 
 /**
  * @brief admin status data provider
- * 
+ *
  * @return array
  */
 	public function adminStatusDataProvider() {
@@ -394,13 +401,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Product type has been disabled&lt;/li&gt;&lt;li &gt;Supplier has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Product type has been disabled</li><li >Supplier has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'supplier' => array(
@@ -421,13 +432,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Product type has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Product type has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'product-type' => array(
@@ -448,13 +463,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Brand has been disabled&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'brand' => array(
@@ -475,13 +494,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product is disabled&lt;/li&gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'product' => array(
@@ -502,13 +525,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;li &gt;Not linked to any categories&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product will be available after Jan 1st 2050, 00:00</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'category' => array(
@@ -532,13 +559,17 @@ class ShopHelperTest extends CakeTestCase {
 					)
 				),
 				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/inactive.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Disabled :: This product will not be available to customers.&lt;br/&gt;&lt;ul  &gt;&lt;li &gt;Product will be available after Jan 1st 2050, 00:00&lt;/li&gt;&lt;/ul&gt;',
+					array('a' => array(
+						'href' => '/#',
+						'class' => 'icon status',
+						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product will be available after Jan 1st 2050, 00:00</li></ul>',
 						'alt' => 'Off'
-					))
+					)),
+						array('i' => array(
+							'class' => 'icon-off'
+						)),
+						'/i',
+					'/a'
 				)
 			),
 			'all-active' => array(
@@ -561,22 +592,14 @@ class ShopHelperTest extends CakeTestCase {
 						'stuff'
 					)
 				),
-				array(
-					array('img' => array(
-						'src' => '/img/core/icons/status/active.png',
-						'width' => '20px',
-						'class' => 'icon-status',
-						'title' => 'Available :: This product is available to customers for purchase',
-						'alt' => 'On'
-					))
-				)
+				null
 			)
 		);
 	}
 
 /**
  * @brief test admin price
- * 
+ *
  * @dataProvider adminPriceDataProvider
  */
 	public function testAdminPrice($data, $expected) {
@@ -586,7 +609,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief admin price data provider
- * 
+ *
  * @return array
  */
 	public function adminPriceDataProvider() {
@@ -600,7 +623,7 @@ class ShopHelperTest extends CakeTestCase {
 				array(
 					array('div' => array('class' => 'price')),
 						array('span' => array(
-							'class' => 'cost', 
+							'class' => 'cost',
 							'title' => 'Price :: &lt;ul  &gt;&lt;li &gt;Cost: £10.00&lt;/li&gt;&lt;li &gt;Selling: £12.00&lt;/li&gt;&lt;li &gt;Markup: 2 (20)&lt;/li&gt;&lt;li &gt;Retail: £15.00&lt;/li&gt;&lt;/ul&gt;'
 						)),
 							'£10.00',
@@ -616,7 +639,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief test admin markup
- * 
+ *
  * @dataProvider adminMarkupDataProvider
  */
 	public function testAdminMarkup($data, $expected) {
@@ -626,7 +649,7 @@ class ShopHelperTest extends CakeTestCase {
 
 /**
  * @brief admin markup data provider
- * 
+ *
  * @return array
  */
 	public function adminMarkupDataProvider() {
@@ -690,5 +713,4 @@ class ShopHelperTest extends CakeTestCase {
 			)
 		);
 	}
-
 }

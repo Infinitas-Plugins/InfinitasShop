@@ -176,32 +176,26 @@ class ShopHelper extends AppHelper {
 		$statuses = array(
 			'product' => array(
 				'status' => $product['ShopProduct']['active'],
-				1 => __d('shop', 'Product is active'),
 				0 => __d('shop', 'Product is disabled')
 			),
 			'available' => array(
 				'status' => $product['ShopProduct']['available'] <= date('Y-m-d H:i:s'),
-				1 => __d('shop', 'Product is currently available'),
 				0 => __d('shop', 'Product will be available after %s', CakeTime::niceShort($product['ShopProduct']['available']))
 			),
 			'brand' => array(
 				'status' => $product['ShopBrand']['active'],
-				1 => __d('shop', 'Brand is active'),
 				0 => __d('shop', 'Brand has been disabled')
 			),
 			'type' => array(
 				'status' => $product['ShopProductType']['active'],
-				1 => __d('shop', 'Product type is active'),
 				0 => __d('shop', 'Product type has been disabled')
 			),
 			'supplier' => array(
 				'status' => $product['ShopSupplier']['active'],
-				1 => __d('shop', 'Supplier is active'),
 				0 => __d('shop', 'Supplier has been disabled')
 			),
 			'category' => array(
 				'status' => $product['ShopProduct']['category_active'],
-				1 => __d('shop', 'Category is active'),
 				0 => __d('shop', 'Category has been disabled')
 			)
 		);
@@ -222,9 +216,11 @@ class ShopHelper extends AppHelper {
 			$overallStatus = $overallStatus && $status['status'];
 			$out[] = $status[(int)$status['status']];
 		}
+		if($overallStatus) {
+			return;
+		}
 
 		return $this->Infinitas->status($overallStatus, array(
-			'title_yes' => __d('shop', 'Available :: This product is available to customers for purchase'),
 			'title_no' => __d('shop', 'Disabled :: This product will not be available to customers.<br/>%s', $this->Design->arrayToList($out))
 		));
 	}
@@ -591,5 +587,4 @@ class ShopHelper extends AppHelper {
 			)))
 		)), array('class' => 'table table-striped table-hover table-condensed sizes'));
 	}
-
 }

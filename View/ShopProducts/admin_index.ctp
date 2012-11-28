@@ -31,23 +31,29 @@ echo $this->Filter->alphabetFilter();
 			$this->Form->checkbox('all') => array(
 				'class' => 'first'
 			),
-			$this->Paginator->sort('name'),
-			$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')),
-			$this->Paginator->sort('ShopBrand.name', __d('shop', 'Brand')),
+			$this->Paginator->sort('name') => array(
+				'colspan' => 3
+			),
+			$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')) => array(
+				'class' => 'larger'
+			),
+			$this->Paginator->sort('ShopBrand.name', __d('shop', 'Brand')) => array(
+				'class' => 'larger'
+			),
 			$this->Paginator->sort('ShopPrice.selling', __d('shop', 'Price')) => array(
-				'style' => 'width:60px;'
+				'class' => 'medium'
 			),
 			__d('shop', 'Markup') => array(
-				'style' => 'width:60px;'
+				'class' => 'large'
 			),
 			$this->Paginator->sort('total_stock', __d('shop', 'Stock')) => array(
-				'style' => 'width:80px;'
+				'class' => 'medium'
 			),
 			$this->Paginator->sort('modified') => array(
-				'style' => 'width:100px;'
+				'class' => 'date'
 			),
 			$this->Paginator->sort('active', __d('shop', 'Status')) => array(
-				'style' => 'width:50px;'
+				'class' => 'small'
 			),
 		));
 
@@ -59,7 +65,7 @@ echo $this->Filter->alphabetFilter();
 						$this->Infinitas->massActionCheckBox($shopProduct);
 					?>&nbsp;
 				</td>
-				<td>
+				<td colspan="3">
 					<?php
 						echo sprintf('%s<br/>%s',
 							$this->Html->image($shopProduct['ShopImage']['image_small'], array(
