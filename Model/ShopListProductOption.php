@@ -8,12 +8,6 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopOptionValue $ShopOptionValue
  */
 class ShopListProductOption extends ShopAppModel {
-/**
- * @brief validation rules
- *
- * @var array
- */
-	public $validate = array();
 
 /**
  * @brief custom find methods
@@ -64,7 +58,39 @@ class ShopListProductOption extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
-
+			'shop_list_product_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No product specified'),
+					'required' => true
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid product')
+				),
+				'validateProductRequiredOptions' => array(
+					'rule' => 'validateProductRequiredOptions',
+					'message' => __d('shop', 'Product has required options')
+				),
+				'validateUniqueproduct' => array(
+					'rule' => 'validateUniqueproduct',
+					'message' => __d('shop', 'Product already added')
+				),
+			),
+			'shop_option_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid option'),
+					'allowEmpty' => true
+				)
+			),
+			'shop_option_value_id' => array(
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid option value'),
+					'allowEmpty' => true
+				)
+			)
 		);
 	}
 
@@ -77,5 +103,49 @@ class ShopListProductOption extends ShopAppModel {
 			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
 		));
 		return false;
+	}
+
+	public function validateUniqueproduct($field) {
+		if(empty($this->data[$this->alias]['shop_list_product_id'])) {
+			return false;
+		}
+
+		$product = $this->ShopListProduct->find('first', array(
+			'fields' => array(
+				$this->ShopListProduct->alias . '.id',
+				$this->ShopListProduct->ShopListProductOption->alias . '.shop_option_id',
+				$this->ShopListProduct->ShopListProductOption->alias . '.shop_option_value_id',
+			),
+			'conditions' => array(
+				$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey => $this->data[$this->alias]['shop_list_product_id']
+			),
+			'joins' => array(
+				$this->ShopListProduct->autoJoinModel(array(
+					'model' => $this->ShopListProduct->ShopListProductOption->fullModelName(),
+					'type' => 'right'
+				))
+			)
+		));
+		if(empty($product)) {
+			return true;
+		}
+
+		$diff = array_diff(
+			array_values(Hash::flatten($product)),
+			array_values($this->data[$this->alias])
+		);
+		return !empty($diff);
+	}
+
+	public function saveProductOptions($listProductId, array $options) {
+		foreach ($options as $optionId => &$option) {
+			$option = array(
+				'shop_list_product_id' => $listProductId,
+				'shop_option_id' => $optionId,
+				'shop_option_value_id' => $option
+			);
+		}
+
+		return (bool)$this->saveAll($options);
 	}
 }
