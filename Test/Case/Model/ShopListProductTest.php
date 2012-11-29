@@ -188,4 +188,34 @@ class ShopListProductTest extends CakeTestCase {
 			)
 		);
 	}
+
+/**
+ * Test adding product to list
+ */
+	public function testAddToList() {
+		CakeSession::write('Auth.User.id', 'sally');
+		$data = array(
+			$this->modelClass => array(
+				'shop_product_id' => 'active',
+				'quantity' => 2.5,
+				'shop_list_id' => 'shop-list-sally-cart'
+			),
+			'ShopOption' => array(
+				'option-size' => 'option-size-large'
+			)
+		);
+		$result = $this->{$this->modelClass}->addToList($data);
+		$this->assertTrue($result);
+		$this->assertEmpty($this->{$this->modelClass}->validationErrors);
+		$this->assertEmpty($this->{$this->modelClass}->ShopListProductOption->validationErrors);
+
+		$result = $this->{$this->modelClass}->addToList($data);
+		$this->assertFalse($result);
+
+		$expected = array(array(
+			'shop_list_product_id' => array('Product already added')
+		));
+		$result = $this->{$this->modelClass}->ShopListProductOption->validationErrors;
+		$this->assertEquals($expected, $result);
+	}
 }

@@ -168,6 +168,6 @@ class ShopListProductOption extends ShopAppModel {
 			);
 		}
 
-		return (bool)$this->saveAll($options);
+		return (bool)$this->saveAll(array_values($options));
 	}
 }
