@@ -443,7 +443,7 @@ class ShopHelper extends AppHelper {
 		return implode('', array(
 			$this->Form->create('ShopList', array('url' => array(
 				'plugin' => 'shop',
-				'controller' => 'shop_lists',
+				'controller' => 'shop_list_products',
 				'action' => 'add'
 			))),
 				$this->Form->hidden('ShopList.product_id', array(

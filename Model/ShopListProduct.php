@@ -181,4 +181,32 @@ class ShopListProduct extends ShopAppModel {
 			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
 		));
 	}
+
+/**
+ * Add a product to a list, If no list is specified the default will be used
+ *
+ * @param array $product the product to add to the cart
+ *
+ * @return boolean
+ */
+	public function addToList($product) {
+		if (empty($product[$this->alias]['shop_list_id'])) {
+			$product[$this->alias]['shop_list_id'] = $this->ShopList->currentListId(true);
+		}
+
+		$this->transaction();
+		if(!$this->save($product[$this->alias])) {
+			$this->transaction(false);
+			return false;
+		}
+
+		if(!$this->ShopListProductOption->saveProductOptions($this->id, $product['ShopOption'])) {
+			$this->transaction(false);
+			return false;
+		}
+
+
+		$this->transaction(true);
+		return true;
+	}
 }

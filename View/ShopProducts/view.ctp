@@ -1,7 +1,11 @@
 <?php
 echo $this->Shop->categoryBreadcrumbs($categoryPath, $shopProduct['ShopProduct']['name']);
 
-echo $this->Form->create();
+echo $this->Form->create('ShopListProduct', array('action' => 'add'));
+	echo $this->Form->hidden('shop_product_id', array(
+		'value' => $shopProduct['ShopProduct']['id']
+	));
+
 	echo $this->Html->tag('div', implode('', array(
 		$this->Html->tag('h1', $shopProduct['ShopProduct']['name']),
 		$this->element('Shop.product/images', array(
