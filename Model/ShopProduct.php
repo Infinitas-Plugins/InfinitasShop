@@ -24,12 +24,13 @@ class ShopProduct extends ShopAppModel {
 	public $validate = array();
 
 /**
- * @brief custom find types
+ * custom find types
  *
  * @var array
  */
 	public $findMethods = array(
 		'product' => true,
+		'productOptions' => true,
 		'productShipping' => true,
 		'paginated' => true,
 		'adminPaginated' => true,
@@ -43,7 +44,8 @@ class ShopProduct extends ShopAppModel {
 		'mostPurchased' => true,
 		'recentlyViewed' => true,
 		'search' => true,
-		'possibleOptions' => true
+		'possibleOptions' => true,
+		'orderQuantity' => true
 	);
 
 /**
@@ -208,7 +210,7 @@ class ShopProduct extends ShopAppModel {
 	);
 
 /**
- * @brief overload the construct for translated validation messages
+ * overload the construct for translated validation messages
  *
  * A number of virtual fields are made available to the product model that contains
  * usefull information such as markups and margin.
@@ -312,7 +314,49 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find new products
+ * Get the order quantity details for the product
+ *
+ * This info is used in validating that the correct amount of product has been added to the cart such
+ * as the minimum, maximum and quantity units.
+ *
+ * @param type $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findOrderQuantity($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if(empty($query['shop_product_id'])) {
+				throw new InvalidArgumentException(__d('shop', 'No product selected'));
+			}
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.quantity_unit',
+				$this->alias . '.quantity_min',
+				$this->alias . '.quantity_max'
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.' . $this->primaryKey => $query['shop_product_id'],
+			));
+
+			$query['limit'] = 1;
+
+			return $query;
+		}
+
+		if (empty($results[0][$this->alias])) {
+			return array();
+		}
+
+		return $results[0][$this->alias];
+	}
+
+/**
+ * find new products
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on created date
  *
@@ -337,7 +381,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find recently updated products
+ * find recently updated products
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
  *
@@ -362,7 +406,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find most viewed
+ * find most viewed
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on viewed field
  * and then by newest to give new products a chance to catch up
@@ -389,7 +433,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find most viewed
+ * find most viewed
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on viewed field
  * and then by newest to give new products a chance to catch up
@@ -416,7 +460,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief get a list of recently viewed products
+ * get a list of recently viewed products
  *
  * @param string $state
  * @param array $query
@@ -437,7 +481,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find recently updated products
+ * find recently updated products
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
  *
@@ -468,7 +512,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find recently updated products
+ * find recently updated products
  *
  * Wrapper for ShopProduct::_findPaginated() that sets the order on modified date
  *
@@ -495,7 +539,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find products for a list
+ * find products for a list
  *
  * @param type $state
  * @param array $query
@@ -620,7 +664,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief custom find method for product search
+ * custom find method for product search
  *
  * There are a number of ways to do searches.
  * - Normal search: `query` the default will do a query with `field LIKE "%query%"`
@@ -689,7 +733,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find paginated list of products
+ * find paginated list of products
  *
  * @param string $state
  * @param array $query
@@ -739,7 +783,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find the values for calculating shipping
+ * find the values for calculating shipping
  *
  * returns the max width, height, length and cost based on the
  * worst case senario
@@ -760,7 +804,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find the total values for shipping on an entire product list
+ * find the total values for shipping on an entire product list
  *
  * @param string $state
  * @param array $query
@@ -833,7 +877,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief get a single product
+ * get a single product
  *
  * @param string $state the state of the find
  * @param array $query
@@ -900,7 +944,61 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief get the product code built up based on options
+ * Get all the products options
+ *
+ * @param string $state the state of the find
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findProductOptions($state, array $query, array $results = array()) {
+		if($state == 'before') {
+			if(empty($query[0])) {
+				throw new InvalidArgumentException('No product selected');
+			}
+
+			$query['fields'] = array(
+				$this->alias . '.' . $this->primaryKey
+			);
+
+			$query['conditions']['or'] = array(
+				$this->alias . '.' . $this->primaryKey => $query[0],
+				$this->alias . '.slug' => $query[0]
+			);
+
+			$query['joins'] = array(
+
+			);
+
+
+			$query['limit'] = 1;
+
+			return $query;
+		}
+
+		if(empty($results[0][$this->alias][$this->primaryKey])) {
+			return array();
+		}
+
+		$results = current($results);
+		unset($results['ActiveCategory']);
+
+		$options = array(
+			'shop_product_id' => $results[$this->alias][$this->primaryKey],
+			'conditions' => array(
+				'ShopOption.id' => 'asd'
+			),
+			'extract' => true
+		);
+
+		$results['ShopOption'] = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
+
+		return $results;
+	}
+
+/**
+ * get the product code built up based on options
  *
  * $product can be either id of a product or array with id / product code
  * if only the id is passed the rest will be figured out.
@@ -983,7 +1081,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief setup the basics for the product finds
+ * setup the basics for the product finds
  *
  * @param string $state
  * @param array $query
@@ -1126,37 +1224,34 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * @brief build the conditions to find only active products
+ * build the conditions to find only active products
  *
  * @param array $query the query being run (passed by reference)
  *
  * @return void
  */
 	protected function _activeOnlyConditions(array &$query) {
-		$query['conditions'] = array_merge(
-			(array)$query['conditions'],
-			array(
-				$this->alias . '.active' => 1,
-				$this->alias . '.available <=' => date('Y-m-d H:i:00'),
-				'ActiveCategory.active' => 1,
-				array('or' => array(
-					$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
-					$this->ShopBrand->alias . '.active' => 1,
-				)),
-				array('or' => array(
-					$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
-					$this->ShopProductType->alias . '.active' => 1,
-				)),
-				array('or' => array(
-					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
-					$this->ShopSupplier->alias . '.active' => 1,
-				))
-			)
-		);
+		$query['conditions'] = array_merge((array)$query['conditions'], array(
+			$this->alias . '.active' => 1,
+			$this->alias . '.available <=' => date('Y-m-d H:i:00'),
+			'ActiveCategory.active' => 1,
+			array('or' => array(
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
+				$this->ShopBrand->alias . '.active' => 1,
+			)),
+			array('or' => array(
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
+				$this->ShopProductType->alias . '.active' => 1,
+			)),
+			array('or' => array(
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
+				$this->ShopSupplier->alias . '.active' => 1,
+			))
+		));
 	}
 
 /**
- * @brief save product details
+ * save product details
  *
  * Saves a product and (when required) creates the stock listing.
  *

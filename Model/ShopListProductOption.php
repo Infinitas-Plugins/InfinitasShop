@@ -67,4 +67,15 @@ class ShopListProductOption extends ShopAppModel {
 
 		);
 	}
+
+	public function validateProductRequiredOptions($field) {
+		if(empty($this->data[$this->alias]['shop_product_id'])) {
+			return true;
+		}
+
+		$productOptions = $this->ShopProduct->find('productOptions', array(
+			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
+		));
+		return false;
+	}
 }
