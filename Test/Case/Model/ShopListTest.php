@@ -57,6 +57,60 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
+ * test validation
+ *
+ * @dataProvider validationDataProvider
+ */
+	public function testValidation($data, $expected) {
+		$this->{$this->modelClass}->create();
+		$result = $this->{$this->modelClass}->save($data);
+
+		$this->assertEquals(empty($expected), (bool)$result);
+		$this->assertEquals($expected, $this->{$this->modelClass}->validationErrors);
+	}
+
+/**
+ * validation data provider
+ *
+ * @return array
+ */
+	public function validationDataProvider() {
+		return array(
+			'empty' => array(
+				array(),
+				array(
+					'name' => array('Please enter a name for your list'),
+					'user_id' => array('There was a problem validating your user details')
+				)
+			),
+			'name' => array(
+				array(
+					'name' => 'My list'
+				),
+				array(
+					'user_id' => array('There was a problem validating your user details')
+				)
+			),
+			'invalid-user' => array(
+				array(
+					'name' => 'My list',
+					'user_id' => 'fake-user-id'
+				),
+				array(
+					'user_id' => array('There was a problem validating your user details')
+				)
+			),
+			'saved' => array(
+				array(
+					'name' => 'My list',
+					'user_id' => 'bob'
+				),
+				array()
+			)
+		);
+	}
+
+/**
  * @brief test validate user id
  *
  * @param type $data

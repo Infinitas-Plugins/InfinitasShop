@@ -83,45 +83,36 @@ class ShopList extends ShopAppModel {
 
 		$this->validate = array(
 			'name' => array(
-				'notempty' => array(
-					'rule' => array('notempty'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' ope
-				),
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Please enter a name for your list'),
+					'allowEmpty' => false,
+					'required' => true
+				)
 			),
 			'user_id' => array(
 				'validateUserId' => array(
-					'rule' => array('validateUserId'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' ope
-				),
+					'rule' => 'validateUserId',
+					'message' => __d('shop', 'There was a problem validating your user details'),
+					'required' => true
+				)
 			),
 			'shop_shipping_method_id' => array(
 				'validateRecordExists' => array(
-					'rule' => array('validateRecordExists'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' ope
-				),
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid shipping method selected'),
+					'allowEmpty' => true,
+					'required' => false
+				)
 			),
 			'shop_payment_method_id' => array(
 				'validateRecordExists' => array(
-					'rule' => array('validateRecordExists'),
-					//'message' => 'Your custom message here',
-					//'allowEmpty' => false,
-					//'required' => false,
-					//'last' => false, // Stop validation after this rule
-					//'on' => 'create', // Limit validation to 'create' or 'update' ope
-				),
-			),
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid payment method selected'),
+					'allowEmpty' => true,
+					'required' => false
+				)
+			)
 		);
 	}
 
