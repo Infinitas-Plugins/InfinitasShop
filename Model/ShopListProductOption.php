@@ -94,6 +94,13 @@ class ShopListProductOption extends ShopAppModel {
 		);
 	}
 
+/**
+ * Validate that products with required options have the options set
+ *
+ * @param array $field the field being validated
+ *
+ * @return boolean
+ */
 	public function validateProductRequiredOptions($field) {
 		if(empty($this->data[$this->alias]['shop_product_id'])) {
 			return true;
@@ -105,6 +112,13 @@ class ShopListProductOption extends ShopAppModel {
 		return false;
 	}
 
+/**
+ * Validate the product being added is not already in the cart
+ *
+ * @param array $field the field being validated
+ *
+ * @return boolean
+ */
 	public function validateUniqueproduct($field) {
 		if(empty($this->data[$this->alias]['shop_list_product_id'])) {
 			return false;
@@ -137,6 +151,14 @@ class ShopListProductOption extends ShopAppModel {
 		return !empty($diff);
 	}
 
+/**
+ * Save a list of product options
+ *
+ * @param string $listProductId the list product id being saved
+ * @param array $options
+ *
+ * @return array
+ */
 	public function saveProductOptions($listProductId, array $options) {
 		foreach ($options as $optionId => &$option) {
 			$option = array(
