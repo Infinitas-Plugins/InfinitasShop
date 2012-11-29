@@ -267,7 +267,7 @@ class ShopHelperTest extends CakeTestCase {
 	public function testAdminStatusMissing($data, $expected) {
 		$expected = array(
 			array('a' => array(
-				'href' => '/#',
+				'href' => 'http://localhost/#',
 				'class' => 'icon status',
 				'title' => sprintf('Missing data :: Unable to determin the status of the product (Missing %s)', $expected),
 				'alt' => 'Off'
@@ -404,7 +404,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Product type has been disabled</li><li >Supplier has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
@@ -435,7 +435,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Product type has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
@@ -466,7 +466,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Brand has been disabled</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
@@ -497,7 +497,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product is disabled</li><li >Product will be available after Jan 1st 2050, 00:00</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
@@ -528,7 +528,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product will be available after Jan 1st 2050, 00:00</li><li >Not linked to any categories</li></ul>',
 						'alt' => 'Off'
@@ -562,7 +562,7 @@ class ShopHelperTest extends CakeTestCase {
 				),
 				array(
 					array('a' => array(
-						'href' => '/#',
+						'href' => 'http://localhost/#',
 						'class' => 'icon status',
 						'title' => 'Disabled :: This product will not be available to customers.<br/><ul  ><li >Product will be available after Jan 1st 2050, 00:00</li></ul>',
 						'alt' => 'Off'
