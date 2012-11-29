@@ -145,21 +145,18 @@ class ShopList extends ShopAppModel {
 			return $currentList;
 		}
 
-		$currentList = $this->find(
-			'list',
-			array(
-				'fields' => array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->primaryKey,
-				),
-				'conditions' => array(
-					$this->alias . '.user_id' => $this->currentUserId()
-				),
-				'order' => array(
-					$this->alias . '.modified' => 'desc'
-				)
+		$currentList = $this->find('list', array(
+			'fields' => array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->primaryKey,
+			),
+			'conditions' => array(
+				$this->alias . '.user_id' => $this->currentUserId()
+			),
+			'order' => array(
+				$this->alias . '.modified' => 'desc'
 			)
-		);
+		));
 
 		$currentList = current($currentList);
 		if(!empty($currentList)) {
@@ -214,13 +211,10 @@ class ShopList extends ShopAppModel {
  * @return string
  */
 	public function createList(array $data = array()) {
-		$data = array_merge(
-			array(
-				'name' => __d('shop', 'Cart'),
-				'user_id' => $this->currentUserId(),
-			),
-			$data
-		);
+		$data = array_merge(array(
+			'name' => __d('shop', 'Cart'),
+			'user_id' => $this->currentUserId(),
+		), $data);
 
 		if($this->save($data)) {
 			return $this->id;
@@ -239,29 +233,23 @@ class ShopList extends ShopAppModel {
  */
 	protected function _baseFind($state, array $query) {
 		if($state == 'before') {
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->alias . '.user_id',
-					$this->User->alias . '.' . $this->User->primaryKey,
-					$this->User->alias . '.' . $this->User->displayField,
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.user_id',
+				$this->User->alias . '.' . $this->User->primaryKey,
+				$this->User->alias . '.' . $this->User->displayField,
 
-					$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->primaryKey,
-					$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->displayField,
+				$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->primaryKey,
+				$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->displayField,
 
-					$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->primaryKey,
-					$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->displayField
-				)
-			);
+				$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->primaryKey,
+				$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->displayField
+			));
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.user_id' => $this->currentUserId(),
-				)
-			);
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.user_id' => $this->currentUserId(),
+			));
 
 			$conditions = array(
 				'ShopPaymentMethod.id = ShopList.shop_payment_method_id',
