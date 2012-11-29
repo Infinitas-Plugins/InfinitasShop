@@ -191,11 +191,12 @@ class ShopList extends ShopAppModel {
 				$this->alias . '.user_id' => $this->currentUserId()
 			)
 		));
+
 		if(empty($listId)) {
 			throw new InvalidArgumentException('Invalid list selected');
 		}
 
-		CakeSession::write(self::$sessionListKey, current($listId));
+		CakeSession::write(self::$sessionListKey, key($listId));
 
 		return CakeSession::read(self::$sessionListKey);
 	}
