@@ -152,6 +152,60 @@ class ShopListProductOption extends ShopAppModel {
 	}
 
 /**
+ * Get the options attached to list products
+ *
+ * These are the options that a user selected before adding a product to their list.
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findOptions($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query['shop_list_product_id'])) {
+				throw new InvalidArgumentException(__d('shop', 'No products given'));
+			}
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.shop_list_product_id',
+
+				$this->ShopOption->alias . '.' . $this->ShopOption->primaryKey,
+				$this->ShopOption->alias . '.' . $this->ShopOption->displayField,
+				$this->ShopOption->alias . '.description',
+
+				$this->ShopOptionValue->alias . '.' . $this->ShopOptionValue->primaryKey,
+				$this->ShopOptionValue->alias . '.' . $this->ShopOptionValue->displayField,
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.shop_list_product_id' => $query['shop_list_product_id']
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopOption->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopOptionValue->fullModelName());
+			return $query;
+		}
+
+		if (empty($results)) {
+			return array();
+		}
+
+		foreach ($results as &$result) {
+			$result = array(
+				'shop_list_product_id' => $result[$this->alias]['shop_list_product_id'],
+				$this->ShopOption->alias => $result[$this->ShopOption->alias],
+				$this->ShopOptionValue->alias => $result[$this->ShopOptionValue->alias]
+			);
+		}
+
+		return $results;
+	}
+
+/**
  * Save a list of product options
  *
  * @param string $listProductId the list product id being saved

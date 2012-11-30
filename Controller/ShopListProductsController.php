@@ -43,21 +43,8 @@ class ShopListProductsController extends ShopAppController {
  * @return void
  */
 	public function index() {
-		$this->Paginator->settings = array(
-			'contain' => array(
-				'ShopList',
-				'ShopProduct',
-			)
-		);
-
-		$shopListProducts = $this->Paginator->paginate(null, $this->Filter->filter);
-
-		$filterOptions = $this->Filter->filterOptions;
-		$filterOptions['fields'] = array(
-			'id',
-		);
-
-		$this->set(compact('shopListProducts', 'filterOptions'));
+		$shopListProducts = $this->{$this->modelClass}->find('currentList');
+		$this->set(compact('shopListProducts'));
 	}
 
 	public function add() {

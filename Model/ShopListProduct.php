@@ -17,7 +17,7 @@ class ShopListProduct extends ShopAppModel {
 	public $validate = array();
 
 	public $findMethods = array(
-		'products' => true
+		'currentList' => true
 	);
 
 /**
@@ -182,6 +182,53 @@ class ShopListProduct extends ShopAppModel {
 		));
 	}
 
+	protected function _findCurrentList($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.quantity',
+
+				$this->ShopProduct->alias . '.' . $this->ShopProduct->primaryKey,
+				$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField,
+				$this->ShopProduct->alias . '.slug',
+
+				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProduct->ShopCategoriesProduct->ShopCategory->primaryKey,
+				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProduct->ShopCategoriesProduct->ShopCategory->displayField,
+				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.slug',
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.shop_list_id' => $this->ShopList->currentListId(true)
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProduct->fullModelName(),
+				'model' => $this->ShopProduct->ShopCategoriesProduct->fullModelName()
+			));
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProduct->ShopCategoriesProduct->fullModelName(),
+				'model' => $this->ShopProduct->ShopCategoriesProduct->ShopCategory->fullModelName()
+			));
+			return $query;
+		}
+
+		if (empty($results)) {
+			return array();
+		}
+
+		$shopListProductIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
+		$shopListProductOptions = $this->ShopListProductOption->find('options', array(
+			'shop_list_product_id' => $shopListProductIds
+		));
+		foreach ($results as &$result) {
+			$extractTemplate = sprintf('{n}[shop_list_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result[$this->ShopListProductOption->alias] = Hash::extract($shopListProductOptions, $extractTemplate);
+		}
+
+		return $results;
+	}
+
 /**
  * Add a product to a list, If no list is specified the default will be used
  *
@@ -195,7 +242,7 @@ class ShopListProduct extends ShopAppModel {
 		}
 
 		$this->transaction();
-		if(!$this->save($product[$this->alias])) {
+		if (!$this->save($product[$this->alias])) {
 			$this->transaction(false);
 			return false;
 		}
