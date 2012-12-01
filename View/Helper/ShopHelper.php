@@ -474,6 +474,20 @@ class ShopHelper extends AppHelper {
 		));
 	}
 
+	public function subtotalPrice(array $product, $span = false) {
+		$product['ShopPrice']['selling'] *= $product['ShopListProduct']['quantity'];
+
+		return self::price($product, $span);
+	}
+
+	public function cartPrice(array $products, $span = false) {
+		foreach ($products as &$product) {
+			$product['ShopPrice']['selling'] *= $product['ShopListProduct']['quantity'];
+		}
+
+		return self::currency(array_sum(Hash::extract($products, '{n}.ShopPrice.selling')), $span);
+	}
+
 	public function optionPrice($optionPrice) {
 		if(!$optionPrice) {
 			return $this->Html->tag('span', '-', array(
