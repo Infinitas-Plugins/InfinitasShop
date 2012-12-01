@@ -2,6 +2,9 @@
 App::uses('InfinitasComponent', 'Libs.Controller/Component');
 App::uses('ShopCurrencyLib', 'Shop.Lib');
 
+/**
+ * @property CookieComponent $Cookie
+ */
 class ShopComponent extends InfinitasComponent {
 /**
  * @brief load up required variables for the store
@@ -11,11 +14,11 @@ class ShopComponent extends InfinitasComponent {
  * @return boolean
  */
 	public function beforeRender(Controller $Controller) {
-		if(isset($Controller->request->params['admin']) && $Controller->request->params['admin']) {
+		if (isset($Controller->request->params['admin']) && $Controller->request->params['admin']) {
 			return parent::beforeRender($Controller);
 		}
-		if(!$Controller->Session->read('Shop.Guest.id')) {
-			CakeSession::write('Shop.Guest.id', String::uuid());
+		if (!AuthComponent::user('id')) {
+			$this->_getGuest($Controller);
 		}
 
 		$shopCurrencies = ClassRegistry::init('Shop.ShopCurrency')->find('switch');
@@ -41,6 +44,44 @@ class ShopComponent extends InfinitasComponent {
 		return parent::beforeRender($Controller);
 	}
 
+/**
+ * Get the guests details
+ *
+ * Check if the guest has a session id, if not check the cookie for a past id. If there is no cookie
+ * details an id is generated and saved to a cookie and session.
+ *
+ * If there is a cookie that is set to the session for eash access.
+ *
+ * @param Controller $Controller
+ *
+ * @return boolean
+ */
+	protected function _getGuest(Controller $Controller) {
+		if ($Controller->Session->read('Shop.Guest.id')) {
+			return true;
+		}
+
+		if (!$Controller->Cookie instanceof CookieComponent) {
+			$Controller->Cookie = $Controller->Components->load('Cookie');
+
+			foreach ((array)Configure::read('Security.Cookie') as $k => $v) {
+				$Controller->Cookie->{$k} = $v;
+			}
+		}
+
+		$guest = $Controller->Cookie->read('Guest');
+		if (empty($guest['id'])) {
+			$guest['id'] = String::uuid();
+		}
+
+		$Controller->Session->write('Shop.Guest.id', $guest['id']);
+		$Controller->Cookie->write('Guest', array(
+			'id' => $guest['id'],
+			'created' => time()
+		), true, '1 year');
+		return true;
+	}
+
 	protected function _moduleData(Controller $Controller) {
 		$ShopProduct = ClassRegistry::init('Shop.ShopProduct');
 
@@ -55,7 +96,7 @@ class ShopComponent extends InfinitasComponent {
 		));
 
 		$category = null;
-		if($Controller->request->category) {
+		if ($Controller->request->category) {
 			$category = $Controller->request->category;
 		}
 		$shopFilterOptions = $ShopProduct->find('possibleOptions', array(
