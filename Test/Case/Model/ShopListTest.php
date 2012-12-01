@@ -532,5 +532,4 @@ class ShopListTest extends CakeTestCase {
 			),
 		);
 	}
-
 }

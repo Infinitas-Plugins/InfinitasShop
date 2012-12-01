@@ -18,32 +18,14 @@
  */
 
 class ShopShippingMethodValue extends ShopAppModel {
+
 	public $findMethods = array(
 		'values' => true
 	);
 
 /**
- * How the default ordering on this model is done
- *
- * @access public
- * @var array
- */
-	public $order = array(
-	);
-
-/**
- * hasOne relations for this model
- *
- * @access public
- * @var array
- */
-	public $hasOne = array(
-	);
-
-/**
  * belongsTo relations for this model
  *
- * @access public
  * @var array
  */
 	public $belongsTo = array(
@@ -63,8 +45,6 @@ class ShopShippingMethodValue extends ShopAppModel {
 /**
  * overload the construct method so that you can use translated validation
  * messages.
- *
- * @access public
  *
  * @param mixed $id string uuid or id
  * @param string $table the table that the model is for

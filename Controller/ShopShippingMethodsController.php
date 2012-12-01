@@ -18,16 +18,6 @@
  */
 
 class ShopShippingMethodsController extends ShopAppController {
-/**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
 
 /**
  * @brief the index method
@@ -61,7 +51,7 @@ class ShopShippingMethodsController extends ShopAppController {
  *
  * Show detailed information on a single ShopShippingMethod
  *
- * @todo update the documentation 
+ * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void

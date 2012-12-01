@@ -13,16 +13,6 @@ App::uses('ShopAppModel', 'Shop.Model');
 class ShopPaymentMethod extends ShopAppModel {
 
 /**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'name';
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
  * hasMany associations
  *
  * @var array
@@ -107,5 +97,4 @@ class ShopPaymentMethod extends ShopAppModel {
 			'counterQuery' => ''
 		)
 	);
-
 }
