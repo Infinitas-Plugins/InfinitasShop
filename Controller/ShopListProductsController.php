@@ -43,8 +43,15 @@ class ShopListProductsController extends ShopAppController {
  * @return void
  */
 	public function index() {
-		$shopListProducts = $this->{$this->modelClass}->find('currentList');
-		$this->set(compact('shopListProducts'));
+		$shopListProducts = $this->{$this->modelClass}->ShopProduct->find('productsForList');
+		$ShopShippingMethod = ClassRegistry::init('Shop.ShopShippingMethod');
+		try {
+			$shopShipping = $ShopShippingMethod->find('productList');
+		} catch (Exception $e) {}
+
+		$shopShippingMethods = $ShopShippingMethod->find('available');
+
+		$this->set(compact('shopListProducts', 'shopShipping', 'shopShippingMethods'));
 	}
 
 	public function add() {
