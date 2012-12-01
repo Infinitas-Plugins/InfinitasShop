@@ -42,6 +42,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 
 		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view',
+		'plugin.management.ticket',
+		'plugin.users.user'
 	);
 
 /**
@@ -447,4 +449,56 @@ class ShopShippingMethodTest extends CakeTestCase {
 		);
 	}
 
+	public function testFindAvailable() {
+		$result = $this->{$this->modelClass}->find('available');
+		$expected = array(
+			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
+			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1'
+		);
+		$this->assertEquals($expected, $result);
+
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = array(
+			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
+			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1',
+			'royal-mail-2nd-rate-2' => 'royal-mail-2nd-rate-2'
+		);
+		$result = $this->{$this->modelClass}->find('available');
+		$this->assertEquals($expected, $result);
+
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-2';
+		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', 50);
+
+		$expected = array(
+			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
+			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1'
+		);
+		$result = $this->{$this->modelClass}->find('available');
+		$this->assertEquals($expected, $result);
+
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-1';
+		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_maximum', 30);
+
+		$expected = array(
+			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1'
+		);
+		$result = $this->{$this->modelClass}->find('available');
+		$this->assertEquals($expected, $result);
+
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-1';
+		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_maximum', null));
+
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-2';
+		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', null));
+
+		$expected = array(
+			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
+			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1',
+			'royal-mail-2nd-rate-2' => 'royal-mail-2nd-rate-2'
+		);
+		$result = $this->{$this->modelClass}->find('available');
+		$this->assertEquals($expected, $result);
+
+	}
 }

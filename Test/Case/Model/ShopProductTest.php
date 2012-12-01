@@ -1,5 +1,6 @@
 <?php
 App::uses('ShopProduct', 'Shop.Model');
+App::uses('CakeSession', 'Model/Datasource');
 
 /**
  * ShopProduct Test Case
@@ -37,6 +38,8 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_products_option_ignore',
 		'plugin.shop.shop_products_option_value_ignore',
 		'plugin.shop.shop_products_option_value_override',
+		'plugin.shop.shop_shipping_method',
+		'plugin.shop.shop_payment_method',
 
 		'plugin.shop.shop_contact_address',
 
@@ -405,6 +408,84 @@ class ShopProductTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * Test finding paginated lists by category
+ */
+	public function testFindPaginatedByCategory() {
+		$this->assertEmpty($this->{$this->modelClass}->find('paginated', array(
+			'category' => 'inactive'
+		)));
+
+		$expected = array(
+			'active',
+			'multi-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+			'multi-option'
+		);
+		$result = $this->{$this->modelClass}->find('paginated', array(
+			'category' => 'active'
+		));
+		$result = Hash::extract($result, '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-category'
+		);
+		$result = $this->{$this->modelClass}->find('paginated', array(
+			'category' => 'another'
+		));
+		$result = Hash::extract($result, '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test product search
+ */
+	public function testFindSearch() {
+		$expected = array(
+			'active',
+			'inactive-parent-category',
+			'multi-category',
+			'multi-category-mixed-state',
+			'multi-category-parent-inactive',
+			'multi-option'
+		);
+
+		$result = $this->{$this->modelClass}->find('search', array(
+			'search' => 'active'
+		));
+		$result = Hash::extract($result, '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'multi-category-mixed-state'
+		);
+		$result = $this->{$this->modelClass}->find('search', array(
+			'search' => '%mix%'
+		));
+		$result = Hash::extract($result, '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			'active'
+		);
+		$result = $this->{$this->modelClass}->find('search', array(
+			'search' => '!multi%'
+		));
+		$result = Hash::extract($result, '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test find search exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testFindSearchException() {
+		$this->{$this->modelClass}->find('search');
 	}
 
 /**
@@ -1390,7 +1471,6 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider  findProductsForListDataProvider
  */
 	public function testFindProductsForList($data, $expected) {
-		App::uses('CakeSession', 'Model/Datasource');
 		if(isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
@@ -1403,6 +1483,16 @@ class ShopProductTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 
 		CakeSession::destroy();
+	}
+
+	public function testFindProductsForListDefault() {
+		CakeSession::write('Auth.User.id', 'bob');
+		CakeSession::write('Shop.current_list', 'shop-list-bob-cart');
+
+		$expected = $this->findProductsForListDataProvider();
+		$expected = end($expected['bob-cart']);
+		$result = $this->{$this->modelClass}->find('productsForList');
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -1621,6 +1711,35 @@ class ShopProductTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * test find cost for list
+ *
+ * @return void
+ */
+	public function testFindCostForList() {
+		CakeSession::write('Auth.User.id', 'bob');
+		CakeSession::write('Shop.current_list', 'shop-list-bob-cart');
+
+		$expected = 43;
+		$result = $this->{$this->modelClass}->find('costForList');
+		$this->assertEquals($expected, $result);
+
+		$ShopListProduct = ClassRegistry::init('Shop.ShopListProduct');
+		$ShopListProduct->id = 'shop-list-bob-cart-multi-option';
+		$ShopListProduct->saveField('quantity', 25);
+
+		$expected = 715;
+		$result = $this->{$this->modelClass}->find('costForList');
+		$this->assertEquals($expected, $result);
+
+
+		ClassRegistry::init('Shop.ShopList')->delete('shop-list-bob-cart');
+
+		$expected = 0;
+		$result = $this->{$this->modelClass}->find('costForList');
+		$this->assertEquals($expected, $result);
 	}
 
 /**

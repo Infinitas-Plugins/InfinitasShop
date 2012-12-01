@@ -2,6 +2,14 @@
 /**
  * ShopProduct Model
  *
+ * @package Shop.Model
+ */
+
+/**
+ * ShopProduct Model
+ *
+ * @package Shop.Model
+ *
  * @property ShopImage $ShopImage
  * @property ShopSupplier $ShopSupplier
  * @property ShopBrand $ShopBrand
@@ -15,6 +23,7 @@
  * @property ShopSize $ShopSize
  * @property ShopListProduct $ShopListProduct
  */
+
 class ShopProduct extends ShopAppModel {
 /**
  * Validation rules
@@ -35,6 +44,7 @@ class ShopProduct extends ShopAppModel {
 		'paginated' => true,
 		'adminPaginated' => true,
 		'productsForList' => true,
+		'costForList' => true,
 		'prodcutListShipping' => true,
 		'new' => true,
 		'updated' => true,
@@ -433,9 +443,9 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * find most viewed
+ * find most purchased
  *
- * Wrapper for ShopProduct::_findPaginated() that sets the order on viewed field
+ * Wrapper for ShopProduct::_findPaginated() that sets the order on sales field
  * and then by newest to give new products a chance to catch up
  *
  * @param string $state
@@ -541,6 +551,9 @@ class ShopProduct extends ShopAppModel {
 /**
  * find products for a list
  *
+ * This gets the product details for the selected (or default) shopping list. Generally used for
+ * a chechout page and completing orders
+ *
  * @param type $state
  * @param array $query
  * @param array $results
@@ -605,10 +618,8 @@ class ShopProduct extends ShopAppModel {
 			'extract' => true
 		);
 
-		if(empty($results[0][$this->alias][$this->primaryKey])) {
-			if(!array_filter($options['shop_product_id'])) {
-				return array();
-			}
+		if(empty($results[0][$this->alias][$this->primaryKey]) && !array_filter($options['shop_product_id'])) {
+			return array();
 		}
 
 		$shopListIds = array_unique(Hash::extract($results, sprintf('{n}.%s.shop_list_id', $this->ShopListProduct->ShopList->ShopListProduct->alias)));
@@ -639,6 +650,46 @@ class ShopProduct extends ShopAppModel {
 		return $results;
 	}
 
+/**
+ * Calculate the total value of all products in a list
+ *
+ * This calculates the total cost of goods in the cart that can be used for sub total and figuring out
+ * what methods of shipping are available to the user (as shipping can be based on cart total)
+ *
+ * @param type $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return float
+ */
+	protected function _findCostForList($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			return self::_findProductsForList($state, $query);
+		}
+
+		$results = self::_findProductsForList($state, $query, $results);
+		foreach ($results as &$result) {
+			foreach ($result['ShopOption'] as &$option) {
+				$option = array_sum(Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling'));
+			}
+			$result = ($result['ShopPrice']['selling'] + array_sum($result['ShopOption'])) * $result['ShopListProduct']['quantity'];
+		}
+
+		return array_sum($results);
+	}
+
+/**
+ * Paginated list of products but includes products that are inactive.
+ *
+ * This method should only be used in the backend code or users will be able to view products that
+ * are not yet active or available
+ *
+ * @param type $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
 	protected function _findAdminPaginated($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$query['admin'] = true;
@@ -733,7 +784,8 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * find paginated list of products
+ * find paginated list of products, general product lists that show basic information such as the index
+ * or search pages.
  *
  * @param string $state
  * @param array $query
@@ -806,6 +858,9 @@ class ShopProduct extends ShopAppModel {
 /**
  * find the total values for shipping on an entire product list
  *
+ * This calculates the actual price of shipping for a carts contents. This requires that the user has
+ * already selected a shipping method for the total to be calculated.
+ *
  * @param string $state
  * @param array $query
  * @param array $results
@@ -837,7 +892,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * figure out the max values for the passed in product
+ * figure out the max shipping values for the passed in product
  *
  * @param array $results the fesults of a find
  *
@@ -877,7 +932,7 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * get a single product
+ * get a single product for display, generaly the product view page
  *
  * @param string $state the state of the find
  * @param array $query
@@ -1083,6 +1138,8 @@ class ShopProduct extends ShopAppModel {
 /**
  * setup the basics for the product finds
  *
+ * This creates the joins and fields that are used for most finds within the product model.
+ *
  * @param string $state
  * @param array $query
  * @param array $results
@@ -1159,6 +1216,15 @@ class ShopProduct extends ShopAppModel {
 		return $results;
 	}
 
+/**
+ * Find a list of possible options for a category
+ *
+ * @param type $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
 	protected function _findPossibleOptions($state, array $query, array $results = array()) {
 		if($state == 'before') {
 			$this->_activeOnlyConditions($query);

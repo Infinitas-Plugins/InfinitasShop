@@ -5,17 +5,19 @@ App::uses('ShopAppModel', 'Shop.Model');
  *
  * @property ShopList $ShopList
  * @property ShopOrder $ShopOrder
+ * @property ShopShippingMethodValue $ShopShippingMethodValue
  */
 class ShopShippingMethod extends ShopAppModel {
 /**
  * @brief custom find methods
- * 
+ *
  * @var array
  */
 	public $findMethods = array(
 		'shipping' => true,
 		'product' => true,
-		'productList' => true
+		'productList' => true,
+		'available' => true
 	);
 
 /**
@@ -81,7 +83,7 @@ class ShopShippingMethod extends ShopAppModel {
 	);
 /**
  * @brief overload construct for translated validation
- * 
+ *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
@@ -97,13 +99,13 @@ class ShopShippingMethod extends ShopAppModel {
 /**
  * @brief get a sipping rate
  *
- * This will fetch a shipping rate based on either the passed in shipping id or 
+ * This will fetch a shipping rate based on either the passed in shipping id or
  * the users current cart set up.
  *
  * @param  string $state   [description]
  * @param  array  $query   [description]
  * @param  array  $results [description]
- * 
+ *
  * @return array
  */
 	protected function _findShipping($state, array $query, array $results = array()) {
@@ -142,7 +144,7 @@ class ShopShippingMethod extends ShopAppModel {
 			}
 
 			$query['limit'] = 1;
-			
+
 			return $query;
 		}
 
@@ -166,11 +168,11 @@ class ShopShippingMethod extends ShopAppModel {
 
 /**
  * @brief get the shipping particulars for a selected product
- * 
+ *
  * @param  string $state   [description]
  * @param  array $query   [description]
  * @param  array $results [description]
- * 
+ *
  * @return array
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
@@ -192,11 +194,11 @@ class ShopShippingMethod extends ShopAppModel {
 
 /**
  * @brief get the shipping details of a product list
- * 
+ *
  * @param  string $state   [description]
  * @param  array  $query   [description]
  * @param  array  $results [description]
- * 
+ *
  * @return array
  */
 	protected function _findProductList($state, array $query, array $results = array()) {
@@ -225,10 +227,10 @@ class ShopShippingMethod extends ShopAppModel {
  * @brief get the shipping costs
  *
  * $sizes expects having the width, height, lenght and cost available.
- * 
+ *
  * @param array $sizes the values for the current check
  * @param array $rates the rates table from the database
- * 
+ *
  * @return array
  */
 	protected function _getShipping(array $sizes, array &$method) {
@@ -250,7 +252,7 @@ class ShopShippingMethod extends ShopAppModel {
  * @param  array $shipping the shipping prices
  *
  * @throws CakeException when no option is available
- * 
+ *
  * @return float
  */
 	protected function _calculateShipping($weight, array &$rates) {
@@ -262,19 +264,20 @@ class ShopShippingMethod extends ShopAppModel {
 
 		throw new CakeException(__d('shop', 'Product is to heavy to be shipped by this method'));
 	}
+
 /**
  * @brief calculate the insurance provided by selected shipping method
  *
  * This will return the best insurance cover base on the price of the passed
- * in value. If the item is more expensive than the highest available insurance 
+ * in value. If the item is more expensive than the highest available insurance
  * option the highest option is returned.
  *
- * The rate + limit is returned to be displayed on the front end so users will 
+ * The rate + limit is returned to be displayed on the front end so users will
  * see how much cover they have (or if there is short fall)
- * 
+ *
  * @param  float $price the cost of goods being insured
  * @param  array $insurance the insurance options
- * 
+ *
  * @return array
  */
 	protected function _calculateInsurance($price, array &$insurance) {
@@ -287,4 +290,63 @@ class ShopShippingMethod extends ShopAppModel {
 		return $price;
 	}
 
+/**
+ * Find the available shipping methods
+ *
+ * This takes into account the various shipping rules such as what type of user it is and the total of
+ * the cart. Only shipping methods that match are returned.
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findAvailable($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$query['fields'] = array(
+				$this->ShopShippingMethodValue->alias . '.' . $this->ShopShippingMethodValue->primaryKey,
+				$this->ShopShippingMethodValue->alias . '.' . $this->ShopShippingMethodValue->displayField
+			);
+
+			$cartTotal = $this->ShopList->ShopListProduct->ShopProduct->find('costForList');
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.active' => true
+			));
+
+			$query['joins'] = array(
+				$this->autoJoinModel(array(
+					'model' => $this->ShopShippingMethodValue->fullModelName(),
+					'conditions' => array(
+						$this->alias . '.' .$this->primaryKey . ' = ' . $this->ShopShippingMethodValue->alias . '.shop_shipping_method_id',
+						$this->ShopShippingMethodValue->alias . '.active' => true,
+						$this->ShopShippingMethodValue->alias . '.require_login' => array_unique(array(
+							false,
+							(bool)AuthComponent::user('id')
+						)),
+						array(
+							'or' => array(
+								$this->ShopShippingMethodValue->alias . '.total_minimum <=' => $cartTotal,
+								$this->ShopShippingMethodValue->alias . '.total_minimum' => null
+							)
+						),
+						array(
+							'or' => array(
+								$this->ShopShippingMethodValue->alias . '.total_maximum >=' => $cartTotal,
+								$this->ShopShippingMethodValue->alias . '.total_maximum' => null
+							)
+						)
+					),
+					'type' => 'right'
+				))
+			);
+			return $query;
+		}
+
+		return Hash::combine($results,
+			sprintf('{n}.%s.%s', $this->ShopShippingMethodValue->alias, $this->ShopShippingMethodValue->primaryKey),
+			sprintf('{n}.%s.%s', $this->ShopShippingMethodValue->alias, $this->ShopShippingMethodValue->displayField)
+		);
+	}
 }

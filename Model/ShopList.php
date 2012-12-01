@@ -170,6 +170,15 @@ class ShopList extends ShopAppModel {
 		return $this->createList();
 	}
 
+	public function setShippingMethod($shippingMethodId, $shopListId = null) {
+		if (!$shopListId) {
+			$shopListId = $this->currentListId();
+		}
+
+		$this->id = $shopListId;
+		return $this->saveField('shop_shipping_method_id', $shippingMethodId);
+	}
+
 /**
  * @brief set the current list id
  *
