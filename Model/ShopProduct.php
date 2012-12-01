@@ -758,7 +758,7 @@ class ShopProduct extends ShopAppModel {
 				'---WILDCARD---'
 			);
 			$query['search'] = str_replace($search, $replace, $query['search']);
-			$query['search'] = Sanitize::escape($query['search']);
+			$query['search'] = Sanitize::escape($query['search'], $this->useDbConfig);
 			$query['search'] = str_replace($replace, $search, $query['search']);
 
 			$like = sprintf(' %s "%s"', $like, String::insert($match, array('search' => $query['search'])));
