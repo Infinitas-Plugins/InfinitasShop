@@ -480,12 +480,17 @@ class ShopHelper extends AppHelper {
 		return self::price($product, $span);
 	}
 
-	public function cartPrice(array $products, $span = false) {
+	public function cartPrice(array $products, array $shipping = array(), $span = false) {
 		foreach ($products as &$product) {
 			$product['ShopPrice']['selling'] *= $product['ShopListProduct']['quantity'];
 		}
 
-		return self::currency(array_sum(Hash::extract($products, '{n}.ShopPrice.selling')), $span);
+		$products = array_sum(Hash::extract($products, '{n}.ShopPrice.selling'));
+		if (empty($shipping['total'])) {
+			$shipping['total'] = 0;
+		}
+
+		return self::currency($products + $shipping['total'], $span);
 	}
 
 	public function optionPrice($optionPrice) {
@@ -598,5 +603,77 @@ class ShopHelper extends AppHelper {
 				)))
 			)))
 		)), array('class' => 'table table-striped table-hover table-condensed sizes'));
+	}
+
+/**
+ * Generate a shipping selection button or if only one is available and selected show that
+ *
+ * @param array $shippingMethod The currently selected shipping method
+ * @param array $shopShippingMethods the available shipping methods
+ *
+ * @return string
+ */
+	public function shippingSelect(array $shippingMethod, array $shopShippingMethods) {
+		if (count($shopShippingMethods) == 1 && !empty($shippingMethod['name'])) {
+			return $this->Html->link($shippingMethod['name'], $this->here . '#', array(
+				'class' => 'btn active'
+			));
+		}
+
+		foreach ($shopShippingMethods as $k => &$shopShippingMethod) {
+			$shopShippingMethod = $this->Html->link($shopShippingMethod, array(
+				'plugin' => 'shop',
+				'controller' => 'shop_lists',
+				'action' => 'set_shipping_method',
+				$k
+			));
+		}
+
+		$shippingButton = __d('shop', 'Shipping method');
+		if (!empty($shopShippingMethods[$shippingMethod['name']])) {
+			$shippingButton = $shippingMethod['name'];
+		}
+
+		return implode('', array(
+			$this->Html->link($shippingButton . $this->Html->tag('span', '', array('class' => 'caret')), $this->here . '#', array(
+				'class' => 'btn dropdown-toggle',
+				'data-toggle' => 'dropdown',
+				'escape' => false
+			)),
+			$this->Design->arrayToList($shopShippingMethods, array(
+				'ul' => 'dropdown-menu'
+			))
+		));
+	}
+
+	public function paymentSelect(array $paymentMethod, array $shopPaymentMethods) {
+
+	}
+
+	public function shipping(array $shipping) {
+		$rows = array(
+			__d('shop', 'Packaging') => $this->currency($shipping['surcharge']),
+			__d('shop', 'Insurance') => __d('shop', '%s covers upto %s',
+				$this->currency($shipping['insurance_rate']),
+				$this->currency($shipping['insurance_cover'])
+			),
+			__d('shop', 'Shipping') => $this->currency($shipping['shipping']),
+			__d('shop', 'Total') => $this->currency($shipping['total']),
+		);
+		foreach ($rows as $title => &$row) {
+			$row = $this->Html->tag('tr', implode('', array(
+				$this->Html->tag('th', $title),
+				$this->Html->tag('td', $row),
+			)));
+		}
+
+		return $this->Html->link($this->currency($shipping['total']), $this->here . '#', array(
+			'class' => 'shipping-breakdown',
+			'escape' => false,
+			'data-title' => __d('shop', 'Shipping information'),
+			'data-html' => 1,
+			'data-content' => $this->Html->tag('table', $this->Html->tag('tbody', implode('', $rows))),
+			'data-placement' => 'top'
+		));
 	}
 }
