@@ -9,6 +9,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopListProduct $ShopListProduct
  */
 class ShopList extends ShopAppModel {
+
 /**
  * @brief custom find methods
  *
@@ -20,6 +21,11 @@ class ShopList extends ShopAppModel {
 		'details' => true
 	);
 
+/**
+ * Session key for current shopping list
+ *
+ * @var string
+ */
 	public static $sessionListKey = 'Shop.current_list';
 
 /**
@@ -132,6 +138,18 @@ class ShopList extends ShopAppModel {
 		return true;
 	}
 
+/**
+ * Get the details for a shopping list
+ *
+ * This will fetch details such as the current payment and shopping methods to display on checkout
+ * pages
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
 	protected function _findDetails($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query[0])) {
@@ -214,6 +232,14 @@ class ShopList extends ShopAppModel {
 		return $this->createList();
 	}
 
+/**
+ * Set the shipping method for a shopping list
+ *
+ * @param string $shippingMethodId the method to use
+ * @param string $shopListId optional, will use the default list if not passed in
+ *
+ * @return array
+ */
 	public function setShippingMethod($shippingMethodId, $shopListId = null) {
 		if (!$shopListId) {
 			$shopListId = $this->currentListId();
