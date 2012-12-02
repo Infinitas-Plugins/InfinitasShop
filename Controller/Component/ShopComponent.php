@@ -7,7 +7,7 @@ App::uses('ShopCurrencyLib', 'Shop.Lib');
  */
 class ShopComponent extends InfinitasComponent {
 /**
- * @brief load up required variables for the store
+ * load up required variables for the store
  *
  * @param Controller $Controller the controller being run
  *

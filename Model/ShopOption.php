@@ -81,7 +81,7 @@ class ShopOption extends ShopAppModel {
 	);
 
 /**
- * @brief find options for a product
+ * find options for a product
  *
  * @param string $state
  * @param array $query
@@ -92,8 +92,8 @@ class ShopOption extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findOptions($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id']) && empty($query['conditions'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id']) && empty($query['conditions'])) {
 				throw new InvalidArgumentException('No product specified');
 			}
 
@@ -120,7 +120,7 @@ class ShopOption extends ShopAppModel {
 				)
 			);
 
-			if(!empty($query['shop_product_id'])) {
+			if (!empty($query['shop_product_id'])) {
 				$query['conditions'][$productIdField] = $query['shop_product_id'];
 			}
 
@@ -150,7 +150,7 @@ class ShopOption extends ShopAppModel {
 				)
 			));
 
-			if(isset($query['shop_list_id']) && $query['shop_list_id']) {
+			if (isset($query['shop_list_id']) && $query['shop_list_id']) {
 				$query['joins'][] = $this->autoJoinModel(array(
 					'from' => $this->ShopProductTypesOption->ShopProductType->ShopProduct->fullModelName(),
 					'model' => $this->ShopListProductOption->ShopListProduct->fullModelName(),
@@ -173,7 +173,7 @@ class ShopOption extends ShopAppModel {
 				$this->ShopProductTypesOption->alias . '.ordering' => 'asc'
 			);
 
-			if(empty($query['shop_product_id'])) {
+			if (empty($query['shop_product_id'])) {
 				$query['group'] = array(
 					$this->alias . '.' . $this->primaryKey
 				);
@@ -182,13 +182,13 @@ class ShopOption extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
 		$this->_linkOptionValues($results, $query);
 
-		if(isset($query['extract']) && $query['extract']) {
+		if (isset($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->alias);
 		}
 
@@ -199,7 +199,7 @@ class ShopOption extends ShopAppModel {
 		$optionIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
 		$optionValueConditions = array('shop_option_id' => $optionIds);
 
-		if(isset($query['shop_list_id']) && $query['shop_list_id']) {
+		if (isset($query['shop_list_id']) && $query['shop_list_id']) {
 			$optionValueConditions['joins'][] = $this->autoJoinModel(array(
 				'from' => $this->ShopOptionValue->fullModelName(),
 				'model' => $this->ShopOptionValue->ShopListProductOption->fullModelName(),
@@ -217,14 +217,14 @@ class ShopOption extends ShopAppModel {
 		}
 		$options = $this->ShopOptionValue->find('values', $optionValueConditions);
 
-		foreach($results as $k => &$result) {
-			if($result[$this->alias]['shop_product_id'] == $result['ProductOptionIgnore']['foreign_key']) {
+		foreach ($results as $k => &$result) {
+			if ($result[$this->alias]['shop_product_id'] == $result['ProductOptionIgnore']['foreign_key']) {
 				unset($results[$k]);
 				continue;
 			}
 			unset($result['ProductOptionIgnore']);
 
-			if(!empty($result[$this->ShopListProductOption->alias])) {
+			if (!empty($result[$this->ShopListProductOption->alias])) {
 				$result[$this->alias][$this->ShopListProductOption->alias] = $result[$this->ShopListProductOption->alias];
 			}
 
@@ -232,9 +232,9 @@ class ShopOption extends ShopAppModel {
 				$options,
 				sprintf('{n}[shop_option_id=/%s/]', $result[$this->alias][$this->primaryKey])
 			);
-			foreach($result[$this->alias][$this->ShopOptionValue->alias] as $k => &$optionValue) {
-				foreach($optionValue['ProductOptionValueIgnore'] as $kk => $ignore) {
-					if($ignore['foreign_key'] == $result[$this->alias]['shop_product_id']) {
+			foreach ($result[$this->alias][$this->ShopOptionValue->alias] as $k => &$optionValue) {
+				foreach ($optionValue['ProductOptionValueIgnore'] as $kk => $ignore) {
+					if ($ignore['foreign_key'] == $result[$this->alias]['shop_product_id']) {
 						unset($result[$this->alias][$this->ShopOptionValue->alias][$k]);
 						break;
 					}

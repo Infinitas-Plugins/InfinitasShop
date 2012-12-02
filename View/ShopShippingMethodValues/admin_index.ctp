@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -61,7 +61,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 				<td><?php echo $this->Shop->timeEstimate($value['ShopShippingMethodValue']['delivery_time']); ?>&nbsp;</td>
 				<td>
 					<?php
-						if(!$value['ShopShippingMethodValue']['surcharge']) {
+						if (!$value['ShopShippingMethodValue']['surcharge']) {
 							echo '-';
 						} else {
 							echo $this->Shop->adminCurrency($value['ShopShippingMethodValue']['surcharge']);
@@ -70,7 +70,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 				</td>
 				<td>
 					<?php
-						if(!$value['ShopShippingMethodValue']['total_minimum']) {
+						if (!$value['ShopShippingMethodValue']['total_minimum']) {
 							echo '-';
 						} else {
 							echo $this->Shop->adminCurrency($value['ShopShippingMethodValue']['total_minimum']);
@@ -79,7 +79,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 				</td>
 				<td>
 					<?php
-						if(!$value['ShopShippingMethodValue']['total_maximum']) {
+						if (!$value['ShopShippingMethodValue']['total_maximum']) {
 							echo '-';
 						} else {
 							echo $this->Shop->adminCurrency($value['ShopShippingMethodValue']['total_maximum']);
@@ -100,7 +100,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 						$status = array(
 							'title_no' => __d('shop', 'Not Active :: This shipping option value is currently disabled')
 						);
-						if(!$value['ShopShippingMethod']['active']) {
+						if (!$value['ShopShippingMethod']['active']) {
 							$status['title_no'] = __d('shop', 'Not Active :: The shipping option "%s" is currently disabled', $value['ShopShippingMethod']['name']);
 						}
 

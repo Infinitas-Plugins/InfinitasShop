@@ -40,7 +40,5 @@ class ShopPaymentFieldTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
 	}
-
 }

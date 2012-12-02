@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief maintainence shell for the shop plugin
+ * maintainence shell for the shop plugin
  *
  * @property ShopProduct $ShopProduct
  */
@@ -14,7 +14,7 @@ class MaintainenceShell extends AppShell {
 	}
 
 /**
- * @brief delete all products and relations to the product
+ * delete all products and relations to the product
  *
  * @throws Exception
  */
@@ -32,7 +32,7 @@ class MaintainenceShell extends AppShell {
 			), false);
 
 			$Folder = new Folder();
-			foreach(array_keys($ids) as $id) {
+			foreach (array_keys($ids) as $id) {
 				$this->ShopProduct->delete($id);
 				$this->ShopProduct->ShopImage->delete($ids[$id]);
 

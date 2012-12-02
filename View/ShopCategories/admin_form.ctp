@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @brief Add some documentation for this admin_add form.
+	 * Add some documentation for this admin_add form.
 	 *
 	 * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
 	 *

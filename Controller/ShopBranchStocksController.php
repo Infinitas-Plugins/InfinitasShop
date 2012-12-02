@@ -2,7 +2,7 @@
 /**
  * ShopBranchStocks controller
  *
- * @brief Add some documentation for ShopBranchStocks controller.
+ * Add some documentation for ShopBranchStocks controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -34,7 +34,7 @@ class ShopBranchStocksController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopBranchStock records.
  *
@@ -70,7 +70,7 @@ class ShopBranchStocksController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopBranchStock records.
  *
@@ -79,13 +79,13 @@ class ShopBranchStocksController extends ShopAppController {
  * @return void
  */
 	public function admin_add() {
-		if(!empty($this->request->data[$this->modelClass]['change'])) {
+		if (!empty($this->request->data[$this->modelClass]['change'])) {
 			$method = 'addStock';
-			if($this->request->data[$this->modelClass]['change'] < 0) {
+			if ($this->request->data[$this->modelClass]['change'] < 0) {
 				$method = 'removeStock';
 			}
 
-			if($this->{$this->modelClass}->{$method}($this->request->data[$this->modelClass])) {
+			if ($this->{$this->modelClass}->{$method}($this->request->data[$this->modelClass])) {
 				$this->notice('updated');
 			}
 

@@ -6,6 +6,7 @@
  * @property ShopImage $ShopImage
  */
 class ShopSpotlight extends ShopAppModel {
+
 /**
  * Validation rules
  *
@@ -13,6 +14,11 @@ class ShopSpotlight extends ShopAppModel {
  */
 	public $validate = array();
 
+/**
+ * Custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'spotlights' => true
 	);
@@ -87,7 +93,7 @@ class ShopSpotlight extends ShopAppModel {
 	}
 
 /**
- * @brief find a list of specials
+ * find a list of specials
  *
  * @param string $state
  * @param array $query
@@ -98,8 +104,8 @@ class ShopSpotlight extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findSpotlights($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -133,16 +139,16 @@ class ShopSpotlight extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			$result[$this->alias][$this->ShopImage->alias] = $result[$this->ShopImage->alias];
 			unset($result[$this->ShopImage->alias]);
 		}
 
-		if(!empty($query['extract']) && $query['extract']) {
+		if (!empty($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->alias);
 		}
 
@@ -150,7 +156,7 @@ class ShopSpotlight extends ShopAppModel {
 	}
 
 /**
- * @brief reusable conditions for finding specials that are current and usable to shoppers
+ * reusable conditions for finding specials that are current and usable to shoppers
  *
  * @return array
  */

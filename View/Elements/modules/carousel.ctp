@@ -3,19 +3,19 @@
 		'type' => 'new'
 	), $config);
 	$ShopProduct = ClassRegistry::init('Shop.ShopProduct');
-	if(!in_array($config['type'], array_keys($ShopProduct->findMethods))) {
+	if (!in_array($config['type'], array_keys($ShopProduct->findMethods))) {
 		throw new InvalidArgumentException('Selected carousel type is not valid');
 	}
 	$products = $ShopProduct->find($config['type'], array(
 		'limit' => 10
 	));
 
-	if(empty($products)) {
+	if (empty($products)) {
 		return;
 	}
 
 	$active = 'active';
-	foreach($products as &$product) {
+	foreach ($products as &$product) {
 		$product = $this->Html->tag('div', implode('', array(
 			$this->Html->image($product['ShopImage']['image_full'], array(
 				'alt' => $product['ShopProduct']['name'],

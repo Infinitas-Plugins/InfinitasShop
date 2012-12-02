@@ -16,7 +16,7 @@ class ShopBranch extends ShopAppModel {
 	public $validate = array();
 
 /**
- * @brief custom find methods
+ * custom find methods
  *
  * @var array
  */
@@ -100,7 +100,7 @@ class ShopBranch extends ShopAppModel {
 	}
 
 /**
- * @brief get the default branch in use
+ * get the default branch in use
  *
  * @param string $state
  * @param array $query
@@ -112,7 +112,7 @@ class ShopBranch extends ShopAppModel {
  * @throws ShopBranchMultipleConfiguredException
  */
 	protected function _findDefaultBranchId($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array(
 				$this->alias . '.' . $this->primaryKey
 			);
@@ -120,11 +120,11 @@ class ShopBranch extends ShopAppModel {
 			return $query;
 		}
 
-		if(count($results) === 1) {
+		if (count($results) === 1) {
 			return $results[0][$this->alias][$this->primaryKey];
 		}
 
-		if(count($results) === 0) {
+		if (count($results) === 0) {
 			throw new ShopBranchNotConfiguredException();
 		}
 

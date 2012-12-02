@@ -1,13 +1,18 @@
 <?php
 /**
- * @brief fixture file for ShopBrand tests.
+ * ShopBrandFixture
  *
- * @package .Fixture
+ * @package Shop.Test.Fixture
  * @since 0.9b1
  */
-class ShopBrandFixture extends CakeTestFixture {
-	public $name = 'ShopBrand';
 
+class ShopBrandFixture extends CakeTestFixture {
+
+/**
+ * fields
+ *
+ * @var array
+ */
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 100, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),

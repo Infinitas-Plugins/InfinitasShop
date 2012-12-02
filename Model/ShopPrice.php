@@ -4,7 +4,9 @@
  *
  * @property ShopProductsOptionValue $ShopProductsOptionValue
  */
+
 class ShopPrice extends ShopAppModel {
+
 /**
  * hasMany associations
  *
@@ -25,5 +27,4 @@ class ShopPrice extends ShopAppModel {
 			'counterQuery' => ''
 		)
 	);
-
 }

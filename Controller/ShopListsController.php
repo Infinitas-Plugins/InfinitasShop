@@ -2,7 +2,7 @@
 /**
  * ShopLists controller
  *
- * @brief Add some documentation for ShopLists controller.
+ * Add some documentation for ShopLists controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -74,7 +74,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopList records.
  *
@@ -102,7 +102,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopList
  *
@@ -124,7 +124,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopList records.
  *
@@ -152,7 +152,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopList
  *
@@ -174,7 +174,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopList records.
  *
@@ -192,7 +192,7 @@ class ShopListsController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopList records.
  *

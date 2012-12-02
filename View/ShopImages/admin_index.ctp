@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -24,7 +24,7 @@ echo $this->Form->create(null, array('action' => 'mass'));
 	));
 	echo $this->Filter->alphabetFilter();
 	
-	if(!empty($images)) {
+	if (!empty($images)) {
 		echo $this->Form->input('all', array('label' => __('Select all'), 'type' => 'checkbox'));
 	}
 

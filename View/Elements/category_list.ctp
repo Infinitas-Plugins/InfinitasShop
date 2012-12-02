@@ -1,9 +1,9 @@
 <?php
-if(empty($shopCategories)) {
+if (empty($shopCategories)) {
 	return;
 }
 
-foreach($shopCategories as &$shopCategory) {
+foreach ($shopCategories as &$shopCategory) {
 	$url = array(
 		'plugin' => 'shop',
 		'controller' => 'shop_products',

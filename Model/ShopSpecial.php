@@ -14,7 +14,7 @@ class ShopSpecial extends ShopAppModel {
 	public $validate = array();
 
 /**
- * @brief custom find methods
+ * custom find methods
  * 
  * @var array
  */
@@ -23,7 +23,7 @@ class ShopSpecial extends ShopAppModel {
 	);
 
 /**
- * @brief has many relations
+ * has many relations
  * 
  * @var array
  */
@@ -44,7 +44,7 @@ class ShopSpecial extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation errors
+ * overload construct for translated validation errors
  * 
  * @param boolean $id    [description]
  * @param [type]  $table [description]
@@ -99,7 +99,7 @@ class ShopSpecial extends ShopAppModel {
 	}
 
 /**
- * @brief validate the start date is before the end date
+ * validate the start date is before the end date
  * 
  * @param array $field the start date
  * 
@@ -112,7 +112,7 @@ class ShopSpecial extends ShopAppModel {
 	}
 
 /**
- * @brief validate the end date is after the start date
+ * validate the end date is after the start date
  * 
  * @param array $field the start date
  * 
@@ -125,7 +125,7 @@ class ShopSpecial extends ShopAppModel {
 	}
 
 /**
- * @brief find a list of specials
+ * find a list of specials
  *
  * @param string $state
  * @param array $query
@@ -136,8 +136,8 @@ class ShopSpecial extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findSpecials($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -175,11 +175,11 @@ class ShopSpecial extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
-		if(!empty($query['extract']) && $query['extract']) {
+		if (!empty($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->alias);
 		}
 
@@ -187,7 +187,7 @@ class ShopSpecial extends ShopAppModel {
 	}
 
 /**
- * @brief reusable conditions for finding specials that are current and usable to shoppers
+ * reusable conditions for finding specials that are current and usable to shoppers
  *
  * @return array
  */

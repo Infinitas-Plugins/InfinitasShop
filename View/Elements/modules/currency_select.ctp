@@ -1,12 +1,12 @@
 <?php
 /**
- * @brief build the currency select markup
+ * build the currency select markup
  */
-if(empty($shopCurrencies)) {
+if (empty($shopCurrencies)) {
 	return;
 }
 $field = Configure::read('Shop.currency_select');
-foreach($shopCurrencies as &$currency) {
+foreach ($shopCurrencies as &$currency) {
 	$code = $currency['ShopCurrency']['code'];
 	$currency = $this->Html->link(
 		$currency['ShopCurrency'][$field],

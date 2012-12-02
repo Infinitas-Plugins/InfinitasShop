@@ -1,13 +1,17 @@
 <?php
 /**
- * @brief fixture file for ShopProductsSpecial tests.
+ * ShopProductsSpecialFixture
  *
- * @package .Fixture
+ * @package Shop.Test.Fixture
  * @since 0.9b1
  */
-class ShopProductsSpecialFixture extends CakeTestFixture {
-	public $name = 'ShopProductsSpecial';
 
+class ShopProductsSpecialFixture extends CakeTestFixture {
+
+/**
+ * Fields
+ * @var array
+ */
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_product_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),

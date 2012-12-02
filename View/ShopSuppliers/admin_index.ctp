@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -63,7 +63,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td>
 					<?php
-						if($shopSupplier['ShopSupplier']['email']) {
+						if ($shopSupplier['ShopSupplier']['email']) {
 							echo $this->Shop->emailLink($shopSupplier['ShopSupplier']['email']);
 							echo $shopSupplier['ShopSupplier']['email'];
 						}

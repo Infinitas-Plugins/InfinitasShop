@@ -7,11 +7,18 @@
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
  */
+
 class ShopImage extends ShopAppModel {
+
+/**
+ * display field
+ *
+ * @var string
+ */
 	public $displayField = 'image';
 
 /**
- * @brief behaviors that are attached
+ * behaviors that are attached
  *
  * @var array
  */
@@ -27,13 +34,6 @@ class ShopImage extends ShopAppModel {
 			)
 		)
 	);
-
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array();
 
 /**
  * hasMany associations
@@ -96,7 +96,7 @@ class ShopImage extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation errors
+ * Constructor
  *
  * @param type $id
  * @param type $table
@@ -114,8 +114,8 @@ class ShopImage extends ShopAppModel {
 		$noImage = $this->emptyFilePath();
 		$sizes = $this->uploadImageSizes('image');
 
-		foreach($results as &$result) {
-			if(empty($result[$this->alias]) || !array_key_exists($this->displayField, $result[$this->alias])) {
+		foreach ($results as &$result) {
+			if (empty($result[$this->alias]) || !array_key_exists($this->displayField, $result[$this->alias])) {
 				continue;
 			}
 
@@ -125,7 +125,7 @@ class ShopImage extends ShopAppModel {
 				$result[$this->alias][$this->displayField]
 			);
 
-			foreach($sizes as $size) {
+			foreach ($sizes as $size) {
 				$result[$this->alias][$this->displayField . '_' . $size] = $this->uploadImageUrl(
 					$this->displayField,
 					$result[$this->alias][$this->primaryKey],
@@ -137,5 +137,4 @@ class ShopImage extends ShopAppModel {
 
 		return $results;
 	}
-
 }

@@ -50,7 +50,7 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief test options exception
+ * test options exception
  *
  * @expectedException InvalidArgumentException
  */
@@ -59,15 +59,15 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief test finding product options
+ * test finding product options
  *
  * @dataProvider findOptionsDataProvider
  */
 	public function testFindOptions($data, $expected) {
-		foreach($expected as &$v) {
-			if(!empty($v['ShopOption']['ShopOptionValue'])) {
-				foreach($v['ShopOption']['ShopOptionValue'] as &$vv) {
-					if(!empty($vv)) {
+		foreach ($expected as &$v) {
+			if (!empty($v['ShopOption']['ShopOptionValue'])) {
+				foreach ($v['ShopOption']['ShopOptionValue'] as &$vv) {
+					if (!empty($vv)) {
 						$vv = array_merge(
 							array(
 								'ShopSize' => array(
@@ -95,7 +95,7 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief find options data provider
+ * find options data provider
  *
  * @return array
  */
@@ -331,15 +331,15 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief test finding product options extracted
+ * test finding product options extracted
  *
  * @dataProvider productOptionExtractDataProvider
  */
 	public function testFindOptionsExtracted($data, $expected) {
-		foreach($expected as &$v) {
-			if(!empty($v['ShopOptionValue'])) {
-				foreach($v['ShopOptionValue'] as &$vv) {
-					if(!empty($vv)) {
+		foreach ($expected as &$v) {
+			if (!empty($v['ShopOptionValue'])) {
+				foreach ($v['ShopOptionValue'] as &$vv) {
+					if (!empty($vv)) {
 						$vv = array_merge(
 							array(
 								'ShopSize' => array(
@@ -368,7 +368,7 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief extracted options data provider
+ * extracted options data provider
  * @return type
  */
 	public function productOptionExtractDataProvider() {
@@ -479,7 +479,7 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief test option ordering
+ * test option ordering
  */
 	public function testOptionOrdering() {
 		$expected = array(
@@ -514,15 +514,15 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief test finding product options extracted
+ * test finding product options extracted
  *
  * @dataProvider productOptionsProductListDataProvider
  */
 	public function testFindOptionsProductList($data, $expected) {
-		foreach($expected as &$v) {
-			if(!empty($v['ShopOptionValue'])) {
-				foreach($v['ShopOptionValue'] as &$vv) {
-					if(!empty($vv)) {
+		foreach ($expected as &$v) {
+			if (!empty($v['ShopOptionValue'])) {
+				foreach ($v['ShopOptionValue'] as &$vv) {
+					if (!empty($vv)) {
 						$vv = array_merge(
 							array(
 								'ShopSize' => array(
@@ -555,7 +555,7 @@ class ShopOptionTest extends CakeTestCase {
 	}
 
 /**
- * @brief extracted options data provider
+ * extracted options data provider
  * @return type
  */
 	public function productOptionsProductListDataProvider() {

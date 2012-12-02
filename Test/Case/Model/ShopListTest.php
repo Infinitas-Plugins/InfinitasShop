@@ -111,7 +111,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validate user id
+ * test validate user id
  *
  * @param type $data
  * @param type $expected
@@ -129,7 +129,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief validate user id data provider
+ * validate user id data provider
  *
  * @return array
  */
@@ -171,24 +171,24 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief set the session data for a test
+ * set the session data for a test
  *
  * @param array $data data
  */
 	public function setupSession(array $data) {
-		if(isset($data['list_id'])) {
+		if (isset($data['list_id'])) {
 			CakeSession::write('Shop.current_list', $data['list_id']);
 		}
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 	}
 
 /**
- * @brief test current list id
+ * test current list id
  *
  * @dataProvider currentListIdDataProvider
  */
@@ -196,7 +196,7 @@ class ShopListTest extends CakeTestCase {
 		$this->setupSession($data);
 
 		$results = $this->{$this->modelClass}->currentListId($data['create']);
-		if($data['create'] && $data['user_id'] != 'bob') {
+		if ($data['create'] && $data['user_id'] != 'bob') {
 			$this->assertTrue(strlen($results) == 36, 'Failed to create the list');
 		} else {
 			$this->assertEquals($expected, $results);
@@ -286,7 +286,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set current list exception
+ * test set current list exception
  *
  * @param type $data
  * @param type $expected
@@ -302,7 +302,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set current list exception
+ * test set current list exception
  *
  * @return array
  */
@@ -342,7 +342,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set current list
+ * test set current list
  *
  * @param type $data
  * @param type $expected
@@ -360,7 +360,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief set current list data provider
+ * set current list data provider
  *
  * @return array
  */
@@ -385,7 +385,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test create list
+ * test create list
  *
  * @param type $data
  * @param type $expected
@@ -399,13 +399,13 @@ class ShopListTest extends CakeTestCase {
 		));
 		$result = $this->{$this->modelClass}->createList($data['data']);
 
-		if(!$expected) {
+		if (!$expected) {
 			$this->assertFalse($result);
 		} else {
 			$this->assertEquals(array(), $this->{$this->modelClass}->validationErrors);
 			$this->assertTrue(strlen($result) === 36);
 
-			if(!empty($data['data']['name'])) {
+			if (!empty($data['data']['name'])) {
 				$this->assertEquals($data['data']['name'], $this->{$this->modelClass}->field('name', array(
 					$this->modelClass . '.' . $this->{$this->modelClass}->primaryKey => $this->{$this->modelClass}->id
 				)));
@@ -414,7 +414,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief create list data provider
+ * create list data provider
  */
 	public function createListDataProvider() {
 		return array(
@@ -482,12 +482,12 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find has list
+ * test find has list
  *
  * @dataProvider findHasListDataProvider
  */
 	public function testFindHasList($data, $expected) {
-		foreach($data as $k => $v) {
+		foreach ($data as $k => $v) {
 			CakeSession::write($k, $v);
 			$this->assertEquals($v, CakeSession::read($k));
 		}
@@ -497,7 +497,7 @@ class ShopListTest extends CakeTestCase {
 	}
 
 /**
- * @brief find has list data provider
+ * find has list data provider
  *
  * @return array
  */

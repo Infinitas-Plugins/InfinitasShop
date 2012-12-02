@@ -38,7 +38,5 @@ class ShopStockStatusTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
 	}
-
 }

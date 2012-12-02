@@ -42,7 +42,5 @@ class ShopCategoriesProductTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
 	}
-
 }

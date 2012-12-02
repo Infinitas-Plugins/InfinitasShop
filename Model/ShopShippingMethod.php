@@ -1,5 +1,6 @@
 <?php
 App::uses('ShopAppModel', 'Shop.Model');
+
 /**
  * ShopShippingMethod Model
  *
@@ -7,9 +8,11 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopOrder $ShopOrder
  * @property ShopShippingMethodValue $ShopShippingMethodValue
  */
+
 class ShopShippingMethod extends ShopAppModel {
+
 /**
- * @brief custom find methods
+ * custom find methods
  *
  * @var array
  */
@@ -36,7 +39,7 @@ class ShopShippingMethod extends ShopAppModel {
 	);
 
 /**
- * @brief hasMany associations
+ * hasMany associations
  *
  * @var array
  */
@@ -81,8 +84,9 @@ class ShopShippingMethod extends ShopAppModel {
 			'counterQuery' => ''
 		)
 	);
+
 /**
- * @brief overload construct for translated validation
+ * overload construct for translated validation
  *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
@@ -97,7 +101,7 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief get a sipping rate
+ * get a sipping rate
  *
  * This will fetch a shipping rate based on either the passed in shipping id or
  * the users current cart set up.
@@ -109,7 +113,7 @@ class ShopShippingMethod extends ShopAppModel {
  * @return array
  */
 	protected function _findShipping($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -130,7 +134,7 @@ class ShopShippingMethod extends ShopAppModel {
 			);
 			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 
-			if(empty($query['shop_shipping_method_id'])) {
+			if (empty($query['shop_shipping_method_id'])) {
 				$query['joins'][] = $this->autoJoinModel(array(
 					'model' => 'Shop.ShopList',
 					'conditions' => array(
@@ -148,7 +152,7 @@ class ShopShippingMethod extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
@@ -159,7 +163,7 @@ class ShopShippingMethod extends ShopAppModel {
 		$results[$this->alias][$this->ShopSupplier->alias] = $results[$this->ShopSupplier->alias];
 		unset($results[$this->ShopSupplier->alias]);
 
-		if(empty($results[$this->alias][$this->ShopShippingMethodValue->alias])) {
+		if (empty($results[$this->alias][$this->ShopShippingMethodValue->alias])) {
 			return array();
 		}
 
@@ -167,23 +171,25 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief get the shipping particulars for a selected product
+ * get the shipping particulars for a selected product
  *
  * @param  string $state   [description]
  * @param  array $query   [description]
  * @param  array $results [description]
  *
  * @return array
+ *
+ * @throws CakeException
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = array_merge(array('shop_product_id' => null), $query);
 			return self::_findShipping($state, $query);
 		}
 
 		$results = self::_findShipping($state, $query, $results);
 
-		if(empty($results)) {
+		if (empty($results)) {
 			throw new CakeException(__d('shop', 'Unable to get the selected shipping method'));
 		}
 
@@ -193,18 +199,20 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief get the shipping details of a product list
+ * get the shipping details of a product list
  *
  * @param  string $state   [description]
  * @param  array  $query   [description]
  * @param  array  $results [description]
  *
  * @return array
+ *
+ * @throws CakeException
  */
 	protected function _findProductList($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = array_merge(array('shop_list_id' => null), $query);
-			if(empty($query['shop_list_id'])) {
+			if (empty($query['shop_list_id'])) {
 				$query['shop_list_id'] = ClassRegistry::init('Shop.ShopList')->currentListId();
 			}
 			return self::_findShipping($state, $query);
@@ -212,7 +220,7 @@ class ShopShippingMethod extends ShopAppModel {
 
 		$results = self::_findShipping($state, $query, $results);
 
-		if(empty($results)) {
+		if (empty($results)) {
 			throw new CakeException(__d('shop', 'Unable to get the selected shipping method'));
 		}
 
@@ -224,7 +232,7 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief get the shipping costs
+ * get the shipping costs
  *
  * $sizes expects having the width, height, lenght and cost available.
  *
@@ -246,7 +254,7 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief calculate the shipping cost based on the product weight
+ * calculate the shipping cost based on the product weight
  *
  * @param  float $weight the weight of the item being checked
  * @param  array $shipping the shipping prices
@@ -256,8 +264,8 @@ class ShopShippingMethod extends ShopAppModel {
  * @return float
  */
 	protected function _calculateShipping($weight, array &$rates) {
-		foreach($rates as $cost) {
-			if($weight < $cost['limit']) {
+		foreach ($rates as $cost) {
+			if ($weight < $cost['limit']) {
 				return $cost['rate'];
 			}
 		}
@@ -266,7 +274,7 @@ class ShopShippingMethod extends ShopAppModel {
 	}
 
 /**
- * @brief calculate the insurance provided by selected shipping method
+ * calculate the insurance provided by selected shipping method
  *
  * This will return the best insurance cover base on the price of the passed
  * in value. If the item is more expensive than the highest available insurance
@@ -281,8 +289,8 @@ class ShopShippingMethod extends ShopAppModel {
  * @return array
  */
 	protected function _calculateInsurance($price, array &$insurance) {
-		foreach($insurance as $cost) {
-			if($price < $cost['limit']) {
+		foreach ($insurance as $cost) {
+			if ($price < $cost['limit']) {
 				return $cost;
 			}
 		}
@@ -319,7 +327,7 @@ class ShopShippingMethod extends ShopAppModel {
 				$this->autoJoinModel(array(
 					'model' => $this->ShopShippingMethodValue->fullModelName(),
 					'conditions' => array(
-						$this->alias . '.' .$this->primaryKey . ' = ' . $this->ShopShippingMethodValue->alias . '.shop_shipping_method_id',
+						$this->alias . '.' . $this->primaryKey . ' = ' . $this->ShopShippingMethodValue->alias . '.shop_shipping_method_id',
 						$this->ShopShippingMethodValue->alias . '.active' => true,
 						$this->ShopShippingMethodValue->alias . '.require_login' => array_unique(array(
 							false,

@@ -5,10 +5,8 @@ App::uses('ShopAppModel', 'Shop.Model');
  *
  * @property ShopPaymentMethod $ShopPaymentMethod
  */
+
 class ShopPaymentMethodStatus extends ShopAppModel {
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations

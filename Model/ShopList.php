@@ -11,7 +11,7 @@ App::uses('ShopAppModel', 'Shop.Model');
 class ShopList extends ShopAppModel {
 
 /**
- * @brief custom find methods
+ * custom find methods
  *
  * @var array
  */
@@ -79,7 +79,7 @@ class ShopList extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation
+ * overload construct for translated validation
  *
  * @param type $id
  * @param type $table
@@ -124,7 +124,7 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief validate the user is correct
+ * validate the user is correct
  *
  * @param array $field the data being validated
  *
@@ -132,7 +132,7 @@ class ShopList extends ShopAppModel {
  */
 	public function validateUserId(array $field) {
 		$field = current($field);
-		if(!$this->User->exists($field)) {
+		if (!$this->User->exists($field)) {
 			return (bool)CakeSession::read('Shop.Guest.id', $field);
 		}
 		return true;
@@ -184,17 +184,17 @@ class ShopList extends ShopAppModel {
 
 		$results = $results[0];
 
-
-		$results['ShopShipping'] = $results['ShopPayment'] = array();
 		try {
 			$results['ShopShipping'] = $this->ShopShippingMethod->find('productList');
-		} catch (Exception $e) {}
+		} catch (Exception $e) {
+			$results['ShopShipping'] = $results['ShopPayment'] = array();
+		}
 
 		return $results;
 	}
 
 /**
- * @brief get the id of the current list
+ * get the id of the current list
  *
  * get the id of the list currently being used.
  *
@@ -203,7 +203,7 @@ class ShopList extends ShopAppModel {
 	public function currentListId($create = false) {
 		$currentList = CakeSession::read(self::$sessionListKey);
 
-		if(!empty($currentList) && $this->exists($currentList)) {
+		if (!empty($currentList) && $this->exists($currentList)) {
 			return $currentList;
 		}
 
@@ -221,11 +221,11 @@ class ShopList extends ShopAppModel {
 		));
 
 		$currentList = current($currentList);
-		if(!empty($currentList)) {
+		if (!empty($currentList)) {
 			return $this->setCurrentList($currentList);
 		}
 
-		if(!$create) {
+		if (!$create) {
 			return false;
 		}
 
@@ -250,7 +250,7 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief set the current list id
+ * set the current list id
  *
  * This sets the list that is being used for adding products to saved in the
  * session
@@ -271,7 +271,7 @@ class ShopList extends ShopAppModel {
 			)
 		));
 
-		if(empty($listId)) {
+		if (empty($listId)) {
 			throw new InvalidArgumentException('Invalid list selected');
 		}
 
@@ -281,7 +281,7 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief create a list for a user
+ * create a list for a user
  *
  * This will create a list for a user, if no data is passed a generic cart
  * will be created.
@@ -296,7 +296,7 @@ class ShopList extends ShopAppModel {
 			'user_id' => $this->currentUserId(),
 		), $data);
 
-		if($this->save($data)) {
+		if ($this->save($data)) {
 			return $this->id;
 		}
 
@@ -304,7 +304,7 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief string find conditions
+ * string find conditions
  *
  * @param string $state
  * @param array $query
@@ -312,7 +312,7 @@ class ShopList extends ShopAppModel {
  * @return array
  */
 	protected function _baseFind($state, array $query) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
@@ -320,11 +320,11 @@ class ShopList extends ShopAppModel {
 				$this->User->alias . '.' . $this->User->primaryKey,
 				$this->User->alias . '.' . $this->User->displayField,
 
-				$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->primaryKey,
-				$this->ShopPaymentMethod->alias  . '.' . $this->ShopPaymentMethod->displayField,
+				$this->ShopPaymentMethod->alias . '.' . $this->ShopPaymentMethod->primaryKey,
+				$this->ShopPaymentMethod->alias . '.' . $this->ShopPaymentMethod->displayField,
 
-				$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->primaryKey,
-				$this->ShopShippingMethod->alias  . '.' . $this->ShopShippingMethod->displayField
+				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->primaryKey,
+				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->displayField
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
@@ -335,7 +335,7 @@ class ShopList extends ShopAppModel {
 				'ShopPaymentMethod.id = ShopList.shop_payment_method_id',
 				$this->ShopPaymentMethod->alias . '.active' => 1
 			);
-			if($this->isGuest()) {
+			if ($this->isGuest()) {
 				$conditions[$this->ShopPaymentMethod->alias . '.require_login'] = 0;
 			}
 			$query['joins'][] = $this->autoJoinModel(array(
@@ -347,7 +347,7 @@ class ShopList extends ShopAppModel {
 				'ShopShippingMethod.id = ShopList.shop_shipping_method_id',
 				$this->ShopShippingMethod->alias . '.active' => 1
 			);
-			if($this->isGuest()) {
+			if ($this->isGuest()) {
 				$conditions[$this->ShopShippingMethod->alias . '.require_login'] = 0;
 			}
 			$query['joins'][] = $this->autoJoinModel(array(
@@ -360,7 +360,7 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
- * @brief check if the user has a list already
+ * check if the user has a list already
  *
  * @param string $state
  * @param array $query
@@ -369,7 +369,7 @@ class ShopList extends ShopAppModel {
  * @return boolean
  */
 	protected function _findHasList($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = $this->_baseFind($state, $query);
 			$this->virtualFields['list_count'] = sprintf('COUNT(%s.user_id)', $this->alias);
 

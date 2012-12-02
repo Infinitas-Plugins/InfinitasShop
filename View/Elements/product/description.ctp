@@ -11,7 +11,7 @@ $contents = array(
 	'reviews'
 );
 
-if($shopProduct['ShopOption']) {
+if ($shopProduct['ShopOption']) {
 	$tabs[] = __d('shop', 'Options');
 	$contents[] = $this->element('Shop.product/option_description', array(
 		'shopProduct' => $shopProduct

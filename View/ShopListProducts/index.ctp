@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -20,7 +20,7 @@ if (empty($shopListProducts)) {
 	return;
 }
 
-if(empty($shopList['ShopShipping'])) {
+if (empty($shopList['ShopShipping'])) {
 	echo $this->Design->alert(__d('shop', 'No shipping method selected'));
 }
 

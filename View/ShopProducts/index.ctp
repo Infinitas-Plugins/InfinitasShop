@@ -3,7 +3,7 @@ echo $this->element('Shop.current_category', array('currentCategory' => $current
 echo $this->Shop->categoryBreadcrumbs($categoryPath);
 echo $this->element('Shop.category_list', array('shopCategories' => $shopCategories));
 
-foreach($shopProducts as &$shopProduct) {
+foreach ($shopProducts as &$shopProduct) {
 	$url = array(
 		'plugin' => 'shop',
 		'controller' => 'shop_products',

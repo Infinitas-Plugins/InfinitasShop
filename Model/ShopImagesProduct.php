@@ -8,12 +8,10 @@
 class ShopImagesProduct extends ShopAppModel {
 
 /**
- * Validation rules
+ * Custom find methods
  *
  * @var array
  */
-	public $validate = array();
-
 	public $findMethods = array(
 		'images' => true
 	);
@@ -41,7 +39,7 @@ class ShopImagesProduct extends ShopAppModel {
 	);
 
 /**
- * @brief overload the constructor to provide translated validation
+ * Constructor
  *
  * @param type $id
  * @param type $table
@@ -67,17 +65,19 @@ class ShopImagesProduct extends ShopAppModel {
 	}
 
 /**
- * @brief find related images
+ * find related images
  *
  * @param string $state
  * @param array $query
  * @param array $results
  *
  * @return array
+ *
+ * @throws InvalidArgumentException
  */
 	protected function _findImages($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -106,18 +106,18 @@ class ShopImagesProduct extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			$result[$this->ShopImage->alias]['shop_product_id'] = $result[$this->alias]['shop_product_id'];
 			$result = array(
 				$this->ShopImage->alias => $result[$this->ShopImage->alias]
 			);
 		}
 
-		if(isset($query['extract']) && $query['extract']) {
+		if (isset($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->ShopImage->alias);
 		}
 

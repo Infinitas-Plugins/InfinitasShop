@@ -2,7 +2,7 @@
 /**
  * ShopBrand model
  *
- * @brief Add some documentation for ShopBrand model.
+ * Add some documentation for ShopBrand model.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -18,8 +18,9 @@
  */
 
 class ShopBrand extends ShopAppModel {
+
 /**
- * @brief find methods
+ * find methods
  *
  * @var array
  */
@@ -28,14 +29,7 @@ class ShopBrand extends ShopAppModel {
 	);
 
 /**
- * @brief Validation rules
- *
- * @var array
- */
-	public $validate = array();
-
-/**
- * @brief behaviors that are attached
+ * behaviors that are attached
  *
  * @var array
  */
@@ -51,14 +45,6 @@ class ShopBrand extends ShopAppModel {
 			)
 		)
 	);
-
-/**
- * @brief How the default ordering on this model is done
- *
- * @access public
- * @var array
- */
-	public $order = array();
 
 /**
  * hasMany relations for this model
@@ -123,7 +109,7 @@ class ShopBrand extends ShopAppModel {
 	}
 
 	protected function _findBrands($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName($this->primaryKey),
 				$this->fullFieldName($this->displayField),

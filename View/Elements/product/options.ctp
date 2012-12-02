@@ -1,10 +1,10 @@
 <?php
-if(empty($shopProduct['ShopOption'])) {
+if (empty($shopProduct['ShopOption'])) {
 	return;
 }
 
 $options = array();
-foreach($shopProduct['ShopOption'] as $option) {
+foreach ($shopProduct['ShopOption'] as $option) {
 	$required = $option['required'] ? 'required' : null;
 	$optionValues = Hash::combine($option, 'ShopOptionValue.{n}.id', 'ShopOptionValue.{n}.name');
 	$options[] = $this->Form->input($option['id'], array(

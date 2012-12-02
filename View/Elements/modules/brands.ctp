@@ -1,17 +1,17 @@
 <?php
-if(empty($shopBrandsList)) {
+if (empty($shopBrandsList)) {
 	return;
 }
 
 $class = function($image) {
 	list($width, $height) = getimagesize(APP . 'webroot' . $image);
-	if($height * 2 < $width) {
+	if ($height * 2 < $width) {
 		return 'span2';
 	}
 	return 'span1';
 };
 
-foreach($shopBrandsList as &$shopBrand) {
+foreach ($shopBrandsList as &$shopBrand) {
 	$url = array(
 		'plugin' => 'shop',
 		'controller' => 'shop_brands',

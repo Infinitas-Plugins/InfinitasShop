@@ -41,7 +41,7 @@ class ShopCategoryTest extends CakeTestCase {
 	}
 
 /**
- * @brief test exception with no params
+ * test exception with no params
  *
  * @expectedException InvalidArgumentException
  *
@@ -52,7 +52,7 @@ class ShopCategoryTest extends CakeTestCase {
 	}
 
 /**
- * @brief find related exception data provider
+ * find related exception data provider
  */
 	public function findRelatedExceptionDataProvider() {
 		return array(
@@ -67,7 +67,7 @@ class ShopCategoryTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find related
+ * test find related
  *
  * @param type $data
  * @param type $expected
@@ -80,7 +80,7 @@ class ShopCategoryTest extends CakeTestCase {
 	}
 
 /**
- * @brief find related data provider
+ * find related data provider
  *
  * @return array
  */
@@ -152,7 +152,7 @@ class ShopCategoryTest extends CakeTestCase {
 	}
 
 /**
- * @brief test the extract works
+ * test the extract works
  */
 	public function testFindRelatedExtract() {
 		$expected = array(array(

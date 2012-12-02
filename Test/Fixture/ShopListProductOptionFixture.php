@@ -2,7 +2,10 @@
 /**
  * ShopListProductOptionFixture
  *
+ * @package Shop.Test.Fixture
+ * @since 0.9b1
  */
+
 class ShopListProductOptionFixture extends CakeTestFixture {
 
 /**

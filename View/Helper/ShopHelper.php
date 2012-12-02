@@ -1,5 +1,23 @@
 <?php
+/**
+ * ShopHelper
+ *
+ * @package Shop.Helper
+ */
+
+/**
+ * ShopHelper
+ *
+ * @package Shop.Helper
+ */
+
 class ShopHelper extends AppHelper {
+
+/**
+ * Helpers to load
+ *
+ * @var array
+ */
 	public $helpers = array(
 		'Text',
 		'Html',
@@ -9,7 +27,7 @@ class ShopHelper extends AppHelper {
 	);
 
 /**
- * @brief link email addresses with optional icon
+ * link email addresses with optional icon
  *
  * Can link as plain text or as an icon
  *
@@ -35,7 +53,7 @@ class ShopHelper extends AppHelper {
 			'class' => 'icon'
 		), $options);
 
-		if(!$icon) {
+		if (!$icon) {
 			return $this->Text->autoLinkEmails($email, $options);
 		}
 
@@ -47,7 +65,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief convert hours to meaningful time
+ * convert hours to meaningful time
  *
  * @code
  * 	$this->Shop->timeEstimate(12); // 12 hours
@@ -61,17 +79,17 @@ class ShopHelper extends AppHelper {
  */
 	public function timeEstimate($hours) {
 		$hours = round($hours);
-		if($hours <= 24) {
+		if ($hours <= 24) {
 			return __dn('shop', '%d hour', '%d hours', $hours, $hours);
 		}
 
 		$days = round($hours / 24);
-		if($days <= 7) {
+		if ($days <= 7) {
 			return __dn('shop', '%d day', '%d days', $days, $days);
 		}
 
 		$weeks = round($days / 7);
-		if($weeks <= 6) {
+		if ($weeks <= 6) {
 			return __dn('shop', '%d week', '%d weeks', $weeks, $weeks);
 		}
 
@@ -80,7 +98,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief convert an amount to currency
+ * convert an amount to currency
  *
  * @param float $amount the amount to show
  *
@@ -91,7 +109,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief get the value in the selected currency
+ * get the value in the selected currency
  *
  * Will use the currency from the session or store default.
  *
@@ -113,7 +131,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief display the stock quantity / value
+ * display the stock quantity / value
  *
  * returns html markup for swtiching between stock count and value
  *
@@ -135,7 +153,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief show the status of a product
+ * show the status of a product
  *
  * products are only available to the customers when specific criteria is met, brand,
  * category, product type etc should all be acitve before the product is available.
@@ -152,22 +170,22 @@ class ShopHelper extends AppHelper {
  */
 	public function adminStatus(array &$product) {
 		$problem = $this->Infinitas->status(0, array('title_no' => __d('shop', 'Missing data :: Unable to determin the status of the product (Missing %s)')));
-		if(!array_key_exists('active', $product['ShopProduct'])) {
+		if (!array_key_exists('active', $product['ShopProduct'])) {
 			return sprintf($problem, __d('shop', 'product status'));
 		}
-		if(!array_key_exists('available', $product['ShopProduct'])) {
+		if (!array_key_exists('available', $product['ShopProduct'])) {
 			return sprintf($problem, __d('shop', 'product available date'));
 		}
-		if(!array_key_exists('active', $product['ShopBrand'])) {
+		if (!array_key_exists('active', $product['ShopBrand'])) {
 			return sprintf($problem, __d('shop', 'brand'));
 		}
-		if(!array_key_exists('active', $product['ShopProductType'])) {
+		if (!array_key_exists('active', $product['ShopProductType'])) {
 			return sprintf($problem, __d('shop', 'product type'));
 		}
-		if(!array_key_exists('active', $product['ShopSupplier'])) {
+		if (!array_key_exists('active', $product['ShopSupplier'])) {
 			return sprintf($problem, __d('shop', 'supplier'));
 		}
-		if(!array_key_exists('category_active', $product['ShopProduct'])) {
+		if (!array_key_exists('category_active', $product['ShopProduct'])) {
 			return sprintf($problem, __d('shop', 'cateogry status'));
 		}
 
@@ -198,7 +216,7 @@ class ShopHelper extends AppHelper {
 			)
 		);
 
-		if(empty($product['ShopCategory'])) {
+		if (empty($product['ShopCategory'])) {
 			$statuses['category'] = array(
 				'status' => false,
 				0 => __d('shop', 'Not linked to any categories')
@@ -207,14 +225,14 @@ class ShopHelper extends AppHelper {
 
 		$overallStatus = true;
 		$out = array();
-		foreach($statuses as $status) {
-			if($status['status'] === true) {
+		foreach ($statuses as $status) {
+			if ($status['status'] === true) {
 				continue;
 			}
 			$overallStatus = $overallStatus && $status['status'];
 			$out[] = $status[(int)$status['status']];
 		}
-		if($overallStatus) {
+		if ($overallStatus) {
 			return;
 		}
 
@@ -224,7 +242,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief display the cost details for a price
+ * display the cost details for a price
  *
  * @param array $shopPrice the price details
  *
@@ -248,7 +266,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief build markup info switch html
+ * build markup info switch html
  *
  * @param  array $shopPrice the pricing information
  *
@@ -262,7 +280,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief calculate the markup of a price
+ * calculate the markup of a price
  *
  * @param  array $shopPrice the pricing information
  * @param  boolean $percent calculate as a percentacge or value
@@ -271,10 +289,10 @@ class ShopHelper extends AppHelper {
  */
 	protected function _markup(array $shopPrice, $percent = false) {
 		$markup = $shopPrice['selling'] - $shopPrice['cost'];
-		if(!$percent) {
+		if (!$percent) {
 			return $markup;
 		}
-		if($shopPrice['cost'] == 0) {
+		if ($shopPrice['cost'] == 0) {
 			$shopPrice['cost'] = .01;
 		}
 
@@ -282,7 +300,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief build a nested category nav
+ * build a nested category nav
  *
  * Generally should not pass a third param as that is used internally to set the
  * correct classes on child elements.
@@ -298,16 +316,16 @@ class ShopHelper extends AppHelper {
  * @return string
  */
 	public function categoryList($shopCategories, array $options = array(), $isChild = false) {
-		foreach($shopCategories as &$category) {
+		foreach ($shopCategories as &$category) {
 			$name = $category['ShopCategory']['name'];
-			if(Configure::read('Shop.display_category_count') && array_key_exists('shop_product_count', $category['ShopCategory'])) {
+			if (Configure::read('Shop.display_category_count') && array_key_exists('shop_product_count', $category['ShopCategory'])) {
 				$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
 			}
 
 			$children = null;
 			$liOptions = array();
 			$linkOptions = array('escape' => false);
-			if(!empty($category['children'])) {
+			if (!empty($category['children'])) {
 				$thisCategory = array('ShopCategory' => $category['ShopCategory'], 'children' => array());
 				$thisCategory['ShopCategory']['name'] = __d('shop', 'View All');
 				unset($thisCategory['ShopCategory']['shop_product_count']);
@@ -319,9 +337,9 @@ class ShopHelper extends AppHelper {
 					'class' => 'dropdown-toggle',
 					'data-toggle' => 'dropdown'
 				));
-				if(!$isChild) {
+				if (!$isChild) {
 					$name = sprintf('%s%s', $name, $this->Html->tag('b', '', array('class' => 'caret')));
-				} else if($isChild) {
+				} else if ($isChild) {
 					$liOptions['class'] = 'dropdown-submenu';
 				}
 			}
@@ -332,7 +350,6 @@ class ShopHelper extends AppHelper {
 				'category' => $category['ShopCategory']['slug']
 			), $linkOptions);
 
-
 			$category = $this->Html->tag('li', $item . $children, $liOptions);
 		}
 
@@ -340,7 +357,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief generate information links
+ * generate information links
  *
  * @param string $title the heading of the box being generated
  * @param array $links key value array of title => url
@@ -348,7 +365,7 @@ class ShopHelper extends AppHelper {
  * @return type
  */
 	public function infoLinks($title, array $links) {
-		foreach($links as $title => &$link) {
+		foreach ($links as $title => &$link) {
 			$link = $this->Html->link($title, $link);
 		}
 
@@ -359,7 +376,7 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief generate the breadcrumbs for the category path
+ * generate the breadcrumbs for the category path
  *
  * @code
  *	$this->Shop->categoryBreadcrumbs($categories);
@@ -375,19 +392,19 @@ class ShopHelper extends AppHelper {
  * @return string
  */
 	public function categoryBreadcrumbs(array $categories, $product = null) {
-		if(empty($categories)) {
+		if (empty($categories)) {
 			return;
 		}
 
 		$divider = $this->Html->tag('span', '/', array('class' => 'divider'));
 
 		$count = count($categories);
-		if(!empty($product)) {
+		if (!empty($product)) {
 			$count++;
 		}
 
-		foreach($categories as $k => &$category) {
-			if($k + 1 == $count) {
+		foreach ($categories as $k => &$category) {
+			if ($k + 1 == $count) {
 				$category = $category['ShopCategory']['name'];
 				continue;
 			}
@@ -404,7 +421,7 @@ class ShopHelper extends AppHelper {
 
 		array_unshift($categories, $this->Html->link(__d('shop', 'Home'), '/') . $divider);
 
-		if(!empty($product)) {
+		if (!empty($product)) {
 			$categories[] = $product;
 		}
 
@@ -415,10 +432,10 @@ class ShopHelper extends AppHelper {
 		$productOptions = Hash::extract($product, 'ShopOption.{n}.required');
 		$optionCount = count($productOptions);
 		$requiredOptionCount = count(array_filter($productOptions));
-		if($this->request->params['action'] != 'view' && $optionCount) {
+		if ($this->request->params['action'] != 'view' && $optionCount) {
 			$buttonType = 'btn-success';
 			$linkText = __dn('shop', '%d option', '%d options', $optionCount, $optionCount);
-			if($requiredOptionCount && $requiredOptionCount < $optionCount) {
+			if ($requiredOptionCount && $requiredOptionCount < $optionCount) {
 				$buttonType = 'btn-warning';
 				$linkText = implode(', ', array(
 					$linkText,
@@ -455,17 +472,17 @@ class ShopHelper extends AppHelper {
 	}
 
 /**
- * @brief generate the pricing information
+ * generate the pricing information
  *
  * @param array $product
  * @return type
  */
 	public function price(array $product, $span = true) {
-		if(empty($product['ShopPrice']['selling'])) {
+		if (empty($product['ShopPrice']['selling'])) {
 			return __d('shop', 'Call for price');
 		}
 
-		if(!$span) {
+		if (!$span) {
 			return $this->currency($product['ShopPrice']['selling']);
 		}
 
@@ -494,7 +511,7 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function optionPrice($optionPrice) {
-		if(!$optionPrice) {
+		if (!$optionPrice) {
 			return $this->Html->tag('span', '-', array(
 				'title' => __d('shop', 'No change')
 			));
@@ -505,18 +522,18 @@ class ShopHelper extends AppHelper {
 
 	public function calculatedSize($productSize, $optionSize, $shipping = false) {
 		$optionSize = array_filter($optionSize);
-		if(empty($optionSize)) {
+		if (empty($optionSize)) {
 			return $this->Html->tag('span', '-', array(
 				'title' => __d('shop', 'No change')
 			));
 		}
 
-		foreach($optionSize as $k => $v) {
-			if($shipping && strstr($k, 'shipping') === false) {
+		foreach ($optionSize as $k => $v) {
+			if ($shipping && strstr($k, 'shipping') === false) {
 				continue;
 			}
 
-			if(!$shipping && strstr($k, 'product') === false) {
+			if (!$shipping && strstr($k, 'product') === false) {
 				continue;
 			}
 
@@ -528,7 +545,7 @@ class ShopHelper extends AppHelper {
 
 	public function size($info, $shipping = false) {
 		$prefix = 'product';
-		if($shipping) {
+		if ($shipping) {
 			$prefix = 'shipping';
 		}
 		return sprintf($this->_sizeTemplate(),
@@ -552,19 +569,19 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function sizeTable(array $product) {
-		foreach($product['ShopSize'] as $key => &$size) {
-			$skip = strstr($key, 'shipping') === false &&
-				strstr($key, 'product') === false;
-			if($skip) {
+		foreach ($product['ShopSize'] as $key => &$size) {
+			$skip = strstr($key, 'shipping') === false && strstr($key, 'product') === false;
+			if ($skip) {
 				continue;
 			}
 
-			if(strstr($key, 'weight')) {
+			if (strstr($key, 'weight')) {
 				$size = __d('shop', '%s g', round($size, 2));
 				continue;
 			}
 			$size = __d('shop', '%s mm', round($size, 2));
 		}
+
 		return $this->Html->tag('table', implode('', array(
 			$this->Html->tag('caption', __d('shop', '%s size information', $product['ShopProduct']['name'])),
 			$this->Html->tag('thead', implode('', array(
@@ -647,7 +664,6 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function paymentSelect(array $paymentMethod, array $shopPaymentMethods) {
-
 	}
 
 	public function shipping(array $shipping) {

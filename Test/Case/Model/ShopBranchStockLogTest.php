@@ -40,7 +40,7 @@ class ShopBranchStockLogTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation rules
+ * test validation rules
  *
  * @dataProvider validationDataProvider
  */
@@ -53,7 +53,7 @@ class ShopBranchStockLogTest extends CakeTestCase {
 	}
 
 /**
- * @brief validation rules data provider
+ * validation rules data provider
  *
  * @return array
  */

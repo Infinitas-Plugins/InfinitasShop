@@ -41,7 +41,5 @@ class ShopPaymentMethodApiTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
 	}
-
 }

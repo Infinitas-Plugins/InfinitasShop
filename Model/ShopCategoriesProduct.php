@@ -37,7 +37,7 @@ class ShopCategoriesProduct extends ShopAppModel {
 	);
 
 /**
- * @brief overload consturct for translated validation
+ * overload consturct for translated validation
  *
  * @param boolean $id    [description]
  * @param [type]  $table [description]

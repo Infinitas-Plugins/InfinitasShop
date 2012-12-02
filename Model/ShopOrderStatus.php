@@ -2,7 +2,7 @@
 /**
  * ShopOrderStatus model
  *
- * @brief Add some documentation for ShopOrderStatus model.
+ * Add some documentation for ShopOrderStatus model.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -18,44 +18,45 @@
  */
 
 class ShopOrderStatus extends ShopAppModel {
+
 /**
- * @brief status for orders that are no longer valid
- * 
+ * status for orders that are no longer valid
+ *
  * @var integer
  */
 	public static $statusCanceled = 0;
 
 /**
- * @brief status for orders that are pending
- * 
+ * status for orders that are pending
+ *
  * @var integer
  */
 	public static $statusPending = 5;
 
 /**
- * @brief status for orders that are being processed
- * 
+ * status for orders that are being processed
+ *
  * @var integer
  */
 	public static $statusProcessing = 10;
 
 /**
- * @brief status for orders that have been processed
- * 
+ * status for orders that have been processed
+ *
  * @var integer
  */
 	public static $statusProcessed = 15;
 
 /**
- * @brief status for orders that are completed
- * 
+ * status for orders that are completed
+ *
  * @var integer
  */
 	public static $statusCompleted = 20;
 
 /**
- * @brief status for orders that have been reversed
- * 
+ * status for orders that have been reversed
+ *
  * @var integer
  */
 	public static $statusReversed = 25;
@@ -145,14 +146,14 @@ class ShopOrderStatus extends ShopAppModel {
 	}
 
 /**
- * @brief get a list of internal statuses
- * 
+ * get a list of internal statuses
+ *
  * @return array
  */
 	public function statuses() {
 		$statuses = array();
-		foreach(get_class_vars('ShopOrderStatus') as $name => $var) {
-			if(strstr($name, 'status') !== false) {
+		foreach (get_class_vars('ShopOrderStatus') as $name => $var) {
+			if (strstr($name, 'status') !== false) {
 				$statuses[ShopOrderStatus::$$name] = __d('shop', substr_replace($name, '', 0, strlen('status')));
 			}
 		}

@@ -9,9 +9,11 @@
  * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
  * @property ShopListProductOption $ShopListProductOption
  */
+
 class ShopOptionValue extends ShopAppModel {
+
 /**
- * @brief custom find methods
+ * custom find methods
  *
  * @var array
  */
@@ -20,7 +22,7 @@ class ShopOptionValue extends ShopAppModel {
 	);
 
 /**
- * @brief belongsTo associations
+ * belongsTo associations
  *
  * @var array
  */
@@ -36,7 +38,7 @@ class ShopOptionValue extends ShopAppModel {
 	);
 
 /**
- * @brief hasOne associations
+ * hasOne associations
  *
  * @var array
  */
@@ -62,7 +64,7 @@ class ShopOptionValue extends ShopAppModel {
 	);
 
 /**
- * @brief hasMany associations
+ * hasMany associations
  *
  * @var array
  */
@@ -109,7 +111,7 @@ class ShopOptionValue extends ShopAppModel {
 	);
 
 /**
- * @brief get option values for multiple options
+ * get option values for multiple options
  *
  * requires shop_option_id passed in
  *
@@ -122,11 +124,10 @@ class ShopOptionValue extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findValues($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_option_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_option_id'])) {
 				throw new InvalidArgumentException('No option has been specified');
 			}
-
 
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -156,7 +157,7 @@ class ShopOptionValue extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
@@ -173,12 +174,12 @@ class ShopOptionValue extends ShopAppModel {
 			)
 		));
 
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
 			$result[$this->alias][$this->ShopSize->alias] = $result[$this->ShopSize->alias];
 			$extractTemplate = sprintf('{n}.%s[shop_option_value_id=%s]', $this->ShopProductsOptionValueIgnore->alias, $result[$this->alias][$this->primaryKey]);
 			$result[$this->alias]['ProductOptionValueIgnore'] = Hash::extract($productValueIgnores, $extractTemplate);
-			if(!empty($result[$this->ShopListProductOption->alias])) {
+			if (!empty($result[$this->ShopListProductOption->alias])) {
 				$result[$this->alias][$this->ShopListProductOption->alias] = $result[$this->ShopListProductOption->alias];
 			}
 		}

@@ -80,7 +80,7 @@ $links = array(
 	)
 );
 
-foreach($links as $name => &$link) {
+foreach ($links as $name => &$link) {
 	$link = $this->Design->arrayToList(current((array)$this->Menu->builDashboardLinks($link, 'shop_dashboard_' . $name)), array(
 		'ul' => 'icons'
 	));

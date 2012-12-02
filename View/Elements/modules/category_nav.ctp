@@ -1,8 +1,8 @@
 <?php
 /**
- * @brief build the category navigation markup
+ * build the category navigation markup
  */
-if(empty($shopCategoriesNav)) {
+if (empty($shopCategoriesNav)) {
 	return;
 }
 

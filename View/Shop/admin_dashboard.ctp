@@ -1,5 +1,5 @@
 <?php
-if(false && !$requreSetup) { ?>
+if (false && !$requreSetup) { ?>
 	<div class="dashboard grid_16">
 		<h1><?php echo __d('shop', 'Please setup the Shop before use'); ?></h1>
 		<p class="info">
@@ -84,7 +84,7 @@ $links = array(
 	)
 );
 
-foreach($links as $name => &$link) {
+foreach ($links as $name => &$link) {
 	$link = $this->Design->arrayToList(current((array)$this->Menu->builDashboardLinks($link, 'shop_main_dashboard_' . $name)), array(
 		'ul' => 'icons'
 	));

@@ -7,12 +7,15 @@ App::uses('ShopHelper', 'Shop.View/Helper');
  * ShopHelper Test Case
  *
  */
+
 class ShopHelperTest extends CakeTestCase {
+
 	public $fixtures = array(
 		'plugin.routes.route',
 		'plugin.themes.theme',
 		'plugin.shop.shop_currency'
 	);
+
 /**
  * setUp method
  *
@@ -47,7 +50,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief email link data provider
+ * email link data provider
  *
  * @return array
  */
@@ -98,7 +101,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test time estimate
+ * test time estimate
  *
  * @dataProvider timeEstimateDataProvider
  */
@@ -108,7 +111,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief time estimate data porvider
+ * time estimate data porvider
  *
  * @return array
  */
@@ -126,7 +129,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin currency
+ * test admin currency
  *
  * @dataProvider adminCurrencyDataProvider
  */
@@ -136,7 +139,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief admin currency data provider
+ * admin currency data provider
  *
  * @return array
  */
@@ -150,7 +153,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test stock value
+ * test stock value
  *
  * @dataProvider stockValueDataProvider
  */
@@ -160,7 +163,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief stock value data provider
+ * stock value data provider
  *
  * @return array
  */
@@ -218,18 +221,17 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test currency
+ * test currency
  *
  * @dataProvider currencyDataProvider
  */
 	public function testCurrency($data, $expected) {
 		$result = $this->Shop->currency($data['amount'], $data['to']);
 		$this->assertEquals($expected, $result);
-
 	}
 
 /**
- * @brief currency data provider
+ * currency data provider
  *
  * @return array
  */
@@ -260,7 +262,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin status
+ * test admin status
  *
  * @dataProvider adminStatusMissingDataProvider
  */
@@ -290,7 +292,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief admin status missing data provider
+ * admin status missing data provider
  *
  * @return array
  */
@@ -366,20 +368,20 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin status
+ * test admin status
  *
  * @dataProvider adminStatusDataProvider
  */
 	public function testAdminStatus($data, $expected) {
 		$result = $this->Shop->adminStatus($data);
-		if(!$expected) {
+		if (!$expected) {
 			return $this->assertNull($result);
 		}
 		$this->assertTags($result, $expected);
 	}
 
 /**
- * @brief admin status data provider
+ * admin status data provider
  *
  * @return array
  */
@@ -600,7 +602,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin price
+ * test admin price
  *
  * @dataProvider adminPriceDataProvider
  */
@@ -610,7 +612,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief admin price data provider
+ * admin price data provider
  *
  * @return array
  */
@@ -640,7 +642,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin markup
+ * test admin markup
  *
  * @dataProvider adminMarkupDataProvider
  */
@@ -650,7 +652,7 @@ class ShopHelperTest extends CakeTestCase {
 	}
 
 /**
- * @brief admin markup data provider
+ * admin markup data provider
  *
  * @return array
  */

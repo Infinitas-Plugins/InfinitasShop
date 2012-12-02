@@ -5,10 +5,8 @@
  * @property ShopOption $ShopOption
  * @property ShopProductType $ShopProductType
  */
+
 class ShopProductTypesOption extends ShopAppModel {
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations

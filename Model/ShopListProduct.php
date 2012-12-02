@@ -9,13 +9,12 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopListProductOption $ShopListProductOption
  */
 class ShopListProduct extends ShopAppModel {
+
 /**
- * Validation rules
+ * Custom find methods
  *
  * @var array
  */
-	public $validate = array();
-
 	public $findMethods = array(
 		'currentList' => true
 	);
@@ -49,7 +48,7 @@ class ShopListProduct extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation messages
+ * overload construct for translated validation messages
  *
  * @param type $id
  * @param type $table
@@ -130,7 +129,7 @@ class ShopListProduct extends ShopAppModel {
  * @return boolean|string
  */
 	public function validateQuantityAmount($field) {
-		if(empty($this->data[$this->alias]['shop_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_product_id'])) {
 			return true;
 		}
 
@@ -138,7 +137,7 @@ class ShopListProduct extends ShopAppModel {
 			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
 		));
 
-		if(empty($product)) {
+		if (empty($product)) {
 			return __d('shop', 'Unable to validate the ordered quantity');
 		}
 
@@ -173,7 +172,7 @@ class ShopListProduct extends ShopAppModel {
  * @return boolean
  */
 	public function validateStock($field) {
-		if(empty($this->data[$this->alias]['shop_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_product_id'])) {
 			return true;
 		}
 
@@ -247,11 +246,10 @@ class ShopListProduct extends ShopAppModel {
 			return false;
 		}
 
-		if(!$this->ShopListProductOption->saveProductOptions($this->id, $product['ShopOption'])) {
+		if (!$this->ShopListProductOption->saveProductOptions($this->id, $product['ShopOption'])) {
 			$this->transaction(false);
 			return false;
 		}
-
 
 		$this->transaction(true);
 		return true;

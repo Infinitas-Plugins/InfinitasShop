@@ -40,7 +40,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief check there are exceptions thrown when there is no currencies available
+ * check there are exceptions thrown when there is no currencies available
  *
  * @expectedException CakeException
  */
@@ -50,7 +50,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief Check that you can set a currency to near 1 without it becoming default
+ * Check that you can set a currency to near 1 without it becoming default
  *
  * @expectedException CakeException
  *
@@ -74,7 +74,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief test finding the default + when it changes
+ * test finding the default + when it changes
  */
 	public function testFindCurrencyDefault() {
 		$expected = array(
@@ -124,18 +124,18 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find currency specific
+ * test find currency specific
  *
  * @dataProvider findCurrencySpecificDataProvider
  */
 	public function testFindCurrencySpecific($data, $expected) {
-		if(!empty($expected)) {
+		if (!empty($expected)) {
 			$expected = array($this->modelClass => $expected);
 		}
 
 		$result = $this->{$this->modelClass}->find('currency', array('currency' => $data));
 
-		if($result) {
+		if ($result) {
 			$res = round($result[$this->modelClass]['factor'], 4);
 			$exp = round($expected[$this->modelClass]['factor'], 4);
 			$this->assertEquals($exp, $res);
@@ -145,7 +145,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief find currency specific data provider
+ * find currency specific data provider
  *
  * @return array
  */
@@ -209,7 +209,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find conversion data
+ * test find conversion data
  */
 	public function testFindConversionsData() {
 		$round = function($data) {
@@ -239,7 +239,7 @@ class ShopCurrencyTest extends CakeTestCase {
 	}
 
 /**
- * @brief test currencies get updated
+ * test currencies get updated
  */
 	public function testUpdate() {
 		$now = date('Y-m-d H:i:s');
@@ -260,7 +260,7 @@ class ShopCurrencyTest extends CakeTestCase {
 			))
 		));
 
-		foreach($results as $id => $modified) {
+		foreach ($results as $id => $modified) {
 			$this->assertTrue($modified >= $now);
 		}
 	}

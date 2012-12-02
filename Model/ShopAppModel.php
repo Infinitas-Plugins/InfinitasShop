@@ -1,12 +1,13 @@
 <?php
 App::uses('AuthComponent', 'Controller/Component');
 /**
- * @brief ShopAppModel
+ * ShopAppModel
  */
 
 class ShopAppModel extends AppModel {
+
 /**
- * @brief get the current users id
+ * get the current users id
  *
  * This will return the users id or the guest id, which ever is present
  *
@@ -19,7 +20,7 @@ class ShopAppModel extends AppModel {
 	}
 
 /**
- * @brief check if the user is a guest
+ * check if the user is a guest
  *
  * @return boolean
  */
@@ -28,7 +29,7 @@ class ShopAppModel extends AppModel {
 	}
 
 /**
- * @brief check if the user is logged in
+ * check if the user is logged in
  *
  * Returns true if the user is logged in
  *
@@ -36,7 +37,7 @@ class ShopAppModel extends AppModel {
  */
 	public function isUser() {
 		$userId = AuthComponent::user('id');
-		if(!$userId) {
+		if (!$userId) {
 			return false;
 		}
 

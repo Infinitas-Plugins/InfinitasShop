@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @brief Add some documentation for this add form.
+	 * Add some documentation for this add form.
 	 *
 	 * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
 	 *
@@ -54,9 +54,9 @@
 		)), array('class' => 'input tiny'));
 
 		$stockForm = array();
-		if(empty($this->request->data['ShopProduct']['id'])) {
+		if (empty($this->request->data['ShopProduct']['id'])) {
 			$i = 0;
-			foreach($shopBranches as $branch) {
+			foreach ($shopBranches as $branch) {
 				$stockForm[] = $this->Html->tag('div', implode('', array(
 					$this->Form->hidden('ShopBranchStock.' . $i . '.id'),
 					$this->Form->hidden('ShopBranchStock.' . $i . '.shop_branch_id', array(

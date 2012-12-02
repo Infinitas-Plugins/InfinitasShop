@@ -34,7 +34,7 @@ class ShopListProductsController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopListProduct records.
  *
@@ -59,7 +59,7 @@ class ShopListProductsController extends ShopAppController {
 		}
 
 		try {
-			if($this->{$this->modelClass}->addToList($this->request->data)) {
+			if ($this->{$this->modelClass}->addToList($this->request->data)) {
 				$this->notice('added_to_cart');
 			}
 		} catch (Exception $e) {

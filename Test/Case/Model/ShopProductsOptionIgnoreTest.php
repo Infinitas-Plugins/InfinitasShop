@@ -40,7 +40,5 @@ class ShopProductsOptionIgnoreTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-		
 	}
-
 }

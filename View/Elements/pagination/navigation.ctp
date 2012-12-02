@@ -18,15 +18,15 @@
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
-if(!empty($currentRoute->options['pass'])) {
+if (!empty($currentRoute->options['pass'])) {
 	$url = array();
 	$currentRoute = Configure::read('CORE.current_route');
-	foreach($currentRoute->options['pass'] as $pass) {
-		if(!empty($this->request->{$pass})) {
+	foreach ($currentRoute->options['pass'] as $pass) {
+		if (!empty($this->request->{$pass})) {
 			$url[$pass] = $this->request->{$pass};
 		}
 	}
-	if(!empty($url)) {
+	if (!empty($url)) {
 		$this->Paginator->options(array('url' => $url));
 	}
 }
@@ -39,7 +39,7 @@ if (!$this->Paginator->request->params['paging'][$this->Paginator->defaultModel(
 	return true;
 }
 
-if(!$hasPrev && !$hasNext) {
+if (!$hasPrev && !$hasNext) {
 	echo sprintf('<p class="pagination low">%s</p>', __d(Inflector::underscore($this->plugin), __d('shop', 'No more products')));
 	return;
 }

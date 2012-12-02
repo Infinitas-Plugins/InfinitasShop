@@ -7,6 +7,12 @@ App::uses('ShopProduct', 'Shop.Model');
  *
  */
 class SpecialsBehaviorTest extends CakeTestCase {
+
+/**
+ * Fixtures
+ *
+ * @var array
+ */
 	public $fixtures = array(
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_price',
@@ -39,14 +45,14 @@ class SpecialsBehaviorTest extends CakeTestCase {
 	}
 
 /**
- * @brief test behavior attached
+ * test behavior attached
  */
 	public function testBeavhiorAttached() {
 		$this->assertTrue($this->{$this->modelClass}->findMethods['possibleSpecials']);
 	}
 
 /**
- * @brief test find possible specials
+ * test find possible specials
  */
 	public function testFindPossibleSpecials() {
 		$expected = array(
@@ -98,5 +104,4 @@ class SpecialsBehaviorTest extends CakeTestCase {
 		$result = $this->{$this->modelClass}->find('possibleSpecials');
 		$this->assertEquals($expected, $result);
 	}
-
 }

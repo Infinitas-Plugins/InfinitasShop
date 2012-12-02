@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @brief Add some documentation for this add form.
+	 * Add some documentation for this add form.
 	 *
 	 * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
 	 *
@@ -20,11 +20,11 @@
 
 		$smallField = array('div' => false, 'error' => false, 'label' => false);
 
-		if(empty($this->request->data['ShopOptionValue'])) {
+		if (empty($this->request->data['ShopOptionValue'])) {
 			$this->request->data['ShopOptionValue'] = array();
 		}
 		$table = array();
-		foreach($this->request->data['ShopOptionValue'] as $shopOptionValue) {
+		foreach ($this->request->data['ShopOptionValue'] as $shopOptionValue) {
 			$table[] = sprintf(
 				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s</td><td>%s&nbsp;</td></tr>',
 				__d('shop', 'Details :: %s', $shopOptionValue['description']),

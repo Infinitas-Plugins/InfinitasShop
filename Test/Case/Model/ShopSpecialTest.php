@@ -43,7 +43,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation pass
+ * test validation pass
  *
  * @dataProvider validationPassDataProvider
  */
@@ -56,7 +56,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief validation pass data provider
+ * validation pass data provider
  * 
  * @return array
  */
@@ -138,7 +138,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation fails
+ * test validation fails
  *
  * @dataProvider validationFailsDataProvider
  */
@@ -149,7 +149,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief validation fails data provider
+ * validation fails data provider
  * 
  * @return array
  */
@@ -200,7 +200,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find specials exception
+ * test find specials exception
  *
  * @expectedException InvalidArgumentException
  */
@@ -209,7 +209,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find specials
+ * test find specials
  *
  * @dataProvider findSpecialsDataProvider
  */
@@ -219,7 +219,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief find specials data provider
+ * find specials data provider
  *
  * @return array
  */
@@ -265,7 +265,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find specials
+ * test find specials
  *
  * @dataProvider findSpecialsExtractedDataProvider
  */
@@ -275,7 +275,7 @@ class ShopSpecialTest extends CakeTestCase {
 	}
 
 /**
- * @brief find specials data provider
+ * find specials data provider
  *
  * @return array
  */

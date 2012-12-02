@@ -1,11 +1,15 @@
 <?php
 /**
- * ContactAddressFixture
+ * ShopContactAddressFixture
  *
+ * @package Shop.Test.Fixture
+ * @since 0.9b1
  */
+
 class ShopContactAddressFixture extends CakeTestFixture {
+
 /**
- * @brief table to use
+ * table to use
  *
  * @var string
  */

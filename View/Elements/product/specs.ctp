@@ -12,7 +12,7 @@ $specs = array(
 	__d('shop', 'Weight') => sprintf('%s g', round($shopProduct['ShopSize']['product_weight'], 2))
 );
 
-foreach($specs as $label => &$spec) {
+foreach ($specs as $label => &$spec) {
 	$spec = $this->Html->tag('dt', $label) . $this->Html->tag('dd', $spec);
 }
 echo $this->Html->tag('dl', implode('', $specs), array('class' => 'dl-horizontal'));

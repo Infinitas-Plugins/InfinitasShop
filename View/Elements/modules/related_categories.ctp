@@ -1,5 +1,5 @@
 <?php
-if(empty($shopRelatedCategories)) {
+if (empty($shopRelatedCategories)) {
 	return;
 }
 

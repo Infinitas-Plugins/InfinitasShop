@@ -12,7 +12,7 @@ echo $this->Form->create('ShopProduct', array(
 ));
 
 	$options = array();
-	foreach($shopFilterOptions['ShopOption'] as $option) {
+	foreach ($shopFilterOptions['ShopOption'] as $option) {
 		$options[] = $this->Form->input($option['id'], array(
 			'type' => 'checkbox',
 			'label' => $option['name'],

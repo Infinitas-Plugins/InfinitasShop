@@ -2,7 +2,7 @@
 /**
  * ShopShippingMethods controller
  *
- * @brief Add some documentation for ShopShippingMethods controller.
+ * Add some documentation for ShopShippingMethods controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -20,7 +20,7 @@
 class ShopShippingMethodsController extends ShopAppController {
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopShippingMethod records.
  *
@@ -47,7 +47,7 @@ class ShopShippingMethodsController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopShippingMethod
  *
@@ -57,7 +57,7 @@ class ShopShippingMethodsController extends ShopAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if(!$id) {
+		if (!$id) {
 			$this->Infinitas->noticeInvalidRecord();
 		}
 
@@ -69,7 +69,7 @@ class ShopShippingMethodsController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopShippingMethod records.
  *
@@ -86,7 +86,7 @@ class ShopShippingMethodsController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopShippingMethod records.
  *

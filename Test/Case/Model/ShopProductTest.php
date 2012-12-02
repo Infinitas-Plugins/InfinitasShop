@@ -75,7 +75,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation A
+ * test validation A
  */
 	public function testValidationA() {
 		$data = array();
@@ -99,7 +99,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation A
+ * test validation A
  *
  * @dataProvider validationBDataProvider
  */
@@ -113,7 +113,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief validation A data provider
+ * validation A data provider
  *
  * @return array
  */
@@ -147,7 +147,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test validation C
+ * test validation C
  *
  * @dataProvider validationCDataProvider
  */
@@ -157,7 +157,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief validation C data provider
+ * validation C data provider
  *
  * @return array
  */
@@ -236,18 +236,17 @@ class ShopProductTest extends CakeTestCase {
 			'joins' => array($this->{$this->modelClass}->autoJoinModel($this->{$this->modelClass}->ShopPrice))
 		));
 		$this->assertEquals($expected, $result[$this->modelClass]['margin']);
-
 	}
 
 /**
- * @brief find paginated
+ * find paginated
  *
  * @dataProvider findPaginatedDataProvider
  */
 	public function testFindPaginated($data, $expected) {
-		foreach($expected as &$v) {
-			foreach($v['ShopOption'] as &$option) {
-				foreach($option['ShopOptionValue'] as &$vv) {
+		foreach ($expected as &$v) {
+			foreach ($v['ShopOption'] as &$option) {
+				foreach ($option['ShopOptionValue'] as &$vv) {
 					$vv = array_merge(
 						array(
 							'ShopSize' => array(
@@ -284,7 +283,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find paginated data provider
+ * find paginated data provider
  *
  * @return array
  */
@@ -489,7 +488,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find wrapper methods
+ * test find wrapper methods
  */
 	public function testFindWrappers() {
 		$expected = array(
@@ -550,7 +549,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test when no product is passed
+ * test when no product is passed
  *
  * @expectedException InvalidArgumentException
  */
@@ -559,7 +558,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find product shipping
+ * test find product shipping
  *
  * @dataProvider findProductShippingDataProvider
  */
@@ -569,7 +568,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find product shipping data provider
+ * find product shipping data provider
  *
  * @return array
  */
@@ -595,16 +594,16 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find product shipping
+ * test find product shipping
  *
  * @dataProvider findProductListShippingDataProvider
  */
 	public function testFindProductListShipping($data, $expected) {
 		App::uses('CakeSession', 'Model/Datasource');
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 		$results = $this->{$this->modelClass}->find('prodcutListShipping', array(
@@ -615,7 +614,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find product shipping data provider
+ * find product shipping data provider
  *
  * @return array
  */
@@ -638,12 +637,12 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find products
+ * test find products
  *
  * @dataProvider findProductDataProvider
  */
 	public function testFindProduct($data, $expected) {
-		if(!empty($expected)) {
+		if (!empty($expected)) {
 			$expected = array_merge(
 				array(
 					'ShopProductType' => array('id' => null, 'name' => null, 'slug' => null),
@@ -678,8 +677,8 @@ class ShopProductTest extends CakeTestCase {
 				),
 				$expected
 			);
-			foreach($expected['ShopOption'] as &$option) {
-				foreach($option['ShopOptionValue'] as &$vv) {
+			foreach ($expected['ShopOption'] as &$option) {
+				foreach ($option['ShopOptionValue'] as &$vv) {
 					$vv = array_merge(
 						array(
 							'ShopSize' => array(
@@ -706,7 +705,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find products data provider
+ * find products data provider
  */
 	public function findProductDataProvider() {
 		return array(
@@ -1198,7 +1197,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test deleting a product removes related data
+ * test deleting a product removes related data
  */
 	public function testProductDeleteRelations() {
 		$relations = array(
@@ -1210,14 +1209,14 @@ class ShopProductTest extends CakeTestCase {
 		);
 		$this->{$this->modelClass}->Behaviors->disable('Trashable');
 
-		foreach($relations as $relation) {
+		foreach ($relations as $relation) {
 			$this->{$this->modelClass}->{$relation}->Behaviors->disable('Trashable');
 		}
 
 		$this->assertTrue($this->{$this->modelClass}->delete('active'));
 		$expected = array();
 
-		foreach($relations as $relation) {
+		foreach ($relations as $relation) {
 			$result = $this->{$this->modelClass}->{$relation}->find('list', array(
 				'conditions' => array(
 					$relation . '.shop_product_id' => 'active'
@@ -1228,7 +1227,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test generating product codes
+ * test generating product codes
  *
  * @dataProvider productCodesDataProvider
  */
@@ -1240,7 +1239,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief product code data provider
+ * product code data provider
  *
  * @return array
  */
@@ -1466,15 +1465,15 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find products for list
+ * test find products for list
  *
  * @dataProvider  findProductsForListDataProvider
  */
 	public function testFindProductsForList($data, $expected) {
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 		$result = $this->{$this->modelClass}->find('productsForList', array(
@@ -1496,7 +1495,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find products for list data provider
+ * find products for list data provider
  *
  * @return array
  */
@@ -1734,7 +1733,6 @@ class ShopProductTest extends CakeTestCase {
 		$result = $this->{$this->modelClass}->find('costForList');
 		$this->assertEquals($expected, $result);
 
-
 		ClassRegistry::init('Shop.ShopList')->delete('shop-list-bob-cart');
 
 		$expected = 0;
@@ -1743,7 +1741,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test things that make products inactive
+ * test things that make products inactive
  *
  * available data - active when
  * 	before now (rounded to latest minute)
@@ -1817,7 +1815,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test admin finds
+ * test admin finds
  */
 	public function testAdminFinds() {
 		$expected = array(
@@ -1846,5 +1844,4 @@ class ShopProductTest extends CakeTestCase {
 		$results = Hash::extract($this->{$this->modelClass}->find('adminPaginated'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $results);
 	}
-
 }

@@ -25,6 +25,7 @@
  */
 
 class ShopProduct extends ShopAppModel {
+
 /**
  * Validation rules
  *
@@ -94,6 +95,11 @@ class ShopProduct extends ShopAppModel {
 		)
 	);
 
+/**
+ * HasOne relations
+ *
+ * @var array
+ */
 	public $hasOne = array(
 		'ShopPrice' => array(
 			'className' => 'Shop.ShopPrice',
@@ -339,7 +345,7 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findOrderQuantity($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException(__d('shop', 'No product selected'));
 			}
 
@@ -377,7 +383,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findNew($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['order'] = array(
@@ -402,7 +408,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findUpdated($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['order'] = array(
@@ -428,7 +434,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findMostViewed($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['order'] = array(
@@ -455,7 +461,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findMostPurchased($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['order'] = array(
@@ -478,8 +484,8 @@ class ShopProduct extends ShopAppModel {
  *
  * @return array
  */
-	public function _findRecentlyViewed($state, array $query, array $results = array()) {
-		if($state == 'before') {
+	protected function _findRecentlyViewed($state, array $query, array $results = array()) {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$sessionName = 'Viewable.' . $this->alias;
@@ -502,7 +508,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findSpecials($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['conditions'] = array_merge(
@@ -533,7 +539,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findSpotlights($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
 			$query['conditions'] = array_merge(
@@ -561,8 +567,8 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findProductsForList($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_list_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_list_id'])) {
 				$query['shop_list_id'] = $this->ShopListProduct->ShopList->currentListId(true);
 			}
 
@@ -618,7 +624,7 @@ class ShopProduct extends ShopAppModel {
 			'extract' => true
 		);
 
-		if(empty($results[0][$this->alias][$this->primaryKey]) && !array_filter($options['shop_product_id'])) {
+		if (empty($results[0][$this->alias][$this->primaryKey]) && !array_filter($options['shop_product_id'])) {
 			return array();
 		}
 
@@ -630,7 +636,7 @@ class ShopProduct extends ShopAppModel {
 
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
@@ -691,7 +697,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findAdminPaginated($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['admin'] = true;
 
 			$this->virtualFields['category_active'] = 'ActiveCategory.active';
@@ -733,21 +739,21 @@ class ShopProduct extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findSearch($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['search'])) {
+		if ($state == 'before') {
+			if (empty($query['search'])) {
 				throw new InvalidArgumentException(__d('shop', 'No search string provided'));
 			}
 
 			$like = 'LIKE';
 			$opperator = 'or';
-			if(substr($query['search'], 0, 1) == '!') {
+			if (substr($query['search'], 0, 1) == '!') {
 				$like = 'NOT LIKE';
 				$opperator = 'and';
 				$query['search'] = substr($query['search'], 1);
 			}
 
 			$match = '%:search%';
-			if(strstr($query['search'], '%')) {
+			if (strstr($query['search'], '%')) {
 				$match = ':search';
 			}
 
@@ -770,7 +776,7 @@ class ShopProduct extends ShopAppModel {
 				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField,
 				'ActiveCategory.' . $this->ShopCategoriesProduct->ShopCategory->displayField,
 			);
-			foreach($conditions as &$condition) {
+			foreach ($conditions as &$condition) {
 				$condition .= $like;
 			}
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
@@ -794,7 +800,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findPaginated($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = $this->_findBasics($state, $query);
 
 			$query['fields'][] = $this->fullFieldName('description');
@@ -809,7 +815,7 @@ class ShopProduct extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
@@ -822,7 +828,7 @@ class ShopProduct extends ShopAppModel {
 		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$shopSpotlights = $this->ShopSpotlight->find('spotlights', $options);
 		$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result['ShopCategory'] = Hash::extract($shopCategories, $extractTemplate);
@@ -847,7 +853,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findProductShipping($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			return self::_findProduct($state, $query);
 		}
 
@@ -868,12 +874,12 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findProdcutListShipping($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			return self::_findProductsForList($state, $query);
 		}
 
 		$results = self::_findProductsForList($state, $query, $results);
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			$result = self::_getMaxValuesForShipping($result);
 		}
 		$fields = array(
@@ -884,7 +890,7 @@ class ShopProduct extends ShopAppModel {
 			'cost'
 		);
 		$totals = array();
-		foreach($fields as $key) {
+		foreach ($fields as $key) {
 			$totals[$key] = array_sum(Hash::extract($results, '{n}.' . $key));
 		}
 
@@ -899,7 +905,7 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _getMaxValuesForShipping(&$results) {
-		if(empty($results)) {
+		if (empty($results)) {
 			return array(
 
 			);
@@ -913,17 +919,17 @@ class ShopProduct extends ShopAppModel {
 		);
 
 		$sizes = $optionCost = array();
-		foreach($results['ShopOption'] as $option) {
+		foreach ($results['ShopOption'] as $option) {
 			$prices = Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling');
 			$optionCosts[] = !empty($prices) ? max($prices): 0.0;
-			foreach($sizeFields as $sizeOption) {
+			foreach ($sizeFields as $sizeOption) {
 				$value = Hash::extract($option['ShopOptionValue'], '{n}.ShopSize.shipping_' . $sizeOption);
 				$value = !empty($value) ? max($value) : 0.0;
 				$sizes[$sizeOption][] = $results['ShopSize']['shipping_' . $sizeOption] + (float)$value;
 			}
 		}
 
-		foreach($sizes as &$size) {
+		foreach ($sizes as &$size) {
 			$size = max($size);
 		}
 		$sizes['cost'] = $results['ShopPrice']['selling'] + array_sum($optionCosts);
@@ -939,10 +945,12 @@ class ShopProduct extends ShopAppModel {
  * @param array $results
  *
  * @return array
+ *
+ * @throws InvalidArgumentException
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query[0])) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -966,16 +974,14 @@ class ShopProduct extends ShopAppModel {
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());
 
-
 			$this->unBindModel(array('hasOne' => array('ShopCurrentSpecial')), false);
-
 
 			$query['limit'] = 1;
 
 			return $query;
 		}
 
-		if(empty($results[0][$this->alias][$this->primaryKey])) {
+		if (empty($results[0][$this->alias][$this->primaryKey])) {
 			return array();
 		}
 
@@ -1006,10 +1012,12 @@ class ShopProduct extends ShopAppModel {
  * @param array $results
  *
  * @return array
+ *
+ * @throws InvalidArgumentException
  */
 	protected function _findProductOptions($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query[0])) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -1026,13 +1034,12 @@ class ShopProduct extends ShopAppModel {
 
 			);
 
-
 			$query['limit'] = 1;
 
 			return $query;
 		}
 
-		if(empty($results[0][$this->alias][$this->primaryKey])) {
+		if (empty($results[0][$this->alias][$this->primaryKey])) {
 			return array();
 		}
 
@@ -1067,25 +1074,25 @@ class ShopProduct extends ShopAppModel {
  * @return string
  */
 	public function productCodes($product, array $options = array()) {
-		if(!is_array($product)) {
+		if (!is_array($product)) {
 			$product = array(
 				$this->primaryKey => $product,
 				'product_code' => null
 			);
 		}
 
-		if(empty($options)) {
+		if (empty($options)) {
 			$options = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array(
 				'shop_product_id' => $product[$this->primaryKey],
 				'extract' => true
 			));
 		}
 
-		if(empty($options)) {
+		if (empty($options)) {
 			return array();
 		}
 
-		if(empty($product['product_code'])) {
+		if (empty($product['product_code'])) {
 			$product['product_code'] = $this->field('product_code', array(
 				$this->alias . '.' . $this->primaryKey => $product[$this->primaryKey]
 			));
@@ -1098,35 +1105,32 @@ class ShopProduct extends ShopAppModel {
 		$shopOptionValues = Hash::extract($options, '{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->alias);
 
 		$allOptions = array(array());
-		foreach($shopOptionValues as $list) {
+		foreach ($shopOptionValues as $list) {
 			$temp = array();
-			foreach($allOptions as $result_item) {
-				foreach ($list as $list_item) {
-					$temp[] = array_merge(
-						$result_item,
-						array(
-							$shopOptions[$list_item['shop_option_id']] => $list_item['product_code']
-						)
-					);
+			foreach ($allOptions as $resultItem) {
+				foreach ($list as $listItem) {
+					$temp[] = array_merge($resultItem, array(
+						$shopOptions[$listItem['shop_option_id']] => $listItem['product_code']
+					));
 				}
 			}
 			$allOptions = $temp;
 		}
 
 		$generatedProductCodes = array();
-		foreach($allOptions as $allOption) {
+		foreach ($allOptions as $allOption) {
 			$productCodeDetails = array(
 				//'shop_option_value_id' => $allOption['shop_option_value_id']
 			);
 			unset($allOption['shop_option_value_id']);
 			$productCode = null;
-			if(!empty($product['product_code'])) {
-				if(strstr($product['product_code'], ':') !== false) {
+			if (!empty($product['product_code'])) {
+				if (strstr($product['product_code'], ':') !== false) {
 					$productCode = String::insert($product['product_code'], $allOption);
 				} else {
 					$productCode = $product['product_code'] . '-' . implode('', $allOption);
 				}
-			} elseif(array_filter($allOption)) {
+			} elseif (array_filter($allOption)) {
 				$productCode = implode('', $allOption);
 			}
 			$generatedProductCodes[] = array_merge(array('product_code' => $productCode), $productCodeDetails);
@@ -1148,7 +1152,7 @@ class ShopProduct extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findBasics($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
 
 			$query['fields'] = array_merge(
@@ -1182,11 +1186,11 @@ class ShopProduct extends ShopAppModel {
 				(array)$query['fields']
 			);
 
-			if(!isset($query['admin']) || $query['admin'] !== true) {
+			if (!isset($query['admin']) || $query['admin'] !== true) {
 				$this->_activeOnlyConditions($query);
 			}
 
-			if(!empty($query['category'])) {
+			if (!empty($query['category'])) {
 				$query['conditions'] = array_merge((array)$query['conditions'], array(
 					'or' => array(
 						'ActiveCategory.id' => $query['category'],
@@ -1226,9 +1230,9 @@ class ShopProduct extends ShopAppModel {
  * @return array
  */
 	protected function _findPossibleOptions($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$this->_activeOnlyConditions($query);
-			if(!empty($query['category'])) {
+			if (!empty($query['category'])) {
 				$query['conditions'][]['or'] = array(
 					'ActiveCategory.slug' => $query['category'],
 					'ActiveCategory.id' => $query['category']
@@ -1280,7 +1284,7 @@ class ShopProduct extends ShopAppModel {
 		);
 		$options = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		$counts = Hash::combine($results, '{n}.ShopOption.id', '{n}.ShopProduct.product_count');
-		foreach($options as &$option) {
+		foreach ($options as &$option) {
 			$option['product_count'] = $counts[$option['id']];
 		}
 
@@ -1328,17 +1332,17 @@ class ShopProduct extends ShopAppModel {
 	public function saveProduct($product) {
 		$this->transaction();
 		$create = false;
-		if(empty($product[$this->alias][$this->primaryKey])) {
+		if (empty($product[$this->alias][$this->primaryKey])) {
 			$create = true;
 			$this->create();
 		}
 
-		if(!empty($product['ShopBranchStock'])) {
+		if (!empty($product['ShopBranchStock'])) {
 			$shopBranchStock = $product['ShopBranchStock'];
 			unset($product['ShopBranchStock']);
 		}
 
-		if(!empty($product['ShopCategoriesProduct'])) {
+		if (!empty($product['ShopCategoriesProduct'])) {
 			$shopCategories = $product['ShopCategoriesProduct'];
 			unset($product['ShopCategoriesProduct']);
 		}
@@ -1346,12 +1350,12 @@ class ShopProduct extends ShopAppModel {
 		$saved = (bool)$this->saveAll($product);
 		$productId = $this->id;
 
-		if(!empty($shopCategories)) {
+		if (!empty($shopCategories)) {
 			$this->ShopCategoriesProduct->deleteAll(array(
 				'shop_product_id' => $productId
 			));
 
-			foreach($shopCategories as $k => $category) {
+			foreach ($shopCategories as $k => $category) {
 				$shopCategories[$k] = array(
 					'shop_category_id' => $category,
 					'shop_product_id' => $productId
@@ -1361,15 +1365,15 @@ class ShopProduct extends ShopAppModel {
 			$this->ShopCategoriesProduct->create();
 			$saved = $saved && $this->ShopCategoriesProduct->saveAll($shopCategories);
 		}
-		if($create) {
-			foreach($shopBranchStock as &$stock) {
+		if ($create) {
+			foreach ($shopBranchStock as &$stock) {
 				$stock['shop_product_id'] = $productId;
 				$stock['notes'] = __d('shop', 'Initial stock (created product)');
 			}
 			$saved = $saved && $this->ShopBranchStock->addStock($shopBranchStock);
 		}
 
-		if($saved) {
+		if ($saved) {
 			$this->transaction(true);
 			return true;
 		}

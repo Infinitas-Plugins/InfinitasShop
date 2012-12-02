@@ -2,7 +2,7 @@
 
 $rating = __d('shop', 'Not rated yet');
 $button = __d('shop', 'Be the first');
-if($shopProduct['ShopProduct']['rating_count']) {
+if ($shopProduct['ShopProduct']['rating_count']) {
 	$button = __d('shop', 'Rate this product');
 	$rating = __d('shop', '%s out of %d', $shopProduct['ShopProduct']['rating'], $shopProduct['ShopProduct']['rating_count']);
 }

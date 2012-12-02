@@ -22,20 +22,20 @@ $(document).ready(function() {
 
 	$('.add-to-cart').on('click', function() {
 		var options = $('[name*="data[ShopOption]"]');
-		if(options.length == 0) {
+		if (options.length == 0) {
 			return true;
 		}
 
 		var error = false;
 		$.each(options, function(k, v) {
 			var option = $(v);
-			if(!option.val()) {
+			if (!option.val()) {
 				option.addClass('error');
 				error = true;
 			}
 		});
 
-		if(error) {
+		if (error) {
 			$('.options .alert').show();
 			return false;
 		}
@@ -45,7 +45,7 @@ $(document).ready(function() {
 
 	$('[name*="data[ShopOption]"]').on('change', function() {
 		var $this = $(this);
-		if($this.val()) {
+		if ($this.val()) {
 			$('.options .alert').hide();
 			$this.removeClass('error');
 			highlightOption();
@@ -99,14 +99,14 @@ function productFilter() {
 function highlightOption() {
 	var rowClass = 'info',
 	$options = $('[name*="data[ShopOption]"]');
-	if(!$options.length) {
+	if (!$options.length) {
 		return;
 	}
 
 	$('.options tr').removeClass(rowClass);
 	$.each($options, function(k, v) {
 		var value = $(v).val();
-		if(value) {
+		if (value) {
 			$('tr.' + value).addClass(rowClass);
 		}
 	});

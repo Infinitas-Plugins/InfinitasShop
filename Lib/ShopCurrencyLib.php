@@ -1,37 +1,38 @@
 <?php
 /**
- * @brief libs for currency handeling
+ * libs for currency handeling
  *
  * Class for handeling currency conversions thoughout the shop plugin
  */
 App::uses('CakeSession', 'Model/Datasource');
 
 class ShopCurrencyLib {
+
 /**
- * @brief session key used for storing the path to the current currency
+ * session key used for storing the path to the current currency
  *
  * @param array
  */
 	protected static $_sessionKey = 'Shop.currency';
 
 /**
- * @brief get the currently used session
+ * get the currently used session
  *
  * @return string
  */
 	public static function getCurrency($to = null) {
-		if($to) {
+		if ($to) {
 			return strtoupper($to);
 		}
 		$value = CakeSession::read(self::$_sessionKey);
-		if(!$value) {
+		if (!$value) {
 			return self::defaultCurrency();
 		}
 		return $value;
 	}
 
 /**
- * @brief get the default store currency
+ * get the default store currency
  *
  * @return string
  */
@@ -40,28 +41,30 @@ class ShopCurrencyLib {
 	}
 
 /**
- * @brief set the currency to be used
+ * set the currency to be used
  *
  * @param string $currency the new currency to be used
  *
  * @return see CakeSession::write()
+ *
+ * @throws InvalidArgumentException
  */
 	public static function setSession($currency) {
-		if(strlen($currency) !== 3) {
+		if (strlen($currency) !== 3) {
 			throw new InvalidArgumentException('Invalid currency code');
 		}
 		return CakeSession::write(self::$_sessionKey, strtoupper($currency));
 	}
 
 /**
- * @brief configure the currency being used
+ * configure the currency being used
  *
  * @param type $currency
  *
  * @return see self::setSession()
  */
 	public static function setCurrency($currency = null) {
-		if(!$currency) {
+		if (!$currency) {
 			$currency = self::getCurrency();
 		}
 
@@ -69,7 +72,7 @@ class ShopCurrencyLib {
 	}
 
 /**
- * @brief add a new format to the available currency conversions
+ * add a new format to the available currency conversions
  *
  * @param string $currency the currency code to be added
  *
@@ -97,7 +100,7 @@ class ShopCurrencyLib {
 	}
 
 /**
- * @brief convert from one currency to another
+ * convert from one currency to another
  *
  * The shop default is always used as the base currency
  *
@@ -109,14 +112,14 @@ class ShopCurrencyLib {
 	public static function convert($amount, $to = null) {
 		$factors = ClassRegistry::init('Shop.ShopCurrency')->find('conversions');
 		$to = self::getCurrency($to);
-		if(isset($factors[$to]) && (float)$factors[$to] == 1) {
+		if (isset($factors[$to]) && (float)$factors[$to] == 1) {
 			return $amount;
 		}
 		return round($amount * $factors[$to], 4);
 	}
 
 /**
- * @brief fetch the updated currencies
+ * fetch the updated currencies
  *
  * @param string $from the currency being converted from
  * @param string $to the currency being converted to
@@ -132,7 +135,7 @@ class ShopCurrencyLib {
 			$HttpSocket->get('http://www.google.com/ig/calculator', sprintf('hl=en&q=1%s%%20in%%20%s', $from, $to))->body
 		), true);
 
-		if(!empty($result['error'])) {
+		if (!empty($result['error'])) {
 			CakeLog::write('shop', $result['error']);
 			return false;
 		}

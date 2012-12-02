@@ -2,7 +2,10 @@
 /**
  * ShopPaymentMethodStatusFixture
  *
+ * @package Shop.Test.Fixture
+ * @since 0.9b1
  */
+
 class ShopPaymentMethodStatusFixture extends CakeTestFixture {
 
 /**

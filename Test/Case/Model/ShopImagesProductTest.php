@@ -42,7 +42,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find images exceptions
+ * test find images exceptions
  *
  * @expectedException InvalidArgumentException
  */
@@ -51,7 +51,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find images
+ * test find images
  *
  * @param type $data
  * @param type $exception
@@ -64,7 +64,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find images data provider
+ * find images data provider
  *
  * @return array
  */
@@ -165,7 +165,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find images extracted
+ * test find images extracted
  *
  * @param type $data
  * @param type $exception
@@ -178,7 +178,7 @@ class ShopImagesProductTest extends CakeTestCase {
 	}
 
 /**
- * @brief find images extracted data provider
+ * find images extracted data provider
  *
  * @return array
  */

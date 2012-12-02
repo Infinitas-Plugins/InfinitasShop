@@ -2,7 +2,10 @@
 /**
  * ShopProductsOptionIgnoreFixture
  *
+ * @package Shop.Test.Fixture
+ * @since 0.9b1
  */
+
 class ShopProductsOptionIgnoreFixture extends CakeTestFixture {
 
 /**

@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @brief Add some documentation for this add form.
+	 * Add some documentation for this add form.
 	 *
 	 * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
 	 *
@@ -22,10 +22,10 @@
 		));
 
 		$rates = $insurance = array();
-		if(!empty($this->request->data['ShopShippingMethodValue'])) {
+		if (!empty($this->request->data['ShopShippingMethodValue'])) {
 			$smallField = array('div' => false, 'label' => false);
 			$rates[] = $this->Form->label('rates', __d('shop', 'Shipping option rates'));
-			foreach($this->request->data['ShopShippingMethodValue']['rates'] as $k => $rate) {
+			foreach ($this->request->data['ShopShippingMethodValue']['rates'] as $k => $rate) {
 				$rates[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
 						'name' => sprintf('data[ShopShippingMethodValue][rates][%s][limit]', $k),
@@ -54,7 +54,7 @@
 			)));
 
 			$insurance[] = $this->Form->label('insurance', __d('shop', 'Shipping option insurance'));
-			foreach($this->request->data['ShopShippingMethodValue']['insurance'] as $k => $rate) {
+			foreach ($this->request->data['ShopShippingMethodValue']['insurance'] as $k => $rate) {
 				$insurance[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
 						'name' => sprintf('data[ShopShippingMethodValue][insurance][%s][limit]', $k),

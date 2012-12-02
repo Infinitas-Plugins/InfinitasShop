@@ -48,7 +48,7 @@ class ShopBranchTest extends CakeTestCase {
 	}
 
 /**
- * @brief test no default branch
+ * test no default branch
  *
  * @expectedException ShopBranchNotConfiguredException
  */
@@ -59,7 +59,7 @@ class ShopBranchTest extends CakeTestCase {
 	}
 
 /**
- * @brief test multiple branches available
+ * test multiple branches available
  *
  * @expectedException ShopBranchMultipleConfiguredException
  */
@@ -69,7 +69,7 @@ class ShopBranchTest extends CakeTestCase {
 	}
 
 /**
- * @brief test single branch in use
+ * test single branch in use
  */
 	public function testDefaultBranchIdOne() {
 		$this->assertTrue($this->{$this->modelClass}->deleteAll(array($this->modelClass . '.id !=' => 'branch-1')));
@@ -80,5 +80,4 @@ class ShopBranchTest extends CakeTestCase {
 
 		$this->assertTrue($this->{$this->modelClass}->find('count') === 1);
 	}
-
 }

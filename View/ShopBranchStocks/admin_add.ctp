@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * @brief Add some documentation for this add form.
+	 * Add some documentation for this add form.
 	 *
 	 * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
 	 *

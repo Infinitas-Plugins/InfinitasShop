@@ -7,19 +7,18 @@
  * @property ShopBranchStockLog $ShopBranchStockLog
  */
 class ShopBranchStock extends ShopAppModel {
+
+/**
+ * Custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'productStock' => true,
 		'isInStock' => true,
 		'totalProductStock' => true,
 		'stockList' => true
 	);
-
-/**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array();
 
 /**
  * belongsTo associations
@@ -65,7 +64,7 @@ class ShopBranchStock extends ShopAppModel {
 	);
 
 /**
- * @brief override the construct to add translated validation
+ * override the construct to add translated validation
  *
  * @param type $id
  * @param type $table
@@ -103,7 +102,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 /**
- * @brief find stock for a product in various branches
+ * find stock for a product in various branches
  *
  * @param string $state
  * @param array $query
@@ -114,8 +113,8 @@ class ShopBranchStock extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findProductStock($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -127,11 +126,10 @@ class ShopBranchStock extends ShopAppModel {
 
 			$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
 
-
 			return $query;
 		}
 
-		if(isset($query['extract']) && $query['extract']) {
+		if (isset($query['extract']) && $query['extract']) {
 			return Hash::extract($results, '{n}.' . $this->alias);
 		}
 
@@ -139,7 +137,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 /**
- * @brief check if a product(s) is in stock
+ * check if a product(s) is in stock
  *
  * @code
  *  // checking a single product
@@ -165,8 +163,8 @@ class ShopBranchStock extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findIsInStock($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_product_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
@@ -194,7 +192,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 /**
- * @brief add stock to a specific branch
+ * add stock to a specific branch
  *
  * Required data:
  *  - shop_branch_id: the branch stock is being added to
@@ -209,14 +207,14 @@ class ShopBranchStock extends ShopAppModel {
 	public function addStock(array $stock) {
 		$stock = $this->_normaliseStock($stock);
 		$this->ShopBranchStockLog->create();
-		if(!$this->ShopBranchStockLog->saveAll($stock)) {
+		if (!$this->ShopBranchStockLog->saveAll($stock)) {
 			return false;
 		}
 		return $this->updateStock($stock);
 	}
 
 /**
- * @brief remove stock from a specific branch
+ * remove stock from a specific branch
  *
  * Required data:
  *  - shop_branch_id: the branch stock is being removed from
@@ -231,14 +229,14 @@ class ShopBranchStock extends ShopAppModel {
 	public function removeStock(array $stock) {
 		$stock = $this->_normaliseStock($stock, false);
 		$this->ShopBranchStockLog->create();
-		if(!$this->ShopBranchStockLog->saveAll($stock)) {
+		if (!$this->ShopBranchStockLog->saveAll($stock)) {
 			return false;
 		}
 		return $this->updateStock($stock);
 	}
 
 /**
- * @brief normalise the stock array for easy handeling
+ * normalise the stock array for easy handeling
  *
  * @param array $stock the stock data
  * @param boolean $add adding or removing stock
@@ -248,24 +246,24 @@ class ShopBranchStock extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _normaliseStock(array $stock, $add = true) {
-		if(!is_int(current(array_keys($stock)))) {
+		if (!is_int(current(array_keys($stock)))) {
 			$stock = array($stock);
 		}
 
-		foreach($stock as $k => $v) {
+		foreach ($stock as $k => $v) {
 			$skip = (empty($v['shop_product_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
-			if($skip) {
+			if ($skip) {
 				unset($stock[$k]);
 				continue;
 			}
 
-			if(empty($v['shop_branch_stock_id'])) {
+			if (empty($v['shop_branch_stock_id'])) {
 				$stock[$k]['shop_branch_stock_id'] = $this->field('id', array(
 					'shop_product_id' => $v['shop_product_id'],
 					'shop_branch_id' => $v['shop_branch_id']
 				));
 
-				if(empty($stock[$k]['shop_branch_stock_id'])) {
+				if (empty($stock[$k]['shop_branch_stock_id'])) {
 					$this->create();
 					$this->save(array(
 						'shop_product_id' => $v['shop_product_id'],
@@ -276,17 +274,17 @@ class ShopBranchStock extends ShopAppModel {
 				}
 			}
 
-			if(($add && $stock[$k]['change'] < 0) || (!$add && $stock[$k]['change'] > 0)) {
+			if (($add && $stock[$k]['change'] < 0) || (!$add && $stock[$k]['change'] > 0)) {
 				$stock[$k]['change'] = intval($stock[$k]['change']) * -1;
 			}
 			$stock[$k]['change'] = (int)$stock[$k]['change'];
 
-			if(empty($v['notes'])) {
+			if (empty($v['notes'])) {
 				$stock[$k]['notes'] = $add ? 'Adding stock' : 'Removing stock';
 			}
 		}
 
-		if(empty($stock)) {
+		if (empty($stock)) {
 			throw new InvalidArgumentException('No stock to update');
 		}
 
@@ -294,7 +292,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 /**
- * @brief update the total stock available for the product / branch combo
+ * update the total stock available for the product / branch combo
  *
  * @param array $stock the stock data
  *
@@ -302,8 +300,8 @@ class ShopBranchStock extends ShopAppModel {
  */
 	public function updateStock(array $stock) {
 		$saved = true;
-		foreach($stock as $k => $v) {
-			if(!empty($v[$this->ShopBranchStockLog->alias])) {
+		foreach ($stock as $k => $v) {
+			if (!empty($v[$this->ShopBranchStockLog->alias])) {
 				$v = $v[$this->ShopBranchStockLog->alias];
 			}
 			$saved = $saved && $this->updateAll(
@@ -318,7 +316,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 /**
- * @brief find a products total stock count
+ * find a products total stock count
  *
  * @param string $state
  * @param array $query
@@ -327,14 +325,14 @@ class ShopBranchStock extends ShopAppModel {
  * @return integer
  */
 	protected function _findTotalProductStock($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
 
-			if(!empty($query['shop_branch_id'])) {
+			if (!empty($query['shop_branch_id'])) {
 				$query['conditions'][$this->alias . '.shop_branch_id'] = $query['shop_branch_id'];
 			}
 
-			if(!empty($query['shop_product_id'])) {
+			if (!empty($query['shop_product_id'])) {
 				$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
 			}
 
@@ -345,7 +343,7 @@ class ShopBranchStock extends ShopAppModel {
 			return $query;
 		}
 
-		if(!empty($results[0][$this->alias]['total_stock'])) {
+		if (!empty($results[0][$this->alias]['total_stock'])) {
 			return $results[0][$this->alias]['total_stock'];
 		}
 
@@ -353,7 +351,7 @@ class ShopBranchStock extends ShopAppModel {
 	}
 
 	protected function _findStockList($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$this->ShopProduct->virtualFields['selling'] = 'ShopPrice.selling';
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -381,7 +379,7 @@ class ShopBranchStock extends ShopAppModel {
 			return $query;
 		}
 
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
@@ -397,7 +395,7 @@ class ShopBranchStock extends ShopAppModel {
 			)
 		));
 
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			$result[$this->alias] = Hash::combine(
 				Hash::extract($shopBranchStocks, sprintf(
 					'{n}.%s[shop_product_id=%s]',

@@ -48,7 +48,7 @@ class ShopAppModelTest extends CakeTestCase {
 	}
 
 /**
- * @brief test current user id
+ * test current user id
  */
 	public function testCurrentUserId() {
 		$result = $this->{$this->modelClass}->currentUserId();
@@ -84,7 +84,7 @@ class ShopAppModelTest extends CakeTestCase {
 	}
 
 /**
- * @brief test is guest
+ * test is guest
  *
  * @param type $data
  * @param type $expected
@@ -100,7 +100,7 @@ class ShopAppModelTest extends CakeTestCase {
 	}
 
 /**
- * @brief is guest data provider
+ * is guest data provider
  *
  * @return array
  */

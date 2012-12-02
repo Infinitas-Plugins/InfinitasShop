@@ -1,6 +1,6 @@
 <?php
-foreach($shopProduct['ShopOption'] as $option) {
-	foreach($option['ShopOptionValue'] as $k => &$value) {
+foreach ($shopProduct['ShopOption'] as $option) {
+	foreach ($option['ShopOptionValue'] as $k => &$value) {
 		$value = $this->Html->tag('tr', implode('', array(
 			$this->Html->tag('td', $this->Html->link($value['name'], $this->here . '#', array(
 				'class' => 'option-value',

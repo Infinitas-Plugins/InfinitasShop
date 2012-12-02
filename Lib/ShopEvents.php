@@ -1,7 +1,8 @@
 <?php
 class ShopEvents extends AppEvents {
+
 /**
- * @brief get the plugins details
+ * get the plugins details
  *
  * @return array
  */
@@ -20,7 +21,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief the admin menu
+ * the admin menu
  *
  * @param Event $Event the Event
  *
@@ -45,13 +46,13 @@ class ShopEvents extends AppEvents {
 		);
 
 		$configuration = in_array($Event->Handler->request->params['controller'], $configControllers);
-		foreach($configControllers as $controller) {
-			if($configuration) {
+		foreach ($configControllers as $controller) {
+			if ($configuration) {
 				break;
 			}
 			$configuration = $configuration || strpos($Event->Handler->request->params['controller'], $controller) !== false;
 		}
-		if($configuration) {
+		if ($configuration) {
 			$menu['main']['Configuration'] = array('plugin' => 'shop', 'controller' => 'shop', 'action' => 'configuration');
 		}
 
@@ -59,7 +60,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief get the plugins configuration
+ * get the plugins configuration
  *
  * @return array
  */
@@ -77,7 +78,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief figure out a url slug
+ * figure out a url slug
  *
  * @param Event $Event the Event
  * @param array $data the data used to build a url
@@ -94,7 +95,6 @@ class ShopEvents extends AppEvents {
 					'id' => $data['data']['id'],
 					'slug' => $data['data']['slug']
 				);
-				break;
 
 			case 'categories':
 				return array(
@@ -104,12 +104,11 @@ class ShopEvents extends AppEvents {
 					'id' => $data['data']['id'],
 					'slug' => $data['data']['slug']
 				);
-				break;
-		} // switch
+		}
 	}
 
 /**
- * @brief sort out the guest data once the user logs in
+ * sort out the guest data once the user logs in
  *
  * @param Event $Event the event
  * @param array data passed in
@@ -117,11 +116,10 @@ class ShopEvents extends AppEvents {
  * @return array
  */
 	public function onUserLogin(Event $Event, $data) {
-
 	}
 
 /**
- * @brief get helpers that need loading
+ * get helpers that need loading
  *
  * @return array
  */
@@ -132,7 +130,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief get components that need loading
+ * get components that need loading
  *
  * @return array
  */
@@ -143,12 +141,12 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief attach behaviors
+ * attach behaviors
  *
  * @param Event $Event
  */
 	public function onAttachBehaviors(Event $Event) {
-		if($Event->Handler->shouldAutoAttachBehavior()) {
+		if ($Event->Handler->shouldAutoAttachBehavior()) {
 			if ($Event->Handler instanceof ShopProduct) {
 				$Event->Handler->Behaviors->attach('Shop.Specials');
 			}
@@ -156,14 +154,14 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief get css that needs loading
+ * get css that needs loading
  *
  * @param Event $Event the event
  *
  * @return array
  */
 	public function onRequireCssToLoad(Event $Event) {
-		if($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
+		if ($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
 			);
@@ -175,14 +173,14 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief get js that needs loading
+ * get js that needs loading
  *
  * @param Event $Event the event
  *
  * @return array
  */
 	public function onRequireJavascriptToLoad(Event $Event) {
-		if($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
+		if ($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
 			return array(
 				'Shop.shop_admin'
 			);
@@ -194,7 +192,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief update the currency conversions
+ * update the currency conversions
  *
  * @param Event $Event the event being run
  */
@@ -203,24 +201,23 @@ class ShopEvents extends AppEvents {
 	}
 
 	public function onRouteParse(Event $Event, $data = null) {
-		if($data['plugin'] != 'shop') {
+		if ($data['plugin'] != 'shop') {
 			return false;
 		}
 		$shopAdmin = !empty($data['prefix']) && $data['prefix'] == 'admin';
-		if($shopAdmin) {
+		if ($shopAdmin) {
 			return $data;
 		}
-
 
 		$controllers = array(
 			'shop_products'
 		);
-		if(!in_array($data['controller'], $controllers)) {
+		if (!in_array($data['controller'], $controllers)) {
 			return $data;
 		}
 
 		$ShopProduct = ClassRegistry::init('Shop.ShopProduct');
-		if($data['controller'] == 'shop_products' && !empty($data['slug'])) {
+		if ($data['controller'] == 'shop_products' && !empty($data['slug'])) {
 			$count = $ShopProduct->find('count', array(
 				'conditions' => array(
 					$ShopProduct->alias . '.slug' => $data['slug'],
@@ -228,13 +225,13 @@ class ShopEvents extends AppEvents {
 				)
 			));
 
-			if(!$count) {
+			if (!$count) {
 				return false;
 			}
 		}
 
 		$ShopCategory = ClassRegistry::init('Shop.ShopCategory');
-		if($data['controller'] == 'shop_products' && !empty($data['category'])) {
+		if ($data['controller'] == 'shop_products' && !empty($data['category'])) {
 			$count = $ShopCategory->find('count', array(
 				'conditions' => array(
 					$ShopCategory->alias . '.slug' => $data['category'],
@@ -242,7 +239,7 @@ class ShopEvents extends AppEvents {
 				)
 			));
 
-			if(!$count) {
+			if (!$count) {
 				return false;
 			}
 		}
@@ -251,7 +248,7 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * @brief get tracking variables
+ * get tracking variables
  *
  * @param Event $Event the event being triggered
  *
@@ -261,7 +258,7 @@ class ShopEvents extends AppEvents {
 		$return = array();
 
 		$guestId = CakeSession::read('Shop.Guest.id');
-		if($guestId) {
+		if ($guestId) {
 			$return[] = array(
 				'name' => 'guestId',
 				'value' => $guestId,
@@ -269,7 +266,7 @@ class ShopEvents extends AppEvents {
 			);
 		}
 
-		if($Event->Handler->request->params['plugin'] !== 'shop') {
+		if ($Event->Handler->request->params['plugin'] !== 'shop') {
 			return $return;
 		}
 
@@ -285,8 +282,8 @@ class ShopEvents extends AppEvents {
 			'scope' => 'page'
 		);
 
-		if(!empty($Event->Handler->request->category)) {
-			if(!empty($Event->Handler->request->slug)) {
+		if (!empty($Event->Handler->request->category)) {
+			if (!empty($Event->Handler->request->slug)) {
 				$return[] = array(
 					'name' => 'product',
 					'value' => $Event->Handler->request->slug,

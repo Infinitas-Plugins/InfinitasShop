@@ -2,7 +2,7 @@
 /**
  * ShopCurrencies controller
  *
- * @brief Add some documentation for ShopCurrencies controller.
+ * Add some documentation for ShopCurrencies controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -19,7 +19,7 @@
 
 class ShopCurrenciesController extends ShopAppController {
 /**
- * @brief overlaod beforeFilter to add some notices
+ * overlaod beforeFilter to add some notices
  *
  * @return void
  */
@@ -39,7 +39,7 @@ class ShopCurrenciesController extends ShopAppController {
 	}
 
 /**
- * @brief change the currency being displayed
+ * change the currency being displayed
  *
  * Change the currency that products are displayed in
  *
@@ -48,7 +48,7 @@ class ShopCurrenciesController extends ShopAppController {
 	public function change() {
 		$this->saveRedirectMarker();
 
-		if(empty($this->request->code)) {
+		if (empty($this->request->code)) {
 			$this->notice(__d('shop', 'No currency selected'), array(
 				'level' => 'warning',
 				'redirect' => ''
@@ -66,7 +66,7 @@ class ShopCurrenciesController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopCurrency records.
  *
@@ -87,12 +87,12 @@ class ShopCurrenciesController extends ShopAppController {
 	}
 
 /**
- * @brief overload the mass actions for the update method
+ * overload the mass actions for the update method
  *
  * @return void
  */
 	public function admin_mass() {
-		if($this->MassAction->getAction() == 'update') {
+		if ($this->MassAction->getAction() == 'update') {
 			$this->_update();
 		}
 
@@ -100,12 +100,12 @@ class ShopCurrenciesController extends ShopAppController {
 	}
 
 /**
- * @brief manually update the currency exchange rates
+ * manually update the currency exchange rates
  *
  * @return void
  */
 	protected function _update() {
-		if($this->{$this->modelClass}->updateCurrencies(true)) {
+		if ($this->{$this->modelClass}->updateCurrencies(true)) {
 			$this->notice('updated');
 		}
 		$this->notice('not_updated');

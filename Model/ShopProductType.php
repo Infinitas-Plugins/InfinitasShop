@@ -7,15 +7,21 @@
  * @property ShopProductTypesOption $ShopProductTypesOption
  */
 class ShopProductType extends ShopAppModel {
-	public $validate = array();
 
+/**
+ * Custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'options' => true
 	);
 
-	public $belongsTo = array(
-	);
-
+/**
+ * HasMany relations
+ *
+ * @var array
+ */
 	public $hasMany = array(
 		'ShopProductTypesOption' => array(
 			'className' => 'Shop.ShopProductTypesOption',
@@ -35,7 +41,7 @@ class ShopProductType extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct to translate validation messages
+ * Constructor
  *
  * @param type $id
  * @param type $table
@@ -48,5 +54,4 @@ class ShopProductType extends ShopAppModel {
 
 		);
 	}
-
 }

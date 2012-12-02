@@ -1,5 +1,6 @@
 <?php
 App::uses('ShopAppModel', 'Shop.Model');
+
 /**
  * ShopOrder Model
  *
@@ -14,16 +15,6 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopPaymentResponse $ShopPaymentResponse
  */
 class ShopOrder extends ShopAppModel {
-
-/**
- * Display field
- *
- * @var string
- */
-	public $displayField = 'id';
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations
@@ -121,5 +112,4 @@ class ShopOrder extends ShopAppModel {
 			'counterQuery' => ''
 		)
 	);
-
 }

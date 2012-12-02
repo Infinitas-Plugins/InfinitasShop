@@ -69,7 +69,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find shipping
+ * test find shipping
  *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
@@ -77,13 +77,13 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider findShippingDataProvider
  */
 	public function testFindShipping($data, $expected) {
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
-		if(!empty($expected)) {
+		if (!empty($expected)) {
 			$expected = array('ShopShippingMethod' => $expected);
 		}
 		$result = $this->{$this->modelClass}->find('shipping', array(
@@ -93,7 +93,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief find shipping data provider
+ * find shipping data provider
  *
  * @return array
  */
@@ -282,7 +282,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief test order of rates is correct
+ * test order of rates is correct
  */
 	public function testGetShippingOrder() {
 		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-1st-rate-1';
@@ -306,7 +306,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief test product
+ * test product
  *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
@@ -322,7 +322,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief product data provider
+ * product data provider
  *
  * @return array
  */
@@ -358,7 +358,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief test product list
+ * test product list
  *
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
@@ -367,10 +367,10 @@ class ShopShippingMethodTest extends CakeTestCase {
  */
 	public function testProductList($data, $expected) {
 		App::uses('CakeSession', 'Model/Datasource');
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 		$result = $this->{$this->modelClass}->find('productList', array(
@@ -379,7 +379,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 		));
 		$this->assertEquals($expected, $result);
 
-		if(!empty($data['shop_shipping_method_value_id'])) {
+		if (!empty($data['shop_shipping_method_value_id'])) {
 			$this->{$this->modelClass}->ShopShippingMethodValue->id = $data['shop_shipping_method_value_id'];
 			$this->{$this->modelClass}->ShopShippingMethodValue->saveField('surcharge', 25);
 
@@ -396,7 +396,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
- * @brief product list data provider
+ * product list data provider
  *
  * @return array
  */
@@ -457,7 +457,6 @@ class ShopShippingMethodTest extends CakeTestCase {
 		);
 		$this->assertEquals($expected, $result);
 
-
 		CakeSession::write('Auth.User.id', 'bob');
 		$expected = array(
 			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
@@ -499,6 +498,5 @@ class ShopShippingMethodTest extends CakeTestCase {
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
-
 	}
 }

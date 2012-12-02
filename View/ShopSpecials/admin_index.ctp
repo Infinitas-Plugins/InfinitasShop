@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -53,7 +53,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 				<td><?php echo $this->Infinitas->adminQuickLink($shopSpecial['ShopSpecial']); ?>&nbsp;</td>
 				<td>
 					<?php
-						if($shopSpecial['ShopSpecial']['discount']) {
+						if ($shopSpecial['ShopSpecial']['discount']) {
 							echo CakeNumber::toPercentage($shopSpecial['ShopSpecial']['amount']);
 						} else {
 							echo $this->Shop->adminCurrency($shopSpecial['ShopSpecial']['amount']);

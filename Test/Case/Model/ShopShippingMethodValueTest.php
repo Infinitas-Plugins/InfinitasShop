@@ -42,7 +42,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find values excepton
+ * test find values excepton
  * 
  * @expectedException InvalidArgumentException
  */
@@ -51,15 +51,15 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find values
+ * test find values
  *
  * @dataProvider findValuesDataProvider
  */
 	public function testFindValues($data, $expected) {
-		if(isset($data['user_id'])) {
+		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
 		}
-		if(isset($data['guest_id'])) {
+		if (isset($data['guest_id'])) {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 
@@ -70,7 +70,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief find values data provider
+ * find values data provider
  * 
  * @return array
  */
@@ -188,7 +188,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find values with order value
+ * test find values with order value
  */
 	public function testFindValuesOrderValue() {
 		$this->{$this->modelClass}->id = 'royal-mail-1st-rate-1';
@@ -223,7 +223,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test save
+ * test save
  * 
  * @param  [type] $data     [description]
  * @param  [type] $expected [description]
@@ -244,7 +244,7 @@ class ShopShippingMethodValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief save data provider
+ * save data provider
  * @return array
  */
 	public function saveDataProvider() {

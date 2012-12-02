@@ -8,6 +8,7 @@
  * @property ShopCategory $ShopCategory
  */
 class ShopProductsOptionValueOverride extends ShopAppModel {
+
 /**
  * hasOne associations
  *

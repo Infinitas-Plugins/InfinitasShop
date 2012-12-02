@@ -4,7 +4,9 @@
  *
  * @property ShopBranchStock $ShopBranchStock
  */
+
 class ShopBranchStockLog extends ShopAppModel {
+
 /**
  * belongsTo associations
  *
@@ -21,7 +23,7 @@ class ShopBranchStockLog extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation
+ * Constructor
  *
  * @param type $id
  * @param type $table
@@ -63,7 +65,7 @@ class ShopBranchStockLog extends ShopAppModel {
 	}
 
 /**
- * @brief validate the stock amount is correct
+ * validate the stock amount is correct
  *
  * There is no point adding stock
  * @param type $field

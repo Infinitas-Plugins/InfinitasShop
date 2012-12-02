@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -61,7 +61,7 @@ echo $this->Filter->alphabetFilter();
 				<td><?php echo $this->Html->adminQuickLink($shopShippingMethod['ShopShippingMethod']); ?>&nbsp;</td>
 				<td>
 					<?php
-						if(!$shopShippingMethod['ShopShippingMethod']['shop_shipping_method_value_count']) {
+						if (!$shopShippingMethod['ShopShippingMethod']['shop_shipping_method_value_count']) {
 							$shopShippingMethod['ShopShippingMethod']['shop_shipping_method_value_count'] = '-';
 						}
 						echo $this->Html->link(

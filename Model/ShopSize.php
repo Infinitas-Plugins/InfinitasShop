@@ -6,8 +6,9 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopProduct $ShopProduct
  */
 class ShopSize extends ShopAppModel {
+
 /**
- * @brief belongsTo relations
+ * belongsTo relations
  *
  * @var array
  */
@@ -19,7 +20,7 @@ class ShopSize extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct to translate validation messages
+ * overload construct to translate validation messages
  *
  * @param type $id
  * @param type $table
@@ -28,8 +29,8 @@ class ShopSize extends ShopAppModel {
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
 
-		foreach($this->schema() as $field => $config) {
-			if(strstr($field, 'shipping') === false && strstr($field, 'product') === false) {
+		foreach ($this->schema() as $field => $config) {
+			if (strstr($field, 'shipping') === false && strstr($field, 'product') === false) {
 				continue;
 			}
 

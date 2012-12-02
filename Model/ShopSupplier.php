@@ -7,16 +7,17 @@
  * @property ShopProduct $ShopProduct
  */
 class ShopSupplier extends ShopAppModel {
+
 /**
- * @brief Validation rules
+ * Validation rules
  *
  * @var array
  */
 	public $validate = array();
 
 /**
- * @brief behaviors that are attached
- * 
+ * behaviors that are attached
+ *
  * @var array
  */
 	public $actsAs = array(

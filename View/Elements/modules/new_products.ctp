@@ -1,9 +1,9 @@
 <?php
-if(empty($shopNewProducts)) {
+if (empty($shopNewProducts)) {
 	return;
 }
 
-foreach($shopNewProducts as &$product) {
+foreach ($shopNewProducts as &$product) {
 	$product = $this->element('Shop.product_item', array(
 		'shopProduct' => $product
 	));

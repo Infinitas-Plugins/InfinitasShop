@@ -1,10 +1,10 @@
 <?php
 $images = array();
-foreach($shopProduct['ShopImagesProduct'] as $image) {
+foreach ($shopProduct['ShopImagesProduct'] as $image) {
 
 }
 
-if(!empty($images)) {
+if (!empty($images)) {
 	$images = $this->Design->arrayToList($images, array(
 		'ul' => 'thumbnails',
 		'li' => 'span2'

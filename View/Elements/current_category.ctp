@@ -1,5 +1,5 @@
 <?php
-if(empty($currentCategory)) {
+if (empty($currentCategory)) {
 	return;
 }
 
@@ -7,7 +7,7 @@ $content = array(
 	$this->Html->tag('h1', $currentCategory['ShopCategory']['name']),
 	$currentCategory['ShopCategory']['description']
 );
-if(!empty($parentCategory)) {
+if (!empty($parentCategory)) {
 	$content[] = $this->Html->link($parentCategory['ShopCategory']['name'], array(
 		'plugin' => 'shop',
 		'controller' => 'shop_products',

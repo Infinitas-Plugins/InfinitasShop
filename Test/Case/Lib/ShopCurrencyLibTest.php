@@ -2,6 +2,7 @@
 App::uses('ShopCurrency', 'Shop.Model');
 App::uses('ShopCurrencyLib', 'Shop.Lib');
 class ShopCurrencyLibTest extends CakeTestCase {
+
 /**
  * Fixtures
  *
@@ -11,15 +12,6 @@ class ShopCurrencyLibTest extends CakeTestCase {
 		'plugin.shop.shop_currency',
 		'plugin.shop.shop_payment_method_api'
 	);
-
-/**
- * setUp method
- *
- * @return void
- */
-	public function setUp() {
-		parent::setUp();
-	}
 
 /**
  * tearDown method
@@ -32,8 +24,8 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set session exception
- * 
+ * test set session exception
+ *
  * @expectedException InvalidArgumentException
  */
 	public function testSetSessionException() {
@@ -41,7 +33,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test get currency
+ * test get currency
  */
 	public function testGetCurrency() {
 		$expected = ShopCurrencyLib::getCurrency(Configure::read('Shop.currency'));
@@ -60,8 +52,8 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set currency
- * 
+ * test set currency
+ *
  * @dataProvider setCurrencyDataProvider
  */
 	public function testSetCurrency($data, $expected) {
@@ -72,7 +64,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief set currency data provider
+ * set currency data provider
  */
 	public function setCurrencyDataProvider() {
 		return array(
@@ -84,7 +76,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test set currency invalid
+ * test set currency invalid
  *
  * @expectedException CakeException
  */
@@ -93,7 +85,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test convert
+ * test convert
  *
  * @dataProvider convertDataProvider
  */
@@ -109,7 +101,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief convert data provider
+ * convert data provider
  */
 	public function convertDataProvider() {
 		return array(
@@ -122,7 +114,7 @@ class ShopCurrencyLibTest extends CakeTestCase {
 	}
 
 /**
- * @brief test fetch update
+ * test fetch update
  */
 	public function testFetchUpdate() {
 		$result = ShopCurrencyLib::fetchUpdate('GBP', 'USD');

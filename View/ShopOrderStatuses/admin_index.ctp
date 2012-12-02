@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this admin_index form.
+ * Add some documentation for this admin_index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -47,7 +47,7 @@ echo $this->Filter->alphabetFilter();
 				<td><?php echo $this->Html->adminQuickLink($shopOrderStatus['ShopOrderStatus']); ?>&nbsp;</td>
 				<td>
 					<?php
-						if(!$shopOrderStatus['ShopOrderStatus']['shop_order_count']) {
+						if (!$shopOrderStatus['ShopOrderStatus']['shop_order_count']) {
 							$shopOrderStatus['ShopOrderStatus']['shop_order_count'] = '-';
 						}
 						echo $this->Html->link($shopOrderStatus['ShopOrderStatus']['shop_order_count'], array(

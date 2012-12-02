@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -56,7 +56,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td>
 					<?php
-						if(empty($shopBrand['ShopBrand']['shop_product_count'])) {
+						if (empty($shopBrand['ShopBrand']['shop_product_count'])) {
 							$shopBrand['ShopBrand']['shop_product_count'] = '-';
 						}
 						echo $this->Html->link($shopBrand['ShopBrand']['shop_product_count'], array(

@@ -2,7 +2,7 @@
 /**
  * ShopOrderStatuses controller
  *
- * @brief Add some documentation for ShopOrderStatuses controller.
+ * Add some documentation for ShopOrderStatuses controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -30,7 +30,7 @@ class ShopOrderStatusesController extends ShopAppController {
 	);
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopOrderStatus records.
  *
@@ -56,7 +56,7 @@ class ShopOrderStatusesController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopOrderStatus records.
  *
@@ -72,7 +72,7 @@ class ShopOrderStatusesController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopOrderStatus records.
  *

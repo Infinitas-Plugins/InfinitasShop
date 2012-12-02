@@ -10,7 +10,7 @@ App::uses('ShopAppModel', 'Shop.Model');
 class ShopListProductOption extends ShopAppModel {
 
 /**
- * @brief custom find methods
+ * custom find methods
  *
  * @var array
  */
@@ -19,7 +19,7 @@ class ShopListProductOption extends ShopAppModel {
 	);
 
 /**
- * @brief belongsTo associations
+ * belongsTo associations
  *
  * @var array
  */
@@ -48,7 +48,7 @@ class ShopListProductOption extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation
+ * overload construct for translated validation
  *
  * @param type $id
  * @param type $table
@@ -102,7 +102,7 @@ class ShopListProductOption extends ShopAppModel {
  * @return boolean
  */
 	public function validateProductRequiredOptions($field) {
-		if(empty($this->data[$this->alias]['shop_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_product_id'])) {
 			return true;
 		}
 
@@ -120,7 +120,7 @@ class ShopListProductOption extends ShopAppModel {
  * @return boolean
  */
 	public function validateUniqueproduct($field) {
-		if(empty($this->data[$this->alias]['shop_list_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_list_product_id'])) {
 			return false;
 		}
 
@@ -140,7 +140,7 @@ class ShopListProductOption extends ShopAppModel {
 				))
 			)
 		));
-		if(empty($product)) {
+		if (empty($product)) {
 			return true;
 		}
 

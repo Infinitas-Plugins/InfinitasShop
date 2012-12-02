@@ -2,7 +2,7 @@
 /**
  * ShopBrands controller
  *
- * @brief Add some documentation for ShopBrands controller.
+ * Add some documentation for ShopBrands controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -30,7 +30,7 @@ class ShopBrandsController extends ShopAppController {
 	);
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopBrand records.
  *
@@ -56,7 +56,7 @@ class ShopBrandsController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopBrand
  *
@@ -66,7 +66,7 @@ class ShopBrandsController extends ShopAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if(!$id) {
+		if (!$id) {
 			$this->Infinitas->noticeInvalidRecord();
 		}
 
@@ -78,7 +78,7 @@ class ShopBrandsController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopBrand records.
  *
@@ -92,7 +92,7 @@ class ShopBrandsController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopBrand records.
  *

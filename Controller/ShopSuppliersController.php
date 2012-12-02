@@ -2,7 +2,7 @@
 /**
  * ShopSuppliers controller
  *
- * @brief Add some documentation for ShopSuppliers controller.
+ * Add some documentation for ShopSuppliers controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -30,7 +30,7 @@ class ShopSuppliersController extends ShopAppController {
 	);
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopSupplier records.
  *
@@ -57,7 +57,7 @@ class ShopSuppliersController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopSupplier
  *
@@ -67,7 +67,7 @@ class ShopSuppliersController extends ShopAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if(!$id) {
+		if (!$id) {
 			$this->Infinitas->noticeInvalidRecord();
 		}
 
@@ -79,7 +79,7 @@ class ShopSuppliersController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopSupplier records.
  *
@@ -95,7 +95,7 @@ class ShopSuppliersController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopSupplier records.
  *

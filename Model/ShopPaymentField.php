@@ -1,14 +1,13 @@
 <?php
 App::uses('ShopAppModel', 'Shop.Model');
+
 /**
  * ShopPaymentField Model
  *
  * @property ShopPaymentMethod $ShopPaymentMethod
  */
+
 class ShopPaymentField extends ShopAppModel {
-
-
-	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 /**
  * belongsTo associations

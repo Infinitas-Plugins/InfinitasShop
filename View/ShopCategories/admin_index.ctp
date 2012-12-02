@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this admin_index form.
+ * Add some documentation for this admin_index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -74,7 +74,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td>
 					<?php
-						if(!$shopCategory['ShopCategory']['shop_product_count']) {
+						if (!$shopCategory['ShopCategory']['shop_product_count']) {
 							$shopCategory['ShopCategory']['shop_product_count'] = '-';
 						}
 

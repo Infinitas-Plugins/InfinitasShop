@@ -2,7 +2,7 @@
 /**
  * ShopShippingMethodValues controller
  *
- * @brief Add some documentation for ShopShippingMethodValues controller.
+ * Add some documentation for ShopShippingMethodValues controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -32,7 +32,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopShippingMethodValue records.
  *
@@ -41,7 +41,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
  * @return void
  */
 	public function admin_index() {
-		if(empty($this->Filter->filter)) {
+		if (empty($this->Filter->filter)) {
 			$this->notice('option_not_selected');
 		}
 		$this->Paginator->settings = array(
@@ -62,7 +62,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * view method for a single row
  *
  * Show detailed information on a single ShopShippingMethodValue
  *
@@ -72,7 +72,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
  * @return void
  */
 	public function admin_view($id = null) {
-		if(!$id) {
+		if (!$id) {
 			$this->Infinitas->noticeInvalidRecord();
 		}
 
@@ -84,7 +84,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
+ * admin create action
  *
  * Adding new ShopShippingMethodValue records.
  *
@@ -100,7 +100,7 @@ class ShopShippingMethodValuesController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
+ * admin edit action
  *
  * Edit old ShopShippingMethodValue records.
  *

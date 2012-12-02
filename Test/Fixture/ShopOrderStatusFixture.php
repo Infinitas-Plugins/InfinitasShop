@@ -1,13 +1,18 @@
 <?php
 /**
- * @brief fixture file for ShopOrderStatus tests.
+ * ShopOrderStatusFixture
  *
- * @package .Fixture
+ * @package Shop.Test.Fixture
  * @since 0.9b1
  */
-class ShopOrderStatusFixture extends CakeTestFixture {
-	public $name = 'ShopOrderStatus';
 
+class ShopOrderStatusFixture extends CakeTestFixture {
+
+/**
+ * fields
+ *
+ * @var array
+ */
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),

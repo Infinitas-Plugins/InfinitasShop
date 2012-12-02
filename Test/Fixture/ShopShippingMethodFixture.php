@@ -2,7 +2,10 @@
 /**
  * ShopShippingMethodFixture
  *
+ * @package Shop.Test.Fixture
+ * @since 0.9b1
  */
+
 class ShopShippingMethodFixture extends CakeTestFixture {
 
 /**

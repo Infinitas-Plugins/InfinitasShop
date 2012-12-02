@@ -42,7 +42,7 @@ class ShopSpotlightTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find spotlights exception
+ * test find spotlights exception
  *
  * @expectedException InvalidArgumentException
  */
@@ -51,7 +51,7 @@ class ShopSpotlightTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find spotlights
+ * test find spotlights
  *
  * @dataProvider findSpotlightsDataProvider
  */
@@ -61,7 +61,7 @@ class ShopSpotlightTest extends CakeTestCase {
 	}
 
 /**
- * @brief find specials data provider
+ * find specials data provider
  *
  * @return array
  */
@@ -119,7 +119,7 @@ class ShopSpotlightTest extends CakeTestCase {
 	}
 
 /**
- * @brief test find spotlights
+ * test find spotlights
  *
  * @dataProvider findSpotlightsExtractedDataProvider
  */
@@ -129,7 +129,7 @@ class ShopSpotlightTest extends CakeTestCase {
 	}
 
 /**
- * @brief find specials data provider
+ * find specials data provider
  *
  * @return array
  */

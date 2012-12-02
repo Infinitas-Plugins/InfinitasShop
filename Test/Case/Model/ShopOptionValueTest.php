@@ -45,7 +45,7 @@ class ShopOptionValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test values exception
+ * test values exception
  *
  * @expectedException InvalidArgumentException
  */
@@ -54,7 +54,7 @@ class ShopOptionValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief test option values
+ * test option values
  *
  * @param type $data
  * @param type $expected
@@ -62,8 +62,8 @@ class ShopOptionValueTest extends CakeTestCase {
  * @dataProvider findValuesDataProvider
  */
 	public function testFindValues($data, $expected) {
-		if(!empty($expected)) {
-			foreach($expected as &$k) {
+		if (!empty($expected)) {
+			foreach ($expected as &$k) {
 				$k = array_merge(
 					array(
 						'ProductOptionValueIgnore' => array(),
@@ -90,7 +90,7 @@ class ShopOptionValueTest extends CakeTestCase {
 	}
 
 /**
- * @brief find values data provider
+ * find values data provider
  *
  * @return array
  */

@@ -2,7 +2,7 @@
 /**
  * ShopProductsSpecial model
  *
- * @brief Add some documentation for ShopProductsSpecial model.
+ * Add some documentation for ShopProductsSpecial model.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -18,10 +18,10 @@
  */
 
 class ShopProductsSpecial extends ShopAppModel {
+
 /**
  * belongsTo relations for this model
  *
- * @access public
  * @var array
  */
 	public $belongsTo = array(
@@ -52,8 +52,6 @@ class ShopProductsSpecial extends ShopAppModel {
  * overload the construct method so that you can use translated validation
  * messages.
  *
- * @access public
- *
  * @param mixed $id string uuid or id
  * @param string $table the table that the model is for
  * @param string $ds the datasource being used
@@ -66,5 +64,4 @@ class ShopProductsSpecial extends ShopAppModel {
 		$this->validate = array(
 		);
 	}
-
 }

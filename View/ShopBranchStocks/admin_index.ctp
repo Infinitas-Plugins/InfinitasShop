@@ -1,6 +1,6 @@
 <?php
 /**
- * @brief Add some documentation for this index form.
+ * Add some documentation for this index form.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -24,7 +24,7 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 <table class="listing">
 	<?php
 		$cols = array();
-		foreach($shopBranches as $shopBranchId => $shopBranch) {
+		foreach ($shopBranches as $shopBranchId => $shopBranch) {
 			$link = $this->Html->link($shopBranch, array(
 				'controller' => 'shop_branches',
 				'action' => 'edit',
@@ -58,7 +58,7 @@ echo $this->Filter->alphabetFilter('Shop.ShopProduct');
 				</td>
 				<?php
 					$stock = $value = 0;
-					foreach($shopBranches as $shopBranchId => $shopBranch) {
+					foreach ($shopBranches as $shopBranchId => $shopBranch) {
 						$shopBranchStock['ShopBranchStock'][$shopBranchId] = !empty($shopBranchStock['ShopBranchStock'][$shopBranchId]) ? $shopBranchStock['ShopBranchStock'][$shopBranchId] : 0;
 						echo sprintf('<td>%s&nbsp;</td>', $this->Html->link(
 							$this->Shop->stockValue($shopBranchStock['ShopBranchStock'][$shopBranchId], $shopBranchStock['ShopProduct']['selling']),

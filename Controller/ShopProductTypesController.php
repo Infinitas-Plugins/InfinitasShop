@@ -2,7 +2,7 @@
 /**
  * ShopProductTypes controller
  *
- * @brief Add some documentation for ShopProductTypes controller.
+ * Add some documentation for ShopProductTypes controller.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -19,7 +19,7 @@
 
 class ShopProductTypesController extends ShopAppController {
 /**
- * @brief the index method
+ * the index method
  *
  * Show a paginated list of ShopProductType records.
  *

@@ -1,11 +1,16 @@
 <?php
 class SpecialsBehavior extends ModelBehavior {
+/**
+ * Map methods for custom find methods
+ *
+ * @var array
+ */
 	public $mapMethods = array(
 		'/\b_findPossibleSpecials\b/' => '_findPossibleSpecials'
 	);
 
 /**
- * @brief configure the model to use this behavior
+ * configure the model to use this behavior
  *
  * @param ShopProduct $Model the product model
  * @param array $config the options for the behavior
@@ -17,7 +22,7 @@ class SpecialsBehavior extends ModelBehavior {
 	}
 
 /**
- * @brief find possible specials
+ * find possible specials
  *
  * Find good products for creating specials with. This will consider things such as
  * products with good markup and low conversion rates that are not already on special.
@@ -31,7 +36,7 @@ class SpecialsBehavior extends ModelBehavior {
  * @return array
  */
 	public function _findPossibleSpecials(ShopProduct $Model, $method, $state, $query, $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$Model->alias . '.' . $Model->primaryKey,
 				$Model->alias . '.' . $Model->displayField,

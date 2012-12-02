@@ -2,7 +2,7 @@
 /**
  * ShopShippingMethodValue model
  *
- * @brief Add some documentation for ShopShippingMethodValue model.
+ * Add some documentation for ShopShippingMethodValue model.
  *
  * @copyright Copyright (c) 2009 Carl Sutton (dogmatic69)
  *
@@ -19,6 +19,11 @@
 
 class ShopShippingMethodValue extends ShopAppModel {
 
+/**
+ * Custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'values' => true
 	);
@@ -128,7 +133,7 @@ class ShopShippingMethodValue extends ShopAppModel {
 	}
 
 /**
- * @brief validate the field is a float type
+ * validate the field is a float type
  *
  * @param array $field the data being validated
  *
@@ -140,7 +145,7 @@ class ShopShippingMethodValue extends ShopAppModel {
 	}
 
 /**
- * @brief parse the insurance and rates for the backend CRUD
+ * parse the insurance and rates for the backend CRUD
  *
  * @param array|boolean $results the results from a find
  * @param boolean $primary is this find on the model or from a relation
@@ -148,8 +153,8 @@ class ShopShippingMethodValue extends ShopAppModel {
  * @return array|boolean
  */
 	public function afterFind($results, $primary = false) {
-		if($this->findQueryType == 'first') {
-			foreach($results as &$result) {
+		if ($this->findQueryType == 'first') {
+			foreach ($results as &$result) {
 				self::_explode($result[$this->alias]['insurance']);
 				self::_explode($result[$this->alias]['rates']);
 			}
@@ -159,24 +164,24 @@ class ShopShippingMethodValue extends ShopAppModel {
 	}
 
 /**
- * @brief implode the rates before validation/saving
+ * implode the rates before validation/saving
  *
  * @param array $options options for validation see Model::beforeValidate()
  *
  * @return boolean
  */
 	public function beforeValidate($options = array()) {
-		if(!empty($this->data[$this->alias]['rates'])) {
+		if (!empty($this->data[$this->alias]['rates'])) {
 			$this->_implode($this->data[$this->alias]['rates']);
 		}
-		if(!empty($this->data[$this->alias]['insurance'])) {
+		if (!empty($this->data[$this->alias]['insurance'])) {
 			$this->_implode($this->data[$this->alias]['insurance']);
 		}
 		return true;
 	}
 
 /**
- * @brief find shipping values
+ * find shipping values
  *
  * @param string $state before or after
  * @param array $query the query being performed
@@ -187,8 +192,8 @@ class ShopShippingMethodValue extends ShopAppModel {
  * @return array
  */
 	protected function _findValues($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['shop_shipping_method_id'])) {
+		if ($state == 'before') {
+			if (empty($query['shop_shipping_method_id'])) {
 				throw new InvalidArgumentException(__d('shop', 'No shipping method selected'));
 			}
 
@@ -214,11 +219,11 @@ class ShopShippingMethodValue extends ShopAppModel {
 					$this->alias . '.shop_shipping_method_id' => $query['shop_shipping_method_id']
 				)
 			);
-			if(!AuthComponent::user('id')) {
+			if (!AuthComponent::user('id')) {
 				$query['conditions'][$this->alias . '.require_login'] = 0;
 			}
 
-			if(!empty($query['order_value'])) {
+			if (!empty($query['order_value'])) {
 				$query['conditions'][] = array(
 					array(
 						'or' => array(
@@ -237,12 +242,12 @@ class ShopShippingMethodValue extends ShopAppModel {
 
 			return $query;
 		}
-		if(empty($results)) {
+		if (empty($results)) {
 			return array();
 		}
 
 		$results = Hash::extract($results, '{n}.' . $this->alias);
-		foreach($results as &$result) {
+		foreach ($results as &$result) {
 			self::_explode($result['insurance']);
 			self::_explode($result['rates']);
 		}
@@ -251,7 +256,7 @@ class ShopShippingMethodValue extends ShopAppModel {
 	}
 
 /**
- * @brief parse the shipping values into arrays
+ * parse the shipping values into arrays
  *
  * @param string $values values (passed by reference)
  * @param  boolean $insurance insurance or shipping
@@ -260,7 +265,7 @@ class ShopShippingMethodValue extends ShopAppModel {
  */
 	protected function _explode(&$values) {
 		$values = array_filter(explode(',', trim($values)));
-		if(empty($values)) {
+		if (empty($values)) {
 			return;
 		}
 
@@ -273,21 +278,21 @@ class ShopShippingMethodValue extends ShopAppModel {
 		});
 
 		usort($values, function($a, $b) {
-		    return $a['limit'] - $b['limit'];
+			return $a['limit'] - $b['limit'];
 		});
 	}
 
 /**
- * @brief implode the values for sotrage
+ * implode the values for sotrage
  *
  * @param array $values the data to be imploded
  *
  * @return void
  */
 	protected function _implode(&$values) {
-		foreach($values as $k => &$value) {
+		foreach ($values as $k => &$value) {
 			$value = array_filter($value);
-			if(count($value) != 2) {
+			if (count($value) != 2) {
 				unset($values[$k]);
 				continue;
 			}

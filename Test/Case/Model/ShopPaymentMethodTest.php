@@ -45,7 +45,5 @@ class ShopPaymentMethodTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-
 	}
-
 }

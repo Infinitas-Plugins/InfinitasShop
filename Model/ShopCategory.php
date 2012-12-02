@@ -32,7 +32,7 @@ class ShopCategory extends ShopAppModel {
 	public $validate = array();
 
 /**
- * @brief model default ordering
+ * model default ordering
  */
 	public $order = array();
 
@@ -94,7 +94,7 @@ class ShopCategory extends ShopAppModel {
 	);
 
 /**
- * @brief overload construct for translated validation messages
+ * overload construct for translated validation messages
  *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
@@ -125,7 +125,7 @@ class ShopCategory extends ShopAppModel {
 
 	public function getPath($id = null, $fields = null, $recursive = null) {
 		unset($this->virtualFields['shop_product_id']);
-		if($id) {
+		if ($id) {
 			$id = $this->field($this->primaryKey, array(
 				'or' => array(
 					$this->fullFieldName($this->primaryKey) => $id,
@@ -138,7 +138,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 /**
- * @brief after saving figure out the path depth
+ * after saving figure out the path depth
  *
  * @param  boolean $created was the record created (true) or modified (false)
  *
@@ -157,7 +157,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 /**
- * @brief find related categories
+ * find related categories
  *
  *  - shop_product_id: The product id to find related categories for
  *  - extract: will return without the alias like related finds in CakePHP
@@ -173,16 +173,16 @@ class ShopCategory extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findRelated($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(!empty($query['shop_product_id'])) {
+		if ($state == 'before') {
+			if (!empty($query['shop_product_id'])) {
 				$query['conditions'][$this->ShopCategoriesProduct->alias . '.shop_product_id'] = $query['shop_product_id'];
 			}
 
-			if(empty($query['conditions'])) {
+			if (empty($query['conditions'])) {
 				throw new InvalidArgumentException('No conditions specified for related categories');
 			}
 
-			if(!isset($query['conditions'][$this->alias . '.active'])) {
+			if (!isset($query['conditions'][$this->alias . '.active'])) {
 				$query['conditions'][$this->alias . '.active'] = 1;
 			}
 
@@ -209,7 +209,7 @@ class ShopCategory extends ShopAppModel {
 			return $query;
 		}
 
-		if(isset($query['extract']) && $query['extract'] === true) {
+		if (isset($query['extract']) && $query['extract'] === true) {
 			return Hash::extract($results, '{n}.' . $this->alias);
 		}
 
@@ -217,7 +217,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 	protected function _findLevel($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName($this->primaryKey),
 				$this->fullFieldName($this->displayField),
@@ -233,7 +233,7 @@ class ShopCategory extends ShopAppModel {
 				$this->fullFieldName('active') => 1
 			));
 
-			if(empty($query[0])) {
+			if (empty($query[0])) {
 				$query['conditions'] = array_merge((array)$query['conditions'], array(
 					'or' => array(
 						$this->fullFieldName('parent_id') => null,
@@ -256,7 +256,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 /**
- * @brief get details of the passed in category
+ * get details of the passed in category
  *
  * @param string $state
  * @param array $query
@@ -265,7 +265,7 @@ class ShopCategory extends ShopAppModel {
  * @return array
  */
 	protected function _findCurrent($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findSingleCategory($state, $query);
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -283,7 +283,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 /**
- * @brief get details for the parent of the passed in category
+ * get details for the parent of the passed in category
  *
  * @param string $state
  * @param array $query
@@ -292,7 +292,7 @@ class ShopCategory extends ShopAppModel {
  * @return array
  */
 	protected function _findParent($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query = self::_findSingleCategory($state, $query);
 
 			$this->virtualFields['name'] = sprintf('"%s"', __d('shop', 'Parent Category'));
@@ -312,7 +312,7 @@ class ShopCategory extends ShopAppModel {
 	}
 
 /**
- * @brief shared code for getting category details
+ * shared code for getting category details
  *
  * @param string $state
  * @param array $query
@@ -323,8 +323,8 @@ class ShopCategory extends ShopAppModel {
  * @throws InvalidArgumentException
  */
 	protected function _findSingleCategory($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query[0])) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
 				throw new InvalidArgumentException('No category specified');
 			}
 

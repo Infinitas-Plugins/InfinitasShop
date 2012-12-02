@@ -7,6 +7,7 @@
  * @property ShopCategory $ShopCategory
  */
 class ShopProductsOptionIgnore extends ShopAppModel {
+
 /**
  * belongsTo associations
  *

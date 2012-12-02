@@ -1,9 +1,9 @@
 <?php
-if(empty($shopRecentlyViewed)) {
+if (empty($shopRecentlyViewed)) {
 	return;
 }
 
-foreach($shopRecentlyViewed as &$product) {
+foreach ($shopRecentlyViewed as &$product) {
 	$product = $this->element('Shop.product_item', array(
 		'shopProduct' => $product
 	));

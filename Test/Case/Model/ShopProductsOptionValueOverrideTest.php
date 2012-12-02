@@ -40,7 +40,5 @@ class ShopProductsOptionValueOverrideTest extends CakeTestCase {
 	}
 
 	public function testSomething() {
-
 	}
-
 }

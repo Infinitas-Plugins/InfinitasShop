@@ -5,7 +5,14 @@ App::uses('ShopAppModel', 'Shop.Model');
  *
  * @property ShopPaymentMethodApi $ShopPaymentMethodApi
  */
+
 class ShopCurrency extends ShopAppModel {
+
+/**
+ * Custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'currency' => true,
 		'conversions' => true,
@@ -34,7 +41,7 @@ class ShopCurrency extends ShopAppModel {
 	);
 
 /**
- * @brief get a currency
+ * get a currency
  *
  * @code
  *	// Pass currency for specific currency, else default is used.
@@ -54,10 +61,12 @@ class ShopCurrency extends ShopAppModel {
  * @param string $state
  * @param array $query
  * @param array $results
+ *
+ * @throws CakeException
  */
 	protected function _findCurrency($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(!empty($query['currency'])) {
+		if ($state == 'before') {
+			if (!empty($query['currency'])) {
 				$query['conditions'] = array(
 					$this->alias . '.code' => $query['currency']
 				);
@@ -77,7 +86,7 @@ class ShopCurrency extends ShopAppModel {
 		}
 		$results = current($results);
 
-		if(empty($results)) {
+		if (empty($results)) {
 			throw new CakeException(__d('shop', 'Selected currency was not found'));
 		}
 
@@ -87,7 +96,7 @@ class ShopCurrency extends ShopAppModel {
 	}
 
 /**
- * @brief get a list of the factors for conversions
+ * get a list of the factors for conversions
  *
  * return a key value array of currency code - factor.
  *
@@ -98,8 +107,8 @@ class ShopCurrency extends ShopAppModel {
  * @return array
  */
 	protected function _findConversions($state, array $query, array $results = array()) {
-		if($state == 'before') {
-			if(empty($query['fields'])) {
+		if ($state == 'before') {
+			if (empty($query['fields'])) {
 				$query['fields'] = array(
 					$this->alias . '.code',
 					$this->alias . '.factor'
@@ -110,14 +119,14 @@ class ShopCurrency extends ShopAppModel {
 		}
 
 		$return = array();
-		foreach($results as $result) {
+		foreach ($results as $result) {
 			$return[strtoupper($result[$this->alias]['code'])] = $result[$this->alias]['factor'];
 		}
 		return $return;
 	}
 
 	protected function _findSwitch($state, array $query, array $results = array()) {
-		if($state == 'before') {
+		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName($this->primaryKey),
 				$this->fullFieldName($this->displayField),
@@ -131,14 +140,14 @@ class ShopCurrency extends ShopAppModel {
 	}
 
 /**
- * @brief update the currecy conversion factors
+ * update the currecy conversion factors
  *
  * @return boolean
  */
 	public function updateCurrencies($force = false) {
 		App::uses('ShopCurrencyLib', 'Shop.Lib');
 		$conditions = array();
-		if(!$force) {
+		if (!$force) {
 			$conditions = array(
 				'conditions' => array(
 					$this->alias . '.modified < ' => date('Y-m-d H:i:s', (time() - (6 * 60 * 60)))
@@ -148,17 +157,17 @@ class ShopCurrency extends ShopAppModel {
 		$currencies = $this->find('conversions', $conditions);
 		$saved = true;
 		$defaultCurrency = ShopCurrencyLib::defaultCurrency();
-		foreach($currencies as $currency => $factor) {
-			if(!$saved) {
+		foreach ($currencies as $currency => $factor) {
+			if (!$saved) {
 				break;
 			}
 
-			if((float)$factor == 1.0) {
+			if ((float)$factor == 1.0) {
 				continue;
 			}
 
 			$newFactor = ShopCurrencyLib::fetchUpdate($defaultCurrency, $currency);
-			if($newFactor && $factor == $newFactor) {
+			if ($newFactor && $factor == $newFactor) {
 				continue;
 			}
 
@@ -169,5 +178,4 @@ class ShopCurrency extends ShopAppModel {
 		}
 		return $saved;
 	}
-
 }
