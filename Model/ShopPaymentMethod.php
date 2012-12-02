@@ -12,6 +12,10 @@ App::uses('ShopAppModel', 'Shop.Model');
  */
 class ShopPaymentMethod extends ShopAppModel {
 
+	public $findMethods = array(
+		'available' => true
+	);
+
 /**
  * hasMany associations
  *
@@ -97,4 +101,15 @@ class ShopPaymentMethod extends ShopAppModel {
 			'counterQuery' => ''
 		)
 	);
+
+	protected function _findAvailable($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			return $query;
+		}
+
+		return Hash::extract($results,
+			sprintf('{n}.%s.%s', $this->alias, $this->primaryKey),
+			sprintf('{n}.%s.%s', $this->alias, $this->displayField)
+		);
+	}
 }
