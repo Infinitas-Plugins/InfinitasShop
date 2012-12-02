@@ -305,8 +305,8 @@ class ShopShippingMethod extends ShopAppModel {
 	protected function _findAvailable($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$query['fields'] = array(
-				$this->ShopShippingMethodValue->alias . '.' . $this->ShopShippingMethodValue->primaryKey,
-				$this->ShopShippingMethodValue->alias . '.' . $this->ShopShippingMethodValue->displayField
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField
 			);
 
 			$cartTotal = $this->ShopList->ShopListProduct->ShopProduct->find('costForList');
@@ -345,8 +345,8 @@ class ShopShippingMethod extends ShopAppModel {
 		}
 
 		return Hash::combine($results,
-			sprintf('{n}.%s.%s', $this->ShopShippingMethodValue->alias, $this->ShopShippingMethodValue->primaryKey),
-			sprintf('{n}.%s.%s', $this->ShopShippingMethodValue->alias, $this->ShopShippingMethodValue->displayField)
+			sprintf('{n}.%s.%s', $this->alias, $this->primaryKey),
+			sprintf('{n}.%s.%s', $this->alias, $this->displayField)
 		);
 	}
 }
