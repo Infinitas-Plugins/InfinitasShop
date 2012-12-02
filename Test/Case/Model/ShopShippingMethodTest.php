@@ -452,16 +452,15 @@ class ShopShippingMethodTest extends CakeTestCase {
 	public function testFindAvailable() {
 		$result = $this->{$this->modelClass}->find('available');
 		$expected = array(
-			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
-			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1'
+			'royal-mail-1st' => 'royal-mail-1st',
+			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$this->assertEquals($expected, $result);
 
 		CakeSession::write('Auth.User.id', 'bob');
 		$expected = array(
-			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
-			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1',
-			'royal-mail-2nd-rate-2' => 'royal-mail-2nd-rate-2'
+			'royal-mail-1st' => 'royal-mail-1st',
+			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
@@ -470,8 +469,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', 50);
 
 		$expected = array(
-			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
-			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1'
+			'royal-mail-1st' => 'royal-mail-1st',
+			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
@@ -480,7 +479,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_maximum', 30);
 
 		$expected = array(
-			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1'
+			'royal-mail-1st' => 'royal-mail-1st'
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
@@ -492,9 +491,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', null));
 
 		$expected = array(
-			'royal-mail-1st-rate-1' => 'royal-mail-1st-rate-1',
-			'royal-mail-2nd-rate-1' => 'royal-mail-2nd-rate-1',
-			'royal-mail-2nd-rate-2' => 'royal-mail-2nd-rate-2'
+			'royal-mail-1st' => 'royal-mail-1st',
+			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
