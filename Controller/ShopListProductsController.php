@@ -68,4 +68,12 @@ class ShopListProductsController extends ShopAppController {
 
 		$this->notice('not_added_to_cart');
 	}
+
+	public function delete($id = null) {
+		if (!$this->{$this->modelClass}->delete($id)) {
+			$this->notice('not_deleted');
+		}
+
+		$this->notice('deleted');
+	}
 }

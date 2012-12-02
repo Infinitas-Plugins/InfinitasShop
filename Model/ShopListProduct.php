@@ -254,4 +254,16 @@ class ShopListProduct extends ShopAppModel {
 		$this->transaction(true);
 		return true;
 	}
+
+	public function delete($id, $cascade = true) {
+		if (AuthComponent::user('group_id') !== 1) {
+			$this->recursive = 0;
+			$id = $this->field($this->primaryKey, array(
+				$this->alias . '.' . $this->primaryKey => $id,
+				$this->ShopList->alias . '.user_id' => $this->currentUserId(),
+			));
+		}
+
+		return parent::delete($id, $cascade);
+	}
 }
