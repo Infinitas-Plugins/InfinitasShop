@@ -16,7 +16,8 @@ class ShopList extends ShopAppModel {
  */
 	public $findMethods = array(
 		'hasList' => true,
-		'listDetails' => true
+		'listDetails' => true,
+		'details' => true
 	);
 
 	public static $sessionListKey = 'Shop.current_list';
@@ -129,6 +130,49 @@ class ShopList extends ShopAppModel {
 			return (bool)CakeSession::read('Shop.Guest.id', $field);
 		}
 		return true;
+	}
+
+	protected function _findDetails($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
+				$query[0] = $this->currentListId(true);
+			}
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+
+				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->primaryKey,
+				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->displayField,
+
+				$this->ShopPaymentMethod->alias . '.' . $this->ShopPaymentMethod->primaryKey,
+				$this->ShopPaymentMethod->alias . '.' . $this->ShopPaymentMethod->displayField,
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.' . $this->primaryKey => $query[0]
+			));
+
+			$query['joins'] = array(
+				$this->autoJoinModel($this->ShopShippingMethod->fullModelName()),
+				$this->autoJoinModel($this->ShopPaymentMethod->fullModelName()),
+			);
+			return $query;
+		}
+
+		if (empty($results[0])) {
+			return array();
+		}
+
+		$results = $results[0];
+
+
+		$results['ShopShipping'] = $results['ShopPayment'] = array();
+		try {
+			$results['ShopShipping'] = $this->ShopShippingMethod->find('productList');
+		} catch (Exception $e) {}
+
+		return $results;
 	}
 
 /**
@@ -318,5 +362,4 @@ class ShopList extends ShopAppModel {
 
 		return (bool)current(Hash::extract($results, sprintf('{n}.%s.list_count', $this->alias)));
 	}
-
 }
