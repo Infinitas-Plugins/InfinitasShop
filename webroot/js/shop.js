@@ -14,6 +14,8 @@ $(document).ready(function() {
 		});
 	});
 
+	$('.shipping-breakdown').popover();
+
 	$('.cart-total-close').live('click', function() {
 		$('.cart-total').popover('hide');
 	});
