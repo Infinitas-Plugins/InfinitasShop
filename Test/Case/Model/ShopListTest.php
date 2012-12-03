@@ -532,4 +532,69 @@ class ShopListTest extends CakeTestCase {
 			),
 		);
 	}
+
+	public function testSetShippingMethod() {
+		$expected = array(
+			'shop-list-bob-cart' => 'shop-list-bob-cart',
+			'shop-list-bob-wish' => 'shop-list-bob-wish',
+			'shop-list-guest-1-cart' => 'shop-list-guest-1-cart',
+			'shop-list-sally-cart' => 'shop-list-sally-cart',
+		);
+		$result = $this->{$this->modelClass}->find('list');
+		$this->assertEquals($expected, $result);
+		var_dump($this->{$this->modelClass}->validationErrors);
+		$this->assertTrue((bool)$this->{$this->modelClass}->setShippingMethod('royal-mail-1st'));
+
+		$id = $this->{$this->modelClass}->id;
+		$expected = array(
+			'shop-list-bob-cart' => 'shop-list-bob-cart',
+			'shop-list-bob-wish' => 'shop-list-bob-wish',
+			'shop-list-guest-1-cart' => 'shop-list-guest-1-cart',
+			'shop-list-sally-cart' => 'shop-list-sally-cart',
+			$id => null
+		);
+		$result = $this->{$this->modelClass}->find('list');
+		$this->assertEquals($expected, $result);
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->setShippingMethod('royal-mail-2nd'));
+		$this->assertEquals($id, $this->{$this->modelClass}->id);
+	}
+
+/**
+ * test find details
+ */
+	public function testFindDetails() {
+		$this->assertEmpty($this->{$this->modelClass}->find('details'));
+
+		CakeSession::write('Shop.Guest.id', 'guest-1');
+		$expected = 'shop-list-guest-1-cart';
+		$results = $this->{$this->modelClass}->find('details');
+		$this->assertEquals($expected, $results['ShopList']['id']);
+		CakeSession::destroy();
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = 'shop-list-bob-cart';
+		$results = $this->{$this->modelClass}->find('details');
+		$this->assertEquals($expected, $results['ShopList']['id']);
+
+		$expected = array(
+			'id' => 'royal-mail-1st',
+			'name' => 'royal-mail-1st'
+		);
+		$this->assertEquals($expected, $results['ShopShippingMethod']);
+
+		$this->assertTrue((bool)$this->{$this->modelClass}->setShippingMethod('royal-mail-2nd'));
+		$expected = array(
+			'id' => 'royal-mail-2nd',
+			'name' => 'royal-mail-2nd'
+		);
+		$results = $this->{$this->modelClass}->find('details');
+		$this->assertEquals($expected, $results['ShopShippingMethod']);
+
+		$expected = 'shop-list-bob-cart';
+		$this->{$this->modelClass}->setCurrentList($expected);
+		$results = $this->{$this->modelClass}->find('details');
+		$this->assertEquals($expected, $results['ShopList']['id']);
+
+	}
 }

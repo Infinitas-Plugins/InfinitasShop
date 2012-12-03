@@ -206,7 +206,7 @@ class ShopList extends ShopAppModel {
 		if (!empty($currentList) && $this->exists($currentList)) {
 			return $currentList;
 		}
-
+		
 		$currentList = $this->find('list', array(
 			'fields' => array(
 				$this->alias . '.' . $this->primaryKey,
@@ -241,6 +241,10 @@ class ShopList extends ShopAppModel {
  * @return array
  */
 	public function setShippingMethod($shippingMethodId, $shopListId = null) {
+		if (!$this->ShopShippingMethod->exists($shippingMethodId)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid shipping method selected'));
+		}
+
 		if (!$shopListId) {
 			$shopListId = $this->currentListId();
 		}
