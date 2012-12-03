@@ -542,7 +542,6 @@ class ShopListTest extends CakeTestCase {
 		);
 		$result = $this->{$this->modelClass}->find('list');
 		$this->assertEquals($expected, $result);
-		var_dump($this->{$this->modelClass}->validationErrors);
 		$this->assertTrue((bool)$this->{$this->modelClass}->setShippingMethod('royal-mail-1st'));
 
 		$id = $this->{$this->modelClass}->id;
