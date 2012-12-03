@@ -112,6 +112,16 @@ class ShopListProductOptionTest extends CakeTestCase {
 					'shop_list_product_id' => array('Product already added')
 				)
 			),
+			'invalid product' => array(
+				array(
+					'shop_list_product_id' => 'fake-product-id',
+					'shop_option_id' => 'option-size',
+					'shop_option_value_id' => 'option-size-small',
+				),
+				array(
+					'shop_list_product_id' => array('Invalid product')
+				)
+			),
 			'valid' => array(
 				array(
 					'shop_list_product_id' => 'shop-list-bob-cart-active',
@@ -121,5 +131,67 @@ class ShopListProductOptionTest extends CakeTestCase {
 				array()
 			)
 		);
+	}
+
+/**
+ * test find options exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testFindOptionsException() {
+		$this->{$this->modelClass}->find('options');
+	}
+
+	public function testFindOptions() {
+		$expected = array();
+		$result = $this->{$this->modelClass}->find('options', array(
+			'shop_list_product_id' => 'something-invalid'
+		));
+		$this->assertEquals($expected, $result);
+
+		$expected = array(
+			array(
+				'shop_list_product_id' => 'shop-list-bob-cart-active',
+				'ShopOption' => array(
+					'id' => 'option-size',
+					'name' => 'option-size',
+					'description' => 'some descriptive text about option-size'
+				),
+				'ShopOptionValue' => array(
+					'id' => 'option-size-large',
+					'name' => 'option-size-large'
+				)
+			)
+		);
+		$result = $this->{$this->modelClass}->find('options', array(
+			'shop_list_product_id' => 'shop-list-bob-cart-active'
+		));
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testSaveProductOptions() {
+		$data = array(
+			'option-size' => 'option-size-medium'
+		);
+		$result = $this->{$this->modelClass}->saveProductOptions('shop-list-bob-cart-active', $data);
+		$this->assertTrue($result);
+
+		$data = array(
+			'option-size' => 'option-size-fake'
+		);
+		$result = $this->{$this->modelClass}->saveProductOptions('shop-list-bob-cart-active', $data);
+		$this->assertFalse($result);
+
+		$data = array(
+			'option-fake' => 'option-size-medium'
+		);
+		$result = $this->{$this->modelClass}->saveProductOptions('shop-list-bob-cart-active', $data);
+		$this->assertFalse($result);
+
+		$data = array(
+			'option-size' => 'option-size-medium'
+		);
+		$result = $this->{$this->modelClass}->saveProductOptions('shop-list-bob-cart-fake', $data);
+		$this->assertFalse($result);
 	}
 }

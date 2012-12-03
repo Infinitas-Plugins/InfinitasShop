@@ -72,8 +72,8 @@ class ShopListProductOption extends ShopAppModel {
 					'rule' => 'validateProductRequiredOptions',
 					'message' => __d('shop', 'Product has required options')
 				),
-				'validateUniqueproduct' => array(
-					'rule' => 'validateUniqueproduct',
+				'validateUniqueProduct' => array(
+					'rule' => 'validateUniqueProduct',
 					'message' => __d('shop', 'Product already added')
 				),
 			),
@@ -119,7 +119,7 @@ class ShopListProductOption extends ShopAppModel {
  *
  * @return boolean
  */
-	public function validateUniqueproduct($field) {
+	public function validateUniqueProduct($field) {
 		if (empty($this->data[$this->alias]['shop_list_product_id'])) {
 			return false;
 		}
