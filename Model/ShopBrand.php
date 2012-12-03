@@ -54,7 +54,7 @@ class ShopBrand extends ShopAppModel {
  */
 	public $hasMany = array(
 		'ShopProduct' => array(
-			'className' => 'ShopProduct',
+			'className' => 'Shop.ShopProduct',
 			'foreignKey' => 'shop_brand_id',
 			'dependent' => false,
 			'conditions' => '',

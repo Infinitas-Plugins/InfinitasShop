@@ -91,7 +91,8 @@ class ShopProduct extends ShopAppModel {
 			'foreignKey' => 'shop_brand_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'counterCache' => 'shop_product_count'
 		)
 	);
 
