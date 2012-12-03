@@ -24,8 +24,7 @@ class ShopCurrencyTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->ShopCurrency = ClassRegistry::init('Shop.ShopCurrency');
-		$this->modelClass = $this->ShopCurrency->alias;
+		$this->Model = ClassRegistry::init('Shop.ShopCurrency');
 	}
 
 /**
@@ -34,7 +33,7 @@ class ShopCurrencyTest extends CakeTestCase {
  * @return void
  */
 	public function tearDown() {
-		unset($this->ShopCurrency);
+		unset($this->Model);
 
 		parent::tearDown();
 	}
@@ -45,8 +44,8 @@ class ShopCurrencyTest extends CakeTestCase {
  * @expectedException CakeException
  */
 	public function testFindCurrencyNoneAvailable() {
-		$this->assertTrue((bool)$this->{$this->modelClass}->deleteAll(array('ShopCurrency.id != ' => null)));
-		$this->{$this->modelClass}->find('currency');
+		$this->assertTrue((bool)$this->Model->deleteAll(array('ShopCurrency.id != ' => null)));
+		$this->Model->find('currency');
 	}
 
 /**
@@ -57,9 +56,9 @@ class ShopCurrencyTest extends CakeTestCase {
  * @dataProvider nearOneIsNotOneDataProvider
  */
 	public function testNearOneIsNotOne($data) {
-		$this->{$this->modelClass}->id = 'gbp';
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('factor', $data));
-		$this->{$this->modelClass}->find('currency');
+		$this->Model->id = 'gbp';
+		$this->assertTrue((bool)$this->Model->saveField('factor', $data));
+		$this->Model->find('currency');
 	}
 
 /**
@@ -94,14 +93,14 @@ class ShopCurrencyTest extends CakeTestCase {
 				'escape' => 1,
 			)
 		);
-		$results = $this->{$this->modelClass}->find('currency');
+		$results = $this->Model->find('currency');
 		$this->assertEquals($expected, $results);
 
-		$this->{$this->modelClass}->id = 'gbp';
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('factor', '1.2'));
+		$this->Model->id = 'gbp';
+		$this->assertTrue((bool)$this->Model->saveField('factor', '1.2'));
 
-		$this->{$this->modelClass}->id = 'usd';
-		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('factor', '1'));
+		$this->Model->id = 'usd';
+		$this->assertTrue((bool)$this->Model->saveField('factor', '1'));
 		$expected = array(
 			'ShopCurrency' => array(
 				'name' => 'usd',
@@ -119,7 +118,7 @@ class ShopCurrencyTest extends CakeTestCase {
 				'escape' => 1,
 			)
 		);
-		$results = $this->{$this->modelClass}->find('currency');
+		$results = $this->Model->find('currency');
 		$this->assertEquals($expected, $results);
 	}
 
@@ -130,16 +129,16 @@ class ShopCurrencyTest extends CakeTestCase {
  */
 	public function testFindCurrencySpecific($data, $expected) {
 		if (!empty($expected)) {
-			$expected = array($this->modelClass => $expected);
+			$expected = array($this->Model->alias => $expected);
 		}
 
-		$result = $this->{$this->modelClass}->find('currency', array('currency' => $data));
+		$result = $this->Model->find('currency', array('currency' => $data));
 
 		if ($result) {
-			$res = round($result[$this->modelClass]['factor'], 4);
-			$exp = round($expected[$this->modelClass]['factor'], 4);
+			$res = round($result[$this->Model->alias]['factor'], 4);
+			$exp = round($expected[$this->Model->alias]['factor'], 4);
 			$this->assertEquals($exp, $res);
-			unset($result[$this->modelClass]['factor'], $expected[$this->modelClass]['factor']);
+			unset($result[$this->Model->alias]['factor'], $expected[$this->Model->alias]['factor']);
 		}
 		$this->assertEquals($expected, $result);
 	}
@@ -225,16 +224,16 @@ class ShopCurrencyTest extends CakeTestCase {
 			'USD' => '1.5999',
 			'EUR' => '1.2425'
 		);
-		$result = $round($this->{$this->modelClass}->find('conversions'));
+		$result = $round($this->Model->find('conversions'));
 
 		$this->assertEquals($expected, $result);
 
-		$this->assertTrue($this->{$this->modelClass}->deleteAll(array($this->modelClass . '.id' => 'eur')));
+		$this->assertTrue($this->Model->deleteAll(array($this->Model->alias . '.id' => 'eur')));
 		$expected = array(
 			'GBP' => '1.0000',
 			'USD' => '1.5999'
 		);
-		$result = $round($this->{$this->modelClass}->find('conversions'));
+		$result = $round($this->Model->find('conversions'));
 		$this->assertEquals($expected, $result);
 	}
 
@@ -244,25 +243,59 @@ class ShopCurrencyTest extends CakeTestCase {
 	public function testUpdate() {
 		$now = date('Y-m-d H:i:s');
 		App::uses('CakeSession', 'Model/Datasource');
-		$before = $this->{$this->modelClass}->find('conversions');
-		$this->assertTrue($this->{$this->modelClass}->updateCurrencies());
-		$after = $this->{$this->modelClass}->find('conversions');
+		$before = $this->Model->find('conversions');
+		$this->assertTrue($this->Model->updateCurrencies());
+		$after = $this->Model->find('conversions');
 
 		$this->assertNotEquals($before, $after);
 
-		$results = $this->{$this->modelClass}->find('list', array(
+		$results = $this->Model->find('list', array(
 			'fields' => array(
-				$this->modelClass . '.' . $this->{$this->modelClass}->primaryKey,
-				$this->modelClass . '.modified',
+				$this->Model->alias . '.' . $this->Model->primaryKey,
+				$this->Model->alias . '.modified',
 			),
 			'conditions' => array('not' => array(
-				$this->modelClass . '.code' => 'GBP'
+				$this->Model->alias . '.code' => 'GBP'
 			))
 		));
 
 		foreach ($results as $id => $modified) {
 			$this->assertTrue($modified >= $now);
 		}
+	}
+
+/**
+ * test find switch
+ */
+	public function testFindSwitch() {
+		$expected = array(
+			array(
+				$this->Model->alias => array(
+					'id' => 'eur',
+					'name' => 'eur',
+					'code' => 'eur',
+					'whole_symbol' => '€'
+				)
+			),
+			array(
+				$this->Model->alias => array(
+					'id' => 'gbp',
+					'name' => 'gbp',
+					'code' => 'gbp',
+					'whole_symbol' => '£'
+				)
+			),
+			array(
+				$this->Model->alias => array(
+					'id' => 'usd',
+					'name' => 'usd',
+					'code' => 'usd',
+					'whole_symbol' => '$'
+				)
+			)
+		);
+		$result = $this->Model->find('switch');
+		$this->assertEquals($expected, $result);
 	}
 
 }
