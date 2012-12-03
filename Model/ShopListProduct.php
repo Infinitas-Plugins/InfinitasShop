@@ -8,6 +8,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopProduct $ShopProduct
  * @property ShopListProductOption $ShopListProductOption
  */
+
 class ShopListProduct extends ShopAppModel {
 
 /**
@@ -48,7 +49,7 @@ class ShopListProduct extends ShopAppModel {
 	);
 
 /**
- * overload construct for translated validation messages
+ * Constructor
  *
  * @param type $id
  * @param type $table
@@ -181,6 +182,15 @@ class ShopListProduct extends ShopAppModel {
 		));
 	}
 
+/**
+ * Get the contents of the currently selected list
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
 	protected function _findCurrentList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -255,6 +265,14 @@ class ShopListProduct extends ShopAppModel {
 		return $this->id;
 	}
 
+/**
+ * Delete a product from a list
+ *
+ * @param string $id
+ * @param boolean $cascade
+ *
+ * @return boolean
+ */
 	public function delete($id, $cascade = true) {
 		if (AuthComponent::user('group_id') !== 1) {
 			$this->recursive = 0;

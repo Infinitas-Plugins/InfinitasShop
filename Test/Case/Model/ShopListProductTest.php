@@ -37,6 +37,7 @@ class ShopListProductTest extends CakeTestCase {
 		'plugin.view_counter.view_counter_view',
 		'plugin.installer.plugin',
 		'plugin.management.ticket',
+		'plugin.trash.trash',
 		'plugin.users.user'
 	);
 
@@ -300,6 +301,41 @@ class ShopListProductTest extends CakeTestCase {
 			),
 		);
 		$result = $this->{$this->modelClass}->find('currentList');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test delete product from a list
+ */
+	public function testDelete() {
+		$result = $this->{$this->modelClass}->delete('shop-list-bob-cart-active');
+		$this->assertFalse($result);
+
+		$expected = array(
+			'shop-list-bob-cart-active' => 'shop-list-bob-cart-active',
+			'shop-list-bob-cart-multi-option' => 'shop-list-bob-cart-multi-option',
+			'shop-list-guest-1' => 'shop-list-guest-1',
+			'shop-list-sally' => 'shop-list-sally'
+		);
+		$result = $this->{$this->modelClass}->find('list');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$result = $this->{$this->modelClass}->delete('shop-list-bob-cart-active');
+		$this->assertTrue($result);
+
+		$expected = array(
+			'shop-list-bob-cart-multi-option' => 'shop-list-bob-cart-multi-option',
+			'shop-list-guest-1' => 'shop-list-guest-1',
+			'shop-list-sally' => 'shop-list-sally'
+		);
+		$result = $this->{$this->modelClass}->find('list');
+		$this->assertEquals($expected, $result);
+
+		$result = $this->{$this->modelClass}->delete('shop-list-sally');
+		$this->assertFalse($result);
+
+		$result = $this->{$this->modelClass}->find('list');
 		$this->assertEquals($expected, $result);
 	}
 }
