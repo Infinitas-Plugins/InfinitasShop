@@ -35,7 +35,9 @@ class ShopListProductTest extends CakeTestCase {
 		'plugin.shop.shop_size',
 
 		'plugin.view_counter.view_counter_view',
-		'plugin.installer.plugin'
+		'plugin.installer.plugin',
+		'plugin.management.ticket',
+		'plugin.users.user'
 	);
 
 /**
@@ -168,13 +170,15 @@ class ShopListProductTest extends CakeTestCase {
 					'quantity' => array('That quantity is not available for the selected product')
 				)
 			),
-			'correct list' => array(
+			'0 quantity' => array(
 				array(
 					'shop_product_id' => 'active',
-					'quantity' => 2.5,
+					'quantity' => 0,
 					'shop_list_id' => 'shop-list-bob-cart'
 				),
-				array()
+				array(
+					'quantity' => array('No quantity specifed for order')
+				)
 			),
 			'other users list' => array(
 				array(
@@ -185,7 +189,15 @@ class ShopListProductTest extends CakeTestCase {
 				array(
 					'shop_list_id' => array('The selected list could not be found')
 				)
-			)
+			),
+			'correct list' => array(
+				array(
+					'shop_product_id' => 'active',
+					'quantity' => 2.5,
+					'shop_list_id' => 'shop-list-bob-cart'
+				),
+				array()
+			),
 		);
 	}
 
@@ -193,19 +205,19 @@ class ShopListProductTest extends CakeTestCase {
  * Test adding product to list
  */
 	public function testAddToList() {
+		$this->{$this->modelClass}->Behaviors->disable('Trashable');
 		CakeSession::write('Auth.User.id', 'sally');
 		$data = array(
 			$this->modelClass => array(
 				'shop_product_id' => 'active',
-				'quantity' => 2.5,
-				'shop_list_id' => 'shop-list-sally-cart'
+				'quantity' => 2.5
 			),
 			'ShopOption' => array(
 				'option-size' => 'option-size-large'
 			)
 		);
-		$result = $this->{$this->modelClass}->addToList($data);
-		$this->assertTrue($result);
+		$id = $this->{$this->modelClass}->addToList($data);
+		$this->assertTrue((bool)$id);
 		$this->assertEmpty($this->{$this->modelClass}->validationErrors);
 		$this->assertEmpty($this->{$this->modelClass}->ShopListProductOption->validationErrors);
 
@@ -216,6 +228,78 @@ class ShopListProductTest extends CakeTestCase {
 			'shop_list_product_id' => array('Product already added')
 		));
 		$result = $this->{$this->modelClass}->ShopListProductOption->validationErrors;
+		$this->assertEquals($expected, $result);
+
+		$this->assertTrue($this->{$this->modelClass}->delete($id));
+		$data[$this->modelClass]['shop_list_id'] = 'shop-list-sally-cart';
+		$id = $this->{$this->modelClass}->addToList($data);
+		$this->assertTrue((bool)$id);
+
+		$this->assertTrue($this->{$this->modelClass}->delete($id));
+		$data[$this->modelClass]['quantity'] = 0;
+		$id = $this->{$this->modelClass}->addToList($data);
+		$this->assertFalse((bool)$id);
+	}
+
+	public function testFindCurrentList() {
+		$expected = array(
+
+		);
+		$result = $this->{$this->modelClass}->find('currentList');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = array(
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-active',
+					'quantity' => '1.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+				'ShopListProductOption' => array(
+					array(
+						'shop_list_product_id' => 'shop-list-bob-cart-active',
+						'ShopOption' => array(
+							'id' => 'option-size',
+							'name' => 'option-size',
+							'description' => 'some descriptive text about option-size',
+						),
+						'ShopOptionValue' => array(
+							'id' => 'option-size-large',
+							'name' => 'option-size-large',
+						),
+					),
+				),
+			),
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-multi-option',
+					'quantity' => '1.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'multi-option',
+					'name' => 'multi-option',
+					'slug' => 'multi-option',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+				'ShopListProductOption' => array(
+				),
+			),
+		);
+		$result = $this->{$this->modelClass}->find('currentList');
 		$this->assertEquals($expected, $result);
 	}
 }

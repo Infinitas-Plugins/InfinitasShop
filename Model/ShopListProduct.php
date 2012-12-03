@@ -252,7 +252,7 @@ class ShopListProduct extends ShopAppModel {
 		}
 
 		$this->transaction(true);
-		return true;
+		return $this->id;
 	}
 
 	public function delete($id, $cascade = true) {
