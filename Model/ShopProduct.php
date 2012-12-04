@@ -632,7 +632,7 @@ class ShopProduct extends ShopAppModel {
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
 			$result[$this->ShopProductType->ShopProductTypesOption->ShopOption->alias] = Hash::extract($shopOptions, $extractTemplate);
 
-			$result[$this->alias] = array_merge($result[$this->alias], current($this->productCodes($result[$this->alias], $result['ShopOption'])));
+			$result[$this->alias] = array_merge($result[$this->alias], (array)current($this->productCodes($result[$this->alias], $result['ShopOption'])));
 		}
 
 		return $results;
