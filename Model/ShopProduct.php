@@ -576,46 +576,36 @@ class ShopProduct extends ShopAppModel {
 			$query = $this->_findBasics($state, $query);
 			array_shift($query['fields']);
 
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.product_code',
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.product_code',
 
-					$this->ShopSize->alias . '.shipping_width',
-					$this->ShopSize->alias . '.shipping_height',
-					$this->ShopSize->alias . '.shipping_length',
-					$this->ShopSize->alias . '.shipping_weight',
+				$this->ShopSize->alias . '.shipping_width',
+				$this->ShopSize->alias . '.shipping_height',
+				$this->ShopSize->alias . '.shipping_length',
+				$this->ShopSize->alias . '.shipping_weight',
 
-					$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey,
-					$this->ShopListProduct->alias . '.shop_list_id',
-					$this->ShopListProduct->alias . '.shop_product_id',
-					$this->ShopListProduct->alias . '.quantity',
-				)
-			);
+				$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey,
+				$this->ShopListProduct->alias . '.shop_list_id',
+				$this->ShopListProduct->alias . '.shop_product_id',
+				$this->ShopListProduct->alias . '.quantity',
+			));
 
 			$query['conditions'] = array_merge(
 				(array)$query['conditions'],
 				array($this->ShopListProduct->alias . '.shop_list_id' => $query['shop_list_id'])
 			);
 
-			$query['joins'] = array_merge(
-				(array)$query['joins'],
-				array(
-					$this->autoJoinModel($this->ShopSize->fullModelName()),
-					$this->autoJoinModel(array(
-						'model' => $this->ShopListProduct->fullModelName(),
-						'type' => 'right'
-					)),
-					//$this->autoJoinModel($this->ShopCurrentSpecial->fullModelName())
-				)
-			);
+			$query['joins'] = array_merge((array)$query['joins'], array(
+				$this->autoJoinModel($this->ShopSize->fullModelName()),
+				$this->autoJoinModel(array(
+					'model' => $this->ShopListProduct->fullModelName(),
+					'type' => 'right'
+				))
+			));
 
-			$query['group'] = array_merge(
-				(array)$query['group'],
-				array(
-					$this->alias . '.' . $this->primaryKey
-				)
-			);
+			$query['group'] = array_merge((array)$query['group'], array(
+				$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey
+			));
 
 			return $query;
 		}
@@ -636,21 +626,10 @@ class ShopProduct extends ShopAppModel {
 		));
 
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
-		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
-			//$result[$this->ShopSpecial->alias] = Hash::extract($shopSpecials, $extractTemplate);
-
-			/*$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array_merge(
-				$options,
-				array(
-					'shop_product_id' => $result[$this->alias][$this->primaryKey],
-					'shop_list_product_id' => $shopListProductIds
-				)
-			));*/
-
 			$result[$this->ShopProductType->ShopProductTypesOption->ShopOption->alias] = Hash::extract($shopOptions, $extractTemplate);
 
 			$result[$this->alias] = array_merge($result[$this->alias], current($this->productCodes($result[$this->alias], $result['ShopOption'])));
