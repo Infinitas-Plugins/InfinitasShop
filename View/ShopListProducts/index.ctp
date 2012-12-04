@@ -86,7 +86,10 @@ echo $this->Form->create(null, array('action' => 'mass'));
 				</td>
 			</tr><?php
 			if ($shopListProduct['ShopOption']) {
-				$options = array();
+				$options = array(
+					$this->Html->tag('dt', __d('shop', 'Product code')),
+					$this->Html->tag('dd', $shopListProduct['ShopProduct']['product_code'])
+				);
 				foreach ($shopListProduct['ShopOption'] as $productOption) {
 					$options[] = $this->Html->tag('dt', $productOption['name']);
 					$options[] = $this->Html->tag('dd', $productOption['ShopOptionValue'][0]['name']);
