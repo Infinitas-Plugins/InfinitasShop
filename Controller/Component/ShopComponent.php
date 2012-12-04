@@ -6,6 +6,21 @@ App::uses('ShopCurrencyLib', 'Shop.Lib');
  * @property CookieComponent $Cookie
  */
 class ShopComponent extends InfinitasComponent {
+
+/**
+ * BeforeFilter callback
+ *
+ * Check if the use existed previously and load the cookie data so thier cart will be available
+ *
+ * @return void
+ */
+	public function startup(Controller $Controller) {
+		parent::startup($Controller);
+		if (!AuthComponent::user('id')) {
+			$this->_getGuest($Controller);
+		}
+	}
+
 /**
  * load up required variables for the store
  *
@@ -16,9 +31,6 @@ class ShopComponent extends InfinitasComponent {
 	public function beforeRender(Controller $Controller) {
 		if (isset($Controller->request->params['admin']) && $Controller->request->params['admin']) {
 			return parent::beforeRender($Controller);
-		}
-		if (!AuthComponent::user('id')) {
-			$this->_getGuest($Controller);
 		}
 
 		$shopCurrencies = ClassRegistry::init('Shop.ShopCurrency')->find('switch');
