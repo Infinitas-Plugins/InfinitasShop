@@ -20,6 +20,8 @@ $(document).ready(function() {
 		$('.cart-total').popover('hide');
 	});
 
+	$('.help').popover();
+
 	$('.add-to-cart').on('click', function() {
 		var options = $('[name*="data[ShopOption]"]');
 		if (options.length == 0) {

@@ -91,7 +91,13 @@ echo $this->Form->create(null, array('action' => 'mass'));
 					$this->Html->tag('dd', $shopListProduct['ShopProduct']['product_code'])
 				);
 				foreach ($shopListProduct['ShopOption'] as $productOption) {
-					$options[] = $this->Html->tag('dt', $productOption['name']);
+					$help = $this->Html->link($this->Design->icon('question-sign'), $this->here . '#', array(
+						'escape' => false,
+						'data-title' => $productOption['name'],
+						'data-content' => strip_tags($productOption['description']),
+						'class' => 'help'
+					));
+					$options[] = $this->Html->tag('dt', $productOption['name'] . $help);
 					$options[] = $this->Html->tag('dd', $productOption['ShopOptionValue'][0]['name']);
 				}
 
