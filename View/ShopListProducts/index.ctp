@@ -139,10 +139,14 @@ echo $this->Form->create(null, array('action' => 'mass'));
 
 	echo $this->Html->tag('div', implode('', array(
 		$this->Form->button(__d('shop', 'Update'), array(
-			'class' => 'btn'
+			'class' => 'btn',
+			'name' => 'action',
+			'value' => 'update'
 		)),
 		$this->Form->button(__d('shop', 'Checkout'), array(
-			'class' => 'btn btn-info'
+			'class' => 'btn btn-info',
+			'name' => 'action',
+			'value' => 'checkout'
 		))
 	)), array('class' => 'btn-group pull-right'));
 	echo $this->Form->end();

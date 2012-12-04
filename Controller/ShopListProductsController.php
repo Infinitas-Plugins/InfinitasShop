@@ -52,6 +52,37 @@ class ShopListProductsController extends ShopAppController {
 		$this->set(compact('shopList', 'shopListProducts', 'shopShippingMethods', 'shopPaymentMethods'));
 	}
 
+	public function checkout() {
+
+	}
+
+/**
+ * Update the contents of the list
+ * 
+ * @return array
+ */
+	protected function _update() {
+		if (empty($this->request->data[$this->modelClass]) || !is_array($this->request->data[$this->modelClass])) {
+			$this->notice('invalid');
+		}
+
+		if ($this->{$this->modelClass}->updateListProducts($this->request->data[$this->modelClass])) {
+			$this->notice(__d('shop', 'Product list has been updated'), array(
+				'redirect' => ''
+			));
+		}
+
+		$this->notice(__d('shop', 'Product list has been updated'), array(
+			'redirect' => '',
+			'level' => 'warning'
+		));
+	}
+
+/**
+ * Add products to the current list
+ *
+ * @return void
+ */
 	public function add() {
 		$this->saveRedirectMarker();
 		if (!$this->request->is('post')) {
@@ -69,11 +100,41 @@ class ShopListProductsController extends ShopAppController {
 		$this->notice('not_added_to_cart');
 	}
 
+/**
+ * Remove a product from a list
+ * 
+ * @param string $id the id of the list product to remove
+ * 
+ * @return void
+ */
 	public function delete($id = null) {
 		if (!$this->{$this->modelClass}->delete($id)) {
 			$this->notice('not_deleted');
 		}
 
 		$this->notice('deleted');
+	}
+
+/**
+ * Handle mass actions
+ * 
+ * @return void
+ */
+	public function mass() {
+		$this->saveRedirectMarker();
+		switch ($this->MassAction->getAction()) {
+			case 'update':
+				$this->_update();
+				break;
+
+			case 'checkout':
+				$this->checkout();
+				break;
+		}
+
+		$this->notice(__d('shop', 'Invalid option selected'), array(
+			'level' => 'warning',
+			'redirect' => true
+		));
 	}
 }

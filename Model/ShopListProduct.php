@@ -64,7 +64,8 @@ class ShopListProduct extends ShopAppModel {
 					'rule' => 'validateRecordExists',
 					'message' => __d('shop', 'The selected list could not be found'),
 					'allowEmpty' => false,
-					'required' => true
+					'required' => true,
+					'on' => 'create'
 				),
 				'validateUserList' => array(
 					'rule' => 'validateUserList',
@@ -264,6 +265,38 @@ class ShopListProduct extends ShopAppModel {
 
 		$this->transaction(true);
 		return $this->id;
+	}
+
+/**
+ * Update the contents of a list
+ * 
+ * @param array $listProducts the products to update
+ * 
+ * @return boolean
+ */
+	public function updateListProducts(array $listProducts) {
+		$updated = true;
+		$this->transaction();
+		foreach ($listProducts as $product) {
+			$updated = (bool)$this->save(array(
+				$this->primaryKey => $product[$this->primaryKey],
+				'quantity' => $product['quantity']
+			));
+
+			if (!$updated) {
+				var_dump($this->validationErrors);
+				exit;
+				break;
+			}
+		}
+
+		if ($updated) {
+			$this->transaction(true);
+			return true;
+		}
+
+		$this->transaction(false);
+		return false;
 	}
 
 /**
