@@ -990,7 +990,7 @@ class ShopProductFindTest extends CakeTestCase {
 							'id' => 'active',
 							'name' => 'active',
 							'slug' => 'active',
-							'product_code' => 'active-:option-size',
+							'product_code' => 'active-l',
 							'total_stock' => '25',
 							'rating' => 1,
 							'rating_count' => 1,

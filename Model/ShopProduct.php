@@ -632,7 +632,10 @@ class ShopProduct extends ShopAppModel {
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
 			$result[$this->ShopProductType->ShopProductTypesOption->ShopOption->alias] = Hash::extract($shopOptions, $extractTemplate);
 
-			$result[$this->alias] = array_merge($result[$this->alias], (array)current($this->productCodes($result[$this->alias], $result['ShopOption'])));
+			$productCode = array_filter((array)current($this->productCodes($result[$this->alias], $result['ShopOption'])));
+			if (!empty($productCode)) {
+				$result[$this->alias] = array_merge($result[$this->alias], $productCode);
+			}
 		}
 
 		return $results;
@@ -644,7 +647,7 @@ class ShopProduct extends ShopAppModel {
  * This calculates the total cost of goods in the cart that can be used for sub total and figuring out
  * what methods of shipping are available to the user (as shipping can be based on cart total)
  *
- * @param type $state
+ * @param string $state
  * @param array $query
  * @param array $results
  *
