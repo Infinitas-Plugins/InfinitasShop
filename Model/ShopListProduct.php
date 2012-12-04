@@ -251,6 +251,7 @@ class ShopListProduct extends ShopAppModel {
 		}
 
 		$this->transaction();
+		$this->create();
 		if (!$this->save($product[$this->alias])) {
 			$this->transaction(false);
 			return false;
