@@ -15,16 +15,28 @@
 	 * Redistributions of files must retain the above copyright notice.
 	 */
 	echo $this->Form->create();
-		echo $this->Infinitas->adminEditHead(); 
+		echo $this->Infinitas->adminEditHead();
 		echo $this->Form->input('id');
 		echo $this->Form->hidden('shop_shipping_method_id', array(
 			'default' => !empty($this->request->params['named']) ? $this->request->params['named'] : null
 		));
 
+		$removeLink = $this->Html->link($this->Design->icon('minus'), $this->here . '#', array(
+			'title' => __d('shop', 'Remove tier :: Remove this tier from the shipping option'),
+			'escape' => false,
+			'class' => 'rate remove'
+		));
+		$addLink = $this->Html->link($this->Design->icon('add'), $this->here . '#', array(
+			'title' => __d('shop', 'Add tier :: Add a new tier to this shipping option'),
+			'escape' => false,
+			'class' => 'rate add',
+			'data-type' => 'rates'
+		));
+
 		$rates = $insurance = array();
 		if (!empty($this->request->data['ShopShippingMethodValue'])) {
 			$smallField = array('div' => false, 'label' => false);
-			$rates[] = $this->Form->label('rates', __d('shop', 'Shipping option rates'));
+			$rates[] = $this->Form->label('rates', __d('shop', 'Shipping rates'));
 			foreach ($this->request->data['ShopShippingMethodValue']['rates'] as $k => $rate) {
 				$rates[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
@@ -37,23 +49,15 @@
 						'value' => $rate['rate'],
 						'placeholder' => __d('shop', 'Rate ($)')
 					))),
-					$this->Image->image('actions', 'remove', array(
-						'url' => $this->here . '#', 
-						'class' => 'rate remove',
-						'title' => __d('shop', 'Remove tier :: Remove this tier from the shipping option')
-					))
+					$removeLink
 				)), array('class' => 'tiny'));
 			}
-			$rates[] = $this->Image->image('actions', 'add', array(
-				'url' => $this->here . '#', 
-				'class' => 'rate add',
-				'data-type' => 'rates'
-			));
+			$rates[] = $addLink;
 			$rates[] = $this->Form->hidden('rates_counter', array_merge($smallField, array(
 				'value' => count($this->request->data['ShopShippingMethodValue']['rates'])
 			)));
 
-			$insurance[] = $this->Form->label('insurance', __d('shop', 'Shipping option insurance'));
+			$insurance[] = $this->Form->label('insurance', __d('shop', 'Insurance rates'));
 			foreach ($this->request->data['ShopShippingMethodValue']['insurance'] as $k => $rate) {
 				$insurance[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
@@ -66,14 +70,10 @@
 						'value' => $rate['rate'],
 						'placeholder' => __d('shop', 'Rate ($)')
 					))),
-					$this->Image->image('actions', 'remove', array('url' => $this->here . '#', 'class' => 'rate remove'))
+					$removeLink
 				)), array('class' => 'tiny'));
 			}
-			$insurance[] = $this->Image->image('actions', 'add', array(
-				'url' => $this->here . '#', 
-				'class' => 'rate add',
-				'data-type' => 'insurance'
-			));
+			$insurance[] = $addLink;
 			$insurance[] = $this->Form->hidden('insurance_counter', array_merge($smallField, array(
 				'value' => count($this->request->data['ShopShippingMethodValue']['insurance'])
 			)));

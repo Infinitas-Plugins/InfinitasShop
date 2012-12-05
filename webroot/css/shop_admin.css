@@ -23,8 +23,13 @@ td img {
 .tiny {
 	clear: both;
 }
-.tiny img.remove {
-	padding-top: 13px;
+
+div>a.remove {
+	color: red;
+	font-size: 20px;
+}
+a.remove:hover {
+	text-decoration: none;
 }
 
 .tiny input {
