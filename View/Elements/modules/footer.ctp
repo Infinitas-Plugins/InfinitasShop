@@ -21,21 +21,21 @@
 				'plugin' => 'cms',
 				'controller' => 'cms_contents',
 				'action' => 'view',
-				'category' => 'general',
+				'category' => 'information',
 				'slug' => 'privacy-policy'
 			),
-			__d('shop', 'Terms &amp; Conditions') => array(
+			__d('shop', 'Terms & Conditions') => array(
 				'plugin' => 'cms',
 				'controller' => 'cms_contents',
 				'action' => 'view',
-				'category' => 'general',
+				'category' => 'information',
 				'slug' => 'terms-and-conditions'
 			),
 			__d('shop', 'Trademarks') => array(
 				'plugin' => 'cms',
 				'controller' => 'cms_contents',
 				'action' => 'view',
-				'category' => 'general',
+				'category' => 'information',
 				'slug' => 'trademarks'
 			),
 		);
@@ -48,7 +48,11 @@
 				'action' => 'contact'
 			),
 			__d('shop', 'Returns') => array(
-
+				'plugin' => 'cms',
+				'controller' => 'cms_contents',
+				'action' => 'view',
+				'category' => 'information',
+				'slug' => 'returns'
 			),
 			__d('shop', 'Site Map') => array(
 
