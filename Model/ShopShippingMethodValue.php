@@ -213,30 +213,23 @@ class ShopShippingMethodValue extends ShopAppModel {
 				)
 			);
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.shop_shipping_method_id' => $query['shop_shipping_method_id']
-				)
-			);
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.shop_shipping_method_id' => $query['shop_shipping_method_id']
+			));
 			if (!AuthComponent::user('id')) {
 				$query['conditions'][$this->alias . '.require_login'] = 0;
 			}
 
 			if (!empty($query['order_value'])) {
 				$query['conditions'][] = array(
-					array(
-						'or' => array(
-							$this->alias . '.total_minimum' => null,
-							$this->alias . '.total_minimum <=' => $query['order_value']
-						)
-					),
-					array(
-						'or' => array(
-							$this->alias . '.total_maximum' => null,
-							$this->alias . '.total_maximum >=' => $query['order_value']
-						)
-					)
+					array('or' => array(
+						$this->alias . '.total_minimum' => null,
+						$this->alias . '.total_minimum <=' => $query['order_value']
+					)),
+					array('or' => array(
+						$this->alias . '.total_maximum' => null,
+						$this->alias . '.total_maximum >=' => $query['order_value']
+					))
 				);
 			}
 

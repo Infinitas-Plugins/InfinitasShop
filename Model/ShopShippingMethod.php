@@ -7,6 +7,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopList $ShopList
  * @property ShopOrder $ShopOrder
  * @property ShopShippingMethodValue $ShopShippingMethodValue
+ * @property ShopSupplier $ShopSupplier
  */
 
 class ShopShippingMethod extends ShopAppModel {
@@ -20,7 +21,8 @@ class ShopShippingMethod extends ShopAppModel {
 		'shipping' => true,
 		'product' => true,
 		'productList' => true,
-		'available' => true
+		'available' => true,
+		'info' => true
 	);
 
 /**
@@ -115,23 +117,17 @@ class ShopShippingMethod extends ShopAppModel {
 	protected function _findShipping($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey,
-					$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField
-				)
-			);
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey,
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField
+			));
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.active' => 1,
-					$this->ShopSupplier->alias . '.active' => 1,
-				)
-			);
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.active' => 1,
+				$this->ShopSupplier->alias . '.active' => 1,
+			));
 			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 
 			if (empty($query['shop_shipping_method_id'])) {
@@ -333,18 +329,14 @@ class ShopShippingMethod extends ShopAppModel {
 							false,
 							(bool)AuthComponent::user('id')
 						)),
-						array(
-							'or' => array(
-								$this->ShopShippingMethodValue->alias . '.total_minimum <=' => $cartTotal,
-								$this->ShopShippingMethodValue->alias . '.total_minimum' => null
-							)
-						),
-						array(
-							'or' => array(
-								$this->ShopShippingMethodValue->alias . '.total_maximum >=' => $cartTotal,
-								$this->ShopShippingMethodValue->alias . '.total_maximum' => null
-							)
-						)
+						array('or' => array(
+							$this->ShopShippingMethodValue->alias . '.total_minimum <=' => $cartTotal,
+							$this->ShopShippingMethodValue->alias . '.total_minimum' => null
+						)),
+						array('or' => array(
+							$this->ShopShippingMethodValue->alias . '.total_maximum >=' => $cartTotal,
+							$this->ShopShippingMethodValue->alias . '.total_maximum' => null
+						))
 					),
 					'type' => 'right'
 				))
@@ -356,5 +348,37 @@ class ShopShippingMethod extends ShopAppModel {
 			sprintf('{n}.%s.%s', $this->alias, $this->primaryKey),
 			sprintf('{n}.%s.%s', $this->alias, $this->displayField)
 		);
+	}
+
+	protected function _findInfo($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$fields = $query['fields'];
+			$query = self::_findAvailable($state, $query);
+
+			$this->virtualFields['shipping_time_min'] = sprintf('MIN(%s.delivery_time)', $this->ShopShippingMethodValue->alias);
+			$this->virtualFields['shipping_time_max'] = sprintf('MAX(%s.delivery_time)', $this->ShopShippingMethodValue->alias);
+
+			$query['fields'] = array_merge((array)$fields, array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				'shipping_time_min',
+				'shipping_time_max',
+
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey,
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField,
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
+			return $query;
+		}
+		$shippingMethodValues = $this->ShopShippingMethodValue->find('values', array(
+			'shop_shipping_method_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey))
+		));
+		foreach ($results as &$result) {
+			$shippingMethodValue = Hash::extract($shippingMethodValues, sprintf('{n}[shop_shipping_method_id=/%s/]', $result[$this->alias][$this->primaryKey]));
+			$result[$this->alias]['insurance_cover_max'] = max(Hash::extract($shippingMethodValue, '{n}.insurance.{n}.limit'));
+		}
+
+		return $results;
 	}
 }
