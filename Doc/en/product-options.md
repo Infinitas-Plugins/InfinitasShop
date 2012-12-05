@@ -15,6 +15,8 @@ Products that have options attached will automatically add a tab to the product 
 - Checkbox options
 - File upload options
 
+[![](http://assets.infinitas-cms.org/docs/Plugins/Shop/products/product-options-admin.png)](http://assets.infinitas-cms.org/docs/Plugins/Shop/products/product-options-admin.png)
+
 #### Select options
 
 There are a few different kinds of options a product can have, the most common is a selection such as the size or colour of the product. When creating options like this for your products you will be required to enter `option values`.
