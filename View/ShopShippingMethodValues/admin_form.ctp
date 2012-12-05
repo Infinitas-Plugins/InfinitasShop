@@ -36,7 +36,6 @@
 		$rates = $insurance = array();
 		if (!empty($this->request->data['ShopShippingMethodValue'])) {
 			$smallField = array('div' => false, 'label' => false);
-			$rates[] = $this->Form->label('rates', __d('shop', 'Shipping rates'));
 			foreach ($this->request->data['ShopShippingMethodValue']['rates'] as $k => $rate) {
 				$rates[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
@@ -57,7 +56,6 @@
 				'value' => count($this->request->data['ShopShippingMethodValue']['rates'])
 			)));
 
-			$insurance[] = $this->Form->label('insurance', __d('shop', 'Insurance rates'));
 			foreach ($this->request->data['ShopShippingMethodValue']['insurance'] as $k => $rate) {
 				$insurance[] = $this->Html->tag('div', implode('', array(
 					$this->Form->input('limit', array_merge($smallField, array(
