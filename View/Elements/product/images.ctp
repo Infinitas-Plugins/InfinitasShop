@@ -1,16 +1,17 @@
 <?php
 $images = array();
-foreach ($shopProduct['ShopImagesProduct'] as $image) {
-
+foreach ($shopProduct['ShopImagesProduct'] as &$image) {
+	$image = $this->Html->link($this->Html->image($image['image_thumb']), $image['image_full'], array(
+		'class' => 'thickbox',
+		'escape' => false
+	));
 }
 
-if (!empty($images)) {
-	$images = $this->Design->arrayToList($images, array(
+if (!empty($shopProduct['ShopImagesProduct'])) {
+	$shopProduct['ShopImagesProduct'] = $this->Design->arrayToList($shopProduct['ShopImagesProduct'], array(
 		'ul' => 'thumbnails',
 		'li' => 'span2'
 	));
-} else {
-	$images = '';
 }
 
 $colourLinks = implode('', array(
@@ -68,5 +69,5 @@ echo $this->Html->tag('div', implode('', array(
 		'role' => 'button',
 		'data-toggle' => 'modal'
 	)),
-	$images
+	!empty($shopProduct['ShopImagesProduct']) ? $shopProduct['ShopImagesProduct'] : null
 )), array('class' => 'thumbnail span4'));

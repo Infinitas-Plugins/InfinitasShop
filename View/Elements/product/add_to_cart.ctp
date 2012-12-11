@@ -8,6 +8,9 @@ echo $this->Form->input('quantity', array(
 	'class' => 'quantity',
 	'div' => false,
 	'label' => false,
-	'type' => 'number'
+	'type' => 'number',
+	'step' => $shopProduct['ShopProduct']['quantity_unit'],
+	'min' => $shopProduct['ShopProduct']['quantity_min'],
+	'max' => $shopProduct['ShopProduct']['quantity_max'],
 ));
 echo $this->Html->tag('hr');
