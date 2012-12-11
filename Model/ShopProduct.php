@@ -1332,6 +1332,11 @@ class ShopProduct extends ShopAppModel {
 			unset($product['ShopCategoriesProduct']);
 		}
 
+		if (!empty($product['ShopProductImage'])) {
+			$shopImages = $product['ShopProductImage'];
+			unset($product['ShopProductImage']);
+		}
+
 		$saved = (bool)$this->saveAll($product);
 		$productId = $this->id;
 
@@ -1350,6 +1355,23 @@ class ShopProduct extends ShopAppModel {
 			$this->ShopCategoriesProduct->create();
 			$saved = $saved && $this->ShopCategoriesProduct->saveAll($shopCategories);
 		}
+
+		if (!empty($shopImages)) {
+			$this->ShopImagesProduct->deleteAll(array(
+				'shop_product_id' => $productId
+			));
+
+			foreach ($shopImages as $k => $image) {
+				$shopImages[$k] = array(
+					'shop_image_id' => $image,
+					'shop_product_id' => $productId
+				);
+			}
+
+			$this->ShopImagesProduct->create();
+			$saved = $saved && $this->ShopImagesProduct->saveAll($shopImages);
+		}
+
 		if ($create) {
 			foreach ($shopBranchStock as &$stock) {
 				$stock['shop_product_id'] = $productId;
