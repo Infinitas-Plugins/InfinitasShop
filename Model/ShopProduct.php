@@ -941,16 +941,16 @@ class ShopProduct extends ShopAppModel {
 
 			$query = $this->_findBasics($state, $query);
 
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.product_code',
-					$this->alias . '.description',
-					$this->alias . '.specifications',
-					$this->alias . '.available',
-					$this->ShopSize->alias . '.*',
-				)
-			);
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.product_code',
+				$this->alias . '.description',
+				$this->alias . '.specifications',
+				$this->alias . '.available',
+				$this->alias . '.quantity_unit',
+				$this->alias . '.quantity_min',
+				$this->alias . '.quantity_max',
+				$this->ShopSize->alias . '.*',
+			));
 
 			$query['conditions']['or'] = array(
 				$this->alias . '.' . $this->primaryKey => $query[0],

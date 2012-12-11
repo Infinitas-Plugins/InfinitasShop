@@ -471,7 +471,10 @@ class ShopProductFindTest extends CakeTestCase {
 						'active' => true,
 						'description' => 'active desc',
 						'specifications' => 'active specs',
-						'available' => '2012-10-05 01:14:47'
+						'available' => '2012-10-05 01:14:47',
+						'quantity_unit' => 0.5,
+						'quantity_min' => 2,
+						'quantity_max' => 10
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',
@@ -638,7 +641,10 @@ class ShopProductFindTest extends CakeTestCase {
 						'active' => true,
 						'description' => 'multi-category desc',
 						'specifications' => 'multi-category specs',
-						'available' => '2012-10-05 01:14:47'
+						'available' => '2012-10-05 01:14:47',
+						'quantity_unit' => 1,
+						'quantity_min' => 1,
+						'quantity_max' => null
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -691,7 +697,10 @@ class ShopProductFindTest extends CakeTestCase {
 						'active' => true,
 						'description' => 'multi-category-mixed-state desc',
 						'specifications' => 'multi-category-mixed-state specs',
-						'available' => '2012-10-05 01:14:47'
+						'available' => '2012-10-05 01:14:47',
+						'quantity_unit' => 1,
+						'quantity_min' => 1,
+						'quantity_max' => null
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -727,7 +736,10 @@ class ShopProductFindTest extends CakeTestCase {
 						'active' => true,
 						'description' => 'multi-category-parent-inactive desc',
 						'specifications' => 'multi-category-parent-inactive specs',
-						'available' => '2012-10-05 01:14:47'
+						'available' => '2012-10-05 01:14:47',
+						'quantity_unit' => 1,
+						'quantity_min' => 1,
+						'quantity_max' => null
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
@@ -764,7 +776,10 @@ class ShopProductFindTest extends CakeTestCase {
 						'active' => true,
 						'description' => 'multi-option desc',
 						'specifications' => 'multi-option specs',
-						'available' => '2012-10-05 01:14:47'
+						'available' => '2012-10-05 01:14:47',
+						'quantity_unit' => 1,
+						'quantity_min' => 1,
+						'quantity_max' => null
 					),
 					'ShopBrand' => array(
 						'id' => 'inhouse',
