@@ -136,6 +136,24 @@
 				))
 			)),
 			implode('', array(
+				$this->Form->input('quantity_unit', array(
+					'title' => __d('shop', 'Order quantity multiples'),
+					'min' => '0.0001',
+					'step' => 'any',
+					'placeholder' => '1.0'
+				)),
+				$this->Form->input('quantity_min', array(
+					'title' => __d('shop', 'Minimum order quantity'),
+					'min' => '0.0001',
+					'step' => 'any',
+					'placeholder' => '1.0'
+				)),
+				$this->Form->input('quantity_max', array(
+					'title' => __d('shop', 'Maximum order quantity'),
+					'min' => '0.0001',
+					'step' => 'any',
+					'placeholder' => __d('shop', 'unlimited')
+				)),
 				$this->Html->tag('div', implode('', array(
 					$this->Form->input('shop_supplier_id', array('label' => __d('shop', 'Default Supplier'))),
 					$this->Form->input('shop_brand_id', array('label' => __d('shop', 'Brand'))),
@@ -143,6 +161,7 @@
 					$this->Html->tag('label', __d('shop', 'Product Dimentions (W x L x H)'), array('for' => '')) . $shopSizeProduct,
 					$this->Html->tag('label', __d('shop', 'Shipping Dimentions (W x L x H)'), array('for' => '')) . $shopSizeShipping
 				)), array('class' => 'form-group')),
+
 				$this->Html->tag('div', implode('', $stockForm), array('class' => 'form-group'))
 
 			)),
