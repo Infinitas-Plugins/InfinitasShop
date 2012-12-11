@@ -1,15 +1,15 @@
-Tests
-============================================
+### Tests
+
 test all counter cache fields
 
-random 
-===============================================
+### Misc
+
 pci complicance - http://www.pcicomplianceguide.org/pcifaqs.php#1
 
 add counter cache to ShopProductType
 
-stock 
-=============================================
+### Stock
+
 add supplier to stock logs
 add purchase order to stock logs
 add cost to stock logs
@@ -17,8 +17,11 @@ add cost to stock logs
 stock turn over rate
 stock value + per department / whole store
 
-purchase orders
-=============================================
+Move to stock tracking per option combination
+	allow tracking stock of `red shirt` vs just `shirt`
+
+### Purchase orders
+
 generate purchse orders for products based on the supplier for the products purchased
 	quantity
 	cost
@@ -28,13 +31,13 @@ linked to supplier
 
 new purchses get added to existing PO's
 
-Images 
-============================================
+### Images
+
 figure out colour of the image
 auto build the virtualFields when using fields array
 
-Supplier
-=========================================
+### Supplier
+
 disable a supplier disables all products
 new fields:
 	website
@@ -45,23 +48,23 @@ description
 Add notes?
 
 
-Shopping cart
-=========================================
+### Shopping cart
+
 add special instructions
 
 change product options in the cart
 
-product type
-=========================================
-add dispatch time which 
-	added to deliver estimation 
+### Product type
+
+add dispatch time which
+	added to deliver estimation
 		max for all products in cart
 		added to product seperatly
 
 link to content layouts for default layout.
 
-products
-=========================================
+### Products
+
 link to content layouts for overload of product type
 product attributes - arb values to a product
 last viewed
@@ -73,14 +76,10 @@ others that viewed this purchesed ...
 
 watch products - email users when changes occur
 	- add checkbox in backend on product for to send mail on save
-	
+
 free products
 
 call for price products
-
-min / max order quantity
-
-order multiples - default 
 
 ability to create products on the fly
 
@@ -99,7 +98,7 @@ Product options
 Set options to whole categories
 Set option to higher up category filters down
 overload option values prices per product
-option output type 
+option output type
 	select	(default)
 	file upload (no values, somehow save file for later use),
 	input (no values, save somehow)
@@ -122,7 +121,7 @@ make specials work for the cart (no product specified + code == coupon)
 
 change spotlight product_id to fk + model (allow categories as a spot light)
 
-add php that can create random specials + promotions 
+add php that can create random specials + promotions
 	far into the future, with configurable time spans eg: 1 week, 3 days, 1 month etc
 	can look for products that are
 		new
@@ -152,7 +151,7 @@ add shipping provider table
 	linked to zones
 	specify certain providers for zones
 	disable supplier disables shipping method
-add shippin zone ignore 
+add shippin zone ignore
 
 add flat rate linked to product / category directly
 	eg: product tv - flat rate 50GBP

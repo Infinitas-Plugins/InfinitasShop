@@ -31,7 +31,7 @@ Product types also have a status option which allows disabling all the products 
 
 #### Product Code
 
-Product codes can function in three distinct ways. 
+Product codes can function in three distinct ways.
 
 - `Hard coded`: Something like `PROD123` will remain the same regardless of the options available
 - `Left empty`: Any product codes defined in [product options](/infinitas\_docs/Shop/products-options) will be joined together as the new product code. This option is not recomened for products without options as you will end up with orders for products without codes.
@@ -62,6 +62,20 @@ These are free form text fields that can be used for entering the details for th
 #### Images
 
 Should your product have more than one [image](/infinitas\_docs/Shop/images) you can select additional images from your image library. There is no limit to the number of images that can be added to a product, but a large number of images can impact the loading speed of pages.
+
+#### Quantities
+
+#### Quantity Unit
+
+This is the multiples that a product is sold in, for example you may be selling rope and supply in multiples of `0.5 meters`. Setting this to `0.5` will **not** allow customers ordering `0.75` for example, but `2.5` __would be valid__.
+
+#### Quantity Minimum
+
+This is the minimum amount that can be purchased. Users will not be able to order a quantity **below** this amount
+
+#### Quantity Maximum
+
+This is the maximum amount that can be purchased. Users will not be able to order a quantity **above** this amount
 
 #### Supplier
 
