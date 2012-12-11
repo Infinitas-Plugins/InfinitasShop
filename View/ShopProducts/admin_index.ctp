@@ -63,6 +63,10 @@ echo $this->Filter->alphabetFilter();
 					<?php
 						echo '<span class="toggle"><a href="#">+</a></span>',
 						$this->Infinitas->massActionCheckBox($shopProduct);
+						echo $this->Html->link($this->Design->icon('th'), array(
+							'action' => 'matrix',
+							$shopProduct['ShopProduct']['id']
+						), array('escape' => false));
 					?>&nbsp;
 				</td>
 				<td colspan="3">

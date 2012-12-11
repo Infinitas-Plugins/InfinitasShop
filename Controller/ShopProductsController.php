@@ -115,7 +115,7 @@ class ShopProductsController extends ShopAppController {
 
 		$shopProduct = $this->{$this->modelClass}->find('product', $this->request->slug);
 		$categoryPath = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->getPath($this->request->category);
-		
+
 		$this->set(compact('shopProduct', 'categoryPath'));
 	}
 
@@ -174,6 +174,15 @@ class ShopProductsController extends ShopAppController {
 		);
 
 		$this->set(compact('shopProducts', 'filterOptions'));
+	}
+
+	public function admin_matrix($id = null) {
+		if (!$id) {
+			$this->notice('not_found');
+		}
+
+		$shopProduct = $this->{$this->modelClass}->find('product', $id);
+		$this->set(compact('shopProduct'));
 	}
 
 /**
