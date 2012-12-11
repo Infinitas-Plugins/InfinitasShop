@@ -38,7 +38,6 @@ auto build the virtualFields when using fields array
 
 ### Supplier
 
-disable a supplier disables all products
 new fields:
 	website
 	account number
@@ -93,8 +92,8 @@ pricing per customer type
 	option to show different prices or only what the user is.
 
 
-Product options
-=========================================
+### Product options
+
 Set options to whole categories
 Set option to higher up category filters down
 overload option values prices per product
@@ -108,8 +107,8 @@ custom text - price per word / letter
 add slug field - look up option by slug (to ignore for importer)
 
 
-specials / featured
-==========================================
+### specials / featured
+
 allow linking specials to categories (product_id should be fk + model)
 
 add field to special
@@ -129,24 +128,24 @@ add php that can create random specials + promotions
 		less purchased
 		high profit margin
 
-users
-=========================================
+### users
+
 shopper type - whole sale, public etc.
 cant edit address while order is in progress
 leave address name empty to use User full_name
 
-orders
-========================================
+### orders
+
 assign orders to 'staff'
 	add staff_id to order
 
 
-payments
-=====================================
+### payments
+
 associate status ids
 
-shipping
-=========================================
+### shipping
+
 add shipping provider table
 	linked to zones
 	specify certain providers for zones
@@ -158,8 +157,8 @@ add flat rate linked to product / category directly
 	figure out shipping totals with multi products.
 add per product / category surcharge for special cases
 
-Product promotion
-==============================================
+### Product promotion
+
 Create a special
 	use fixed value off
 	% off
