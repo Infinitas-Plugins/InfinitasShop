@@ -36,11 +36,7 @@ class ShopProductFindTest extends CakeTestCase {
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_list_product',
-		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_product_types_option',
-		'plugin.shop.shop_products_option_ignore',
-		'plugin.shop.shop_products_option_value_ignore',
-		'plugin.shop.shop_products_option_value_override',
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_payment_method',
 

@@ -19,7 +19,6 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.core_group',
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_payment_method',
-		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_type',
@@ -27,7 +26,6 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_image',
-		'plugin.shop.shop_products_option_value_override',
 
 		'plugin.management.ticket',
 		'plugin.view_counter.view_counter_view'

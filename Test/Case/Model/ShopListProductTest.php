@@ -15,7 +15,6 @@ class ShopListProductTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_list_product',
-		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_list',
@@ -23,15 +22,12 @@ class ShopListProductTest extends CakeTestCase {
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_product_type',
 		'plugin.shop.shop_image',
-		'plugin.shop.shop_products_option_value_override',
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_brand',
 		'plugin.shop.shop_supplier',
 		'plugin.shop.shop_categories_product',
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_product_types_option',
-		'plugin.shop.shop_products_option_ignore',
-		'plugin.shop.shop_products_option_value_ignore',
 		'plugin.shop.shop_size',
 
 		'plugin.view_counter.view_counter_view',
@@ -220,16 +216,9 @@ class ShopListProductTest extends CakeTestCase {
 		$id = $this->{$this->modelClass}->addToList($data);
 		$this->assertTrue((bool)$id);
 		$this->assertEmpty($this->{$this->modelClass}->validationErrors);
-		$this->assertEmpty($this->{$this->modelClass}->ShopListProductOption->validationErrors);
 
 		$result = $this->{$this->modelClass}->addToList($data);
 		$this->assertFalse($result);
-
-		$expected = array(array(
-			'shop_list_product_id' => array('Product already added')
-		));
-		$result = $this->{$this->modelClass}->ShopListProductOption->validationErrors;
-		$this->assertEquals($expected, $result);
 
 		$this->assertTrue($this->{$this->modelClass}->delete($id));
 		$data[$this->modelClass]['shop_list_id'] = 'shop-list-sally-cart';
@@ -266,20 +255,6 @@ class ShopListProductTest extends CakeTestCase {
 					'name' => 'active',
 					'slug' => 'active',
 				),
-				'ShopListProductOption' => array(
-					array(
-						'shop_list_product_id' => 'shop-list-bob-cart-active',
-						'ShopOption' => array(
-							'id' => 'option-size',
-							'name' => 'option-size',
-							'description' => 'some descriptive text about option-size',
-						),
-						'ShopOptionValue' => array(
-							'id' => 'option-size-large',
-							'name' => 'option-size-large',
-						),
-					),
-				),
 			),
 			array(
 				'ShopListProduct' => array(
@@ -295,8 +270,6 @@ class ShopListProductTest extends CakeTestCase {
 					'id' => 'active',
 					'name' => 'active',
 					'slug' => 'active',
-				),
-				'ShopListProductOption' => array(
 				),
 			),
 		);

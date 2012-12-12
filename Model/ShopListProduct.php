@@ -6,7 +6,6 @@ App::uses('ShopAppModel', 'Shop.Model');
  *
  * @property ShopList $ShopList
  * @property ShopProduct $ShopProduct
- * @property ShopListProductOption $ShopListProductOption
  */
 
 class ShopListProduct extends ShopAppModel {
@@ -39,12 +38,6 @@ class ShopListProduct extends ShopAppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
-		)
-	);
-
-	public $hasMany = array(
-		'ShopListProductOption' => array(
-			'className' => 'Shop.ShopListProductOption'
 		)
 	);
 
@@ -228,12 +221,8 @@ class ShopListProduct extends ShopAppModel {
 		}
 
 		$shopListProductIds = Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey);
-		$shopListProductOptions = $this->ShopListProductOption->find('options', array(
-			'shop_list_product_id' => $shopListProductIds
-		));
 		foreach ($results as &$result) {
 			$extractTemplate = sprintf('{n}[shop_list_product_id=%s]', $result[$this->alias][$this->primaryKey]);
-			$result[$this->ShopListProductOption->alias] = Hash::extract($shopListProductOptions, $extractTemplate);
 		}
 
 		return $results;
@@ -258,20 +247,15 @@ class ShopListProduct extends ShopAppModel {
 			return false;
 		}
 
-		if (!$this->ShopListProductOption->saveProductOptions($this->id, $product['ShopOption'])) {
-			$this->transaction(false);
-			return false;
-		}
-
 		$this->transaction(true);
 		return $this->id;
 	}
 
 /**
  * Update the contents of a list
- * 
+ *
  * @param array $listProducts the products to update
- * 
+ *
  * @return boolean
  */
 	public function updateListProducts(array $listProducts) {

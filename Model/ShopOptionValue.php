@@ -5,9 +5,6 @@
  * @property ShopOption $ShopOption
  * @property ShopPrice $ShopPrice
  * @property ShopSize $ShopSize
- * @property ShopProductsOptionValueIgnore $ShopProductsOptionValueIgnore
- * @property ShopProductsOptionValueOverride $ShopProductsOptionValueOverride
- * @property ShopListProductOption $ShopListProductOption
  */
 
 class ShopOptionValue extends ShopAppModel {
@@ -64,53 +61,6 @@ class ShopOptionValue extends ShopAppModel {
 	);
 
 /**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'ShopProductsOptionValueIgnore' => array(
-			'className' => 'Shop.ShopProductsOptionValueIgnore',
-			'foreignKey' => 'shop_option_value_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopProductsOptionValueOverride' => array(
-			'className' => 'Shop.ShopProductsOptionValueOverride',
-			'foreignKey' => 'shop_option_value_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-		'ShopListProductOption' => array(
-			'className' => 'Shop.ShopListProductOption',
-			'foreignKey' => 'shop_option_value_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
-	);
-
-/**
  * get option values for multiple options
  *
  * requires shop_option_id passed in
@@ -161,27 +111,9 @@ class ShopOptionValue extends ShopAppModel {
 			return array();
 		}
 
-		$productValueIgnores = $this->ShopProductsOptionValueIgnore->find('all', array(
-			'fields' => array(
-				$this->ShopProductsOptionValueIgnore->alias . '.' . $this->ShopProductsOptionValueIgnore->primaryKey,
-				$this->ShopProductsOptionValueIgnore->alias . '.shop_option_value_id',
-				$this->ShopProductsOptionValueIgnore->alias . '.model',
-				$this->ShopProductsOptionValueIgnore->alias . '.foreign_key',
-			),
-			'conditions' => array(
-				$this->ShopProductsOptionValueIgnore->alias . '.shop_option_value_id' => Hash::extract($results, '{n}.' . $this->alias . '.' . $this->primaryKey),
-				$this->ShopProductsOptionValueIgnore->alias . '.model' => 'Shop.ShopProduct'
-			)
-		));
-
 		foreach ($results as &$result) {
 			$result[$this->alias][$this->ShopPrice->alias] = $result[$this->ShopPrice->alias];
 			$result[$this->alias][$this->ShopSize->alias] = $result[$this->ShopSize->alias];
-			$extractTemplate = sprintf('{n}.%s[shop_option_value_id=%s]', $this->ShopProductsOptionValueIgnore->alias, $result[$this->alias][$this->primaryKey]);
-			$result[$this->alias]['ProductOptionValueIgnore'] = Hash::extract($productValueIgnores, $extractTemplate);
-			if (!empty($result[$this->ShopListProductOption->alias])) {
-				$result[$this->alias][$this->ShopListProductOption->alias] = $result[$this->ShopListProductOption->alias];
-			}
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);

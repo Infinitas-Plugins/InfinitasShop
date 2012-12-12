@@ -16,7 +16,6 @@ class ShopOptionValueTest extends CakeTestCase {
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_size',
-		'plugin.shop.shop_products_option_value_ignore',
 
 		'plugin.shop.shop_price',
 		'plugin.installer.plugin'
@@ -66,7 +65,6 @@ class ShopOptionValueTest extends CakeTestCase {
 			foreach ($expected as &$k) {
 				$k = array_merge(
 					array(
-						'ProductOptionValueIgnore' => array(),
 						'ShopSize' => array(
 							'id' => null,
 							'model' => null,
@@ -138,14 +136,6 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => null,
 							'selling' => null,
 							'retail' => null,
-						),
-						'ProductOptionValueIgnore' => array(
-							array(
-								'id' => 'option-value-no-stock-added',
-								'shop_option_value_id' => 'option-size-medium',
-								'model' => 'Shop.ShopProduct',
-								'foreign_key' => 'no-stock-added'
-							)
 						)
 					),
 					array(
@@ -253,14 +243,6 @@ class ShopOptionValueTest extends CakeTestCase {
 							'id' => null,
 							'selling' => null,
 							'retail' => null,
-						),
-						'ProductOptionValueIgnore' => array(
-							array(
-								'id' => 'option-value-no-stock-added',
-								'shop_option_value_id' => 'option-size-medium',
-								'model' => 'Shop.ShopProduct',
-								'foreign_key' => 'no-stock-added'
-							)
 						)
 					),
 					array(

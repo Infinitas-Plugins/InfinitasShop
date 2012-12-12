@@ -19,7 +19,6 @@ class ShopAppModelTest extends CakeTestCase {
 		'plugin.shop.core_group',
 		'plugin.shop.shop_shipping_method',
 		'plugin.shop.shop_payment_method',
-		'plugin.shop.shop_list_product_option',
 		'plugin.shop.shop_list_product',
 		'plugin.management.ticket'
 	);

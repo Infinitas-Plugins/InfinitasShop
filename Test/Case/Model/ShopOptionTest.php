@@ -20,9 +20,6 @@ class ShopOptionTest extends CakeTestCase {
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_product_type',
-		'plugin.shop.shop_products_option_ignore',
-		'plugin.shop.shop_products_option_value_ignore',
-		'plugin.shop.shop_list_product_option',
 		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view'
 	);
