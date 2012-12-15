@@ -55,6 +55,8 @@ class SpecialsBehaviorTest extends CakeTestCase {
  * test find possible specials
  */
 	public function testFindPossibleSpecials() {
+		$this->skipIf(true);
+
 		$expected = array(
 			array(
 				'ShopProduct' => array(

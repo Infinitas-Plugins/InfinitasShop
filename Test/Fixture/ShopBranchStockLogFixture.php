@@ -81,6 +81,13 @@ class ShopBranchStockLogFixture extends CakeTestFixture {
 			'notes' => 'Sale',
 			'created' => '2012-10-05 12:01:44'
 		),
+		array(
+			'id' => 'stock-log-branch-stock-4a',
+			'shop_branch_stock_id' => 'branch-stock-4',
+			'change' => 15,
+			'notes' => 'Initial stock',
+			'created' => '2012-10-05 12:01:44'
+		),
 	);
 
 }

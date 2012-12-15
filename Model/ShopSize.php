@@ -39,4 +39,23 @@ class ShopSize extends ShopAppModel {
 			);
 		}
 	}
+
+/**
+ * Get the fields for finds
+ *
+ * @return array
+ */
+	public function findFields($alias = null) {
+		return array(
+			$this->fullFieldName($this->primaryKey, $alias),
+			$this->fullFieldName('product_width', $alias),
+			$this->fullFieldName('product_height', $alias),
+			$this->fullFieldName('product_length', $alias),
+			$this->fullFieldName('shipping_width', $alias),
+			$this->fullFieldName('shipping_height', $alias),
+			$this->fullFieldName('shipping_length', $alias),
+			$this->fullFieldName('product_weight', $alias),
+			$this->fullFieldName('shipping_weight', $alias)
+		);
+	}
 }

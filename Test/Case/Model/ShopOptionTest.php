@@ -20,6 +20,7 @@ class ShopOptionTest extends CakeTestCase {
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_product_variant',
 		'plugin.installer.plugin',
 		'plugin.view_counter.view_counter_view'
 	);
@@ -61,33 +62,8 @@ class ShopOptionTest extends CakeTestCase {
  * @dataProvider findOptionsDataProvider
  */
 	public function testFindOptions($data, $expected) {
-		foreach ($expected as &$v) {
-			if (!empty($v['ShopOption']['ShopOptionValue'])) {
-				foreach ($v['ShopOption']['ShopOptionValue'] as &$vv) {
-					if (!empty($vv)) {
-						$vv = array_merge(
-							array(
-								'ShopSize' => array(
-									'id' => null,
-									'model' => null,
-									'foreign_key' => null,
-									'product_width' => null,
-									'product_height' => null,
-									'product_length' => null,
-									'shipping_width' => null,
-									'shipping_height' => null,
-									'shipping_length' => null,
-									'product_weight' => null,
-									'shipping_weight' => null,
-								)
-							),
-							$vv
-						);
-					}
-				}
-			}
-		}
 		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data));
+		$results = Hash::extract($results, '{n}.ShopOption.ShopOptionValue.{n}.id');
 		$this->assertEquals($expected, $results);
 	}
 
@@ -105,223 +81,19 @@ class ShopOptionTest extends CakeTestCase {
 			'active' => array(
 				'active',
 				array(
-					array(
-						'ShopOption' => array(
-							'id' => 'option-size',
-							'name' => 'option-size',
-							'slug' => 'option-size',
-							'description' => 'some descriptive text about option-size',
-							'required' => '1',
-							'shop_product_id' => 'active',
-							'ShopOptionValue' => array(
-								array(
-									'id' => 'option-size-large',
-									'name' => 'option-size-large',
-									'description' => 'some text about option-size-large',
-									'product_code' => 'l',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => 'option-value-large',
-										'selling' => '3.00000',
-										'retail' => '4.00000'
-									),
-									'ShopSize' => array(
-										'id' => 'option-value-size-large',
-										'model' => 'Shop.ShopOptionValue',
-										'foreign_key' => 'option-size-large',
-										'product_width' => '1.50000',
-										'product_height' => '1.50000',
-										'product_length' => '1.50000',
-										'shipping_width' => '2.50000',
-										'shipping_height' => '2.50000',
-										'shipping_length' => '2.50000',
-										'product_weight' => '50.00000',
-										'shipping_weight' => '65.00000'
-									)
-								),
-								array(
-									'id' => 'option-size-medium',
-									'name' => 'option-size-medium',
-									'description' => 'some text about option-size-medium',
-									'product_code' => 'm',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								),
-								array(
-									'id' => 'option-size-small',
-									'name' => 'option-size-small',
-									'description' => 'some text about option-size-small',
-									'product_code' => 's',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								)
-							)
-						)
-					)
+					'option-size-large',
+					'option-size-medium',
+					'option-size-small'
 				)
 			),
 			'multi-option' => array(
 				'multi-option',
 				array(
-					array(
-						'ShopOption' => array(
-							'id' => 'option-size',
-							'name' => 'option-size',
-							'slug' => 'option-size',
-							'description' => 'some descriptive text about option-size',
-							'required' => '1',
-							'shop_product_id' => 'multi-option',
-							'ShopOptionValue' => array(
-								array(
-									'id' => 'option-size-large',
-									'name' => 'option-size-large',
-									'description' => 'some text about option-size-large',
-									'product_code' => 'l',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => 'option-value-large',
-										'selling' => '3.00000',
-										'retail' => '4.00000'
-									),
-									'ShopSize' => array(
-										'id' => 'option-value-size-large',
-										'model' => 'Shop.ShopOptionValue',
-										'foreign_key' => 'option-size-large',
-										'product_width' => '1.50000',
-										'product_height' => '1.50000',
-										'product_length' => '1.50000',
-										'shipping_width' => '2.50000',
-										'shipping_height' => '2.50000',
-										'shipping_length' => '2.50000',
-										'product_weight' => '50.00000',
-										'shipping_weight' => '65.00000'
-									)
-								),
-								array(
-									'id' => 'option-size-medium',
-									'name' => 'option-size-medium',
-									'description' => 'some text about option-size-medium',
-									'product_code' => 'm',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								),
-								array(
-									'id' => 'option-size-small',
-									'name' => 'option-size-small',
-									'description' => 'some text about option-size-small',
-									'product_code' => 's',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								)
-							)
-						)
-					),
-					array(
-						'ShopOption' => array(
-							'id' => 'option-colour',
-							'name' => 'option-colour',
-							'slug' => 'option-colour',
-							'description' => 'some descriptive text about option-colour',
-							'required' => '0',
-							'shop_product_id' => 'multi-option',
-							'ShopOptionValue' => array(
-								array(
-									'id' => 'option-colour-blue',
-									'name' => 'option-colour-blue',
-									'description' => 'some text about option-colour-blue',
-									'product_code' => 'blue',
-									'shop_option_id' => 'option-colour',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								),
-								array(
-									'id' => 'option-colour-red',
-									'name' => 'option-colour-red',
-									'description' => 'some text about option-colour-red',
-									'product_code' => 'red',
-									'shop_option_id' => 'option-colour',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								),
-							)
-						)
-					)
-				)
-			),
-			'ignored-options' => array(
-				'no-stock-added',
-				array(
-					array(
-						'ShopOption' => array(
-							'id' => 'option-size',
-							'name' => 'option-size',
-							'slug' => 'option-size',
-							'description' => 'some descriptive text about option-size',
-							'required' => '1',
-							'shop_product_id' => 'no-stock-added',
-							'ShopOptionValue' => array(
-								array(
-									'id' => 'option-size-large',
-									'name' => 'option-size-large',
-									'description' => 'some text about option-size-large',
-									'product_code' => 'l',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => 'option-value-large',
-										'selling' => '3.00000',
-										'retail' => '4.00000'
-									),
-									'ShopSize' => array(
-										'id' => 'option-value-size-large',
-										'model' => 'Shop.ShopOptionValue',
-										'foreign_key' => 'option-size-large',
-										'product_width' => '1.50000',
-										'product_height' => '1.50000',
-										'product_length' => '1.50000',
-										'shipping_width' => '2.50000',
-										'shipping_height' => '2.50000',
-										'shipping_length' => '2.50000',
-										'product_weight' => '50.00000',
-										'shipping_weight' => '65.00000'
-									)
-								),
-								array(
-									'id' => 'option-size-small',
-									'name' => 'option-size-small',
-									'description' => 'some text about option-size-small',
-									'product_code' => 's',
-									'shop_option_id' => 'option-size',
-									'ShopPrice' => array(
-										'id' => null,
-										'selling' => null,
-										'retail' => null
-									)
-								)
-							)
-						)
-					)
+					'option-size-large',
+					'option-size-medium',
+					'option-size-small',
+					'option-colour-blue',
+					'option-colour-red'
 				)
 			)
 		);
@@ -333,34 +105,8 @@ class ShopOptionTest extends CakeTestCase {
  * @dataProvider productOptionExtractDataProvider
  */
 	public function testFindOptionsExtracted($data, $expected) {
-		foreach ($expected as &$v) {
-			if (!empty($v['ShopOptionValue'])) {
-				foreach ($v['ShopOptionValue'] as &$vv) {
-					if (!empty($vv)) {
-						$vv = array_merge(
-							array(
-								'ShopSize' => array(
-									'id' => null,
-									'model' => null,
-									'foreign_key' => null,
-									'product_width' => null,
-									'product_height' => null,
-									'product_length' => null,
-									'shipping_width' => null,
-									'shipping_height' => null,
-									'shipping_length' => null,
-									'product_weight' => null,
-									'shipping_weight' => null,
-								)
-							),
-							$vv
-						);
-					}
-				}
-			}
-		}
-
 		$results = $this->{$this->modelClass}->find('options', array('shop_product_id' => $data, 'extract' => true));
+		$results = Hash::extract($results, '{n}.ShopOptionValue.{n}.id');
 		$this->assertEquals($expected, $results);
 	}
 
@@ -377,99 +123,11 @@ class ShopOptionTest extends CakeTestCase {
 			'multi-option' => array(
 				'multi-option',
 				array(
-					array(
-						'id' => 'option-size',
-						'name' => 'option-size',
-						'slug' => 'option-size',
-						'description' => 'some descriptive text about option-size',
-						'required' => '1',
-						'shop_product_id' => 'multi-option',
-						'ShopOptionValue' => array(
-							array(
-								'id' => 'option-size-large',
-								'name' => 'option-size-large',
-								'description' => 'some text about option-size-large',
-								'product_code' => 'l',
-								'shop_option_id' => 'option-size',
-								'ShopPrice' => array(
-									'id' => 'option-value-large',
-									'selling' => '3.00000',
-									'retail' => '4.00000'
-								),
-								'ShopSize' => array(
-									'id' => 'option-value-size-large',
-									'model' => 'Shop.ShopOptionValue',
-									'foreign_key' => 'option-size-large',
-									'product_width' => '1.50000',
-									'product_height' => '1.50000',
-									'product_length' => '1.50000',
-									'shipping_width' => '2.50000',
-									'shipping_height' => '2.50000',
-									'shipping_length' => '2.50000',
-									'product_weight' => '50.00000',
-									'shipping_weight' => '65.00000'
-								)
-							),
-							array(
-								'id' => 'option-size-medium',
-								'name' => 'option-size-medium',
-								'description' => 'some text about option-size-medium',
-								'product_code' => 'm',
-								'shop_option_id' => 'option-size',
-								'ShopPrice' => array(
-									'id' => null,
-									'selling' => null,
-									'retail' => null
-								)
-							),
-							array(
-								'id' => 'option-size-small',
-								'name' => 'option-size-small',
-								'description' => 'some text about option-size-small',
-								'product_code' => 's',
-								'shop_option_id' => 'option-size',
-								'ShopPrice' => array(
-									'id' => null,
-									'selling' => null,
-									'retail' => null
-								)
-							)
-						)
-					),
-					array(
-						'id' => 'option-colour',
-						'name' => 'option-colour',
-						'slug' => 'option-colour',
-						'description' => 'some descriptive text about option-colour',
-						'required' => '0',
-						'shop_product_id' => 'multi-option',
-						'ShopOptionValue' => array(
-							array(
-								'id' => 'option-colour-blue',
-								'name' => 'option-colour-blue',
-								'description' => 'some text about option-colour-blue',
-								'product_code' => 'blue',
-								'shop_option_id' => 'option-colour',
-								'ShopPrice' => array(
-									'id' => null,
-									'selling' => null,
-									'retail' => null
-								)
-							),
-							array(
-								'id' => 'option-colour-red',
-								'name' => 'option-colour-red',
-								'description' => 'some text about option-colour-red',
-								'product_code' => 'red',
-								'shop_option_id' => 'option-colour',
-								'ShopPrice' => array(
-									'id' => null,
-									'selling' => null,
-									'retail' => null
-								)
-							),
-						)
-					)
+					'option-size-large',
+					'option-size-medium',
+					'option-size-small',
+					'option-colour-blue',
+					'option-colour-red',
 				)
 			)
 		);

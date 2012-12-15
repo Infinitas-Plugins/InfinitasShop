@@ -19,8 +19,9 @@ class ShopListProductTest extends CakeTestCase {
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_product',
-		'plugin.shop.shop_price',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_product_variant',
+		'plugin.shop.shop_price',
 		'plugin.shop.shop_image',
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_brand',
@@ -44,8 +45,7 @@ class ShopListProductTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->ShopListProduct = ClassRegistry::init('Shop.ShopListProduct');
-		$this->modelClass = $this->ShopListProduct->alias;
+		$this->Model = ClassRegistry::init('Shop.ShopListProduct');
 	}
 
 /**
@@ -68,11 +68,11 @@ class ShopListProductTest extends CakeTestCase {
 	public function testValidation($data, $expected) {
 		CakeSession::write('Auth.User.id', 'bob');
 
-		$this->{$this->modelClass}->create();
-		$result = $this->{$this->modelClass}->save($data);
+		$this->Model->create();
+		$result = $this->Model->save($data);
 
 		$this->assertEquals(empty($expected), (bool)$result);
-		$this->assertEquals($expected, $this->{$this->modelClass}->validationErrors);
+		$this->assertEquals($expected, $this->Model->validationErrors);
 	}
 
 /**
@@ -86,80 +86,86 @@ class ShopListProductTest extends CakeTestCase {
 				array(),
 				array(
 					'shop_list_id' => array('The selected list could not be found'),
-					'shop_product_id' => array('Please select a product to add to your list')
+					'shop_product_variant_id' => array('Please select a product to add to your list')
 				)
 			),
 			'incorrect-product' => array(
 				array(
-					'shop_product_id' => 'made-up-product'
+					'shop_product_variant_id' => 'made-up-product'
 				),
 				array(
-					'shop_product_id' => array('The selected product does not exist'),
+					'shop_product_variant_id' => array('The selected product does not exist'),
 					'shop_list_id' => array('The selected list could not be found'),
 					'quantity' => array('Unable to validate the ordered quantity')
 				)
 			),
 			'invalid quantity' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => null
 				),
 				array(
 					'shop_list_id' => array('The selected list could not be found'),
 					'quantity' => array('Please enter the quantity you would like to purchase'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'quantity too many' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 11
 				),
 				array(
 					'shop_list_id' => array('The selected list could not be found'),
 					'quantity' => array('The maximum purchase quantity is "10"'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'quantity too few' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 1.5
 				),
 				array(
 					'shop_list_id' => array('The selected list could not be found'),
 					'quantity' => array('The minimum purchase quantity is "2"'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'quantity incorrect units' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 5.75
 				),
 				array(
 					'shop_list_id' => array('The selected list could not be found'),
 					'quantity' => array('Quantity should be in multiples of "0.5"'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'correct units' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 5
 				),
 				array(
-					'shop_list_id' => array('The selected list could not be found')
+					'shop_list_id' => array('The selected list could not be found'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'correct units float' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 2.5
 				),
 				array(
-					'shop_list_id' => array('The selected list could not be found')
+					'shop_list_id' => array('The selected list could not be found'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'no stock' => array(
 				array(
-					'shop_product_id' => 'no-stock-added',
+					'shop_product_variant_id' => 'variant-no-stock-added-master',
 					'quantity' => 10
 				),
 				array(
@@ -169,27 +175,29 @@ class ShopListProductTest extends CakeTestCase {
 			),
 			'0 quantity' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 0,
 					'shop_list_id' => 'shop-list-bob-cart'
 				),
 				array(
-					'quantity' => array('No quantity specifed for order')
+					'quantity' => array('No quantity specifed for order'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'other users list' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'quantity' => 2.5,
 					'shop_list_id' => 'shop-list-sally-cart'
 				),
 				array(
-					'shop_list_id' => array('The selected list could not be found')
+					'shop_list_id' => array('The selected list could not be found'),
+					'shop_product_variant_id' => array('That product is already in your list')
 				)
 			),
 			'correct list' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-2',
 					'quantity' => 2.5,
 					'shop_list_id' => 'shop-list-bob-cart'
 				),
@@ -202,32 +210,29 @@ class ShopListProductTest extends CakeTestCase {
  * Test adding product to list
  */
 	public function testAddToList() {
-		$this->{$this->modelClass}->Behaviors->disable('Trashable');
+		$this->Model->Behaviors->disable('Trashable');
 		CakeSession::write('Auth.User.id', 'sally');
 		$data = array(
-			$this->modelClass => array(
-				'shop_product_id' => 'active',
+			$this->Model->alias => array(
+				'shop_product_variant_id' => 'variant-active-2',
 				'quantity' => 2.5
-			),
-			'ShopOption' => array(
-				'option-size' => 'option-size-large'
 			)
 		);
-		$id = $this->{$this->modelClass}->addToList($data);
+		$id = $this->Model->addToList($data);
 		$this->assertTrue((bool)$id);
-		$this->assertEmpty($this->{$this->modelClass}->validationErrors);
+		$this->assertEmpty($this->Model->validationErrors);
 
-		$result = $this->{$this->modelClass}->addToList($data);
+		$result = $this->Model->addToList($data);
 		$this->assertFalse($result);
 
-		$this->assertTrue($this->{$this->modelClass}->delete($id));
-		$data[$this->modelClass]['shop_list_id'] = 'shop-list-sally-cart';
-		$id = $this->{$this->modelClass}->addToList($data);
+		$this->assertTrue($this->Model->delete($id));
+		$data[$this->Model->alias]['shop_list_id'] = 'shop-list-sally-cart';
+		$id = $this->Model->addToList($data);
 		$this->assertTrue((bool)$id);
 
-		$this->assertTrue($this->{$this->modelClass}->delete($id));
-		$data[$this->modelClass]['quantity'] = 0;
-		$id = $this->{$this->modelClass}->addToList($data);
+		$this->assertTrue($this->Model->delete($id));
+		$data[$this->Model->alias]['quantity'] = 0;
+		$id = $this->Model->addToList($data);
 		$this->assertFalse((bool)$id);
 	}
 
@@ -235,7 +240,7 @@ class ShopListProductTest extends CakeTestCase {
 		$expected = array(
 
 		);
-		$result = $this->{$this->modelClass}->find('currentList');
+		$result = $this->Model->find('currentList');
 		$this->assertEquals($expected, $result);
 
 		CakeSession::write('Auth.User.id', 'bob');
@@ -258,7 +263,7 @@ class ShopListProductTest extends CakeTestCase {
 			),
 			array(
 				'ShopListProduct' => array(
-					'id' => 'shop-list-bob-cart-multi-option',
+					'id' => 'shop-list-bob-cart-multi-option1',
 					'quantity' => '1.00000',
 				),
 				'ShopProduct' => array(
@@ -272,8 +277,24 @@ class ShopListProductTest extends CakeTestCase {
 					'slug' => 'active',
 				),
 			),
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-multi-option2',
+					'quantity' => '2.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'multi-option',
+					'name' => 'multi-option',
+					'slug' => 'multi-option',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+			),
 		);
-		$result = $this->{$this->modelClass}->find('currentList');
+		$result = $this->Model->find('currentList');
 		$this->assertEquals($expected, $result);
 	}
 
@@ -281,34 +302,36 @@ class ShopListProductTest extends CakeTestCase {
  * test delete product from a list
  */
 	public function testDelete() {
-		$result = $this->{$this->modelClass}->delete('shop-list-bob-cart-active');
+		$result = $this->Model->delete('shop-list-bob-cart-active');
 		$this->assertFalse($result);
 
 		$expected = array(
 			'shop-list-bob-cart-active' => 'shop-list-bob-cart-active',
-			'shop-list-bob-cart-multi-option' => 'shop-list-bob-cart-multi-option',
+			'shop-list-bob-cart-multi-option1' => 'shop-list-bob-cart-multi-option1',
+			'shop-list-bob-cart-multi-option2' => 'shop-list-bob-cart-multi-option2',
 			'shop-list-guest-1' => 'shop-list-guest-1',
 			'shop-list-sally' => 'shop-list-sally'
 		);
-		$result = $this->{$this->modelClass}->find('list');
+		$result = $this->Model->find('list');
 		$this->assertEquals($expected, $result);
 
 		CakeSession::write('Auth.User.id', 'bob');
-		$result = $this->{$this->modelClass}->delete('shop-list-bob-cart-active');
+		$result = $this->Model->delete('shop-list-bob-cart-active');
 		$this->assertTrue($result);
 
 		$expected = array(
-			'shop-list-bob-cart-multi-option' => 'shop-list-bob-cart-multi-option',
+			'shop-list-bob-cart-multi-option1' => 'shop-list-bob-cart-multi-option1',
+			'shop-list-bob-cart-multi-option2' => 'shop-list-bob-cart-multi-option2',
 			'shop-list-guest-1' => 'shop-list-guest-1',
 			'shop-list-sally' => 'shop-list-sally'
 		);
-		$result = $this->{$this->modelClass}->find('list');
+		$result = $this->Model->find('list');
 		$this->assertEquals($expected, $result);
 
-		$result = $this->{$this->modelClass}->delete('shop-list-sally');
+		$result = $this->Model->delete('shop-list-sally');
 		$this->assertFalse($result);
 
-		$result = $this->{$this->modelClass}->find('list');
+		$result = $this->Model->find('list');
 		$this->assertEquals($expected, $result);
 	}
 }

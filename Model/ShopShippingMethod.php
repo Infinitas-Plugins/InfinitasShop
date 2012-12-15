@@ -313,7 +313,7 @@ class ShopShippingMethod extends ShopAppModel {
 				$this->alias . '.' . $this->displayField
 			);
 
-			$cartTotal = $this->ShopList->ShopListProduct->ShopProduct->find('costForList');
+			$cartTotal = $this->ShopList->ShopListProduct->ShopProductVariant->ShopProduct->find('costForList');
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
 				$this->alias . '.active' => true

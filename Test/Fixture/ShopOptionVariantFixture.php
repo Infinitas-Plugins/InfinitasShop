@@ -22,9 +22,59 @@ class ShopOptionVariantFixture extends CakeTestFixture {
 
 	public $records = array(
 		array(
-			'id' => '50c7e2d5-c418-46bc-b579-79e26318cd70',
-			'shop_product_variant_id' => 'Lorem ipsum dolor sit amet',
-			'shop_option_value_id' => 'Lorem ipsum dolor sit amet'
+			'id' => 'variant-active-1a',
+			'shop_product_variant_id' => 'variant-active-1',
+			'shop_option_value_id' => 'option-size-small'
+		),
+		array(
+			'id' => 'variant-active-1b',
+			'shop_product_variant_id' => 'variant-active-2',
+			'shop_option_value_id' => 'option-size-medium'
+		),
+		array(
+			'id' => 'variant-active-1c',
+			'shop_product_variant_id' => 'variant-active-3',
+			'shop_option_value_id' => 'option-size-large'
+		),
+		array(
+			'id' => 'variant-multi-option-1a',
+			'shop_product_variant_id' => 'variant-multi-option-1',
+			'shop_option_value_id' => 'option-size-large'
+		),
+		array(
+			'id' => 'variant-multi-option-1b',
+			'shop_product_variant_id' => 'variant-multi-option-1',
+			'shop_option_value_id' => 'option-colour-red'
+		),
+		array(
+			'id' => 'variant-multi-option-2a',
+			'shop_product_variant_id' => 'variant-multi-option-2',
+			'shop_option_value_id' => 'option-size-medium'
+		),
+		array(
+			'id' => 'variant-multi-option-2b',
+			'shop_product_variant_id' => 'variant-multi-option-2',
+			'shop_option_value_id' => 'option-colour-red'
+		),
+		array(
+			'id' => 'variant-multi-option-3a',
+			'shop_product_variant_id' => 'variant-multi-option-3',
+			'shop_option_value_id' => 'option-size-small'
+		),
+		array(
+			'id' => 'variant-multi-option-3b',
+			'shop_product_variant_id' => 'variant-multi-option-3',
+			'shop_option_value_id' => 'option-colour-red'
+		),
+		array(
+			'id' => 'variant-multi-option-4a',
+			'shop_product_variant_id' => 'variant-multi-option-4',
+			'shop_option_value_id' => 'option-size-small'
+		),
+		array(
+			'id' => 'variant-multi-option-4b',
+			'shop_product_variant_id' => 'variant-multi-option-4',
+			'shop_option_value_id' => 'option-colour-blue'
 		),
 	);
 }

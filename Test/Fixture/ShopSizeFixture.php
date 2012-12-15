@@ -16,7 +16,7 @@ class ShopSizeFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'model' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'foreign_key' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'foreign_key' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'product_width' => array('type' => 'float', 'null' => true, 'default' => null, 'length' => '15,5'),
 		'product_height' => array('type' => 'float', 'null' => true, 'default' => null, 'length' => '15,5'),
 		'product_length' => array('type' => 'float', 'null' => true, 'default' => null, 'length' => '15,5'),
@@ -27,7 +27,7 @@ class ShopSizeFixture extends CakeTestFixture {
 		'shipping_weight' => array('type' => 'float', 'null' => true, 'default' => null, 'length' => '15,5'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_shop_sizes_shop_products1' => array('column' => 'foreign_key', 'unique' => 0)
+			'relation' => array('column' => array('model', 'foreign_key'), 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -39,9 +39,9 @@ class ShopSizeFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
-			'id' => 'product-active',
-			'model' => 'Shop.ShopProduct',
-			'foreign_key' => 'active',
+			'id' => 'product-multi-category',
+			'model' => 'Shop.ShopProductVariant',
+			'foreign_key' => 'variant-multi-category-master',
 			'product_width' => 10.5,
 			'product_height' => 10.5,
 			'product_length' => 10.5,

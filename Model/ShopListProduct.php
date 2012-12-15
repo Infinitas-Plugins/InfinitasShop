@@ -5,7 +5,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * ShopListProduct Model
  *
  * @property ShopList $ShopList
- * @property ShopProduct $ShopProduct
+ * @property ShopProductVariant $ShopProductVariant
  */
 
 class ShopListProduct extends ShopAppModel {
@@ -32,9 +32,9 @@ class ShopListProduct extends ShopAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'ShopProduct' => array(
-			'className' => 'Shop.ShopProduct',
-			'foreignKey' => 'shop_product_id',
+		'ShopProductVariant' => array(
+			'className' => 'Shop.ShopProductVariant',
+			'foreignKey' => 'shop_product_variant_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -65,7 +65,7 @@ class ShopListProduct extends ShopAppModel {
 					'message' => __d('shop', 'The selected list could not be found'),
 				)
 			),
-			'shop_product_id' => array(
+			'shop_product_variant_id' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
 					'message' => __d('shop', 'Please select a product to add to your list'),
@@ -75,6 +75,10 @@ class ShopListProduct extends ShopAppModel {
 				'validateRecordExists' => array(
 					'rule' => 'validateRecordExists',
 					'message' => __d('shop', 'The selected product does not exist')
+				),
+				'isUnique' => array(
+					'rule' => 'isUnique',
+					'message' => __d('shop', 'That product is already in your list')
 				)
 			),
 			'quantity' => array(
@@ -124,12 +128,12 @@ class ShopListProduct extends ShopAppModel {
  * @return boolean|string
  */
 	public function validateQuantityAmount($field) {
-		if (empty($this->data[$this->alias]['shop_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_product_variant_id'])) {
 			return true;
 		}
 
-		$product = $this->ShopProduct->find('orderQuantity', array(
-			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
+		$product = $this->ShopProductVariant->ShopProduct->find('orderQuantity', array(
+			'shop_product_variant_id' => $this->data[$this->alias]['shop_product_variant_id']
 		));
 
 		if (empty($product)) {
@@ -167,12 +171,12 @@ class ShopListProduct extends ShopAppModel {
  * @return boolean
  */
 	public function validateStock($field) {
-		if (empty($this->data[$this->alias]['shop_product_id'])) {
+		if (empty($this->data[$this->alias]['shop_product_variant_id'])) {
 			return true;
 		}
 
-		return (bool)$this->ShopProduct->ShopBranchStock->find('totalProductStock', array(
-			'shop_product_id' => $this->data[$this->alias]['shop_product_id']
+		return (bool)$this->ShopProductVariant->ShopBranchStock->find('totalProductStock', array(
+			'shop_product_variant_id' => $this->data[$this->alias]['shop_product_variant_id']
 		));
 	}
 
@@ -191,27 +195,31 @@ class ShopListProduct extends ShopAppModel {
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.quantity',
 
-				$this->ShopProduct->alias . '.' . $this->ShopProduct->primaryKey,
-				$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField,
-				$this->ShopProduct->alias . '.slug',
+				$this->ShopProductVariant->ShopProduct->alias . '.' . $this->ShopProductVariant->ShopProduct->primaryKey,
+				$this->ShopProductVariant->ShopProduct->alias . '.' . $this->ShopProductVariant->ShopProduct->displayField,
+				$this->ShopProductVariant->ShopProduct->alias . '.slug',
 
-				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProduct->ShopCategoriesProduct->ShopCategory->primaryKey,
-				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProduct->ShopCategoriesProduct->ShopCategory->displayField,
-				$this->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.slug',
+				$this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->primaryKey,
+				$this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.' . $this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->displayField,
+				$this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->alias . '.slug',
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
 				$this->alias . '.shop_list_id' => $this->ShopList->currentListId(true)
 			));
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant->fullModelName());
 			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopProduct->fullModelName(),
-				'model' => $this->ShopProduct->ShopCategoriesProduct->fullModelName()
+				'from' => $this->ShopProductVariant->fullModelName(),
+				'model' => $this->ShopProductVariant->ShopProduct->fullModelName()
 			));
 			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopProduct->ShopCategoriesProduct->fullModelName(),
-				'model' => $this->ShopProduct->ShopCategoriesProduct->ShopCategory->fullModelName()
+				'from' => $this->ShopProductVariant->ShopProduct->fullModelName(),
+				'model' => $this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->fullModelName()
+			));
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => $this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->fullModelName(),
+				'model' => $this->ShopProductVariant->ShopProduct->ShopCategoriesProduct->ShopCategory->fullModelName()
 			));
 			return $query;
 		}

@@ -79,27 +79,22 @@ class ShopOptionValue extends ShopAppModel {
 				throw new InvalidArgumentException('No option has been specified');
 			}
 
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->alias . '.description',
-					$this->alias . '.shop_option_id',
-					$this->alias . '.product_code',
-					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
-					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail',
-					$this->ShopSize->alias . '.*'
-				)
-			);
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.description',
+				$this->alias . '.shop_option_id',
+				$this->alias . '.product_code',
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array(
-					$this->alias . '.shop_option_id' => $query['shop_option_id']
-				)
-			);
+				$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
+				$this->ShopPrice->alias . '.selling',
+				$this->ShopPrice->alias . '.retail',
+				$this->ShopSize->alias . '.*'
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.shop_option_id' => $query['shop_option_id']
+			));
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());

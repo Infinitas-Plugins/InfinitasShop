@@ -3,7 +3,7 @@
  * ShopBranchStock Model
  *
  * @property ShopBranch $ShopBranch
- * @property ShopProduct $ShopProduct
+ * @property ShopProductVariant $ShopProductVariant
  * @property ShopBranchStockLog $ShopBranchStockLog
  */
 class ShopBranchStock extends ShopAppModel {
@@ -33,9 +33,9 @@ class ShopBranchStock extends ShopAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'ShopProduct' => array(
-			'className' => 'Shop.ShopProduct',
-			'foreignKey' => 'shop_product_id',
+		'ShopProductVariant' => array(
+			'className' => 'Shop.ShopProductVariant',
+			'foreignKey' => 'shop_product_variant_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -82,10 +82,10 @@ class ShopBranchStock extends ShopAppModel {
 					'required' => true
 				),
 			),
-			'shop_product_id' => array(
+			'shop_product_variant_id' => array(
 				'validateRecordExists' => array(
 					'rule' => array('validateRecordExists'),
-					'message' => __d('shop', 'Specified branch does not exist'),
+					'message' => __d('shop', 'Specified product does not exist'),
 					'allowEmpty' => false,
 					'required' => true
 				),
@@ -114,17 +114,18 @@ class ShopBranchStock extends ShopAppModel {
  */
 	protected function _findProductStock($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			if (empty($query['shop_product_id'])) {
+			if (empty($query['shop_product_variant_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.shop_product_variant_id',
 				$this->alias . '.shop_branch_id',
 				$this->alias . '.stock'
 			));
 
-			$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
+			$query['conditions'][$this->alias . '.shop_product_variant_id'] = $query['shop_product_variant_id'];
 
 			return $query;
 		}
@@ -141,13 +142,13 @@ class ShopBranchStock extends ShopAppModel {
  *
  * @code
  *  // checking a single product
- *	var_dump($this->ShopBranchStock->find('isInStock', array('shop_product_id' => 'product-1')));
+ *	var_dump($this->ShopBranchStock->find('isInStock', array('shop_product_variant_id' => 'product-1')));
  *	array(
  *		'product-1' => true // or false
  *	);
  *
  *  // checking multiple products
- *	var_dump($this->ShopBranchStock->find('isInStock', array('shop_product_id' => array('product-1', 'product-2'))));
+ *	var_dump($this->ShopBranchStock->find('isInStock', array('shop_product_variant_id' => array('product-1', 'product-2'))));
  *	array(
  *		'product-1' => true // or false
  *		'product-2' => false // or true
@@ -164,24 +165,24 @@ class ShopBranchStock extends ShopAppModel {
  */
 	protected function _findIsInStock($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			if (empty($query['shop_product_id'])) {
+			if (empty($query['shop_product_variant_id'])) {
 				throw new InvalidArgumentException('No product selected');
 			}
 
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);
 
 			$query['fields'] = array(
-				$this->alias . '.shop_product_id',
+				$this->alias . '.shop_product_variant_id',
 				'total_stock'
 			);
 
-			$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
+			$query['conditions'][$this->alias . '.shop_product_variant_id'] = $query['shop_product_variant_id'];
 
 			return $query;
 		}
 
 		$results = array_filter(Hash::combine($results,
-			'{n}.' . $this->alias . '.shop_product_id',
+			'{n}.' . $this->alias . '.shop_product_variant_id',
 			'{n}.' . $this->alias . '.total_stock'
 		));
 		array_walk($results, function(&$record) {
@@ -196,7 +197,7 @@ class ShopBranchStock extends ShopAppModel {
  *
  * Required data:
  *  - shop_branch_id: the branch stock is being added to
- *  - shop_product_id: the product that is getting new stock
+ *  - shop_product_variant_id: the product that is getting new stock
  *  - change: number of items being added
  *  - notes: reason for the change, PO, return etc.
  *
@@ -218,7 +219,7 @@ class ShopBranchStock extends ShopAppModel {
  *
  * Required data:
  *  - shop_branch_id: the branch stock is being removed from
- *  - shop_product_id: the product that is having stock reduced
+ *  - shop_product_variant_id: the product that is having stock reduced
  *  - change: number of items being removed
  *  - notes: reason for the change, sale, damage, returned to supplier etc
  *
@@ -251,7 +252,7 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		foreach ($stock as $k => $v) {
-			$skip = (empty($v['shop_product_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
+			$skip = (empty($v['shop_product_variant_id']) || empty($v['shop_branch_id'])) && empty($v['shop_branch_stock_id']);
 			if ($skip) {
 				unset($stock[$k]);
 				continue;
@@ -259,14 +260,14 @@ class ShopBranchStock extends ShopAppModel {
 
 			if (empty($v['shop_branch_stock_id'])) {
 				$stock[$k]['shop_branch_stock_id'] = $this->field('id', array(
-					'shop_product_id' => $v['shop_product_id'],
+					'shop_product_variant_id' => $v['shop_product_variant_id'],
 					'shop_branch_id' => $v['shop_branch_id']
 				));
 
 				if (empty($stock[$k]['shop_branch_stock_id'])) {
 					$this->create();
 					$this->save(array(
-						'shop_product_id' => $v['shop_product_id'],
+						'shop_product_variant_id' => $v['shop_product_variant_id'],
 						'shop_branch_id' => $v['shop_branch_id'],
 						'stock' => 0
 					));
@@ -308,7 +309,7 @@ class ShopBranchStock extends ShopAppModel {
 				array($this->alias . '.stock' => $this->find('totalProductStock', $v) + $v['change']),
 				array(
 					$this->alias . '.shop_branch_id' => $v['shop_branch_id'],
-					$this->alias . '.shop_product_id' => $v['shop_product_id'],
+					$this->alias . '.shop_product_variant_id' => $v['shop_product_variant_id'],
 				)
 			);
 		}
@@ -332,8 +333,8 @@ class ShopBranchStock extends ShopAppModel {
 				$query['conditions'][$this->alias . '.shop_branch_id'] = $query['shop_branch_id'];
 			}
 
-			if (!empty($query['shop_product_id'])) {
-				$query['conditions'][$this->alias . '.shop_product_id'] = $query['shop_product_id'];
+			if (!empty($query['shop_product_variant_id'])) {
+				$query['conditions'][$this->alias . '.shop_product_variant_id'] = $query['shop_product_variant_id'];
 			}
 
 			$query['fields'] = array(
@@ -352,28 +353,28 @@ class ShopBranchStock extends ShopAppModel {
 
 	protected function _findStockList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			$this->ShopProduct->virtualFields['selling'] = 'ShopPrice.selling';
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array(
-					$this->ShopProduct->alias . '.' . $this->ShopProduct->primaryKey,
-					$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField,
-					'ShopPrice.selling as ShopProduct__selling'
-				)
-			);
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->ShopProductVariant->alias . '.' . $this->ShopProductVariant->primaryKey,
+				$this->ShopProductVariant->alias . '.' . $this->ShopProductVariant->displayField,
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+				$this->ShopProductVariant->ShopProduct->fullFieldName('id'),
+				$this->ShopProductVariant->ShopProduct->fullFieldName('name'),
+				$this->ShopProductVariant->ShopProductVariantPrice->fullFieldName('selling')
+			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant->fullModelName());
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProduct->fullModelName());
 			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopProduct->fullModelName(),
-				'model' => $this->ShopProduct->ShopPrice->fullModelName()
+				'from' => $this->ShopProductVariant->fullModelName(),
+				'model' => $this->ShopProductVariant->ShopProductVariantPrice->fullModelName()
 			));
 
 			$query['order'] = array(
-				$this->ShopProduct->alias . '.' . $this->ShopProduct->displayField => 'asc'
+				$this->ShopProductVariant->alias . '.' . $this->ShopProductVariant->displayField => 'asc'
 			);
 
 			$query['group'] = array(
-				$this->alias . '.shop_product_id'
+				$this->alias . '.shop_product_variant_id'
 			);
 
 			return $query;
@@ -387,20 +388,21 @@ class ShopBranchStock extends ShopAppModel {
 			'fields' => array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.shop_branch_id',
-				$this->alias . '.shop_product_id',
+				$this->alias . '.shop_product_variant_id',
 				$this->alias . '.stock'
 			),
 			'conditions' => array(
-				$this->alias . '.shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->ShopProduct->alias, $this->ShopProduct->primaryKey))
-			)
+				$this->alias . '.shop_product_variant_id' => Hash::extract($results,
+					sprintf('{n}.%s.%s', $this->ShopProductVariant->alias, $this->ShopProductVariant->primaryKey)
+				))
 		));
 
 		foreach ($results as &$result) {
 			$result[$this->alias] = Hash::combine(
 				Hash::extract($shopBranchStocks, sprintf(
-					'{n}.%s[shop_product_id=%s]',
+					'{n}.%s[shop_product_variant_id=%s]',
 					$this->alias,
-					$result[$this->ShopProduct->alias][$this->ShopProduct->primaryKey]
+					$result[$this->ShopProductVariant->alias][$this->ShopProductVariant->primaryKey]
 				)),
 				'{n}.shop_branch_id',
 				'{n}.stock'

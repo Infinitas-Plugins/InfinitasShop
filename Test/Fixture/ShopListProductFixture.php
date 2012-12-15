@@ -16,16 +16,16 @@ class ShopListProductFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary'),
 		'shop_list_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'shop_product_variant_id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'quantity' => array('type' => 'float', 'null' => false, 'default' => '1.00000', 'length' => '15,5'),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
-			'fk_shop_wishlists_shop_products1_idx' => array('column' => 'shop_product_id', 'unique' => 0),
+			'fk_shop_wishlists_shop_product_variants1_idx' => array('column' => 'shop_product_variant_id', 'unique' => 0),
 			'fk_shop_lists_shop_lists_users1_idx' => array('column' => 'shop_list_id', 'unique' => 0)
 		),
-		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM')
+		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
 /**
@@ -37,23 +37,31 @@ class ShopListProductFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-bob-cart-active',
 			'shop_list_id' => 'shop-list-bob-cart',
-			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
 			'quantity' => 1,
 			'created' => '2012-10-09 01:32:27',
 			'modified' => '2012-10-09 01:32:27'
 		),
 		array(
-			'id' => 'shop-list-bob-cart-multi-option',
+			'id' => 'shop-list-bob-cart-multi-option1',
 			'shop_list_id' => 'shop-list-bob-cart',
-			'shop_product_id' => 'multi-option',
+			'shop_product_variant_id' => 'variant-multi-option-1',
 			'quantity' => 1,
+			'created' => '2012-10-09 01:32:27',
+			'modified' => '2012-10-09 01:32:27'
+		),
+		array(
+			'id' => 'shop-list-bob-cart-multi-option2',
+			'shop_list_id' => 'shop-list-bob-cart',
+			'shop_product_variant_id' => 'variant-multi-option-2',
+			'quantity' => 2,
 			'created' => '2012-10-09 01:32:27',
 			'modified' => '2012-10-09 01:32:27'
 		),
 		array(
 			'id' => 'shop-list-sally',
 			'shop_list_id' => 'shop-list-sally-cart',
-			'shop_product_id' => 'multi-option',
+			'shop_product_variant_id' => 'multi-option',
 			'quantity' => 10,
 			'created' => '2012-10-09 01:32:27',
 			'modified' => '2012-10-09 01:32:27'
@@ -61,7 +69,7 @@ class ShopListProductFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-guest-1',
 			'shop_list_id' => 'shop-list-guest-1-cart',
-			'shop_product_id' => 'multi-category',
+			'shop_product_variant_id' => 'multi-category',
 			'quantity' => 3,
 			'created' => '2012-10-09 01:32:27',
 			'modified' => '2012-10-09 01:32:27'

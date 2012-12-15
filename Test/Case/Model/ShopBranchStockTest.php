@@ -17,6 +17,7 @@ class ShopBranchStockTest extends CakeTestCase {
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_branch',
 		'plugin.shop.shop_product',
+		'plugin.shop.shop_product_variant',
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_branch_stock_log',
 		'plugin.view_counter.view_counter_view',
@@ -107,7 +108,7 @@ class ShopBranchStockTest extends CakeTestCase {
  * @dataProvider findProductStockDataProvider
  */
 	public function testFindProductStock($data, $expected) {
-		$result = $this->Model->find('productStock', array('shop_product_id' => $data));
+		$result = $this->Model->find('productStock', array('shop_product_variant_id' => $data));
 		$this->assertEquals($expected, $result);
 	}
 
@@ -119,17 +120,19 @@ class ShopBranchStockTest extends CakeTestCase {
 	public function findProductStockDataProvider() {
 		return array(
 			'different-branches' => array(
-				'active',
+				'variant-active-1',
 				array(array(
 					'ShopBranchStock' => array(
 						'id' => 'branch-stock-1',
 						'shop_branch_id' => 'branch-1',
-						'stock' => '10'
+						'stock' => '10',
+						'shop_product_variant_id' => 'variant-active-1'
 						)), array(
 					'ShopBranchStock' => array(
 						'id' => 'branch-stock-2',
 						'shop_branch_id' => 'branch-2',
-						'stock' => '15'
+						'stock' => '15',
+						'shop_product_variant_id' => 'variant-active-1'
 					))
 				)
 			),
@@ -137,13 +140,14 @@ class ShopBranchStockTest extends CakeTestCase {
 				'no-stock-added',
 				array()
 			),
-			'out-of-stock' => array(
-				'out-of-stock',
+			'variant-out-of-stock-1' => array(
+				'variant-out-of-stock-1',
 				array(array(
 					'ShopBranchStock' => array(
 						'id' => 'branch-stock-3',
 						'shop_branch_id' => 'branch-1',
-						'stock' => '0'
+						'stock' => '0',
+						'shop_product_variant_id' => 'variant-out-of-stock-1'
 					)))
 			)
 		);
@@ -159,7 +163,7 @@ class ShopBranchStockTest extends CakeTestCase {
  */
 	public function testFindProductStockExtracted($data, $expected) {
 		$result = $this->Model->find('productStock', array(
-			'shop_product_id' => $data,
+			'shop_product_variant_id' => $data,
 			'extract' => true
 		));
 		$this->assertEquals($expected, $result);
@@ -173,16 +177,18 @@ class ShopBranchStockTest extends CakeTestCase {
 	public function findProductStockExtractedDataProvider() {
 		return array(
 			'different-branches' => array(
-				'active',
+				'variant-active-1',
 				array(
 					array(
 						'id' => 'branch-stock-1',
 						'shop_branch_id' => 'branch-1',
-						'stock' => '10'
+						'stock' => '10',
+						'shop_product_variant_id' => 'variant-active-1'
 					), array(
 						'id' => 'branch-stock-2',
 						'shop_branch_id' => 'branch-2',
-						'stock' => '15'
+						'stock' => '15',
+						'shop_product_variant_id' => 'variant-active-1'
 					)
 				)
 			),
@@ -190,13 +196,14 @@ class ShopBranchStockTest extends CakeTestCase {
 				'no-stock-added',
 				array()
 			),
-			'out-of-stock' => array(
-				'out-of-stock',
+			'variant-out-of-stock-1' => array(
+				'variant-out-of-stock-1',
 				array(
 					array(
 						'id' => 'branch-stock-3',
 						'shop_branch_id' => 'branch-1',
-						'stock' => '0'
+						'stock' => '0',
+						'shop_product_variant_id' => 'variant-out-of-stock-1'
 					)
 				)
 			)
@@ -209,7 +216,7 @@ class ShopBranchStockTest extends CakeTestCase {
  * @dataProvider findIsInStockDataProvider
  */
 	public function testFindIsInStock($data, $expected) {
-		$result = $this->Model->find('isInStock', array('shop_product_id' => $data));
+		$result = $this->Model->find('isInStock', array('shop_product_variant_id' => $data));
 		$this->assertEquals($expected, $result);
 	}
 
@@ -229,23 +236,23 @@ class ShopBranchStockTest extends CakeTestCase {
 				array()
 			),
 			'has-stock' => array(
-				'active',
+				'variant-active-1',
 				array(
-					'active' => true
+					'variant-active-1' => true
 				)
 			),
-			'out-of-stock' => array(
-				'out-of-stock',
+			'variant-out-of-stock-1' => array(
+				'variant-out-of-stock-1',
 				array()
 			),
 			'mixed' => array(
 				array(
-					'active',
+					'variant-active-1',
 					'no-stock-added',
-					'out-of-stock'
+					'variant-out-of-stock-1'
 				),
 				array(
-					'active' => true
+					'variant-active-1' => true
 				)
 			)
 		);
@@ -257,7 +264,7 @@ class ShopBranchStockTest extends CakeTestCase {
 	public function testUpdateStock() {
 		$data = array(
 			'shop_branch_id' => 'branch-1',
-			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
 			'change' => 10
 		);
 		$this->assertEquals(10, $this->Model->find('totalProductStock', $data));
@@ -304,7 +311,7 @@ class ShopBranchStockTest extends CakeTestCase {
 				array(
 					'method' => 'addStock',
 					'data' => array(
-						'shop_product_id' => 'active',
+						'shop_product_variant_id' => 'variant-active-1',
 						'change' => 10,
 					)
 				)
@@ -322,7 +329,7 @@ class ShopBranchStockTest extends CakeTestCase {
 				array(
 					'method' => 'addStock',
 					'data' => array(
-						'shop_product_id' => 'active',
+						'shop_product_variant_id' => 'variant-active-1',
 						'change' => 10,
 					)
 				)
@@ -341,7 +348,7 @@ class ShopBranchStockTest extends CakeTestCase {
 
 		$conditions = array(
 			'fields' => array($this->Model->alias . '.stock'),
-			'conditions' => array($this->Model->alias . '.shop_product_id' => 'active'));
+			'conditions' => array($this->Model->alias . '.shop_product_variant_id' => 'variant-active-1'));
 
 		$this->assertTrue($this->Model->addStock($data));
 		$result = $this->Model->find('all', $conditions);
@@ -369,7 +376,7 @@ class ShopBranchStockTest extends CakeTestCase {
 		return array(
 			'branch-1' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-1',
 					'change' => 10,
 					'shop_branch_stock_id' => 'branch-stock-1'
@@ -397,7 +404,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'branch-2' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => 5,
 					'shop_branch_stock_id' => 'branch-stock-2'
@@ -421,7 +428,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'negative-add' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => -5,
 					'shop_branch_stock_id' => 'branch-stock-2'
@@ -445,7 +452,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'custom-message' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => 5,
 					'notes' => 'Yee Haa',
@@ -482,7 +489,7 @@ class ShopBranchStockTest extends CakeTestCase {
 
 		$conditions = array(
 			'fields' => array($this->Model->alias . '.stock'),
-			'conditions' => array($this->Model->alias . '.shop_product_id' => 'active'));
+			'conditions' => array($this->Model->alias . '.shop_product_variant_id' => 'variant-active-1'));
 
 		$this->assertTrue($this->Model->removeStock($data));
 		$result = $this->Model->find('all', $conditions);
@@ -510,7 +517,7 @@ class ShopBranchStockTest extends CakeTestCase {
 		return array(
 			'branch-1' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-1',
 					'change' => -10,
 					'shop_branch_stock_id' => 'branch-stock-1'
@@ -538,7 +545,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'branch-2' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => -5,
 					'shop_branch_stock_id' => 'branch-stock-2'
@@ -562,7 +569,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'positive-remove' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => 5,
 					'shop_branch_stock_id' => 'branch-stock-2'
@@ -586,7 +593,7 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			'custom-message' => array(
 				array(
-					'shop_product_id' => 'active',
+					'shop_product_variant_id' => 'variant-active-1',
 					'shop_branch_id' => 'branch-2',
 					'change' => -5,
 					'notes' => 'Yee Haa',
@@ -617,7 +624,7 @@ class ShopBranchStockTest extends CakeTestCase {
  */
 	public function testInvalidStockChange() {
 		$result = $this->Model->addStock(array(
-			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
 			'shop_branch_id' => 'branch-2',
 			'change' => 'asd'
 		));
@@ -625,7 +632,7 @@ class ShopBranchStockTest extends CakeTestCase {
 
 		$conditions = array(
 			'fields' => array($this->Model->alias . '.stock'),
-			'conditions' => array($this->Model->alias . '.shop_product_id' => 'active'));
+			'conditions' => array($this->Model->alias . '.shop_product_variant_id' => 'variant-active-1'));
 		$expected = array(
 			array('ShopBranchStock' => array('stock' => '10')),
 			array('ShopBranchStock' => array('stock' => '15'))
@@ -650,7 +657,7 @@ class ShopBranchStockTest extends CakeTestCase {
 		$this->assertEquals($expected, $results);
 
 		$result = $this->Model->removeStock(array(
-			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
 			'shop_branch_id' => 'branch-2',
 			'change' => 'asd'
 		));
@@ -658,7 +665,7 @@ class ShopBranchStockTest extends CakeTestCase {
 
 		$conditions = array(
 			'fields' => array($this->Model->alias . '.stock'),
-			'conditions' => array($this->Model->alias . '.shop_product_id' => 'active'));
+			'conditions' => array($this->Model->alias . '.shop_product_variant_id' => 'variant-active-1'));
 		$expected = array(
 			array('ShopBranchStock' => array('stock' => '10')),
 			array('ShopBranchStock' => array('stock' => '15'))
@@ -703,13 +710,13 @@ class ShopBranchStockTest extends CakeTestCase {
  */
 	public function findTotalProductStockDataProvider() {
 		return array(
-			'product' => array(array('shop_product_id' => 'active'), 25),
+			'product' => array(array('shop_product_variant_id' => 'variant-active-1'), 25),
 			'branch' => array(array('shop_branch_id' => 'branch-1'), 10),
-			'product-branch' => array(array('shop_product_id' => 'active', 'shop_branch_id' => 'branch-1'), 10),
-			'product-branch' => array(array('shop_product_id' => 'active', 'shop_branch_id' => 'branch-2'), 15),
-			'madeup-product' => array(array('shop_product_id' => 'madeup'), 0),
+			'product-branch' => array(array('shop_product_variant_id' => 'variant-active-1', 'shop_branch_id' => 'branch-1'), 10),
+			'product-branch' => array(array('shop_product_variant_id' => 'variant-active-1', 'shop_branch_id' => 'branch-2'), 15),
+			'madeup-product' => array(array('shop_product_variant_id' => 'madeup'), 0),
 			'madeup-branch' => array(array('shop_branch_id' => 'madeup'), 0),
-			'madeup-product-branch' => array(array('shop_product_id' => 'madeup', 'shop_branch_id' => 'madeup'), 0)
+			'madeup-product-branch' => array(array('shop_product_variant_id' => 'madeup', 'shop_branch_id' => 'madeup'), 0)
 		);
 	}
 
@@ -721,8 +728,13 @@ class ShopBranchStockTest extends CakeTestCase {
 			array(
 				'ShopProduct' => array(
 					'id' => 'active',
-					'name' => 'active',
-					'selling' => '12.000'
+					'name' => 'active'
+				),
+				'ShopProductVariant' => array(
+					'id' => 'variant-active-1'
+				),
+				'ShopProductVariantPrice' => array(
+					'selling' => null
 				),
 				'ShopBranchStock' => array(
 					'branch-1' => 10,
@@ -731,14 +743,34 @@ class ShopBranchStockTest extends CakeTestCase {
 			),
 			array(
 				'ShopProduct' => array(
-					'id' => 'out-of-stock',
-					'name' => 'out-of-stock',
+					'id' => 'active',
+					'name' => 'active'
+				),
+				'ShopProductVariant' => array(
+					'id' => 'variant-active-2'
+				),
+				'ShopProductVariantPrice' => array(
 					'selling' => null
+				),
+				'ShopBranchStock' => array(
+					'branch-2' => 15
+				)
+			),
+			array(
+				'ShopProduct' => array(
+					'id' => 'out-of-stock',
+					'name' => 'out-of-stock'
+				),
+				'ShopProductVariantPrice' => array(
+					'selling' => null
+				),
+				'ShopProductVariant' => array(
+					'id' => 'variant-out-of-stock-1'
 				),
 				'ShopBranchStock' => array(
 					'branch-1' => 0
 				)
-			)
+			),
 		);
 		$result = $this->Model->find('stockList');
 		$this->assertEquals($expected, $result);
@@ -752,7 +784,7 @@ class ShopBranchStockTest extends CakeTestCase {
 
 	public function testAddStockNewCombo() {
 		$data = array(
-			'shop_product_id' => 'out-of-stock',
+			'shop_product_variant_id' => 'variant-out-of-stock-1',
 			'shop_branch_id' => 'branch-2',
 			'change' => 10
 		);

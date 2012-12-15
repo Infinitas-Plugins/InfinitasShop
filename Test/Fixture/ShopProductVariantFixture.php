@@ -6,7 +6,6 @@
  * @since 0.9b1
  */
 class ShopProductVariantFixture extends CakeTestFixture {
-	public $name = 'ShopProductVariant';
 
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -23,9 +22,100 @@ class ShopProductVariantFixture extends CakeTestFixture {
 
 	public $records = array(
 		array(
-			'id' => '50c7e1a1-b5cc-4df9-8cd0-78056318cd70',
-			'shop_product_id' => 'Lorem ipsum dolor sit amet',
+			'id' => 'variant-active-master',
+			'shop_product_id' => 'active',
 			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-active-1',
+			'shop_product_id' => 'active',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-active-2',
+			'shop_product_id' => 'active',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-active-3',
+			'shop_product_id' => 'active',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-out-of-stock-1',
+			'shop_product_id' => 'out-of-stock',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-no-stock-added-master',
+			'shop_product_id' => 'no-stock-added',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-category-master',
+			'shop_product_id' => 'multi-category',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-category-mixed',
+			'shop_product_id' => 'multi-category-mixed-state',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-parent-inactive',
+			'shop_product_id' => 'multi-category-parent-inactive',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-option-master',
+			'shop_product_id' => 'multi-option',
+			'master' => 1,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-option-1',
+			'shop_product_id' => 'multi-option',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-option-2',
+			'shop_product_id' => 'multi-option',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-option-3',
+			'shop_product_id' => 'multi-option',
+			'master' => 0,
+			'created' => '2012-12-12 01:45:05',
+			'modified' => '2012-12-12 01:45:05'
+		),
+		array(
+			'id' => 'variant-multi-option-4',
+			'shop_product_id' => 'multi-option',
+			'master' => 0,
 			'created' => '2012-12-12 01:45:05',
 			'modified' => '2012-12-12 01:45:05'
 		),

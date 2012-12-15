@@ -13,15 +13,14 @@
  * @property ShopImage $ShopImage
  * @property ShopSupplier $ShopSupplier
  * @property ShopBrand $ShopBrand
- * @property ShopBranchStock $ShopBranchStock
  * @property ShopCategoriesProduct $ShopCategoriesProduct
  * @property ShopImagesProduct $ShopImagesProduct
  * @property ShopProductsSpecial $ShopProductsSpecial
  * @property ShopSpotlight $ShopSpotlight
- * @property ShopPrice $ShopPrice
  * @property ShopProductType $ShopProductType
  * @property ShopSize $ShopSize
- * @property ShopListProduct $ShopListProduct
+ * @property ShopProductVariant $ShopProductVariant
+ * @property ShopProductVariant $ShopProductVariantMaster
  */
 
 class ShopProduct extends ShopAppModel {
@@ -102,15 +101,6 @@ class ShopProduct extends ShopAppModel {
  * @var array
  */
 	public $hasOne = array(
-		'ShopPrice' => array(
-			'className' => 'Shop.ShopPrice',
-			'foreignKey' => 'foreign_key',
-			'conditions' => array(
-				'ShopPrice.model' => 'Shop.ShopProduct'
-			),
-			'fields' => '',
-			'order' => ''
-		),
 		'ShopSize' => array(
 			'className' => 'Shop.ShopSize',
 			'foreignKey' => 'foreign_key',
@@ -137,6 +127,17 @@ class ShopProduct extends ShopAppModel {
 			),
 			'fields' => '',
 			'order' => ''
+		),
+		'ShopProductVariantMaster' => array(
+			'className' => 'Shop.ShopProductVariant',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => true,
+			'conditions' => array(
+				'ShopProductVariantMaster.shop_product_id = ShopProduct.id',
+				'ShopProductVariantMaster.master' => 1
+			),
+			'fields' => '',
+			'order' => '',
 		)
 	);
 
@@ -146,19 +147,6 @@ class ShopProduct extends ShopAppModel {
  * @var array
  */
 	public $hasMany = array(
-		'ShopBranchStock' => array(
-			'className' => 'Shop.ShopBranchStock',
-			'foreignKey' => 'shop_product_id',
-			'dependent' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		),
 		'ShopCategoriesProduct' => array(
 			'className' => 'Shop.ShopCategoriesProduct',
 			'foreignKey' => 'shop_product_id',
@@ -211,11 +199,13 @@ class ShopProduct extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'ShopListProduct' => array(
-			'className' => 'Shop.ShopListProduct',
+		'ShopProductVariant' => array(
+			'className' => 'Shop.ShopProductVariant',
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
-			'conditions' => '',
+			'conditions' => array(
+				'ShopProductVariant.master' => 0
+			),
 			'fields' => '',
 			'order' => '',
 			'limit' => '',
@@ -250,15 +240,15 @@ class ShopProduct extends ShopAppModel {
 		);
 
 		$this->virtualFields['markup_amount'] = String::insert(':ShopPrice.selling - :ShopPrice.cost', array(
-			'ShopPrice' => $this->ShopPrice->alias
+			'ShopPrice' => $this->ShopProductVariantMaster->ShopProductVariantPrice->alias
 		));
 
 		$this->virtualFields['markup_percentage'] = String::insert('ROUND(((:ShopPrice.selling - :ShopPrice.cost) / :ShopPrice.cost) * 100, 3)', array(
-			'ShopPrice' => $this->ShopPrice->alias
+			'ShopPrice' => $this->ShopProductVariantMaster->ShopProductVariantPrice->alias
 		));
 
 		$this->virtualFields['margin'] = String::insert('ROUND(((:ShopPrice.selling - :ShopPrice.cost) / :ShopPrice.selling) * 100, 3)', array(
-			'ShopPrice' => $this->ShopPrice->alias
+			'ShopPrice' => $this->ShopProductVariantMaster->ShopProductVariantPrice->alias
 		));
 
 		$this->virtualFields['conversion_rate'] = String::insert('ROUND((:ShopProduct.sales / :ShopProduct.views) * 100, 3)', array(
@@ -346,8 +336,15 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findOrderQuantity($state, array $query, array $results = array()) {
 		if ($state == 'before') {
+			$query = array_merge(array(
+				'shop_product_id' => null,
+				'shop_product_variant_id' => null
+			), $query);
+
 			if (empty($query['shop_product_id'])) {
-				throw new InvalidArgumentException(__d('shop', 'No product selected'));
+				if (empty($query['shop_product_variant_id'])) {
+					throw new InvalidArgumentException(__d('shop', 'No product selected'));
+				}
 			}
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -357,8 +354,15 @@ class ShopProduct extends ShopAppModel {
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
-				$this->alias . '.' . $this->primaryKey => $query['shop_product_id'],
+				'or' => array(
+					$this->alias . '.' . $this->primaryKey => $query['shop_product_id'],
+					$this->ShopProductVariantMaster->alias . '.' . $this->ShopProductVariantMaster->primaryKey => $query['shop_product_variant_id'],
+					$this->ShopProductVariant->alias . '.' . $this->ShopProductVariant->primaryKey => $query['shop_product_variant_id']
+				)
 			));
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariantMaster->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant->fullModelName());
 
 			$query['limit'] = 1;
 
@@ -570,45 +574,43 @@ class ShopProduct extends ShopAppModel {
 	protected function _findProductsForList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_list_id'])) {
-				$query['shop_list_id'] = $this->ShopListProduct->ShopList->currentListId(true);
+				$this->ShopProductVariant->ShopListProduct;
+				$query['shop_list_id'] = $this->ShopProductVariant->ShopListProduct->ShopList->currentListId(true);
 			}
-
 			$query = $this->_findBasics($state, $query);
+
 			array_shift($query['fields']);
 
+			$stock = array_search($this->alias . '.total_stock', $query['fields']);
+			if ($stock !== false) {
+				unset($query['fields'][$stock]);
+			}
+
 			$query['fields'] = array_merge((array)$query['fields'], array(
-				$this->alias . '.product_code',
-
-				$this->ShopSize->alias . '.shipping_width',
-				$this->ShopSize->alias . '.shipping_height',
-				$this->ShopSize->alias . '.shipping_length',
-				$this->ShopSize->alias . '.shipping_weight',
-
-				$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey,
-				$this->ShopListProduct->alias . '.shop_list_id',
-				$this->ShopListProduct->alias . '.shop_product_id',
-				$this->ShopListProduct->alias . '.quantity',
+				$this->ShopProductVariant->ShopListProduct->alias . '.' . $this->ShopProductVariant->ShopListProduct->primaryKey,
+				$this->ShopProductVariant->ShopListProduct->alias . '.shop_list_id',
+				$this->ShopProductVariant->ShopListProduct->alias . '.shop_product_variant_id',
+				$this->ShopProductVariant->ShopListProduct->alias . '.quantity',
 			));
 
-			$query['conditions'] = array_merge(
-				(array)$query['conditions'],
-				array($this->ShopListProduct->alias . '.shop_list_id' => $query['shop_list_id'])
-			);
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->ShopProductVariant->ShopListProduct->alias . '.shop_list_id' => $query['shop_list_id']
+			));
 
-			$query['joins'] = array_merge((array)$query['joins'], array(
-				$this->autoJoinModel($this->ShopSize->fullModelName()),
-				$this->autoJoinModel(array(
-					'model' => $this->ShopListProduct->fullModelName(),
-					'type' => 'right'
-				))
+			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel(array(
+				'model' => $this->ShopProductVariant->ShopListProduct->fullModelName(),
+				'type' => 'right'
 			));
 
 			$query['group'] = array_merge((array)$query['group'], array(
-				$this->ShopListProduct->alias . '.' . $this->ShopListProduct->primaryKey
+				$this->ShopProductVariant->ShopListProduct->alias . '.' . $this->ShopProductVariant->ShopListProduct->primaryKey
 			));
 
 			return $query;
 		}
+
+		$results = $this->_findBasics($state, $query, $results);
 
 		$options = array(
 			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
@@ -619,23 +621,11 @@ class ShopProduct extends ShopAppModel {
 			return array();
 		}
 
-		$shopListIds = array_unique(Hash::extract($results, sprintf('{n}.%s.shop_list_id', $this->ShopListProduct->ShopList->ShopListProduct->alias)));
-		$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array_merge(
-			$options,
-			array('shop_list_id' => $shopListIds)
-		));
-
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
-			$result[$this->ShopProductType->ShopProductTypesOption->ShopOption->alias] = Hash::extract($shopOptions, $extractTemplate);
-
-			$productCode = array_filter((array)current($this->productCodes($result[$this->alias], $result['ShopOption'])));
-			if (!empty($productCode)) {
-				$result[$this->alias] = array_merge($result[$this->alias], $productCode);
-			}
 		}
 
 		return $results;
@@ -689,7 +679,7 @@ class ShopProduct extends ShopAppModel {
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName('modified'),
 				$this->fullFieldName('available'),
-				$this->ShopPrice->fullFieldName('cost'),
+				//$this->ShopPrice->fullFieldName('cost'),
 				$this->ShopSupplier->fullFieldName($this->ShopSupplier->primaryKey),
 				$this->ShopSupplier->fullFieldName($this->ShopSupplier->displayField),
 				$this->ShopSupplier->fullFieldName('active'),
@@ -804,6 +794,8 @@ class ShopProduct extends ShopAppModel {
 			return array();
 		}
 
+		$results = $this->_findBasics($state, $query, $results);
+
 		$options = array(
 			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
 			'extract' => true
@@ -842,8 +834,11 @@ class ShopProduct extends ShopAppModel {
 			return self::_findProduct($state, $query);
 		}
 
+		if (empty($results)) {
+			return array();
+		}
+
 		$results = self::_findProduct($state, $query, $results);
-		return self::_getMaxValuesForShipping($results);
 	}
 
 /**
@@ -862,64 +857,21 @@ class ShopProduct extends ShopAppModel {
 		if ($state == 'before') {
 			return self::_findProductsForList($state, $query);
 		}
+		if (empty($results)) {
+			return array();
+		}
 
 		$results = self::_findProductsForList($state, $query, $results);
-		foreach ($results as &$result) {
-			$result = self::_getMaxValuesForShipping($result);
-		}
 		$fields = array(
-			'width',
+			'width' => '',
 			'height',
 			'length',
 			'weight',
 			'cost'
 		);
-		$totals = array();
-		foreach ($fields as $key) {
-			$totals[$key] = array_sum(Hash::extract($results, '{n}.' . $key));
-		}
+
 
 		return $totals;
-	}
-
-/**
- * figure out the max shipping values for the passed in product
- *
- * @param array $results the fesults of a find
- *
- * @return array
- */
-	protected function _getMaxValuesForShipping(&$results) {
-		if (empty($results)) {
-			return array(
-
-			);
-		}
-
-		$sizeFields = array(
-			'width',
-			'height',
-			'length',
-			'weight'
-		);
-
-		$sizes = $optionCost = array();
-		foreach ($results['ShopOption'] as $option) {
-			$prices = Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling');
-			$optionCosts[] = !empty($prices) ? max($prices): 0.0;
-			foreach ($sizeFields as $sizeOption) {
-				$value = Hash::extract($option['ShopOptionValue'], '{n}.ShopSize.shipping_' . $sizeOption);
-				$value = !empty($value) ? max($value) : 0.0;
-				$sizes[$sizeOption][] = $results['ShopSize']['shipping_' . $sizeOption] + (float)$value;
-			}
-		}
-
-		foreach ($sizes as &$size) {
-			$size = max($size);
-		}
-		$sizes['cost'] = $results['ShopPrice']['selling'] + array_sum($optionCosts);
-
-		return $sizes;
 	}
 
 /**
@@ -949,7 +901,6 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.quantity_unit',
 				$this->alias . '.quantity_min',
 				$this->alias . '.quantity_max',
-				$this->ShopSize->alias . '.*',
 			));
 
 			$query['conditions']['or'] = array(
@@ -966,11 +917,13 @@ class ShopProduct extends ShopAppModel {
 			return $query;
 		}
 
+		$results = $this->_findBasics($state, $query, $results);
+
 		if (empty($results[0][$this->alias][$this->primaryKey])) {
 			return array();
 		}
 
-		$results = current($results);
+		$results = current($this->_findBasics($state, $query, $results));
 		unset($results['ActiveCategory']);
 
 		$options = array(
@@ -978,13 +931,10 @@ class ShopProduct extends ShopAppModel {
 			'extract' => true
 		);
 
-		$results['ShopOption'] = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		$results['ShopCategory'] = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
-		$results['ShopBranchStock'] = $this->ShopBranchStock->find('productStock', $options);
 		$results['ShopSpecial'] = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
-		$results['ShopProductCode'] = $this->productCodes($results[$this->alias], $results['ShopOption']);
 
 		return $results;
 	}
@@ -1045,86 +995,6 @@ class ShopProduct extends ShopAppModel {
 	}
 
 /**
- * get the product code built up based on options
- *
- * $product can be either id of a product or array with id / product code
- * if only the id is passed the rest will be figured out.
- *
- * $options can be passed in which are used to build the product code, if not
- * available this will be fetched fron the db.
- *
- * @param string|array $product
- * @param array $options
- *
- * @return string
- */
-	public function productCodes($product, array $options = array()) {
-		if (!is_array($product)) {
-			$product = array(
-				$this->primaryKey => $product,
-				'product_code' => null
-			);
-		}
-
-		if (empty($options)) {
-			$options = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', array(
-				'shop_product_id' => $product[$this->primaryKey],
-				'extract' => true
-			));
-		}
-
-		if (empty($options)) {
-			return array();
-		}
-
-		if (empty($product['product_code'])) {
-			$product['product_code'] = $this->field('product_code', array(
-				$this->alias . '.' . $this->primaryKey => $product[$this->primaryKey]
-			));
-		}
-
-		$shopOptions = Hash::combine($options,
-			'{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->primaryKey,
-			'{n}.slug'
-		);
-		$shopOptionValues = Hash::extract($options, '{n}.' . $this->ShopProductType->ShopProductTypesOption->ShopOption->ShopOptionValue->alias);
-
-		$allOptions = array(array());
-		foreach ($shopOptionValues as $list) {
-			$temp = array();
-			foreach ($allOptions as $resultItem) {
-				foreach ($list as $listItem) {
-					$temp[] = array_merge($resultItem, array(
-						$shopOptions[$listItem['shop_option_id']] => $listItem['product_code']
-					));
-				}
-			}
-			$allOptions = $temp;
-		}
-
-		$generatedProductCodes = array();
-		foreach ($allOptions as $allOption) {
-			$productCodeDetails = array(
-				//'shop_option_value_id' => $allOption['shop_option_value_id']
-			);
-			unset($allOption['shop_option_value_id']);
-			$productCode = null;
-			if (!empty($product['product_code'])) {
-				if (strstr($product['product_code'], ':') !== false) {
-					$productCode = String::insert($product['product_code'], $allOption);
-				} else {
-					$productCode = $product['product_code'] . '-' . implode('', $allOption);
-				}
-			} elseif (array_filter($allOption)) {
-				$productCode = implode('', $allOption);
-			}
-			$generatedProductCodes[] = array_merge(array('product_code' => $productCode), $productCodeDetails);
-		}
-
-		return $generatedProductCodes;
-	}
-
-/**
  * setup the basics for the product finds
  *
  * This creates the joins and fields that are used for most finds within the product model.
@@ -1138,38 +1008,35 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findBasics($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopBranchStock->alias);
+			$query = array_merge(array(
+				'override' => true
+			), $query);
+			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopProductVariant->ShopBranchStock->alias);
 
-			$query['fields'] = array_merge(
-				array(
-					'DISTINCT(ActiveCategory.id)',
-					$this->alias . '.' . $this->primaryKey,
-					$this->alias . '.' . $this->displayField,
-					$this->alias . '.slug',
-					$this->alias . '.rating',
-					$this->alias . '.rating_count',
-					$this->alias . '.views',
-					$this->alias . '.sales',
-					$this->alias . '.active',
-					$this->alias . '.total_stock',
+			$fields = array(
+				'DISTINCT(ActiveCategory.id)',
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.slug',
+				$this->alias . '.rating',
+				$this->alias . '.rating_count',
+				$this->alias . '.views',
+				$this->alias . '.sales',
+				$this->alias . '.active',
+				$this->alias . '.total_stock',
 
-					$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey,
-					$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,
-					$this->ShopProductType->alias . '.slug',
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey,
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,
+				$this->ShopProductType->alias . '.slug',
 
-					$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey,
-					$this->ShopBrand->alias . '.' . $this->ShopBrand->displayField,
-					$this->ShopBrand->alias . '.slug',
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey,
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->displayField,
+				$this->ShopBrand->alias . '.slug',
 
-					$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
-					$this->ShopImage->alias . '.image',
-
-					$this->ShopPrice->alias . '.' . $this->ShopPrice->primaryKey,
-					$this->ShopPrice->alias . '.selling',
-					$this->ShopPrice->alias . '.retail',
-				),
-				(array)$query['fields']
+				$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+				$this->ShopImage->alias . '.image',
 			);
+			$query['fields'] = array_merge($fields, (array)$query['fields']);
 
 			if (!isset($query['admin']) || $query['admin'] !== true) {
 				$this->_activeOnlyConditions($query);
@@ -1190,8 +1057,10 @@ class ShopProduct extends ShopAppModel {
 			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopBrand->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopPrice->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopBranchStock->fullModelName());
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant->fullModelName());
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopBranchStock->fullModelName());
+
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
 			$query['joins'][] = $this->autoJoinModel(array(
 				'from' => $this->ShopCategoriesProduct->fullModelName(),
@@ -1202,8 +1071,80 @@ class ShopProduct extends ShopAppModel {
 			return $query;
 		}
 
+		if (empty($results)) {
+			return array();
+		}
+
+		$productIds = Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey));
+		$masterVariants = $this->ShopProductVariant->find('variants', array(
+			'master' => true,
+			'override' => $query['override'],
+			'shop_product_id' => $productIds
+		));
+
+		$productVariants = $this->ShopProductVariant->find('variants', array(
+			'master' => false,
+			'override' => $query['override'],
+			'shop_product_id' => $productIds
+		));
+
+		foreach ($results as &$result) {
+			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result[$this->ShopProductVariant->alias . 'Master'] = current(Hash::extract($masterVariants, $extractTemplate));
+			$result[$this->ShopProductVariant->alias] = Hash::extract($productVariants, $extractTemplate);
+			$this->_productOverride($result);
+		}
+
 		return $results;
 	}
+
+/**
+ * Override the price and size for product variants
+ *
+ * Takes the master as the variant if there are none
+ *
+ * @param array $result a product record (by reference)
+ *
+ * @return void
+ */
+	protected function _productOverride(array &$result) {
+		if (empty($result[$this->ShopProductVariant->alias])) {
+			$result[$this->ShopProductVariant->alias] = array($result[$this->ShopProductVariant->alias . 'Master']);
+		}
+
+		$masterPrice = $result[$this->ShopProductVariant->alias . 'Master']['ShopProductVariantPrice'];
+		$masterSize = $result[$this->ShopProductVariant->alias . 'Master']['ShopProductVariantSize'];
+		unset(
+			$masterPrice[$this->ShopProductVariant->ShopProductVariantPrice->primaryKey],
+			$masterSize[$this->ShopProductVariant->ShopProductVariantSize->primaryKey]
+		);
+		foreach ($result[$this->ShopProductVariant->alias] as $k => $productVariant) {
+			if (empty($productVariant['ShopOptionVariant'])) {
+				continue;
+			}
+			$optionPrice = array(
+				'cost' => $masterPrice['cost'] + array_sum(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopPrice.cost')),
+				'selling' => $masterPrice['selling'] + array_sum(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopPrice.selling')),
+				'retail' => $masterPrice['retail'] + array_sum(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopPrice.retail'))
+			);
+
+			$result[$this->ShopProductVariant->alias][$k]['ShopProductVariantPrice'] = array_merge(
+				array($this->ShopProductVariant->primaryKey => null),
+				$masterPrice,
+				array_filter($optionPrice),
+				array_filter($productVariant['ShopProductVariantPrice'])
+			);
+		}
+
+		$prices = Hash::extract($result[$this->ShopProductVariant->alias], '{n}.ShopProductVariantPrice.selling');
+
+		$result[$this->alias]['price_min'] = $result[$this->alias]['price_max'] = 0;
+		if ($prices) {
+			$result[$this->alias]['price_min'] = min($prices);
+			$result[$this->alias]['price_max'] = max($prices);
+		}
+	}
+
 
 /**
  * Find a list of possible options for a category
@@ -1377,7 +1318,7 @@ class ShopProduct extends ShopAppModel {
 				$stock['shop_product_id'] = $productId;
 				$stock['notes'] = __d('shop', 'Initial stock (created product)');
 			}
-			$saved = $saved && $this->ShopBranchStock->addStock($shopBranchStock);
+			$saved = $saved && $this->ShopProductVariant->ShopBranchStock->addStock($shopBranchStock);
 		}
 
 		if ($saved) {
