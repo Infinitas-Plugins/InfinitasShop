@@ -93,6 +93,18 @@ Any business that is going to be profitable needs to have good records of what i
 
 The Infinitas Shop is able to show products that are not making has much money as they should be, or report on products selling below cost. The cost information used together with conversion rates is also used to automate tasks such as creating [featured products](/infinitas\_docs/Shop/products-featured) and [specials](/infinitas\_docs/Shop/products-specials).
 
+#### Pricing products
+
+When you create a product with options there are a number of factors that influence the final price that is displayed to the customer. This section will not deal with specials and discounts as those are normally applied after the actual price for the product has been calculated.
+
+The first place a price comes from is the products __master__ variant. This is the record that holds information on the default price and size. If all variants are the same price there is no need to set up any other pricing related to the product.
+
+Next up you can set prices for specific variants. These prices will override the __master__ price. For example you have a `shirt` product with size option `small`, `medium` and `large`. Set the price for the product as `10.00` and both variations would come out as `10.00`. If you wanted to charge slightly more for the `large` shirt you could specify its price independent of the other variants.
+
+Another factor that determines price is the price set on options. Taking the above example, if you had a number of products using the `size` option and did not want to set the price for every large variant in the store you could add a price to the `large` option directly that will be added to the price of all variants with the `large` option attached. This allows managing the price of similar things with less admin overhead.
+
+If you are using the option price and have a product variant that does not match exactly you can specify that product variants price directly, which will overload the option price change.
+
 #### Stock
 
 When creating a product you are given the opportunity to enter the starting [stock](/infinitas\_docs/Shop/stock) for the product. Once it is created you `can not` edit the stock. Instead you are able to adjust stock values through the stock manager.

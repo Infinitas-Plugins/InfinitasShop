@@ -474,65 +474,136 @@ class ShopProductTest extends CakeTestCase {
 		$this->assertTrue($product($id));
 	}
 
-	public function testProductPricingOverride() {
+	public function testProductPrice() {
+		$ShopPrice = ClassRegistry::init('Shop.ShopPrice');
+		$this->assertTrue($ShopPrice->deleteAll(array('id !=' => 0)));
+
 		$expected = array(
-			array(
+			'variant-active-1' => array(
 				'id' => null,
-				'cost' => 10,
-				'selling' => 12,
-				'retail' => 15
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
 			),
-			array(
+			'variant-active-2' => array(
 				'id' => null,
-				'cost' => 10,
-				'selling' => 12,
-				'retail' => 15
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
 			),
-			array(
+			'variant-active-3' => array(
 				'id' => null,
-				'cost' => 12,
-				'selling' => 15,
-				'retail' => 19
-			),
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
+			)
 		);
-		$result = $this->{$this->modelClass}->find('product', 'active');
-		$result = Hash::extract($result['ShopProductVariant'], '{n}.ShopProductVariantPrice');
-		$this->assertEquals($expected, $result);
+		$result = $this->_getMainPrice();
+		$this->assertEquals($expected, $result, 'Prices are not null');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopProductVariant',
+			'foreign_key' => 'variant-active-1',
+			'cost' => 10,
+			'selling' => 15,
+			'retail' => 20
+		));
+		$this->assertTrue((bool)$saved, 'Could not save the price for the variant');
+
+		$variantPriceOverride = $ShopPrice->id;
+		$expected['variant-active-1'] = array(
+			'id' => $variantPriceOverride,
+			'cost' => 10,
+			'selling' => 15,
+			'retail' => 20
+		);
+
+		$result = $this->_getMainPrice();
+		$this->assertEquals($expected, $result, 'variant specific price not correct');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopProductVariant',
+			'foreign_key' => 'variant-active-master',
+			'cost' => 125,
+			'selling' => 150,
+			'retail' => 175
+		));
+		$this->assertTrue((bool)$saved, 'Could not save the price for the master variant');
+
+		$expected = array_merge($expected, array(
+			'variant-active-2' => array(
+				'id' => null,
+				'cost' => 125,
+				'selling' => 150,
+				'retail' => 175
+			),
+			'variant-active-3' => array(
+				'id' => null,
+				'cost' => 125,
+				'selling' => 150,
+				'retail' => 175
+			)
+		));
+		$result = $this->_getMainPrice();
+		$this->assertEquals($expected, $result, 'defaults from master price not correct');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopOptionValue',
+			'foreign_key' => 'option-size-large',
+			'cost' => .5,
+			'selling' => .5,
+			'retail' => .5
+		));
+		$this->assertTrue((bool)$saved, 'Could not save the price for the option variant');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopOptionValue',
+			'foreign_key' => 'option-size-small',
+			'cost' => .9,
+			'selling' => .9,
+			'retail' => .9
+		));
+		$this->assertTrue((bool)$saved, 'Could not save the price for the option variant');
+
+		$expected = array_merge($expected, array(
+			'variant-active-3' => array(
+				'id' => null,
+				'cost' => 125.5,
+				'selling' => 150.5,
+				'retail' => 175.5
+			)
+		));
+		$result = $this->_getMainPrice();
+		$this->assertEquals($expected, $result, 'option price not added');
+
+		$this->assertTrue($ShopPrice->delete($variantPriceOverride), 'Could not delete option override');
+
+		$expected = array_merge($expected, array(
+			'variant-active-1' => array(
+				'id' => null,
+				'cost' => 125.9,
+				'selling' => 150.9,
+				'retail' => 175.9
+			)
+		));
+		$result = $this->_getMainPrice();
+		$this->assertEquals($expected, $result, 'option price not added');
+
 	}
 
-	public function testProductPriceSetOnVariant() {
-		$this->ShopProduct->ShopProductVariant->ShopProductVariantPrice->create();
-		$saved = (bool)$this->ShopProduct->ShopProductVariant->ShopProductVariantPrice->save(array(
-			'model' => $this->ShopProduct->ShopProductVariant->fullModelName(),
-			'foreign_key' => 'variant-active-2',
-			'cost' => 100,
-			'selling' => 150,
-			'retail' => 190
-		));
-		$this->assertTrue($saved);
-
-		$expected = array(
-			array(
-				'id' => null,
-				'cost' => 10,
-				'selling' => 12,
-				'retail' => 15
-			),
-			array(
-				'id' => $this->ShopProduct->ShopProductVariant->ShopProductVariantPrice->id,
-				'cost' => '100.00000',
-				'selling' => '150.00000',
-				'retail' => '190.00000'
-			),
-			array(
-				'id' => null,
-				'cost' => 12,
-				'selling' => 15,
-				'retail' => 19
-			),
-		);
-		$result = $this->{$this->modelClass}->find('product', 'active');
-		$result = Hash::extract($result['ShopProductVariant'], '{n}.ShopProductVariantPrice');
-		$this->assertEquals($expected, $result);
+/**
+ * get the price data for a product
+ *
+ * @param string $id the product id
+ *
+ * @return array
+ */
+	protected function _getMainPrice($id = 'active') {
+		$result = $this->{$this->modelClass}->find('product', $id);
+		return Hash::combine($result['ShopProductVariant'], '{n}.id', '{n}.ShopProductVariantPrice');
 	}
 }
