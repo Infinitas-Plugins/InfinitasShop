@@ -596,6 +596,111 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
+ * test multioption pricing overrides
+ *
+ * 1 - large / red
+ * 2 - medium / red
+ * 3 - small / red
+ * 4 - small / blue
+ */
+	public function testProductPriceMultiOption() {
+		$ShopPrice = ClassRegistry::init('Shop.ShopPrice');
+		$this->assertTrue($ShopPrice->deleteAll(array('id !=' => 0)));
+
+		$expected = array(
+			'variant-multi-option-1' => array(
+				'id' => null,
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
+			),
+			'variant-multi-option-2' => array(
+				'id' => null,
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
+			),
+			'variant-multi-option-3' => array(
+				'id' => null,
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
+			),
+			'variant-multi-option-4' => array(
+				'id' => null,
+				'cost' => null,
+				'selling' => null,
+				'retail' => null,
+			)
+		);
+		$result = $this->_getMainPrice('multi-option');
+		$this->assertEquals($expected, $result, 'Prices are not null');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopOptionValue',
+			'foreign_key' => 'option-colour-red',
+			'cost' => 10,
+			'selling' => 10,
+			'retail' => 10
+		));
+		$this->assertTrue((bool)$saved, 'Could not add price for red option');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopOptionValue',
+			'foreign_key' => 'option-size-medium',
+			'cost' => 5,
+			'selling' => 5,
+			'retail' => 5
+		));
+		$this->assertTrue((bool)$saved, 'Could not add price for size medium');
+
+
+		$expected = array_merge($expected, array(
+			'variant-multi-option-1' => array(
+				'id' => null,
+				'cost' => 10.0,
+				'selling' => 10.0,
+				'retail' => 10.0,
+			),
+			'variant-multi-option-2' => array(
+				'id' => null,
+				'cost' => 15.0,
+				'selling' => 15.0,
+				'retail' => 15.0,
+			),
+			'variant-multi-option-3' => array(
+				'id' => null,
+				'cost' => 10.0,
+				'selling' => 10.0,
+				'retail' => 10.0,
+			)
+		));
+		$result = $this->_getMainPrice('multi-option');
+		$this->assertEquals($expected, $result, 'Size option pricing not correct');
+
+		$ShopPrice->create();
+		$saved = $ShopPrice->save(array(
+			'model' => 'Shop.ShopProductVariant',
+			'foreign_key' => 'variant-multi-option-4',
+			'cost' => 25,
+			'selling' => 25,
+			'retail' => 25
+		));
+		$this->assertTrue((bool)$saved, 'Could not variant price for variant 4');
+
+		$expected = array_merge($expected, array(
+			'variant-multi-option-4' => array(
+				'id' => null,
+				'cost' => 25,
+				'selling' => 25,
+				'retail' => 25,
+			)
+		));
+	}
+
+/**
  * get the price data for a product
  *
  * @param string $id the product id
