@@ -701,7 +701,7 @@ class ShopProductTest extends CakeTestCase {
 	}
 
 /**
- * get the price data for a product
+ * get the price data for a product and test min / max
  *
  * @param string $id the product id
  *
@@ -709,6 +709,14 @@ class ShopProductTest extends CakeTestCase {
  */
 	protected function _getMainPrice($id = 'active') {
 		$result = $this->{$this->modelClass}->find('product', $id);
-		return Hash::combine($result['ShopProductVariant'], '{n}.id', '{n}.ShopProductVariantPrice');
+		$prices = Hash::combine($result['ShopProductVariant'], '{n}.id', '{n}.ShopProductVariantPrice');
+
+		$selling = Hash::extract($prices, '{s}.selling');
+		if ($selling) {
+			$this->assertEquals(min($selling), $result[$this->modelClass]['price_min']);
+			$this->assertEquals(max($selling), $result[$this->modelClass]['price_max']);
+		}
+
+		return $prices;
 	}
 }
