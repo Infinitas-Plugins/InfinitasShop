@@ -17,9 +17,6 @@ add cost to stock logs
 stock turn over rate
 stock value + per department / whole store
 
-Move to stock tracking per option combination
-	allow tracking stock of `red shirt` vs just `shirt`
-
 ### Purchase orders
 
 generate purchse orders for products based on the supplier for the products purchased
@@ -64,6 +61,13 @@ link to content layouts for default layout.
 
 ### Products
 
+add field to set option selection
+	default with configs
+	overload per product type, category or product
+	Layouts:
+		table with radios
+		select with ajax
+
 link to content layouts for overload of product type
 product attributes - arb values to a product
 last viewed
@@ -83,6 +87,7 @@ call for price products
 ability to create products on the fly
 
 email admin when stock is low
+	add stock limit field (maybe to variants)
 
 search products by supplier
 
