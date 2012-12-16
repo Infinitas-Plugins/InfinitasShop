@@ -1263,11 +1263,6 @@ class ShopProduct extends ShopAppModel {
 			$this->create();
 		}
 
-		if (!empty($product['ShopBranchStock'])) {
-			$shopBranchStock = $product['ShopBranchStock'];
-			unset($product['ShopBranchStock']);
-		}
-
 		if (!empty($product['ShopCategoriesProduct'])) {
 			$shopCategories = $product['ShopCategoriesProduct'];
 			unset($product['ShopCategoriesProduct']);
@@ -1276,6 +1271,11 @@ class ShopProduct extends ShopAppModel {
 		if (!empty($product['ShopProductImage'])) {
 			$shopImages = $product['ShopProductImage'];
 			unset($product['ShopProductImage']);
+		}
+
+		if (!empty($product['ShopProductVariant'])) {
+			$shopProductVariants = $product['ShopProductVariant'];
+			unset($product['ShopProductVariant']);
 		}
 
 		$saved = (bool)$this->saveAll($product);
@@ -1313,12 +1313,27 @@ class ShopProduct extends ShopAppModel {
 			$saved = $saved && $this->ShopImagesProduct->saveAll($shopImages);
 		}
 
-		if ($create) {
-			foreach ($shopBranchStock as &$stock) {
-				$stock['shop_product_id'] = $productId;
-				$stock['notes'] = __d('shop', 'Initial stock (created product)');
+		if (!empty($shopProductVariants)) {
+			foreach ($shopProductVariants as $variant) {
+				$variant = array_merge(array(
+					'ShopBranchStock' => array()
+				), $variant);
+				$variantStock = (array)$variant['ShopBranchStock'];
+				unset($variant['ShopBranchStock']);
+
+				$variant['ShopProductVariant']['shop_product_id'] = $productId;
+				if (!$this->ShopProductVariant->saveAssociated($variant, array('deep' => true))) {
+					var_dump($this->ShopProductVariant->validationErrors);
+					exit;
+				}
+
+				if ($variantStock) {
+					foreach ($variantStock as $stock) {
+						$stock['shop_product_variant_id'] = $this->ShopProductVariant->id;
+						$this->ShopProductVariant->ShopBranchStock->addStock($stock);
+					}
+				}
 			}
-			$saved = $saved && $this->ShopProductVariant->ShopBranchStock->addStock($shopBranchStock);
 		}
 
 		if ($saved) {
