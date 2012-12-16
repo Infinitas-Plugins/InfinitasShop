@@ -97,12 +97,12 @@ echo $this->Filter->alphabetFilter();
 						));
 					?>&nbsp;
 				</td>
-				<td><?php echo $this->Shop->adminPrice($shopProduct['ShopPrice']); ?>&nbsp;</td>
-				<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopPrice']); ?>&nbsp;</td>
+				<td><?php echo $this->Shop->adminPrice($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
+				<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
 				<td>
 					<?php
 						echo $this->Html->link(
-							$this->Shop->stockValue($shopProduct['ShopProduct']['total_stock'], $shopProduct['ShopPrice']['selling']),
+							$this->Shop->stockValue($shopProduct['ShopProductVariant']),
 							array(
 								'controller' => 'shop_branch_stock_logs',
 								'action' => 'index',
