@@ -24,7 +24,10 @@ foreach ($shopProducts as &$shopProduct) {
 		$this->Html->tag('div', implode('', array(
 			$this->Html->tag('h5', $this->Html->link($shopProduct['ShopProduct']['name'], $url)),
 			$this->Html->tag('p', $this->Text->truncate(strip_tags($shopProduct['ShopProduct']['description'])), array('class' => 'description')),
-			$this->Html->tag('p', $this->Shop->price($shopProduct), array('class' => 'price')),
+			$this->Html->tag('p', __d('shop', 'From %s', $this->Shop->price($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice'], false)), array(
+				'class' => 'price',
+				'style' => 'color: #333'
+			)),
 			$this->Shop->addToCart($shopProduct, array(
 				'class' => 'pull-right'
 			))

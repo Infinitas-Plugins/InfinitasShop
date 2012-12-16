@@ -429,21 +429,9 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function addToCart(array $product, array $options = array()) {
-		$productOptions = Hash::extract($product, 'ShopOption.{n}.required');
-		$optionCount = count($productOptions);
-		$requiredOptionCount = count(array_filter($productOptions));
-		if ($this->request->params['action'] != 'view' && $optionCount) {
-			$buttonType = 'btn-success';
-			$linkText = __dn('shop', '%d option', '%d options', $optionCount, $optionCount);
-			if ($requiredOptionCount && $requiredOptionCount < $optionCount) {
-				$buttonType = 'btn-warning';
-				$linkText = implode(', ', array(
-					$linkText,
-					__d('shop', '%d required', $requiredOptionCount)
-				));
-			}
-
-			return $this->Html->link($linkText, array(
+		$variantCount = count($product['ShopProductVariant']);
+		if ($this->request->params['action'] != 'view' && $variantCount > 1) {
+			return $this->Html->link(__d('shop', '%d variants', $variantCount), array(
 				'plugin' => 'shop',
 				'controller' => 'shop_products',
 				'action' => 'view',
@@ -452,7 +440,7 @@ class ShopHelper extends AppHelper {
 			), array('class' => array(
 				'btn',
 				'btn-small',
-				$buttonType,
+				'btn-warning',
 				'pull-right'
 			)));
 		}
