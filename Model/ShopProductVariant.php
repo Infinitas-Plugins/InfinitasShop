@@ -71,6 +71,13 @@ class ShopProductVariant extends ShopAppModel {
 			'counterScope' => array(
 				'ShopProductVariant.active' => 1
 			),
+		),
+		'ShopImage' => array(
+			'className' => 'Shop.ShopImage',
+			'foreignKey' => 'shop_image_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
 		)
 	);
 
@@ -175,7 +182,10 @@ class ShopProductVariant extends ShopAppModel {
 			$fields = array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.shop_product_id',
-				$this->ShopProduct->alias . '.product_code'
+				$this->alias . '.shop_image_id',
+				$this->ShopProduct->alias . '.product_code',
+				$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+				$this->ShopImage->alias . '.image',
 			);
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
@@ -193,6 +203,7 @@ class ShopProductVariant extends ShopAppModel {
 			}
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariantPrice->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariantSize->fullModelName());
 
