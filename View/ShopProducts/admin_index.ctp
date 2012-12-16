@@ -99,19 +99,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td><?php echo $this->Shop->adminPrice($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
 				<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
-				<td>
-					<?php
-						echo $this->Html->link(
-							$this->Shop->stockValue($shopProduct['ShopProductVariant']),
-							array(
-								'controller' => 'shop_branch_stock_logs',
-								'action' => 'index',
-								'ShopBranchStockLog.shop_product_id' => $shopProduct['ShopProduct']['id']
-							),
-							array('escape' => false)
-						);
-					?>&nbsp;
-				</td>
+				<td><?php echo $this->Shop->stockValue($shopProduct['ShopProductVariant']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?></td>
 				<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
 			</tr>
