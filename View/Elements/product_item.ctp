@@ -5,7 +5,7 @@ $link = $this->Html->link($shopProduct['ShopProduct']['name'], array(
 	'action' => 'view',
 	'category' => $shopProduct['ShopCategory'][0]['slug'],
 	'slug' => $shopProduct['ShopProduct']['slug']
-)) . $this->Shop->price($shopProduct);
+)) . $this->Shop->price(array('selling' => $shopProduct['ShopProduct']['price_min']));
 
 echo $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h5', $link),
