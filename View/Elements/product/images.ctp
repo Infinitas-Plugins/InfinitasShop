@@ -1,15 +1,26 @@
 <?php
 foreach ($shopProduct['ShopProductVariant'] as &$variant) {
 	$variant = $this->Html->link($this->Html->image($variant['ShopImage']['image_thumb']), $variant['ShopImage']['image_full'], array(
-		'class' => 'thickbox',
+		'title' => $variant['product_code'],
+		'rel' => 'gallery',
 		'escape' => false
 	));
 }
 
-$shopProduct['ShopProductVariant'] = $this->Design->arrayToList($shopProduct['ShopProductVariant'], array(
-	'ul' => 'thumbnails',
-	'li' => 'span2'
-));
+if ($shopProduct['ShopProductVariant']) {
+	$shopProduct['ShopProductVariant'] = $this->Design->arrayToList($shopProduct['ShopProductVariant'], array(
+		'ul' => 'thumbnails',
+		'li' => 'span2'
+	));
+	$shopProduct['ShopProductVariant'] = $this->Html->tag('div', $shopProduct['ShopProductVariant'], array(
+		'id' => 'gallery',
+		'data-toggle' => 'modal-gallery',
+		'data-target' => '#modal-gallery'
+	));
+} else {
+	$shopProduct['ShopProductVariant'] = null;
+}
+
 
 $colourLinks = implode('', array(
 	$this->Html->link(__d('shop', 'White'), '#', array(
@@ -68,3 +79,15 @@ echo $this->Html->tag('div', implode('', array(
 	)),
 	!empty($shopProduct['ShopProductVariant']) ? $shopProduct['ShopProductVariant'] : null
 )), array('class' => 'thumbnail span4'));
+
+?>
+<div id="modal-gallery" class="modal modal-gallery hide fade" tabindex="-1">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3 class="modal-title"></h3>
+    </div>
+    <div class="modal-body"><div class="modal-image"></div></div>
+    <div class="modal-footer">
+        <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000"><i class="icon-play icon-white"></i> Slideshow</a>
+    </div>
+</div>
