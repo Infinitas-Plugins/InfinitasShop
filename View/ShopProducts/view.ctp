@@ -14,9 +14,9 @@ echo $this->Form->create('ShopListProduct', array('action' => 'add'));
 		$this->Html->tag('div', implode('', array(
 			$this->element('Shop.product/specs', array('shopProduct' => $shopProduct)),
 			$this->element('Shop.product/options', array('shopProduct' => $shopProduct)),
-			$this->element('Shop.product/add_to_cart', array('shopProduct' => $shopProduct)),
 			$this->element('Shop.product/rating', array('shopProduct' => $shopProduct)),
 			$this->element('Shop.product/share'),
+			$this->element('Shop.product/add_to_cart', array('shopProduct' => $shopProduct)),
 			$this->element('Shop.product/contact'),
 		)), array('class' => 'span7'))
 	)), array('class' => 'product-info'));

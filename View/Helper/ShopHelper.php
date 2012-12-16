@@ -474,19 +474,20 @@ class ShopHelper extends AppHelper {
 /**
  * generate the pricing information
  *
- * @param array $product
- * @return type
+ * @param array $price the price information
+ *
+ * @return string
  */
-	public function price(array $product, $span = true) {
-		if (empty($product['ShopPrice']['selling'])) {
+	public function price(array $price, $span = true) {
+		if (empty($price['selling'])) {
 			return __d('shop', 'Call for price');
 		}
 
 		if (!$span) {
-			return $this->currency($product['ShopPrice']['selling']);
+			return $this->currency($price['selling']);
 		}
 
-		return $this->Html->tag('span', $this->currency($product['ShopPrice']['selling']), array(
+		return $this->Html->tag('span', $this->currency($price['selling']), array(
 			'class' => 'price price-now'
 		));
 	}

@@ -11,9 +11,16 @@ $contents = array(
 	'reviews'
 );
 
-if ($shopProduct['ShopOption']) {
+if (!empty($shopProduct['ShopProductVariant'])) {
 	$tabs[] = __d('shop', 'Options');
 	$contents[] = $this->element('Shop.product/option_description', array(
+		'shopProduct' => $shopProduct
+	));
+}
+
+if (!empty($shopProduct['ShopImagesProduct'])) {
+	$tabs[] = __d('shop', 'Additional images');
+	$contents[] = $this->element('Shop.product/additional_images', array(
 		'shopProduct' => $shopProduct
 	));
 }
