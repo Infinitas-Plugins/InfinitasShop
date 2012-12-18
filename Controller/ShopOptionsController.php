@@ -86,6 +86,17 @@ class ShopOptionsController extends ShopAppController {
  * @return void
  */
 	public function admin_add() {
+		if (!empty($this->request->data)) {
+			foreach ($this->request->data['ShopOptionValue'] as $k => $optionValue) {
+				if (empty($optionValue['name'])) {
+					unset(
+						$this->request->data['ShopOptionValue'][$k],
+						$this->request->data['ShopPrice'][$k],
+						$this->request->data['ShopSize'][$k]
+					);
+				}
+			}
+		}
 		parent::admin_add();
 
 	}
