@@ -22,6 +22,7 @@ class ShopProductTest extends CakeTestCase {
 		'plugin.shop.shop_supplier',
 		'plugin.shop.shop_branch',
 		'plugin.shop.shop_branch_stock',
+		'plugin.shop.shop_branch_stock_log',
 		'plugin.shop.shop_categories_product',
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_images_product',
@@ -718,5 +719,122 @@ class ShopProductTest extends CakeTestCase {
 		}
 
 		return $prices;
+	}
+
+	public function testSaveProduct() {
+		$product = array(
+			'ShopProduct' => array(
+				'name' => 'New product',
+				'description' => 'New product',
+				'active' => true,
+			),
+			'ShopCategoriesProduct' => array(
+				'active',
+				'another'
+			),
+			'ShopProductImage' => array(
+				'shared-image-1',
+				'shared-image-2'
+			),
+			'ShopProductVariant' => array(
+				array(
+					'ShopProductVariant' => array(
+						'master' => true,
+						'shop_image_id' => 'image-spotlight-multi-option'
+					),
+					'ShopProductVariantPrice' => array(
+						'model' => 'Shop.ShopProductVariant',
+						'cost' => 100,
+						'selling' => 200,
+						'retail' => 300
+					)
+				),
+				array(
+					'ShopProductVariant' => array(
+						'master' => false,
+					),
+					'ShopBranchStock' => array(
+						array(
+							'change' => 10,
+							'shop_branch_id' => 'branch-1'
+						),
+						array(
+							'change' => 100,
+							'shop_branch_id' => 'branch-2'
+						)
+					),
+					'ShopOptionVariant' => array(
+						array(
+							'shop_option_value_id' => 'option-size-large',
+						),
+						array(
+							'shop_option_value_id' => 'option-colour-red'
+						)
+					),
+					'ShopProductVariantSize' => array(
+						'model' => 'Shop.ShopProductVariant',
+						'product_length' => 555
+					)
+				),
+				array(
+					'ShopProductVariant' => array(
+						'master' => false,
+					),
+					'ShopBranchStock' => array(
+						array(
+							'change' => 20,
+							'shop_branch_id' => 'branch-1'
+						)
+					),
+					'ShopOptionVariant' => array(
+						array(
+							'shop_option_value_id' => 'option-colour-blue'
+						),
+					),
+					'ShopProductVariantPrice' => array(
+						'model' => 'Shop.ShopProductVariant',
+						'cost' => 111,
+						'selling' => 222,
+						'retail' => 333
+					)
+				)
+			)
+		);
+		$result = $this->{$this->modelClass}->saveProduct($product);
+		$this->assertEmpty($this->{$this->modelClass}->validationErrors);
+		$this->assertTrue((bool)$result);
+
+		$result = $this->{$this->modelClass}->find('product', $this->{$this->modelClass}->id);
+
+		$expected = array(
+			'price_max' => '222.00000',
+			'price_min' => '203'
+		);
+		$price = array(
+			'price_max' => $result['ShopProduct']['price_max'],
+			'price_min' => $result['ShopProduct']['price_min']
+		);
+		$this->assertEquals($expected, $price);
+
+		$categories = Hash::extract($result, 'ShopCategory.{n}.id');
+		$this->assertEquals($product['ShopCategoriesProduct'], $categories);
+
+		$images = Hash::extract($result, 'ShopImagesProduct.{n}.id');
+		$this->assertEquals($product['ShopProductImage'], $images);
+
+		$stockCount = Hash::apply($result['ShopProductVariant'], '{n}.ShopBranchStock.{n}.id', 'count');
+		$this->assertEquals(3, $stockCount);
+
+		$largeRed = current(Hash::extract($result['ShopProductVariant'], '{n}[product_code=redl]'));
+		$this->assertEquals(2, count($largeRed['ShopOptionVariant']));
+		$this->assertEquals(110, array_sum(Hash::extract($largeRed, 'ShopBranchStock.{n}.stock')));
+		$this->assertEquals(102, $largeRed['ShopProductVariantPrice']['cost']);
+		$this->assertEquals(555, $largeRed['ShopProductVariantSize']['product_length']);
+
+		$blue = current(Hash::extract($result['ShopProductVariant'], '{n}[product_code=blue]'));
+		$this->assertEquals(1, count($blue['ShopOptionVariant']));
+		$this->assertEquals(20, array_sum(Hash::extract($blue, 'ShopBranchStock.{n}.stock')));
+		$this->assertEquals(111, $blue['ShopProductVariantPrice']['cost']);
+		$this->assertEmpty(array_filter($blue['ShopProductVariantSize']));
 	}
 }

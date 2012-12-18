@@ -1316,15 +1316,18 @@ class ShopProduct extends ShopAppModel {
 		if (!empty($shopProductVariants)) {
 			foreach ($shopProductVariants as $variant) {
 				$variant = array_merge(array(
+					'ShopProductVariant' => array(),
 					'ShopBranchStock' => array()
 				), $variant);
 				$variantStock = (array)$variant['ShopBranchStock'];
 				unset($variant['ShopBranchStock']);
 
 				$variant['ShopProductVariant']['shop_product_id'] = $productId;
+				$this->ShopProductVariant->create();
 				if (!$this->ShopProductVariant->saveAssociated($variant, array('deep' => true))) {
 					var_dump($this->ShopProductVariant->validationErrors);
-					exit;
+					$saved = false;
+					break;
 				}
 
 				if ($variantStock) {
