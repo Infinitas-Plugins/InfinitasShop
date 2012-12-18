@@ -24,11 +24,20 @@
 			$this->request->data['ShopOptionValue'] = array();
 		}
 		$table = array();
-		foreach ($this->request->data['ShopOptionValue'] as $shopOptionValue) {
+		$k = 0;
+		foreach ($this->request->data['ShopOptionValue'] as $k => $shopOptionValue) {
+			$shopOptionValueForm = 'ShopOptionValue.' . $k;
+			echo $this->Form->input($shopOptionValueForm . '.id', array(
+				'value' => $shopOptionValue['id'],
+				'type' => 'hidden'
+			));
 			$table[] = sprintf(
-				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s</td><td>%s&nbsp;</td></tr>',
+				'<tr><td title="%s">%s&nbsp;</td><td>%s&nbsp;</td><td>%s&nbsp;</td><td>%s</td><td>%s&nbsp;</td></tr>',
 				__d('shop', 'Details :: %s', $shopOptionValue['description']),
 				$shopOptionValue['name'],
+				$this->Design->colourPicker($shopOptionValueForm . '.colour', array(
+					'value' => $shopOptionValue['colour']
+				)),
 				$this->Design->label($shopOptionValue['product_code']),
 				$this->Infinitas->date($shopOptionValue),
 				implode('', array(
@@ -36,10 +45,14 @@
 				))
 			);
 		}
+		$shopOptionValueForm = 'ShopOptionValue.' . ++$k;
 		$table = sprintf(
 			'<table class="listing"><thead>%s</thead><tbody>%s</tbody></table>',
 			$this->Infinitas->adminTableHeader(array(
 				__d('shop', 'Name'),
+				__d('shop', 'Colour') => array(
+					'class' => 'small'
+				),
 				__d('shop', 'Code') => array(
 					'class' => 'large'
 				),
@@ -72,12 +85,12 @@
 			$table . implode('', array(
 				$this->Html->tag('label', __d('shop', 'Add an option value'), array('for' => 'ShopOptionValue0Id')),
 				$this->Html->tag('div', implode('', array(
-					$this->Form->input('ShopOptionValue.0.id'),
+					$this->Form->input($shopOptionValueForm . '.id'),
 					$this->Html->tag('div', implode('', array(
-						$this->Form->input('ShopOptionValue.0.name', $smallField + array('placeholder' => __d('shop', 'Value name'))),
-						$this->Form->input('ShopOptionValue.0.product_code', $smallField + array('placeholder' => __d('shop', 'Product Code'))),
+						$this->Form->input($shopOptionValueForm . '.name', $smallField + array('placeholder' => __d('shop', 'Value name'))),
+						$this->Form->input($shopOptionValueForm . '.product_code', $smallField + array('placeholder' => __d('shop', 'Product Code'))),
 					)), array('class' => 'smaller')),
-					$this->Form->input('ShopOptionValue.0.description', array(
+					$this->Form->input($shopOptionValueForm . '.description', array(
 						'style' => 'height: 70px;',
 						'label' => false,
 						'placeholder' => __d('shop', 'description')

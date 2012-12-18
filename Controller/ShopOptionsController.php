@@ -18,16 +18,6 @@
  */
 
 class ShopOptionsController extends ShopAppController {
-/**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
 
 /**
  * the index method
@@ -88,7 +78,7 @@ class ShopOptionsController extends ShopAppController {
 	public function admin_add() {
 		if (!empty($this->request->data)) {
 			foreach ($this->request->data['ShopOptionValue'] as $k => $optionValue) {
-				if (empty($optionValue['name'])) {
+				if (empty($optionValue['id'])) {
 					unset(
 						$this->request->data['ShopOptionValue'][$k],
 						$this->request->data['ShopPrice'][$k],
@@ -114,7 +104,7 @@ class ShopOptionsController extends ShopAppController {
 	public function admin_edit($id = null) {
 		if (!empty($this->request->data)) {
 			foreach ($this->request->data['ShopOptionValue'] as $k => $optionValue) {
-				if (empty($optionValue['name'])) {
+				if (empty($optionValue['id'])) {
 					unset(
 						$this->request->data['ShopOptionValue'][$k],
 						$this->request->data['ShopPrice'][$k],
@@ -128,6 +118,10 @@ class ShopOptionsController extends ShopAppController {
 				'ShopOptionValue' => array(
 					'ShopPrice',
 					'ShopSize',
+					'order' => array(
+						'ShopOptionValue.colour',
+						'ShopOptionValue.product_code',
+					)
 				),
 				'ShopProductTypesOption'
 			)
