@@ -269,9 +269,9 @@ class ShopListProduct extends ShopAppModel {
 
 /**
  * Update the contents of a list
- * 
+ *
  * @param array $listProducts the products to update
- * 
+ *
  * @return boolean
  */
 	public function updateListProducts(array $listProducts) {
@@ -307,7 +307,7 @@ class ShopListProduct extends ShopAppModel {
  *
  * @return boolean
  */
-	public function delete($id, $cascade = true) {
+	public function delete($id = null, $cascade = true) {
 		if (AuthComponent::user('group_id') !== 1) {
 			$this->recursive = 0;
 			$id = $this->field($this->primaryKey, array(
