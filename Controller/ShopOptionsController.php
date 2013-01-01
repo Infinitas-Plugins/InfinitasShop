@@ -78,7 +78,7 @@ class ShopOptionsController extends ShopAppController {
 	public function admin_add() {
 		if (!empty($this->request->data)) {
 			foreach ($this->request->data['ShopOptionValue'] as $k => $optionValue) {
-				if (empty($optionValue['id'])) {
+				if (!array_filter($optionValue)) {
 					unset(
 						$this->request->data['ShopOptionValue'][$k],
 						$this->request->data['ShopPrice'][$k],
@@ -104,7 +104,7 @@ class ShopOptionsController extends ShopAppController {
 	public function admin_edit($id = null) {
 		if (!empty($this->request->data)) {
 			foreach ($this->request->data['ShopOptionValue'] as $k => $optionValue) {
-				if (empty($optionValue['id'])) {
+				if (!array_filter($optionValue)) {
 					unset(
 						$this->request->data['ShopOptionValue'][$k],
 						$this->request->data['ShopPrice'][$k],
@@ -119,7 +119,6 @@ class ShopOptionsController extends ShopAppController {
 					'ShopPrice',
 					'ShopSize',
 					'order' => array(
-						'ShopOptionValue.colour',
 						'ShopOptionValue.product_code',
 					)
 				),
