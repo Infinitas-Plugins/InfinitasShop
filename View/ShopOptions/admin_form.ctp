@@ -36,7 +36,8 @@
 				__d('shop', 'Details :: %s', $shopOptionValue['description']),
 				$shopOptionValue['name'],
 				$this->Design->colourPicker($shopOptionValueForm . '.colour', array(
-					'value' => $shopOptionValue['colour']
+					'value' => $shopOptionValue['colour'],
+					'type' => 'text',
 				)),
 				$this->Design->label($shopOptionValue['product_code']),
 				$this->Infinitas->date($shopOptionValue),
@@ -51,7 +52,7 @@
 			$this->Infinitas->adminTableHeader(array(
 				__d('shop', 'Name'),
 				__d('shop', 'Colour') => array(
-					'class' => 'small'
+					'class' => 'larger'
 				),
 				__d('shop', 'Code') => array(
 					'class' => 'large'
@@ -89,6 +90,11 @@
 					$this->Html->tag('div', implode('', array(
 						$this->Form->input($shopOptionValueForm . '.name', $smallField + array('placeholder' => __d('shop', 'Value name'))),
 						$this->Form->input($shopOptionValueForm . '.product_code', $smallField + array('placeholder' => __d('shop', 'Product Code'))),
+						$this->Html->tag('span', $this->Design->colourPicker($shopOptionValueForm . '.colour', array(
+							'value' => '',
+							'type' => 'text',
+							'style' => 'width: 100px'
+						)))
 					)), array('class' => 'smaller')),
 					$this->Form->input($shopOptionValueForm . '.description', array(
 						'style' => 'height: 70px;',
