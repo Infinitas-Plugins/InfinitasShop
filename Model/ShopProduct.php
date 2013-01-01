@@ -1082,16 +1082,20 @@ class ShopProduct extends ShopAppModel {
 			'shop_product_id' => $productIds
 		));
 
-		$productVariants = $this->ShopProductVariant->find('variants', array(
-			'master' => false,
-			'override' => $query['override'],
-			'shop_product_id' => $productIds
-		));
-
 		foreach ($results as &$result) {
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopProductVariant->alias . 'Master'] = current(Hash::extract($masterVariants, $extractTemplate));
-			$result[$this->ShopProductVariant->alias] = Hash::extract($productVariants, $extractTemplate);
+
+			$result[$this->ShopProductVariant->alias] = $this->ShopProductVariant->find('variants', array(
+				'master' => false,
+				'override' => $query['override'],
+				'shop_product_id' => $result[$this->alias][$this->primaryKey]
+			));
+
+			$productSelling = $result[$this->ShopProductVariant->alias . 'Master']['ShopProductVariantPrice']['selling'];
+			foreach ($result[$this->ShopProductVariant->alias] as &$variant) {
+				$variant['ShopProductVariantPrice']['difference'] = $variant['ShopProductVariantPrice']['selling'] - $productSelling;
+			}
 			$this->_productOverride($result);
 		}
 
