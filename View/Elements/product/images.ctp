@@ -1,5 +1,9 @@
 <?php
 foreach ($shopProduct['ShopProductVariant'] as &$variant) {
+	if (empty($variant['ShopImage']['id'])) {
+		$variant = null;
+		continue;
+	}
 	$variant = $this->Html->link($this->Html->image($variant['ShopImage']['image_thumb']), $variant['ShopImage']['image_full'], array(
 		'title' => $variant['product_code'],
 		'rel' => 'gallery',
@@ -7,7 +11,7 @@ foreach ($shopProduct['ShopProductVariant'] as &$variant) {
 	));
 }
 
-if ($shopProduct['ShopProductVariant']) {
+if (array_filter($shopProduct['ShopProductVariant'])) {
 	$shopProduct['ShopProductVariant'] = $this->Design->arrayToList($shopProduct['ShopProductVariant'], array(
 		'ul' => 'thumbnails',
 		'li' => 'span2'

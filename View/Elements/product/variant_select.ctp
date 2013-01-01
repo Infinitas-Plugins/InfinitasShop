@@ -5,7 +5,15 @@ foreach ($shopProduct['ShopProductVariant'] as $k => &$variant) {
 		if (empty($variant['ShopOptionVariant'][0])) {
 			continue;
 		}
-		$options[] = $variant['ShopOptionVariant'][0]['ShopOptionValue']['name'];
+
+		$name = $variant['ShopOptionVariant'][0]['ShopOptionValue']['name'];
+		if ($variant['ShopProductVariantPrice']['difference']) {
+			$price = $variant['ShopProductVariantPrice']['selling'] + $variant['ShopProductVariantPrice']['difference'];
+			if ($variant['ShopProductVariantPrice']['id'] || $price) {
+				$name = sprintf('%s :: %s', $name, round($variant['ShopProductVariantPrice']['difference'], 2));
+			}
+		}
+		$options[$variant['id']] = $name;
 	} else {
 		/*foreach ($variant['ShopOptionVariant'] as $option) {
 			$rows[] = $this->Html->tag('dt', $option['ShopOption']['name']);
@@ -14,6 +22,7 @@ foreach ($shopProduct['ShopProductVariant'] as $k => &$variant) {
 		$this->Html->tag('dl', implode('', $rows), array('class' => 'dl-horizontal'));*/
 	}
 }
+asort($options);
 
 $formInput = 'ShopProductVariant.' . $k;
 echo $this->Form->input($formInput . '.id', array(

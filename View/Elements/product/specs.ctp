@@ -1,5 +1,6 @@
 <?php
 $specs = array(
+	__d('shop', 'Base price') => $this->Shop->price($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice'], false),
 	__d('shop', 'Available Stock') => $shopProduct['ShopProduct']['total_stock'],
 	__d('shop', 'Views') => $shopProduct['ShopProduct']['views'],
 	__d('shop', 'Product Type') => $shopProduct['ShopProductType']['name'],
