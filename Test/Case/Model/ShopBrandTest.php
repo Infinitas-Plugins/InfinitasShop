@@ -19,6 +19,7 @@ class ShopBrandTest extends CakeTestCase {
 		'plugin.shop.shop_image',
 		'plugin.shop.shop_supplier',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_product_variant',
 
 		'plugin.view_counter.view_counter_view'
 	);
