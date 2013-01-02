@@ -300,4 +300,19 @@ class ShopEvents extends AppEvents {
 		return $return;
 	}
 
+	public function onUserProfile(Event $Event, $user) {
+		$Html = $Event->Handler->_View->Html;
+
+		return array(
+			array(
+				'title' => __d('shop', 'Latest orders'),
+				'content' => ''
+			),
+			array(
+				'title' => __d('shop', 'Products Viewed'),
+				'content' => ''
+			)
+		);
+	}
+
 }
