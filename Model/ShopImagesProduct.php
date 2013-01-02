@@ -78,7 +78,7 @@ class ShopImagesProduct extends ShopAppModel {
 	protected function _findImages($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_id'])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for images');
 			}
 
 			$query['fields'] = array_merge(

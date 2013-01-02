@@ -431,7 +431,10 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function addToCart(array $product, array $options = array()) {
-		$variantCount = count($product['ShopProductVariant']);
+		$variantCount = $product['ShopProduct']['total_variants'];
+		if (!empty($product['ShopProductVariant'])) {
+			$variantCount = count($product['ShopProductVariant']);
+		}
 		if ($this->request->params['action'] != 'view' && $variantCount > 1) {
 			return $this->Html->link(__d('shop', '%d variants', $variantCount), array(
 				'plugin' => 'shop',

@@ -106,7 +106,7 @@ class ShopSpotlight extends ShopAppModel {
 	protected function _findSpotlights($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_id'])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for spotlights');
 			}
 
 			$query['fields'] = array_merge(

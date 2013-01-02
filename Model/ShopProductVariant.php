@@ -171,7 +171,7 @@ class ShopProductVariant extends ShopAppModel {
 	protected function _findVariants($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_id'])) {
-				throw new InvalidArgumentException(__d('shop', 'No product selected'));
+				throw new InvalidArgumentException(__d('shop', 'No product selected for variants'));
 			}
 			$query = array_merge(array(
 				'extract' => true,

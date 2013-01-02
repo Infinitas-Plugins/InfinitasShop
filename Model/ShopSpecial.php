@@ -15,7 +15,7 @@ class ShopSpecial extends ShopAppModel {
 
 /**
  * custom find methods
- * 
+ *
  * @var array
  */
 	public $findMethods = array(
@@ -24,7 +24,7 @@ class ShopSpecial extends ShopAppModel {
 
 /**
  * has many relations
- * 
+ *
  * @var array
  */
 	public $hasMany = array(
@@ -45,7 +45,7 @@ class ShopSpecial extends ShopAppModel {
 
 /**
  * overload construct for translated validation errors
- * 
+ *
  * @param boolean $id    [description]
  * @param [type]  $table [description]
  * @param [type]  $ds    [description]
@@ -100,9 +100,9 @@ class ShopSpecial extends ShopAppModel {
 
 /**
  * validate the start date is before the end date
- * 
+ *
  * @param array $field the start date
- * 
+ *
  * @return boolean
  */
 	public function validateInTheFuture(array $field) {
@@ -113,9 +113,9 @@ class ShopSpecial extends ShopAppModel {
 
 /**
  * validate the end date is after the start date
- * 
+ *
  * @param array $field the start date
- * 
+ *
  * @return boolean
  */
 	public function validateAfterStart(array $field) {
@@ -138,7 +138,7 @@ class ShopSpecial extends ShopAppModel {
 	protected function _findSpecials($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_id'])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for specials');
 			}
 
 			$this->virtualFields['shop_product_id'] = $this->ShopProductsSpecial->fullFieldName('shop_product_id');

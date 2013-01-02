@@ -267,7 +267,7 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findProductShippingDataProvider
  */
 	public function testFindProductShipping($data, $expected) {
-		$this->skipIf(true);
+		$this->markTestIncomplete("Need to recalculate shipping");
 		$results = $this->{$this->modelClass}->find('productShipping', $data);
 		$this->assertEquals($expected, $results);
 	}
@@ -304,7 +304,7 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findProductListShippingDataProvider
  */
 	public function testFindProductListShipping($data, $expected) {
-		$this->skipIf(true);
+		$this->markTestIncomplete("Redo cart page");
 		App::uses('CakeSession', 'Model/Datasource');
 		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
@@ -346,7 +346,7 @@ class ShopProductTest extends CakeTestCase {
  * test deleting a product removes related data
  */
 	public function testProductDeleteRelations() {
-		$this->skipIf(true);
+		$this->markTestIncomplete("Relations have changed");
 		$relations = array(
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
@@ -378,7 +378,7 @@ class ShopProductTest extends CakeTestCase {
  * @return void
  */
 	public function testFindCostForList() {
-		$this->skipIf(true);
+		$this->markTestIncomplete("Need to check product variants now");
 		CakeSession::write('Auth.User.id', 'bob');
 		CakeSession::write('Shop.current_list', 'shop-list-bob-cart');
 
@@ -517,7 +517,8 @@ class ShopProductTest extends CakeTestCase {
 			'id' => $variantPriceOverride,
 			'cost' => 10,
 			'selling' => 15,
-			'retail' => 20
+			'retail' => 20,
+			'difference' => 15
 		);
 
 		$result = $this->_getMainPrice();
@@ -533,18 +534,21 @@ class ShopProductTest extends CakeTestCase {
 		));
 		$this->assertTrue((bool)$saved, 'Could not save the price for the master variant');
 
+		$expected['variant-active-1']['difference'] = -135;
 		$expected = array_merge($expected, array(
 			'variant-active-2' => array(
 				'id' => null,
 				'cost' => 125,
 				'selling' => 150,
-				'retail' => 175
+				'retail' => 175,
+				'difference' => -150
 			),
 			'variant-active-3' => array(
 				'id' => null,
 				'cost' => 125,
 				'selling' => 150,
-				'retail' => 175
+				'retail' => 175,
+				'difference' => -150
 			)
 		));
 		$result = $this->_getMainPrice();
@@ -575,7 +579,8 @@ class ShopProductTest extends CakeTestCase {
 				'id' => null,
 				'cost' => 125.5,
 				'selling' => 150.5,
-				'retail' => 175.5
+				'retail' => 175.5,
+				'difference' => -150.0
 			)
 		));
 		$result = $this->_getMainPrice();
@@ -588,7 +593,8 @@ class ShopProductTest extends CakeTestCase {
 				'id' => null,
 				'cost' => 125.9,
 				'selling' => 150.9,
-				'retail' => 175.9
+				'retail' => 175.9,
+				'difference' => -150.0
 			)
 		));
 		$result = $this->_getMainPrice();

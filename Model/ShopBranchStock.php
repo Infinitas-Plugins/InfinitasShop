@@ -115,7 +115,7 @@ class ShopBranchStock extends ShopAppModel {
 	protected function _findProductStock($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_variant_id'])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for stock');
 			}
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -166,7 +166,7 @@ class ShopBranchStock extends ShopAppModel {
 	protected function _findIsInStock($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_product_variant_id'])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for stock check');
 			}
 
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->alias);

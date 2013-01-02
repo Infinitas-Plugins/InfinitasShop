@@ -343,7 +343,7 @@ class ShopProduct extends ShopAppModel {
 
 			if (empty($query['shop_product_id'])) {
 				if (empty($query['shop_product_variant_id'])) {
-					throw new InvalidArgumentException(__d('shop', 'No product selected'));
+					throw new InvalidArgumentException(__d('shop', 'No product selected for order quantity'));
 				}
 			}
 
@@ -776,7 +776,9 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findPaginated($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			$query = $this->_findBasics($state, $query);
+			$query = $this->_findBasics($state, array_merge(array(
+				'variants' => false
+			), $query));
 
 			$query['fields'][] = $this->fullFieldName('description');
 
@@ -804,14 +806,14 @@ class ShopProduct extends ShopAppModel {
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$shopSpotlights = $this->ShopSpotlight->find('spotlights', $options);
-		$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
+		//$shopOptions = $this->ShopProductType->ShopProductTypesOption->ShopOption->find('options', $options);
 		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result['ShopCategory'] = Hash::extract($shopCategories, $extractTemplate);
 			$result['ShopSpecial'] = Hash::extract($shopSpecials, $extractTemplate);
 			$result['ShopSpotlight'] = Hash::extract($shopSpotlights, $extractTemplate);
-			$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
+			//$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
 		}
 
 		return $results;
@@ -888,7 +890,7 @@ class ShopProduct extends ShopAppModel {
 	protected function _findProduct($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query[0])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected to find');
 			}
 
 			$query = $this->_findBasics($state, $query);
@@ -953,7 +955,7 @@ class ShopProduct extends ShopAppModel {
 	protected function _findProductOptions($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query[0])) {
-				throw new InvalidArgumentException('No product selected');
+				throw new InvalidArgumentException('No product selected for options');
 			}
 
 			$query['fields'] = array(
@@ -1009,9 +1011,11 @@ class ShopProduct extends ShopAppModel {
 	protected function _findBasics($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$query = array_merge(array(
-				'override' => true
+				'override' => true,
+				'variants' => true
 			), $query);
 			$this->virtualFields['total_stock'] = sprintf('SUM(%s.stock)', $this->ShopProductVariant->ShopBranchStock->alias);
+			$this->virtualFields['total_variants'] = sprintf('COUNT(%s.id) - 1', $this->ShopProductVariant->alias);
 
 			$fields = array(
 				'DISTINCT(ActiveCategory.id)',
@@ -1024,6 +1028,7 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.sales',
 				$this->alias . '.active',
 				$this->alias . '.total_stock',
+				$this->alias . '.total_variants',
 
 				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey,
 				$this->ShopProductType->alias . '.' . $this->ShopProductType->displayField,
@@ -1050,21 +1055,24 @@ class ShopProduct extends ShopAppModel {
 					)
 				));
 			}
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.' . $this->primaryKey . ' IS NOT NULL'
+			));
 
 			$query['joins'] = array_filter($query['joins']);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopImage->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopBrand->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductType);
+			$query['joins'][] = $this->autoJoinModel($this->ShopImage);
+			$query['joins'][] = $this->autoJoinModel($this->ShopBrand);
+			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant->fullModelName());
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopBranchStock->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant);
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopBranchStock);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
+			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct);
 			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopCategoriesProduct->fullModelName(),
-				'model' => $this->ShopCategoriesProduct->ShopCategory->fullModelName(),
+				'from' => $this->ShopCategoriesProduct,
+				'model' => $this->ShopCategoriesProduct->ShopCategory,
 				'alias' => 'ActiveCategory'
 			));
 
@@ -1082,9 +1090,17 @@ class ShopProduct extends ShopAppModel {
 			'shop_product_id' => $productIds
 		));
 
-		foreach ($results as &$result) {
+		foreach ($results as $k => &$result) {
+			if (empty($result[$this->alias][$this->primaryKey])) {
+				unset($results[$k]);
+				continue;
+			}
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopProductVariant->alias . 'Master'] = current(Hash::extract($masterVariants, $extractTemplate));
+
+			if ($query['variants'] == false) {
+				continue;
+			}
 
 			$result[$this->ShopProductVariant->alias] = $this->ShopProductVariant->find('variants', array(
 				'master' => false,
