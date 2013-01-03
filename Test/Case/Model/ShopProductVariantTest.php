@@ -23,6 +23,7 @@ class ShopProductVariantTest extends CakeTestCase {
 		'plugin.shop.shop_size',
 		'plugin.shop.shop_branch_stock',
 		'plugin.shop.shop_brand',
+		'plugin.shop.shop_image',
 
 		'plugin.view_counter.view_counter_view',
 	);
@@ -97,11 +98,20 @@ class ShopProductVariantTest extends CakeTestCase {
  * test find variant data
  */
 	public function testFindVariantData() {
-		$this->markTestIncomplete("Test needs to be updated to reflect changed internals");
 		$expected = array(
 			'id' => 'variant-active-master',
 			'shop_product_id' => 'active',
 			'product_code' => 'active-:option-size',
+			'shop_image_id' => null,
+			'ShopImage' => array(
+				'id' => null,
+				'image' => null,
+				'image_full' => '/filemanager/img/no-image.png',
+				'image_large' => '/filemanager/img/no-image.png',
+				'image_medium' => '/filemanager/img/no-image.png',
+				'image_small' => '/filemanager/img/no-image.png',
+				'image_thumb' => '/filemanager/img/no-image.png',
+			)
 		);
 		$result = $this->Model->find('variants', array(
 			'master' => true,
@@ -119,6 +129,16 @@ class ShopProductVariantTest extends CakeTestCase {
 			'id' => 'variant-active-1',
 			'shop_product_id' => 'active',
 			'product_code' => 'active-s',
+			'shop_image_id' => null,
+			'ShopImage' => array(
+				'id' => null,
+				'image' => null,
+				'image_full' => '/filemanager/img/no-image.png',
+				'image_large' => '/filemanager/img/no-image.png',
+				'image_medium' => '/filemanager/img/no-image.png',
+				'image_small' => '/filemanager/img/no-image.png',
+				'image_thumb' => '/filemanager/img/no-image.png',
+			)
 		);
 		$result = $this->Model->find('variants', array(
 			'master' => false,
