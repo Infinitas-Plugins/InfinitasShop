@@ -39,6 +39,19 @@ class ShopSizeFixture extends CakeTestFixture {
  */
 	public $records = array(
 		array(
+			'id' => 'product-active',
+			'model' => 'Shop.ShopProductVariant',
+			'foreign_key' => 'variant-active-master',
+			'product_width' => 10.5,
+			'product_height' => 10.5,
+			'product_length' => 10.5,
+			'shipping_width' => 12.5,
+			'shipping_height' => 12.5,
+			'shipping_length' => 12.5,
+			'product_weight' => 500,
+			'shipping_weight' => 650
+		),
+		array(
 			'id' => 'product-multi-category',
 			'model' => 'Shop.ShopProductVariant',
 			'foreign_key' => 'variant-multi-category-master',

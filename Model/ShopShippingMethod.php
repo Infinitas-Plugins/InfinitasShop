@@ -179,17 +179,24 @@ class ShopShippingMethod extends ShopAppModel {
  */
 	protected function _findProduct($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			$query = array_merge(array('shop_product_id' => null), $query);
-			return self::_findShipping($state, $query);
+			$query = array_merge(array(
+				'shop_product_id' => null,
+				'shop_product_variant_id' => null
+			), $query);
+			$query = self::_findShipping($state, $query);
+			return $query;
 		}
+
+		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', array(
+			'shop_product_id' => $query['shop_product_id'],
+			'shop_product_variant_id' => $query['shop_product_variant_id']
+		));
 
 		$results = self::_findShipping($state, $query, $results);
 
 		if (empty($results)) {
 			throw new CakeException(__d('shop', 'Unable to get the selected shipping method'));
 		}
-
-		$sizes = ClassRegistry::init('Shop.ShopProduct')->find('productShipping', $query['shop_product_id']);
 
 		return self::_getShipping($sizes, $results[$this->alias][$this->ShopShippingMethodValue->alias][0]);
 	}

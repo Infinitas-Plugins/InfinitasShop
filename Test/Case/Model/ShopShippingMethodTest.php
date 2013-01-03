@@ -313,9 +313,9 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider productDataProvider
  */
 	public function testProduct($data, $expected) {
-		$this->skipIf(true);
 		$result = $this->{$this->modelClass}->find('product', array(
 			'shop_shipping_method_id' => $data['shop_shipping_method_id'],
+			'shop_product_variant_id' => $data['product_variant'],
 			'shop_product_id' => $data['product']
 		));
 		$this->assertEquals($expected, $result);
@@ -331,6 +331,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'active-1st-class' => array(
 				array(
 					'product' => 'active',
+					'product_variant' => 'variant-active-1',
 					'shop_shipping_method_id' => 'royal-mail-1st'
 				),
 				array(
@@ -344,6 +345,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'active-2nd-class' => array(
 				array(
 					'product' => 'active',
+					'product_variant' => 'variant-active-1',
 					'shop_shipping_method_id' => 'royal-mail-2nd'
 				),
 				array(

@@ -271,4 +271,16 @@ class ShopProductVariant extends ShopAppModel {
 
 		return $result['product_code'] . '-' . implode('', $allOptions);
 	}
+
+	public static function productSize(array $master, array $variant, $type = 'shipping') {
+
+	}
+
+	public static function productWeight(array $master, array $variant, $type = 'shipping') {
+		return (float)$master[$type . '_weight'] += $variant[$type . '_weight'];
+	}
+
+	public static function productPrice(array $master, array $variant, $type = 'selling') {
+		return (float)$master[$type] += $variant[$type];
+	}
 }
