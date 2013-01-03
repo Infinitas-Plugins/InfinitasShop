@@ -879,16 +879,10 @@ class ShopProduct extends ShopAppModel {
 
 		$results = $results[0];
 
-		return array(
-			'cost' => ShopProductVariant::productPrice(
-					$results['ShopProductVariantMasterPrice'],
-					$results['ShopProductVariantPrice']
-			),
-			'weight' => ShopProductVariant::productWeight(
-					$results['ShopProductVariantMasterSize'],
-					$results['ShopProductVariantSize']
-			)
-		);
+		return array_merge(array(
+			'cost' => ShopProductVariant::productPrice($results['ShopProductVariantMasterPrice'], $results['ShopProductVariantPrice']),
+			'weight' => ShopProductVariant::productWeight($results['ShopProductVariantMasterSize'], $results['ShopProductVariantSize'])
+		), ShopProductVariant::productSize($results['ShopProductVariantMasterSize'], $results['ShopProductVariantSize']));
 	}
 
 /**
