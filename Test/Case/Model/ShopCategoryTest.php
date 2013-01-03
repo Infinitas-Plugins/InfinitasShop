@@ -15,7 +15,8 @@ class ShopCategoryTest extends CakeTestCase {
 	public $fixtures = array(
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_categories_product',
-		'plugin.shop.shop_image'
+		'plugin.shop.shop_image',
+		'plugin.shop.shop_product_type'
 	);
 
 /**
@@ -174,4 +175,110 @@ class ShopCategoryTest extends CakeTestCase {
 		$this->assertEquals($expected, $result);
 	}
 
+/**
+ * Test get path by slug
+ */
+	public function testGetPath() {
+		$expected = array(
+			'inactive',
+			'inactive-parent'
+		);
+
+		$result = $this->{$this->modelClass}->getPath('inactive-parent');
+		$this->assertEquals($expected, Hash::extract($result, '{n}.ShopCategory.id'));
+
+		$this->{$this->modelClass}->id = 'inactive-parent';
+		$this->assertTrue($this->{$this->modelClass}->saveField('slug', 'super-awesome-slug'));
+
+		$result = $this->{$this->modelClass}->getPath('super-awesome-slug');
+		$this->assertEquals($expected, Hash::extract($result, '{n}.ShopCategory.id'));
+	}
+
+/**
+ * test after save
+ */
+	public function testAfterSave() {
+		$this->{$this->modelClass}->create();
+		$saved = (bool)$this->{$this->modelClass}->save(array(
+			'parent_id' => 'inactive-parent',
+			'name' => 'new'
+		));
+		$this->assertTrue($saved);
+
+		$result = $this->{$this->modelClass}->field('path_depth', array(
+			'ShopCategory.id' => $this->{$this->modelClass}->id
+		));
+		$this->assertEquals(2, $result);
+	}
+
+	public function testFindLevel() {
+	}
+
+/**
+ * test find current
+ *
+ * @dataProvider findCurrentDataProvider
+ */
+	public function testFindCurrent($data, $expected) {
+		$result = $this->{$this->modelClass}->find('current', $data);
+		$this->assertEquals($expected, $result['ShopCategory']);
+	}
+
+	public function findCurrentDataProvider() {
+		return array(
+			'fake' => array(
+				'fake',
+				null
+			),
+			'active' => array(
+				'active',
+				array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+					'description' => 'Normal active category'
+				)
+			)
+		);
+	}
+
+/**
+ * test find parent
+ *
+ * @dataProvider findParentDataProvider
+ */
+	public function testFindParent($data, $expected) {
+		$result = $this->{$this->modelClass}->find('parent', $data);
+		$this->assertEquals($expected, $result['ShopCategory']);
+	}
+
+	public function findParentDataProvider() {
+		return array(
+			'fake' => array(
+				'fake',
+				null
+			),
+			'active' => array(
+				'active',
+				null
+			),
+			'inactive-parent' => array(
+				'inactive-parent',
+				array(
+					'id' => 'inactive-parent',
+					'name' => 'Parent Category',
+					'slug' => 'inactive-parent'
+				)
+			)
+		);
+	}
+
+/**
+ * test find single category exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testFindSingleCategoryException() {
+		$this->{$this->modelClass}->find('parent');
+	}
 }
