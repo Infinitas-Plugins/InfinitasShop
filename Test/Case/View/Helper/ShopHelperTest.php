@@ -158,8 +158,7 @@ class ShopHelperTest extends CakeTestCase {
  * @dataProvider stockValueDataProvider
  */
 	public function testStockValue($data, $expected) {
-		$this->markTestIncomplete("Internals of stockValue() has changed, test and dataprovider needs update");
-		$result = $this->Shop->stockValue($data['quantity'], $data['price']);
+		$result = $this->Shop->stockValue($data);
 		$this->assertTags($result, $expected);
 	}
 
@@ -172,8 +171,29 @@ class ShopHelperTest extends CakeTestCase {
 		return array(
 			'normal' => array(
 				array(
-					'quantity' => 10,
-					'price' => 10
+					array(
+						'ShopProductVariantPrice' => array(
+							'selling' => 10
+						),
+						'ShopBranchStock' => array(
+							array(
+								'stock' => 5
+							)
+						)
+					),
+					array(
+						'ShopProductVariantPrice' => array(
+							'selling' => 5
+						),
+						'ShopBranchStock' => array(
+							array(
+								'stock' => 2
+							),
+							array(
+								'stock' => 3
+							)
+						)
+					)
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -181,15 +201,23 @@ class ShopHelperTest extends CakeTestCase {
 							10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;100.00',
+							'&#163;75.00',
 						'/span',
 					'/div'
 				)
 			),
 			'negative-stock' => array(
 				array(
-					'quantity' => -10,
-					'price' => 10
+					array(
+						'ShopProductVariantPrice' => array(
+							'selling' => 10
+						),
+						'ShopBranchStock' => array(
+							array(
+								'stock' => -10
+							)
+						)
+					)
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -204,8 +232,16 @@ class ShopHelperTest extends CakeTestCase {
 			),
 			'null-price' => array(
 				array(
-					'quantity' => 10,
-					'price' => null
+					array(
+						'ShopProductVariantPrice' => array(
+							'selling' => null
+						),
+						'ShopBranchStock' => array(
+							array(
+								'stock' => 10
+							)
+						)
+					)
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),

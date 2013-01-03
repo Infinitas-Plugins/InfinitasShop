@@ -145,6 +145,9 @@ class ShopHelper extends AppHelper {
 			$stock += $count = array_sum(Hash::extract($variant['ShopBranchStock'], '{n}.stock'));
 			$value += ($variant['ShopProductVariantPrice']['selling'] * $count);
 		}
+		if ($value < 0) {
+			$value = 0;
+		}
 		return $this->Html->tag('div',
 			implode('', array(
 				$this->Html->tag('span', $stock, array('class' => 'quantity')),
