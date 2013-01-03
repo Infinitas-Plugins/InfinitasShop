@@ -24,6 +24,11 @@ foreach ($shopProduct['ShopProductVariant'] as $k => &$variant) {
 }
 asort($options);
 
+if (empty($options)) {
+	echo $this->Html->tag('p', __d('shop', 'Please select from the options below'));
+	return;
+}
+
 $formInput = 'ShopProductVariant.' . $k;
 echo $this->Form->input($formInput . '.id', array(
 	'div' => false,

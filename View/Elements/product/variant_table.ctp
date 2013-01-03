@@ -33,8 +33,8 @@
 				<td><?php echo $this->Shop->price($variant['ShopProductVariantPrice']); ?>&nbsp;</td>
 				<td>
 					<?php
-						$formInput = 'ShopProductVariant.' . $k;
-						echo $this->Form->input($formInput . '.id', array(
+						$formInput = 'ShopListProduct.' . $k;
+						echo $this->Form->input($formInput . '.shop_product_variant_id', array(
 							'type' => 'hidden',
 							'value' => $variant['id']
 						));
@@ -57,7 +57,8 @@
 		<td colspan="100">
 			<?php
 				echo $this->Form->button(__d('shop', 'Add to cart'), array(
-					'class' => 'pull-right btn btn-small add-to-cart'
+					'class' => 'pull-right btn btn-small add-to-cart',
+					'formnovalidate' => true
 				));
 			?>
 		</td>
