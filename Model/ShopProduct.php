@@ -644,18 +644,11 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findCostForList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			return self::_findProductsForList($state, $query);
+			return self::_findProdcutListShipping($state, $query);
 		}
 
-		$results = self::_findProductsForList($state, $query, $results);
-		foreach ($results as &$result) {
-			foreach ($result['ShopOption'] as &$option) {
-				$option = array_sum(Hash::extract($option['ShopOptionValue'], '{n}.ShopPrice.selling'));
-			}
-			$result = ($result['ShopPrice']['selling'] + array_sum($result['ShopOption'])) * $result['ShopListProduct']['quantity'];
-		}
-
-		return array_sum($results);
+		$results = self::_findProdcutListShipping($state, $query, $results);
+		return !empty($results['cost']) ? $results['cost'] : 0;
 	}
 
 /**
@@ -878,10 +871,17 @@ class ShopProduct extends ShopAppModel {
 
 		$results = $results[0];
 
+		$size = array(
+			'Master' => $results['ShopProductVariantMasterSize'],
+			'Variant' => $results['ShopProductVariantSize'],
+		);
 		return array_merge(array(
-			'cost' => ShopProductVariant::productPrice($results['ShopProductVariantMasterPrice'], $results['ShopProductVariantPrice']),
-			'weight' => ShopProductVariant::productWeight($results['ShopProductVariantMasterSize'], $results['ShopProductVariantSize'])
-		), ShopProductVariant::productSize($results['ShopProductVariantMasterSize'], $results['ShopProductVariantSize']));
+			'cost' => ShopProductVariant::productPrice(array(
+				'Master' => $results['ShopProductVariantMasterPrice'],
+				'Variant' => $results['ShopProductVariantPrice']
+			)),
+			'weight' => ShopProductVariant::productWeight($size)
+		), ShopProductVariant::productSize($size));
 	}
 
 /**
@@ -898,8 +898,12 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProdcutListShipping($state, array $query, array $results = array()) {
 		if ($state == 'before') {
+			if (empty($query['shop_list_id'])) {
+				$query['shop_list_id'] = $this->ShopProductVariant->ShopListProduct->ShopList->currentListId(true);
+			}
 			$query['fields'] = array_merge(
 				(array)$query['fields'],
+				array($this->ShopProductVariant->ShopListProduct->alias . '.quantity'),
 				$this->ShopProductVariant->ShopProductVariantPrice->findFields(),
 				$this->ShopProductVariant->ShopProductVariantSize->findFields(),
 				$this->ShopProductVariantMaster->ShopProductVariantPrice->findFields('ShopProductVariantMasterPrice'),
@@ -937,10 +941,19 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		foreach ($results as &$result) {
+			$size = array(
+				'Master' => $result['ShopProductVariantMasterSize'],
+				'Variant' => $result['ShopProductVariantSize'],
+				'quantity' => $result['ShopListProduct']['quantity']
+			);
 			$result = array_merge(array(
-				'cost' => ShopProductVariant::productPrice($result['ShopProductVariantMasterPrice'], $result['ShopProductVariantPrice']),
-				'weight' => ShopProductVariant::productWeight($result['ShopProductVariantMasterSize'], $result['ShopProductVariantSize'])
-			), ShopProductVariant::productSize($result['ShopProductVariantMasterSize'], $result['ShopProductVariantSize']));
+				'cost' => ShopProductVariant::productPrice(array(
+					'Master' => $result['ShopProductVariantMasterPrice'],
+					'Variant' => $result['ShopProductVariantPrice'],
+					'quantity' => $result['ShopListProduct']['quantity']
+				)),
+				'weight' => ShopProductVariant::productWeight($size)
+			), ShopProductVariant::productSize($size));
 		}
 
 		return ShopProductVariant::productTotal($results);

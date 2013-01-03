@@ -338,7 +338,7 @@ class ShopProductTest extends CakeTestCase {
 					'height' => 12.5,
 					'length' => 12.5,
 					'weight' => 650.0,
-					'cost' => 62.0
+					'cost' => 87.0
 				)
 			),
 		);
@@ -376,19 +376,18 @@ class ShopProductTest extends CakeTestCase {
  * @return void
  */
 	public function testFindCostForList() {
-		$this->markTestIncomplete("Need to check product variants now");
 		CakeSession::write('Auth.User.id', 'bob');
 		CakeSession::write('Shop.current_list', 'shop-list-bob-cart');
 
-		$expected = 43;
+		$expected = 87;
 		$result = $this->{$this->modelClass}->find('costForList');
 		$this->assertEquals($expected, $result);
 
 		$ShopListProduct = ClassRegistry::init('Shop.ShopListProduct');
-		$ShopListProduct->id = 'shop-list-bob-cart-multi-option';
+		$ShopListProduct->id = 'shop-list-bob-cart-multi-option1';
 		$ShopListProduct->saveField('quantity', 25);
 
-		$expected = 715;
+		$expected = 687;
 		$result = $this->{$this->modelClass}->find('costForList');
 		$this->assertEquals($expected, $result);
 

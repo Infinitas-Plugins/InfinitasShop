@@ -281,11 +281,15 @@ class ShopProductVariant extends ShopAppModel {
  *
  * @return array
  */
-	public static function productSize(array $master, array $variant, $type = 'shipping') {
+	public static function productSize(array $data, $type = 'shipping') {
+		$data = array_merge(array('quantity' => 1), $data);
 		$return = array();
 		foreach (array('width', 'height', 'length') as $size) {
-			$return[$size] = $master[$type . '_' . $size] + $variant[$type . '_' . $size];
+			$return[$size] = $data['Master'][$type . '_' . $size] + $data['Variant'][$type . '_' . $size];
 		}
+		$smallest = array_search(min($return), $return);
+		$return[$smallest] *= $data['quantity'];
+
 		return $return;
 	}
 
@@ -298,8 +302,10 @@ class ShopProductVariant extends ShopAppModel {
  *
  * @return float
  */
-	public static function productWeight(array $master, array $variant, $type = 'shipping') {
-		return (float)$master[$type . '_weight'] += $variant[$type . '_weight'];
+	public static function productWeight(array $data, $type = 'shipping') {
+		$data = array_merge(array('quantity' => 1), $data);
+		$total = $data['Master'][$type . '_weight'] + $data['Variant'][$type . '_weight'];
+		return (float)$total * $data['quantity'];
 	}
 
 /**
@@ -311,8 +317,10 @@ class ShopProductVariant extends ShopAppModel {
  *
  * @return float
  */
-	public static function productPrice(array $master, array $variant, $type = 'selling') {
-		return (float)$master[$type] += $variant[$type];
+	public static function productPrice(array $data, $type = 'selling') {
+		$data = array_merge(array('quantity' => 1), $data);
+		$total = $data['Master'][$type ] + $data['Variant'][$type ];
+		return (float)$total * $data['quantity'];
 	}
 
 /**
