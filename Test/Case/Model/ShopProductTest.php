@@ -841,4 +841,39 @@ class ShopProductTest extends CakeTestCase {
 		$this->assertEquals(111, $blue['ShopProductVariantPrice']['cost']);
 		$this->assertEmpty(array_filter($blue['ShopProductVariantSize']));
 	}
+
+/**
+ * test find order quantity
+ */
+	public function testFindOrderQuantity() {
+		$expected = array(
+			'quantity_unit' => 0.5,
+			'quantity_min' => 2,
+			'quantity_max' => 10
+		);
+		$result = $this->{$this->modelClass}->find('orderQuantity', array(
+			'shop_product_id' => 'active'
+		));
+		$this->assertEquals($expected, $result);
+
+		$result = $this->{$this->modelClass}->find('orderQuantity', array(
+			'shop_product_variant_id' => 'variant-active-1'
+		));
+		$this->assertEquals($expected, $result);
+
+		$result = $this->{$this->modelClass}->find('orderQuantity', array(
+			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1'
+		));
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test find order quantity exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testFindOrderQuantityException() {
+		$this->{$this->modelClass}->find('orderQuantity');
+	}
 }

@@ -239,6 +239,52 @@ class ShopProductFindTest extends CakeTestCase {
 		);
 		$result = Hash::extract($this->{$this->modelClass}->find('mostPurchased'), '{n}.ShopProduct.id');
 		$this->assertEquals($expected, $result);
+
+
+		$ViewCounter = ClassRegistry::init('ViewCounter.ViewCounterView');
+		$saved = $ViewCounter->saveAll(array(
+			array(
+				'model' => 'Shop.ShopProduct',
+				'foreign_key' => 'active',
+				'created' => '2011-01-01 00:00:00',
+				'user_id' => 'bob'
+			),
+			array(
+				'model' => 'Shop.ShopProduct',
+				'foreign_key' => 'multi-option',
+				'created' => '2012-01-01 00:00:00',
+				'user_id' => 'bob'
+			),
+			array(
+				'model' => 'Shop.ShopProduct',
+				'foreign_key' => 'multi-option',
+				'created' => '2011-01-01 00:00:00',
+				'user_id' => 'bob'
+			),
+			array(
+				'model' => 'Shop.ShopProduct',
+				'foreign_key' => 'active',
+				'created' => '2012-01-02 00:00:00',
+				'user_id' => 'bob'
+			),
+			array(
+				'model' => 'Shop.ShopProduct',
+				'foreign_key' => 'multi-category',
+				'created' => '2013-01-01 00:00:00',
+				'user_id' => 'sam'
+			)
+		));
+		$this->assertTrue((bool)$saved);
+
+		$expected = array(
+			'active',
+			'multi-option'
+		);
+		CakeSession::write('Auth.User.id', 'bob');
+		$result = Hash::extract($this->{$this->modelClass}->find('recentlyViewed'), '{n}.ShopProduct.id');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::destroy();
 	}
 
 /**

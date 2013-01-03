@@ -492,8 +492,21 @@ class ShopProduct extends ShopAppModel {
 		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
-			$sessionName = 'Viewable.' . $this->alias;
-			$query['conditions'][$this->alias . '.' . $this->primaryKey] = array_keys((array)CakeSession::read($sessionName));
+			$this->virtualFields['view_date'] = 'MAX(ViewCounterView.created)';
+
+			$query['joins'][] = $this->autoJoinModel(array(
+				'model' => ClassRegistry::init('ViewCounter.ViewCounterView'),
+				'conditions' => array(
+					'ViewCounterView.foreign_key = ' . $this->alias . '.' . $this->primaryKey,
+					'ViewCounterView.model' => $this->fullModelName(),
+					'ViewCounterView.user_id' => $this->currentUserId()
+				),
+				'type' => 'right'
+			));
+
+			$query['order'] = array(
+				'view_date' => 'desc'
+			);
 			return $query;
 		}
 
