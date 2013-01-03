@@ -307,7 +307,6 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findProductListShippingDataProvider
  */
 	public function testFindProductListShipping($data, $expected) {
-		$this->markTestIncomplete("Redo cart page");
 		App::uses('CakeSession', 'Model/Datasource');
 		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
@@ -316,7 +315,7 @@ class ShopProductTest extends CakeTestCase {
 			CakeSession::write('Shop.Guest.id', $data['guest_id']);
 		}
 		$results = $this->{$this->modelClass}->find('prodcutListShipping', array(
-			'shop_list_id' => $data
+			'shop_list_id' => $data['shop_list_id']
 		));
 		$this->assertEquals($expected, $results);
 		CakeSession::destroy();
@@ -335,11 +334,11 @@ class ShopProductTest extends CakeTestCase {
 					'user_id' => 'bob'
 				),
 				array(
-					'width' => 17.5,
-					'height' => 17.5,
-					'length' => 17.5,
-					'weight' => 780.0,
-					'cost' => 43.0
+					'width' => 12.5,
+					'height' => 12.5,
+					'length' => 12.5,
+					'weight' => 650.0,
+					'cost' => 62.0
 				)
 			),
 		);
