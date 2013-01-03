@@ -348,18 +348,14 @@ class ShopProductTest extends CakeTestCase {
  * test deleting a product removes related data
  */
 	public function testProductDeleteRelations() {
-		$this->markTestIncomplete("Relations have changed");
 		$relations = array(
 			'ShopCategoriesProduct',
 			'ShopImagesProduct',
 			'ShopSpotlight',
-			'ShopProductsSpecial'
+			'ShopProductsSpecial',
+			'ShopProductVariant',
+			'ShopProductVariantMaster',
 		);
-		$this->{$this->modelClass}->Behaviors->disable('Trashable');
-
-		foreach ($relations as $relation) {
-			$this->{$this->modelClass}->{$relation}->Behaviors->disable('Trashable');
-		}
 
 		$this->assertTrue($this->{$this->modelClass}->delete('active'));
 		$expected = array();

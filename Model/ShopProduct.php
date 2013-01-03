@@ -133,7 +133,6 @@ class ShopProduct extends ShopAppModel {
 			'foreignKey' => 'shop_product_id',
 			'dependent' => true,
 			'conditions' => array(
-				'ShopProductVariantMaster.shop_product_id = ShopProduct.id',
 				'ShopProductVariantMaster.master' => 1
 			),
 			'fields' => '',
