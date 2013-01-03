@@ -586,9 +586,9 @@ class ShopProduct extends ShopAppModel {
 	protected function _findProductsForList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query['shop_list_id'])) {
-				$this->ShopProductVariant->ShopListProduct;
 				$query['shop_list_id'] = $this->ShopProductVariant->ShopListProduct->ShopList->currentListId(true);
 			}
+			$query['variants'] = false;
 			$query = $this->_findBasics($state, $query);
 
 			array_shift($query['fields']);
@@ -599,6 +599,8 @@ class ShopProduct extends ShopAppModel {
 			}
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->ShopProductVariant->alias . '.*',
+
 				$this->ShopProductVariant->ShopListProduct->alias . '.' . $this->ShopProductVariant->ShopListProduct->primaryKey,
 				$this->ShopProductVariant->ShopListProduct->alias . '.shop_list_id',
 				$this->ShopProductVariant->ShopListProduct->alias . '.shop_product_variant_id',
@@ -633,11 +635,21 @@ class ShopProduct extends ShopAppModel {
 			return array();
 		}
 
+		$variantOptions = $this->ShopProductVariant->ShopOptionVariant->find('variants', array(
+			'shop_product_variant_id' => Hash::extract($results, '{n}.ShopProductVariant.id')
+		));
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		foreach ($results as &$result) {
 			unset($result['ActiveCategory']);
 			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
 			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
+
+			$extractTemplate = sprintf('{n}[shop_product_variant_id=%s]', $result[$this->ShopProductVariant->alias][$this->ShopProductVariant->primaryKey]);
+			$result['ShopProductVariant']['ShopOptionVariant'] = Hash::extract($variantOptions, $extractTemplate);
+
+			$result['ShopProductVariant']['ShopProductVariantPrice'] = &$result['ShopProductVariantMaster']['ShopProductVariantPrice'];
+			$result['ShopProductVariant']['ShopProductVariantSize'] = &$result['ShopProductVariantMaster']['ShopProductVariantSize'];
+			$this->_productOverride($result);
 		}
 
 		return $results;
@@ -1234,6 +1246,23 @@ class ShopProduct extends ShopAppModel {
 			$masterPrice[$this->ShopProductVariant->ShopProductVariantPrice->primaryKey],
 			$masterSize[$this->ShopProductVariant->ShopProductVariantSize->primaryKey]
 		);
+		$this->_productVariantOverride($masterPrice, $result);
+
+		$prices = Hash::extract($result[$this->ShopProductVariant->alias], '{n}.ShopProductVariantPrice.selling');
+
+		$result[$this->alias]['price_min'] = $result[$this->alias]['price_max'] = 0;
+		if ($prices) {
+			$result[$this->alias]['price_min'] = min($prices);
+			$result[$this->alias]['price_max'] = max($prices);
+		}
+	}
+
+	protected function _productVariantOverride($masterPrice, &$result) {
+		$numeric = Hash::numeric(array_keys($result[$this->ShopProductVariant->alias]));
+		if(!$numeric) {
+			$result[$this->ShopProductVariant->alias] = array($result[$this->ShopProductVariant->alias]);
+		}
+
 		foreach ($result[$this->ShopProductVariant->alias] as $k => $productVariant) {
 			if (empty($productVariant['ShopOptionVariant'])) {
 				continue;
@@ -1251,13 +1280,8 @@ class ShopProduct extends ShopAppModel {
 				array_filter($productVariant['ShopProductVariantPrice'])
 			);
 		}
-
-		$prices = Hash::extract($result[$this->ShopProductVariant->alias], '{n}.ShopProductVariantPrice.selling');
-
-		$result[$this->alias]['price_min'] = $result[$this->alias]['price_max'] = 0;
-		if ($prices) {
-			$result[$this->alias]['price_min'] = min($prices);
-			$result[$this->alias]['price_max'] = max($prices);
+		if(!$numeric) {
+			$result[$this->ShopProductVariant->alias] = $result[$this->ShopProductVariant->alias][0];
 		}
 	}
 

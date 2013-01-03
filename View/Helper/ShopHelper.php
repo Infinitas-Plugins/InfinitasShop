@@ -488,18 +488,18 @@ class ShopHelper extends AppHelper {
 		));
 	}
 
-	public function subtotalPrice(array $product, $span = false) {
-		$product['ShopPrice']['selling'] *= $product['ShopListProduct']['quantity'];
+	public function subtotalPrice(array $price, $quantity, $span = false) {
+		$price['selling'] *= $quantity;
 
-		return self::price($product, $span);
+		return self::price($price, $span);
 	}
 
 	public function cartPrice(array $products, array $shipping = array(), $span = false) {
 		foreach ($products as &$product) {
-			$product['ShopPrice']['selling'] *= $product['ShopListProduct']['quantity'];
+			$product = $product['ShopProductVariant']['ShopProductVariantPrice']['selling'] * $product['ShopListProduct']['quantity'];
 		}
 
-		$products = array_sum(Hash::extract($products, '{n}.ShopPrice.selling'));
+		$products = array_sum($products);
 		if (empty($shipping['total'])) {
 			$shipping['total'] = 0;
 		}

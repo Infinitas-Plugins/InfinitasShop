@@ -244,13 +244,17 @@ class ShopListProduct extends ShopAppModel {
  * @return boolean
  */
 	public function addToList($product) {
-		if (empty($product[$this->alias]['shop_list_id'])) {
-			$product[$this->alias]['shop_list_id'] = $this->ShopList->currentListId(true);
+		$currentListId = $this->ShopList->currentListId(true);
+		foreach ($product[$this->alias] as $k => &$v) {
+			if (!array_key_exists('quantity', (array)$v) || (int)$v['quantity'] === 0) {
+				unset($product[$this->alias][$k]);
+			}
+			$v['shop_list_id'] = !empty($v['shop_list_id']) ? $v['shop_list_id'] : $currentListId;
 		}
 
 		$this->transaction();
 		$this->create();
-		if (!$this->save($product[$this->alias])) {
+		if (!$this->saveAll($product[$this->alias])) {
 			$this->transaction(false);
 			return false;
 		}

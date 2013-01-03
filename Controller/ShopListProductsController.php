@@ -45,11 +45,13 @@ class ShopListProductsController extends ShopAppController {
 	public function index() {
 		$shopList = $this->{$this->modelClass}->ShopList->find('details');
 
-		$shopListProducts = $this->{$this->modelClass}->ShopProduct->find('productsForList');
+		$shopListProducts = $this->{$this->modelClass}->ShopProductVariant->ShopProduct->find('productsForList');
+		$listTotalCost = $this->{$this->modelClass}->ShopProductVariant->ShopProduct->find('costForList');
+		$shopShippingMethod = $this->{$this->modelClass}->ShopList->ShopShippingMethod->find('productList');
 		$shopShippingMethods = $this->{$this->modelClass}->ShopList->ShopShippingMethod->find('available');
 		$shopPaymentMethods = $this->{$this->modelClass}->ShopList->ShopPaymentMethod->find('available');
 
-		$this->set(compact('shopList', 'shopListProducts', 'shopShippingMethods', 'shopPaymentMethods'));
+		$this->set(compact('shopList', 'shopListProducts', 'listTotalCost', 'shopShippingMethod', 'shopShippingMethods', 'shopPaymentMethods'));
 	}
 
 	public function checkout() {
@@ -58,7 +60,7 @@ class ShopListProductsController extends ShopAppController {
 
 /**
  * Update the contents of the list
- * 
+ *
  * @return array
  */
 	protected function _update() {
@@ -102,9 +104,9 @@ class ShopListProductsController extends ShopAppController {
 
 /**
  * Remove a product from a list
- * 
+ *
  * @param string $id the id of the list product to remove
- * 
+ *
  * @return void
  */
 	public function delete($id = null) {
@@ -117,7 +119,7 @@ class ShopListProductsController extends ShopAppController {
 
 /**
  * Handle mass actions
- * 
+ *
  * @return void
  */
 	public function mass() {

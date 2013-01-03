@@ -214,8 +214,10 @@ class ShopListProductTest extends CakeTestCase {
 		CakeSession::write('Auth.User.id', 'sally');
 		$data = array(
 			$this->Model->alias => array(
-				'shop_product_variant_id' => 'variant-active-2',
-				'quantity' => 2.5
+				array(
+					'shop_product_variant_id' => 'variant-active-2',
+					'quantity' => 2.5
+				)
 			)
 		);
 		$id = $this->Model->addToList($data);
@@ -226,12 +228,12 @@ class ShopListProductTest extends CakeTestCase {
 		$this->assertFalse($result);
 
 		$this->assertTrue($this->Model->delete($id));
-		$data[$this->Model->alias]['shop_list_id'] = 'shop-list-sally-cart';
+		$data[$this->Model->alias][0]['shop_list_id'] = 'shop-list-sally-cart';
 		$id = $this->Model->addToList($data);
 		$this->assertTrue((bool)$id);
 
 		$this->assertTrue($this->Model->delete($id));
-		$data[$this->Model->alias]['quantity'] = 0;
+		$data[$this->Model->alias][0]['quantity'] = 0;
 		$id = $this->Model->addToList($data);
 		$this->assertFalse((bool)$id);
 	}

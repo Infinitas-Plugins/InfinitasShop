@@ -49,7 +49,11 @@ echo $this->Form->create(null, array('action' => 'mass'));
 		echo '<tbody>';
 		foreach ($shopListProducts as $k => $shopListProduct) { ?>
 			<tr>
-				<td rowspan="<?php echo $shopListProduct['ShopOption'] ? 2 : 1; ?>"><?php echo $this->Html->image($shopListProduct['ShopImage']['image_small']); ?></td>
+				<td rowspan="<?php echo !empty($shopListProduct['ShopProductVariant']['ShopOptionVariant']) ? 2 : 1; ?>">
+					<?php
+					echo $this->Html->image($shopListProduct['ShopImage']['image_small']);
+					?>
+				</td>
 				<td>
 					<?php
 						echo $this->Html->link($shopListProduct['ShopProduct']['name'], array(
@@ -74,8 +78,15 @@ echo $this->Form->create(null, array('action' => 'mass'));
 						));
 					?>
 				</td>
-				<td><?php echo $this->Shop->price($shopListProduct, false); ?></td>
-				<td><?php echo $this->Shop->subtotalPrice($shopListProduct); ?></td>
+				<td><?php echo $this->Shop->price($shopListProduct['ShopProductVariant']['ShopProductVariantPrice'], false); ?></td>
+				<td>
+					<?php
+						echo $this->Shop->subtotalPrice(
+							$shopListProduct['ShopProductVariant']['ShopProductVariantPrice'],
+							$shopListProduct['ShopListProduct']['quantity']
+						);
+					?>
+				</td>
 				<td>
 					<?php
 						echo $this->Html->link($this->Design->icon('trash'), array(
@@ -85,28 +96,32 @@ echo $this->Form->create(null, array('action' => 'mass'));
 					?>&nbsp;
 				</td>
 			</tr><?php
-			if ($shopListProduct['ShopOption']) {
+			if (!empty($shopListProduct['ShopProductVariant']['ShopOptionVariant'])) {
 				$options = array(
 					$this->Html->tag('dt', __d('shop', 'Product code')),
-					$this->Html->tag('dd', $shopListProduct['ShopProduct']['product_code'])
+					$this->Html->tag('dd', !empty($shopListProduct['ShopProduct']['product_code']) ? $shopListProduct['ShopProduct']['product_code'] : '-')
 				);
-				foreach ($shopListProduct['ShopOption'] as $productOption) {
+				foreach ($shopListProduct['ShopProductVariant']['ShopOptionVariant'] as $productOption) {
 					$help = $this->Html->link($this->Design->icon('question-sign'), $this->here . '#', array(
 						'escape' => false,
-						'data-title' => $productOption['name'],
-						'data-content' => strip_tags($productOption['description']),
+						'data-title' => $productOption['ShopOption']['name'],
+						'data-content' => strip_tags($productOption['ShopOption']['description']),
 						'class' => 'help'
 					));
-					$options[] = $this->Html->tag('dt', $productOption['name'] . $help);
-					$options[] = $this->Html->tag('dd', $productOption['ShopOptionValue'][0]['name']);
+					$options[] = $this->Html->tag('dt', $productOption['ShopOption']['name'] . $help);
+					$options[] = $this->Html->tag('dd', $productOption['ShopOptionValue']['name']);
 				}
 
+				$size = '-';
+				if (array_filter($shopListProduct['ShopProductVariant']['ShopProductVariantSize'])) {
+					$size = $this->Shop->size($shopListProduct['ShopProductVariant']['ShopProductVariantSize'], true) . sprintf('(%s)', $this->Shop->sizeLabel());
+				}
 				echo $this->Html->tag('tr', implode('', array(
 					$this->Html->tag('td',
 						$this->Html->tag('dl', implode('', $options), array('class' => 'dl-horizontal')),
 						array('colspan' => 2)
 					),
-					$this->Html->tag('td', $this->Shop->size($shopListProduct['ShopSize'], true) . sprintf('(%s)', $this->Shop->sizeLabel()), array(
+					$this->Html->tag('td', $size, array(
 						'colspan' => 100
 					))
 				)));
@@ -124,12 +139,12 @@ echo $this->Form->create(null, array('action' => 'mass'));
 		$this->Html->tag('tr', implode('', array(
 			$this->Html->tag('td', ''),
 			$this->Html->tag('td', __d('shop', 'Shipping')),
-			$this->Html->tag('td', $this->Shop->shipping($shopList['ShopShipping']))
+			$this->Html->tag('td', $this->Shop->shipping($shopShippingMethod))
 		))),
 		$this->Html->tag('tr', implode('', array(
 			$this->Html->tag('td', ''),
 			$this->Html->tag('td', __d('shop', 'Total')),
-			$this->Html->tag('td', ' ' . $this->Shop->cartPrice($shopListProducts, $shopList['ShopShipping']))
+			$this->Html->tag('td', ' ' . $this->Shop->cartPrice($shopListProducts, $shopShippingMethod))
 		)))
 	))), array('class' => 'shipping'));
 	echo $this->Html->tag('div', implode('', array(
