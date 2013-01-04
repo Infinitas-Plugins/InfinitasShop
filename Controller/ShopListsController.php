@@ -73,6 +73,29 @@ class ShopListsController extends ShopAppController {
 		));
 	}
 
+	public function change_list($id = null) {
+		try {
+			if ($this->{$this->modelClass}->setCurrentList($id)) {
+				$this->notice(__d('shop', 'List has been changed'), array(
+					'redirect' => array(
+						'controller' => 'shop_list_products',
+						'action' => 'index'
+					)
+				));
+			}
+		} catch (Exception $e) {
+			$this->notice($e);
+		}
+		$this->notice(__d('shop', 'Failed to change the list'), array(
+			'level' => 'warning',
+			'redirect' => true,
+			'redirect' => array(
+				'controller' => 'shop_list_products',
+				'action' => 'index'
+			)
+		));
+	}
+
 /**
  * the index method
  *
@@ -101,26 +124,18 @@ class ShopListsController extends ShopAppController {
 		$this->set(compact('shopLists', 'filterOptions'));
 	}
 
-/**
- * view method for a single row
- *
- * Show detailed information on a single ShopList
- *
- * @todo update the documentation
- * @param mixed $id int or string uuid or the row to find
- *
- * @return void
- */
-	public function view($id = null) {
-		if (!$id) {
-			$this->Infinitas->noticeInvalidRecord();
+	public function add() {
+		$this->saveRedirectMarker();
+		if (!AuthComponent::user('id')) {
+			return $this->notice('require_auth');
 		}
-
-		$shopList = $this->ShopList->getViewData(
-			array($this->ShopList->alias . '.' . $this->ShopList->primaryKey => $id)
-		);
-
-		$this->set(compact('shopList'));
+		if ($this->request->is('post')) {
+			$this->request->data[$this->modelClass]['user_id'] = AuthComponent::user('id');
+			if ($this->{$this->modelClass}->save($this->request->data[$this->modelClass])) {
+				$this->notice('saved');
+			}
+		}
+		$this->notice('not_saved');
 	}
 
 /**
