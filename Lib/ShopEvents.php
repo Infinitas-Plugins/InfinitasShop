@@ -302,9 +302,8 @@ class ShopEvents extends AppEvents {
 	}
 
 	public function onUserProfile(Event $Event, $user) {
-		$Html = $Event->Handler->_View->Html;
-
-		return array(
+		$View = $Event->Handler->_View;
+		$return = array(
 			array(
 				'title' => __d('shop', 'Latest orders'),
 				'content' => ''
@@ -312,12 +311,20 @@ class ShopEvents extends AppEvents {
 			array(
 				'title' => __d('shop', 'Products Viewed'),
 				'content' => ''
-			),
-			array(
-				'title' => __d('shop', 'Shopping Lists'),
-				'content' => ''
 			)
 		);
+
+		$shopLists = ClassRegistry::init('Shop.ShopList')->find('mine');
+		if (!empty($shopLists)) {
+			$return[] = array(
+				'title' => __d('shop', 'Shopping Lists'),
+				'content' => $View->element('Shop.profile/shop_lists', array(
+					'shopLists' => $shopLists
+				))
+			);
+		}
+
+		return $return;
 	}
 
 }
