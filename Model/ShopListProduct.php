@@ -30,7 +30,8 @@ class ShopListProduct extends ShopAppModel {
 			'foreignKey' => 'shop_list_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'counterCache' => true
 		),
 		'ShopProductVariant' => array(
 			'className' => 'Shop.ShopProductVariant',

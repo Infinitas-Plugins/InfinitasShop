@@ -18,7 +18,8 @@ class ShopList extends ShopAppModel {
 	public $findMethods = array(
 		'hasList' => true,
 		'listDetails' => true,
-		'details' => true
+		'details' => true,
+		'overview' => true
 	);
 
 /**
@@ -193,6 +194,36 @@ class ShopList extends ShopAppModel {
 		return $results;
 	}
 
+	protected function _findOverview($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$query['fields'] = array(
+				$this->alias . '.shop_list_product_count'
+			);
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.id' => $this->currentListId(true)
+			));
+
+			$query['limit'] = 1;
+
+			return $query;
+		}
+
+		if (empty($results)) {
+			return array(
+				'shop_list_product_count' => 0,
+				'value' => 0
+			);
+		}
+
+		return array(
+			'shop_list_product_count' => (int)current(Hash::flatten($results)),
+			'value' => $this->ShopListProduct->ShopProductVariant->ShopProduct->find('costForList')
+		);
+
+		return $results;
+	}
+
 /**
  * get the id of the current list
  *
@@ -206,7 +237,7 @@ class ShopList extends ShopAppModel {
 		if (!empty($currentList) && $this->exists($currentList)) {
 			return $currentList;
 		}
-		
+
 		$currentList = $this->find('list', array(
 			'fields' => array(
 				$this->alias . '.' . $this->primaryKey,

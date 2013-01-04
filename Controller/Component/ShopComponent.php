@@ -49,7 +49,8 @@ class ShopComponent extends InfinitasComponent {
 			)
 		));
 		$shopBrandsList = ClassRegistry::init('Shop.ShopBrand')->find('brands');
-		$Controller->set(compact('shopCurrencies', 'shopCategoriesNav', 'shopBrandsList'));
+		$shopListOverview = ClassRegistry::init('Shop.ShopList')->find('overview');
+		$Controller->set(compact('shopCurrencies', 'shopCategoriesNav', 'shopBrandsList', 'shopListOverview'));
 
 		$this->_moduleData($Controller);
 
