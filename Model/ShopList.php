@@ -171,7 +171,8 @@ class ShopList extends ShopAppModel {
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
-				$this->alias . '.' . $this->primaryKey => $query[0]
+				$this->alias . '.' . $this->primaryKey => $query[0],
+				$this->alias . '.user_id' => $this->currentUserId()
 			));
 
 			$query['joins'] = array(
@@ -203,7 +204,8 @@ class ShopList extends ShopAppModel {
 			);
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
-				$this->alias . '.id' => $this->currentListId(true)
+				$this->alias . '.id' => $this->currentListId(true),
+				$this->alias . '.user_id' => $this->currentUserId()
 			));
 
 			$query['limit'] = 1;
