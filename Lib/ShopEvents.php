@@ -115,7 +115,8 @@ class ShopEvents extends AppEvents {
  *
  * @return array
  */
-	public function onUserLogin(Event $Event, $data) {
+	public function onUserLogin(Event $Event, array $currentUser) {
+		ClassRegistry::init('Shop.ShopList')->guestToUser();
 	}
 
 /**
@@ -310,6 +311,10 @@ class ShopEvents extends AppEvents {
 			),
 			array(
 				'title' => __d('shop', 'Products Viewed'),
+				'content' => ''
+			),
+			array(
+				'title' => __d('shop', 'Shopping Lists'),
 				'content' => ''
 			)
 		);

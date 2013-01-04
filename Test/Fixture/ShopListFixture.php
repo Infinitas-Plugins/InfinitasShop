@@ -19,6 +19,7 @@ class ShopListFixture extends CakeTestFixture {
 		'user_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_shipping_method_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_payment_method_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'shop_list_product_count' => array('type' => 'integer', 'null' => false, 'default' => 0, 'length' => 36),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
@@ -41,6 +42,7 @@ class ShopListFixture extends CakeTestFixture {
 			'user_id' => 'bob',
 			'shop_shipping_method_id' => 'royal-mail-1st',
 			'shop_payment_method_id' => 'paypal',
+			'shop_list_product_count' => 3,
 			'created' => '2012-11-08 20:53:06',
 			'modified' => '2012-11-08 20:53:06'
 		),
@@ -50,6 +52,7 @@ class ShopListFixture extends CakeTestFixture {
 			'user_id' => 'bob',
 			'shop_shipping_method_id' => 'inactive',
 			'shop_payment_method_id' => 'inactive',
+			'shop_list_product_count' => 0,
 			'created' => '2012-10-08 20:53:06',
 			'modified' => '2012-10-08 20:53:06'
 		),
@@ -59,6 +62,7 @@ class ShopListFixture extends CakeTestFixture {
 			'user_id' => 'sally',
 			'shop_shipping_method_id' => 'royal-mail-2nd',
 			'shop_payment_method_id' => 'cc',
+			'shop_list_product_count' => 1,
 			'created' => '2012-10-08 20:53:06',
 			'modified' => '2012-10-08 20:53:06'
 		),
@@ -68,6 +72,7 @@ class ShopListFixture extends CakeTestFixture {
 			'user_id' => 'guest-1',
 			'shop_shipping_method_id' => null,
 			'shop_payment_method_id' => 'cc',
+			'shop_list_product_count' => 1,
 			'created' => '2012-10-08 20:53:06',
 			'modified' => '2012-10-08 20:53:06'
 		),

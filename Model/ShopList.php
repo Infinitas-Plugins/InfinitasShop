@@ -6,7 +6,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property User $User
  * @property ShopShippingMethod $ShopShippingMethod
  * @property ShopPaymentMethod $ShopPaymentMethod
- * @property ShopListProduct $ShopListProduct
+ * @property ShopListProduct $thisProduct
  */
 class ShopList extends ShopAppModel {
 
@@ -19,7 +19,8 @@ class ShopList extends ShopAppModel {
 		'hasList' => true,
 		'listDetails' => true,
 		'details' => true,
-		'overview' => true
+		'overview' => true,
+		'mine' => true
 	);
 
 /**
@@ -95,7 +96,8 @@ class ShopList extends ShopAppModel {
 					'rule' => 'notEmpty',
 					'message' => __d('shop', 'Please enter a name for your list'),
 					'allowEmpty' => false,
-					'required' => true
+					'required' => true,
+					'on' => 'create'
 				)
 			),
 			'user_id' => array(
@@ -225,6 +227,36 @@ class ShopList extends ShopAppModel {
 	}
 
 /**
+ * Get the lists a user has made
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findMine($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.shop_list_product_count',
+				$this->alias . '.modified'
+			));
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.user_id' => $this->currentUserId()
+			));
+			return $query;
+		}
+
+		foreach ($results as &$result) {
+			$result[$this->alias]['value'] = 0;
+		}
+
+		return $results;
+	}
+
+/**
  * get the id of the current list
  *
  * get the id of the list currently being used.
@@ -267,20 +299,20 @@ class ShopList extends ShopAppModel {
  * Set the shipping method for a shopping list
  *
  * @param string $shippingMethodId the method to use
- * @param string $shopListId optional, will use the default list if not passed in
+ * @param string $thisId optional, will use the default list if not passed in
  *
  * @return array
  */
-	public function setShippingMethod($shippingMethodId, $shopListId = null) {
+	public function setShippingMethod($shippingMethodId, $thisId = null) {
 		if (!$this->ShopShippingMethod->exists($shippingMethodId)) {
 			throw new InvalidArgumentException(__d('shop', 'Invalid shipping method selected'));
 		}
 
-		if (!$shopListId) {
-			$shopListId = $this->currentListId();
+		if (!$thisId) {
+			$thisId = $this->currentListId();
 		}
 
-		$this->id = $shopListId;
+		$this->id = $thisId;
 		return $this->saveField('shop_shipping_method_id', $shippingMethodId);
 	}
 
@@ -336,6 +368,37 @@ class ShopList extends ShopAppModel {
 		}
 
 		return false;
+	}
+
+/**
+ * Convert the guests list to the logged in users account
+ *
+ * When called, any items that are under the users guest id are moved to the users account by updating
+ * the user_id field to the users id (from the guest id)
+ *
+ * @return null|boolean
+ */
+	public function guestToUser() {
+		$lists = $this->find('all', array(
+			'fields' => array(
+				$this->alias . '.' . $this->primaryKey
+			),
+			'conditions' => array(
+				$this->alias . '.user_id' => CakeSession::read('Shop.Guest.id')
+			)
+		));
+		if (empty($lists)) {
+			return null;
+		}
+
+		$userId = AuthComponent::user('id');
+		foreach ($lists as &$list) {
+			$list = array(
+				'id' => $list[$this->alias][$this->primaryKey],
+				'user_id' => $userId
+			);
+		}
+		return (bool)$this->saveAll($lists);
 	}
 
 /**

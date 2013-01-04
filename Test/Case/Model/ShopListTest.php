@@ -592,6 +592,131 @@ class ShopListTest extends CakeTestCase {
 		$this->{$this->modelClass}->setCurrentList($expected);
 		$results = $this->{$this->modelClass}->find('details');
 		$this->assertEquals($expected, $results['ShopList']['id']);
+	}
 
+/**
+ * test find mine gets correct records
+ */
+	public function testFindMine() {
+		CakeSession::write('Shop.Guest.id', 'fake');
+		$expected = array();
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+		$this->assertEquals($expected, $results);
+
+		CakeSession::write('Shop.Guest.id', 'guest-1');
+		$expected = array(
+			'shop-list-guest-1-cart'
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+		$this->assertEquals($expected, $results);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = array(
+			'shop-list-bob-cart',
+			'shop-list-bob-wish',
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+		$this->assertEquals($expected, $results);
+
+		CakeSession::write('Auth.User.id', 'sally');
+		$expected = array(
+			'shop-list-sally-cart'
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+		$this->assertEquals($expected, $results);
+
+		CakeSession::delete('Auth');
+		$expected = array(
+			'shop-list-guest-1-cart'
+		);
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * test find mine details are correct
+ */
+	public function testFindMineDetails() {
+		CakeSession::write('Shop.Guest.id', 'guest-1');
+		$expected = array(
+			array(
+				'ShopList' => array(
+					'id' => 'shop-list-guest-1-cart',
+					'name' => 'shop-list-guest-1-cart',
+					'shop_list_product_count' => 1,
+					'value' => 0,
+					'modified' => '2012-10-08 20:53:06'
+				)
+			)
+		);
+		$results = $this->{$this->modelClass}->find('mine');
+		$this->assertEquals($expected, $results);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = array(
+			array(
+				'ShopList' => array(
+					'id' => 'shop-list-bob-cart',
+					'name' => 'shop-list-bob-cart',
+					'shop_list_product_count' => 3,
+					'value' => 0,
+					'modified' => '2012-11-08 20:53:06'
+				)
+			),
+			array(
+				'ShopList' => array(
+					'id' => 'shop-list-bob-wish',
+					'name' => 'shop-list-bob-wish',
+					'shop_list_product_count' => 0,
+					'value' => 0,
+					'modified' => '2012-10-08 20:53:06'
+				)
+			)
+		);
+		$results = $this->{$this->modelClass}->find('mine');
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * test guest to user
+ *
+ * @dataProvider guestToUserDataProvider
+ */
+	public function testGuestToUser($data, $expected) {
+		CakeSession::write('Shop.Guest.id', 'guest-1');
+		CakeSession::write('Auth.User.id', $data);
+
+		$this->assertTrue($this->{$this->modelClass}->guestToUser());
+		$expected = array_merge(array(
+			'shop-list-guest-1-cart'
+		), $expected);
+		$results = Hash::extract($this->{$this->modelClass}->find('mine'), '{n}.ShopList.id');
+
+		sort($expected);
+		sort($results);
+		$this->assertEquals($expected, $results);
+	}
+
+/**
+ * guest to user data provider
+ *
+ * @return array
+ */
+	public function guestToUserDataProvider() {
+		return array(
+			'bob' => array(
+				'bob',
+				array(
+					'shop-list-bob-cart',
+					'shop-list-bob-wish',
+				)
+			),
+			'sally' => array(
+				'sally',
+				array(
+					'shop-list-sally-cart'
+				)
+			)
+		);
 	}
 }
