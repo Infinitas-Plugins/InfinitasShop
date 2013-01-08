@@ -15,16 +15,22 @@
  * Redistributions of files must retain the above copyright notice.
  */
 
+
 if (empty($shopListProducts)) {
 	echo $this->Design->alert(__d('shop', 'You dont have anything in your cart yet'));
 	return;
 }
 
+echo $this->Form->create(null, array('action' => 'mass'));
+$contents = $this->element('Shop.checkout/contents');
+if ($this->request->is('ajax')) {
+	echo $contents;
+	echo $this->Form->end();
+	return;
+}
+
 $boxes = array();
 
-
-
-$contents = $this->element('Shop.checkout/contents');
 $buttons = $this->Html->tag('div', implode('', array(
 	$this->Html->link(__d('shop', 'Next'), '#checkout-account', array(
 		'class' => 'accordion-toggle btn',
@@ -125,9 +131,6 @@ $boxes[] = $this->Html->tag('div', $contents, array('class' => 'accordion-group'
 
 
 
-
-
-
 echo $this->Html->tag('div', implode('', $boxes), array(
 	'class' => 'accordion',
 	'id' => 'accordion-checkout'
@@ -149,3 +152,5 @@ echo $this->Html->tag('table', $this->Html->tag('thead', implode('', array(
 		$this->Html->tag('td', ' ' . $this->Shop->cartPrice($shopListProducts, $shopShippingMethod))
 	)))
 ))), array('class' => 'shipping'));
+
+echo $this->Form->end();

@@ -5,7 +5,6 @@ if (empty($shopList['ShopShipping'])) {
 	echo $this->Design->alert(__d('shop', 'No shipping method selected'));
 }
 
-echo $this->Form->create(null, array('action' => 'mass'));
 ?>
 <table class="listing">
 	<?php
@@ -111,17 +110,24 @@ echo $this->Form->create(null, array('action' => 'mass'));
 	?></tbody>
 </table>
 <?php
-
-	echo $this->Html->tag('div', implode('', array(
-		$this->Form->button(__d('shop', 'Update'), array(
-			'class' => 'btn',
-			'name' => 'action',
-			'value' => 'update'
-		)),
-		$this->Form->button(__d('shop', 'Checkout'), array(
-			'class' => 'btn btn-info',
-			'name' => 'action',
-			'value' => 'checkout'
-		))
-	)), array('class' => 'btn-group pull-right'));
-	echo $this->Form->end();
+if ($this->request->is('ajax')) {
+	$checkout = $this->Html->link(__d('shop', 'Checkout'), array(
+		'plugin' => 'shop',
+		'controller' => 'shop_list_products',
+		'action' => 'index'
+	), array('class' => 'btn btn-info'));
+} else {
+	$checkout = $this->Form->button(__d('shop', 'Checkout'), array(
+		'class' => 'btn btn-info',
+		'name' => 'action',
+		'value' => 'checkout'
+	));
+}
+echo $this->Html->tag('div', implode('', array(
+	$this->Form->button(__d('shop', 'Update'), array(
+		'class' => 'btn',
+		'name' => 'action',
+		'value' => 'update'
+	)),
+	$checkout
+)), array('class' => 'btn-group pull-right'));
