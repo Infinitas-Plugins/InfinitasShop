@@ -126,16 +126,34 @@ class ShopListsController extends ShopAppController {
 
 	public function add() {
 		$this->saveRedirectMarker();
-		if (!AuthComponent::user('id')) {
-			return $this->notice('require_auth');
-		}
+		$userId = $this->{$this->modelClass}->currentUserId();
 		if ($this->request->is('post')) {
-			$this->request->data[$this->modelClass]['user_id'] = AuthComponent::user('id');
+			$this->request->data[$this->modelClass]['user_id'] = $userId;
 			if ($this->{$this->modelClass}->save($this->request->data[$this->modelClass])) {
 				$this->notice('saved');
 			}
 		}
 		$this->notice('not_saved');
+	}
+
+	public function delete($id = null) {
+		if (!$id) {
+			$this->notice('not_found');
+		}
+
+		$deleted = $this->{$this->modelClass}->deleteAll(array(
+			$this->modelClass . '.' . $this->{$this->modelClass}->primaryKey => $id,
+			$this->modelClass . '.user_id' => $this->{$this->modelClass}->currentUserId()
+		));
+		$this->saveRedirectMarker();
+		if ($deleted)  {
+			if ($this->Session->read('Shop.current_list') == $id) {
+				$this->Session->delete('Shop.current_list');
+			}
+			return $this->notice('deleted');
+		}
+
+		return $this->notice('not_deleted');
 	}
 
 /**
