@@ -605,6 +605,7 @@ class ShopProduct extends ShopAppModel {
 				$this->ShopProductVariant->ShopListProduct->alias . '.shop_list_id',
 				$this->ShopProductVariant->ShopListProduct->alias . '.shop_product_variant_id',
 				$this->ShopProductVariant->ShopListProduct->alias . '.quantity',
+				$this->ShopProductVariant->ShopListProduct->alias . '.created',
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
