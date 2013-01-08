@@ -78,7 +78,9 @@
 
 		$links = array(
 			__d('shop', 'My Account') => array(
-
+				'plugin' => 'users',
+				'controller' => 'users',
+				'action' => 'view',
 			),
 			__d('shop', 'Order History') => array(
 
@@ -87,7 +89,9 @@
 
 			),
 			__d('shop', 'Newsletter') => array(
-
+				'plugin' => 'newsletter',
+				'controller' => 'newsletters',
+				'action' => 'subscribe'
 			)
 		);
 		$blocks[] = $this->Shop->infoLinks(__d('shop', 'My Account'), $links);
