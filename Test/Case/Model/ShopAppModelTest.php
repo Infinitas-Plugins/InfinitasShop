@@ -50,6 +50,8 @@ class ShopAppModelTest extends CakeTestCase {
  * test current user id
  */
 	public function testCurrentUserId() {
+		CakeSession::destroy();
+		
 		$result = $this->{$this->modelClass}->currentUserId();
 		$this->assertNull($result);
 
