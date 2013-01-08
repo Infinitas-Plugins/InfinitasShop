@@ -19,6 +19,10 @@
 
 class ShopOrderNote extends ShopAppModel {
 
+	public $findMethods = array(
+		'notes' => true
+	);
+
 /**
  * belongsTo relations for this model
  *
@@ -56,5 +60,20 @@ class ShopOrderNote extends ShopAppModel {
 
 		$this->validate = array(
 		);
+	}
+
+	protected function _findNotes($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
+				throw new InvalidArgumentException(__d('shop', 'No order specified'));
+			}
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.shop_order_id' => $query[0]
+			));
+			return $query;
+		}
+
+		return Hash::extract($results, '{n}.' . $this->alias);
 	}
 }
