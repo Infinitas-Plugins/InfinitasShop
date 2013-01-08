@@ -305,10 +305,6 @@ class ShopEvents extends AppEvents {
 		$View = $Event->Handler->_View;
 		$return = array(
 			array(
-				'title' => __d('shop', 'Latest orders'),
-				'content' => ''
-			),
-			array(
 				'title' => __d('shop', 'Products Viewed'),
 				'content' => ''
 			)
@@ -324,7 +320,33 @@ class ShopEvents extends AppEvents {
 			);
 		}
 
+		$shopOrders = ClassRegistry::init('Shop.ShopOrder')->find('mine', array(
+			'limit' => 5
+		));
+		if (!empty($shopOrders)) {
+			$return[] = array(
+				'title' => __d('shop', 'Recent orders'),
+				'content' => $View->element('Shop.profile/shop_orders', array(
+					'shopOrders' => $shopOrders
+				))
+			);
+		}
+
 		return $return;
+	}
+
+	public function onPaymentCompleted(Event $Event, array $data) {
+		$ShopList = ClassRegistry::init('Shop.ShopList');
+
+		$ShopList->toOrder($data['order']['custom'], $data);
+		// convert cart to order,
+		// send email
+		// redirect to order page
+	}
+
+	public function onPaymentCanceled(Event $Event, array $data) {
+		pr($details);
+		// redirect to error page
 	}
 
 }
