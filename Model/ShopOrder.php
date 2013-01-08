@@ -126,6 +126,10 @@ class ShopOrder extends ShopAppModel {
 				throw new InvalidArgumentException(__d('shop', 'Invalid order selected'));
 			}
 
+			$query = array_merge(array(
+				'admin' => false
+			), $query);
+
 			$this->virtualFields['previous_orders_count'] = 'COUNT(ShopUserOrder.id)';
 			$this->virtualFields['previous_orders_value'] = 'SUM(ShopUserOrder.total)';
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -206,6 +210,10 @@ class ShopOrder extends ShopAppModel {
 		$results[$this->InfinitasPaymentLog->alias]['raw_response'] = unserialize($results[$this->InfinitasPaymentLog->alias]['raw_response']);
 
 		$results[$this->ShopOrderNote->alias] = $this->ShopOrderNote->find('notes', $results[$this->alias][$this->primaryKey]);
+		$results[$this->ShopOrderProduct->alias] = $this->ShopOrderProduct->ShopProductVariant->ShopProduct->find('productsForOrder', array(
+			'shop_order_id' => $results[$this->alias][$this->primaryKey],
+			'admin' => $query['admin']
+		));
 		return $results;
 	}
 
