@@ -664,6 +664,16 @@ class ShopHelper extends AppHelper {
 	}
 
 	public function shipping(array $shipping) {
+		if (empty($shipping)) {
+			return $this->Html->link($this->currency(0), $this->here . '#', array(
+				'class' => 'shipping-breakdown',
+				'escape' => false,
+				'data-title' => __d('shop', 'Shipping information'),
+				'data-html' => 1,
+				'data-content' => htmlspecialchars($this->Design->alert(__d('shop', 'No shipping method selected'))),
+				'data-placement' => 'top'
+			));
+		}
 		$rows = array(
 			__d('shop', 'Packaging') => $this->currency($shipping['surcharge']),
 			__d('shop', 'Insurance') => __d('shop', '%s covers upto %s',
@@ -688,5 +698,26 @@ class ShopHelper extends AppHelper {
 			'data-content' => $this->Html->tag('table', $this->Html->tag('tbody', implode('', $rows))),
 			'data-placement' => 'top'
 		));
+	}
+
+	public function address(array $address, array $user) {
+		$address = array_merge(array(
+			'city' => null,
+			'state' => null,
+			'postcode' => null,
+			'country' => null
+		), $address);
+
+		return $this->Html->tag('address', implode($this->Html->tag('br'), array(
+			$this->Html->tag('strong', $user['full_name']),
+			$address['address_1'],
+			$address['address_2'],
+			$address['city'] ?: '-',
+			implode(', ', array(
+				$address['state'] ?: '-',
+				$address['postcode'] ?: '-'
+			)),
+			$address['country'] ?: '-',
+		)));
 	}
 }
