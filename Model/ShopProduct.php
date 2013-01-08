@@ -44,6 +44,7 @@ class ShopProduct extends ShopAppModel {
 		'paginated' => true,
 		'adminPaginated' => true,
 		'productsForList' => true,
+		'productsForOrder' => true,
 		'costForList' => true,
 		'prodcutListShipping' => true,
 		'new' => true,
@@ -621,6 +622,102 @@ class ShopProduct extends ShopAppModel {
 			$query['group'] = array_merge((array)$query['group'], array(
 				$this->ShopProductVariant->ShopListProduct->alias . '.' . $this->ShopProductVariant->ShopListProduct->primaryKey
 			));
+
+			return $query;
+		}
+
+		$results = $this->_findBasics($state, $query, $results);
+
+		$options = array(
+			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
+			'extract' => true
+		);
+
+		if (empty($results[0][$this->alias][$this->primaryKey]) && !array_filter($options['shop_product_id'])) {
+			return array();
+		}
+
+		$variantOptions = $this->ShopProductVariant->ShopOptionVariant->find('variants', array(
+			'shop_product_variant_id' => Hash::extract($results, '{n}.ShopProductVariant.id')
+		));
+		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
+		foreach ($results as &$result) {
+			unset($result['ActiveCategory']);
+			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result[$this->ShopCategoriesProduct->ShopCategory->alias] = Hash::extract($shopCategories, $extractTemplate);
+
+			$extractTemplate = sprintf('{n}[shop_product_variant_id=%s]', $result[$this->ShopProductVariant->alias][$this->ShopProductVariant->primaryKey]);
+			$result['ShopProductVariant']['ShopOptionVariant'] = Hash::extract($variantOptions, $extractTemplate);
+
+			$result['ShopProductVariant']['ShopProductVariantPrice'] = &$result['ShopProductVariantMaster']['ShopProductVariantPrice'];
+			$result['ShopProductVariant']['ShopProductVariantSize'] = &$result['ShopProductVariantMaster']['ShopProductVariantSize'];
+			$this->_productOverride($result);
+		}
+
+		return $results;
+	}
+
+/**
+ * Get products related to the specified order
+ *
+ * If doing admin calls pass 'admin' => true to skip forcing the current user id. Normal users
+ * will only be able to see their own orders.
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findProductsForOrder($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query['shop_order_id'])) {
+				throw new InvalidArgumentException(__d('shop', 'No order specified'));
+			}
+
+			$query['variants'] = false;
+			$query = $this->_findBasics($state, $query);
+
+			array_shift($query['fields']);
+
+			$stock = array_search($this->alias . '.total_stock', $query['fields']);
+			if ($stock !== false) {
+				unset($query['fields'][$stock]);
+			}
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->ShopProductVariant->alias . '.*',
+
+				$this->ShopProductVariant->ShopOrderProduct->alias . '.*',
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->ShopProductVariant->ShopOrderProduct->alias . '.shop_order_id' => $query['shop_order_id']
+			));
+
+			$admin = array_key_exists('admin', $query) && $query['admin'] === true;
+			if (!$admin) {
+				$query['conditions'][$this->ShopProductVariant->ShopOrderProduct->ShopOrder->alias . '.user_id'] = $this->currentUserId();
+			}
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopSize->fullModelName());
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel(array(
+				'model' => $this->ShopProductVariant->ShopOrderProduct->fullModelName(),
+				'type' => 'right'
+			));
+			$query['joins'][] = $this->ShopProductVariant->ShopOrderProduct->autoJoinModel(array(
+				'model' => $this->ShopProductVariant->ShopOrderProduct->ShopOrder
+			));
+
+			$query['group'] = array_merge((array)$query['group'], array(
+				$this->ShopProductVariant->ShopOrderProduct->alias . '.' . $this->ShopProductVariant->ShopOrderProduct->primaryKey
+			));
+
+			$query['order'] = array(
+				$this->ShopProductVariant->ShopOrderProduct->alias . '.' . $this->ShopProductVariant->ShopOrderProduct->displayField
+			);
 
 			return $query;
 		}

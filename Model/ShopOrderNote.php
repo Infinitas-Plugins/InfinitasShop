@@ -31,14 +31,14 @@ class ShopOrderNote extends ShopAppModel {
  */
 	public $belongsTo = array(
 		'ShopOrder' => array(
-			'className' => 'ShopOrder',
+			'className' => 'Shop.ShopOrder',
 			'foreignKey' => 'shop_order_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
 		),
 		'ShopOrderStatus' => array(
-			'className' => 'ShopOrderStatus',
+			'className' => 'Shop.ShopOrderStatus',
 			'foreignKey' => 'shop_order_status_id',
 			'conditions' => '',
 			'fields' => '',

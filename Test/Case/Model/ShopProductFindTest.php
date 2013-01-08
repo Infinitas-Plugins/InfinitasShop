@@ -36,6 +36,8 @@ class ShopProductFindTest extends CakeTestCase {
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
+		'plugin.shop.shop_order',
+		'plugin.shop.shop_order_product',
 		'plugin.shop.shop_list',
 		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_product_types_option',
@@ -385,6 +387,53 @@ class ShopProductFindTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * test find products for order exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testFindProductsForOrderException() {
+		$this->{$this->modelClass}->find('productsForOrder');
+	}
+
+/**
+ * Test find products for order
+ */
+	public function testFindProductsForOrder() {
+		$this->assertEmpty($this->{$this->modelClass}->find('productsForOrder', array(
+			'shop_order_id' => 'order-1'
+		)));
+
+		CakeSession::write('Auth.User.id', 'sam');
+		$this->assertEmpty($this->{$this->modelClass}->find('productsForOrder', array(
+			'shop_order_id' => 'order-1'
+		)));
+		CakeSession::delete('Auth');
+
+		$this->assertEmpty($this->{$this->modelClass}->find('productsForOrder', array(
+			'shop_order_id' => 'order-1',
+			'user_id' => 'sam'
+		)));
+
+		$expected = array(
+			'order-1b',
+			'order-1a',
+		);
+		$result = $this->{$this->modelClass}->find('productsForOrder', array(
+			'shop_order_id' => 'order-1',
+			'admin' => true
+		));
+		$result = Hash::extract($result, '{n}.ShopOrderProduct.id');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$result = $this->{$this->modelClass}->find('productsForOrder', array(
+			'shop_order_id' => 'order-1'
+		));
+		$result = Hash::extract($result, '{n}.ShopOrderProduct.id');
+		$this->assertEquals($expected, $result);
 	}
 
 /**
