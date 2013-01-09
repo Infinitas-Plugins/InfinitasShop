@@ -14,12 +14,8 @@ class ShopPaymentMethodTest extends CakeTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_payment_method',
-		'plugin.shop.shop_payment_method_api',
 		'plugin.shop.shop_list',
-		'plugin.shop.shop_order',
-		'plugin.shop.shop_payment_field',
-		'plugin.shop.shop_payment_method_status',
-		'plugin.shop.shop_payment_response'
+		'plugin.shop.shop_order'
 	);
 
 /**

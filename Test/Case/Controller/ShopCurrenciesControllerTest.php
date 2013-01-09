@@ -14,7 +14,6 @@ class ShopCurrenciesControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_currency',
-		'plugin.shop.shop_payment_method_api'
 	);
 
 /**

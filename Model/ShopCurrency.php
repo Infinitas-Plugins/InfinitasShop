@@ -2,8 +2,6 @@
 App::uses('ShopAppModel', 'Shop.Model');
 /**
  * ShopCurrency Model
- *
- * @property ShopPaymentMethodApi $ShopPaymentMethodApi
  */
 
 class ShopCurrency extends ShopAppModel {
@@ -17,27 +15,6 @@ class ShopCurrency extends ShopAppModel {
 		'currency' => true,
 		'conversions' => true,
 		'switch' => true
-	);
-
-/**
- * hasMany associations
- *
- * @var array
- */
-	public $hasMany = array(
-		'ShopPaymentMethodApi' => array(
-			'className' => 'ShopPaymentMethodApi',
-			'foreignKey' => 'shop_currency_id',
-			'dependent' => false,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'exclusive' => '',
-			'finderQuery' => '',
-			'counterQuery' => ''
-		)
 	);
 
 /**

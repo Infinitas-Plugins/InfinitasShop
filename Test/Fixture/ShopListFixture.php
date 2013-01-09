@@ -16,6 +16,7 @@ class ShopListFixture extends CakeTestFixture {
 	public $fields = array(
 		'id' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'name' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'token' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 255, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'user_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_shipping_method_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'shop_payment_method_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -39,6 +40,7 @@ class ShopListFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-bob-cart',
 			'name' => 'shop-list-bob-cart',
+			'token' => null,
 			'user_id' => 'bob',
 			'shop_shipping_method_id' => 'royal-mail-1st',
 			'shop_payment_method_id' => 'paypal',
@@ -49,6 +51,7 @@ class ShopListFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-bob-wish',
 			'name' => 'shop-list-bob-wish',
+			'token' => null,
 			'user_id' => 'bob',
 			'shop_shipping_method_id' => 'inactive',
 			'shop_payment_method_id' => 'inactive',
@@ -59,6 +62,7 @@ class ShopListFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-sally-cart',
 			'name' => 'shop-list-sally-cart',
+			'token' => null,
 			'user_id' => 'sally',
 			'shop_shipping_method_id' => 'royal-mail-2nd',
 			'shop_payment_method_id' => 'cc',
@@ -69,6 +73,7 @@ class ShopListFixture extends CakeTestFixture {
 		array(
 			'id' => 'shop-list-guest-1-cart',
 			'name' => 'shop-list-guest-1-cart',
+			'token' => null,
 			'user_id' => 'guest-1',
 			'shop_shipping_method_id' => null,
 			'shop_payment_method_id' => 'cc',
