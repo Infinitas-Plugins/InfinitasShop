@@ -342,7 +342,7 @@ class ShopEvents extends AppEvents {
 			return false;
 		}
 
-		$order = $this->ShopListProduct->ShopProductVariant->ShopOrderProduct->ShopOrder->orderFromList($listId, array(
+		$order = $ShopList->ShopListProduct->ShopProductVariant->ShopOrderProduct->ShopOrder->orderFromList($data['order']['custom'], array(
 			'infinitas_payment_log_id' => $data['order']['infinitas_payment_log_id']
 		));
 
