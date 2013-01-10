@@ -58,7 +58,23 @@ class ShopListProductsController extends ShopAppController {
 		$this->set(compact('shopList', 'shopListProducts', 'listTotalCost', 'shopShippingMethod', 'shopShippingMethods', 'shopPaymentMethods'));
 	}
 
+/**
+ * Process the users cart
+ *
+ * Get the details of the order and request the payment if required.
+ *
+ * @return void
+ */
 	public function checkout() {
+		try {
+			$result = $this->{$this->modelClass}->ShopList->checkout($this->request->data);
+			$this->redirect($result['redirect']);
+		} catch (Exception $e) {
+			$this->notice($e);
+		}
+	}
+
+	public function process() {
 
 	}
 

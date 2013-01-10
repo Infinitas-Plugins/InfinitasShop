@@ -56,15 +56,11 @@ class ShopOrdersController extends ShopAppController {
  * @return void
  */
 	public function view($id = null) {
-		if (!$id) {
-			$this->Infinitas->noticeInvalidRecord();
+		try {
+			$this->set('shopOrder', $this->ShopOrder->find('details', $id));
+		} catch (Exception $e) {
+			$this->notice($e);
 		}
-
-		$shopOrder = $this->ShopOrder->getViewData(
-			array($this->ShopOrder->alias . '.' . $this->ShopOrder->primaryKey => $id)
-		);
-
-		$this->set(compact('shopOrder'));
 	}
 
 /**
@@ -111,7 +107,10 @@ class ShopOrdersController extends ShopAppController {
  */
 	public function admin_view($id = null) {
 		try {
-			$this->set('shopOrder', $this->ShopOrder->find('details', $id));
+			$this->set('shopOrder', $this->ShopOrder->find('details', array(
+				$id,
+				'admin' => true
+			)));
 		} catch (Exception $e) {
 			$this->notice($e);
 		}
