@@ -337,11 +337,23 @@ class ShopEvents extends AppEvents {
 
 	public function onPaymentCompleted(Event $Event, array $data) {
 		$ShopList = ClassRegistry::init('Shop.ShopList');
+		if (!$ShopList->validateOrder($data['order']['custom'], $data)) {
+			// invalid order
+			return false;
+		}
 
-		$ShopList->toOrder($data['order']['custom'], $data);
-		// convert cart to order,
+		$order = $this->ShopListProduct->ShopProductVariant->ShopOrderProduct->ShopOrder->orderFromList($listId, array(
+			'infinitas_payment_log_id' => $data['order']['infinitas_payment_log_id']
+		));
+
+		if (!$order) {
+			return false;
+		}
+
+
 		// send email
-		// redirect to order page
+
+		return $order;
 	}
 
 	public function onPaymentCanceled(Event $Event, array $data) {
