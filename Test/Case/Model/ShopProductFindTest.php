@@ -426,6 +426,8 @@ class ShopProductFindTest extends CakeTestCase {
 			'admin' => true
 		));
 		$result = Hash::extract($result, '{n}.ShopOrderProduct.id');
+		sort($expected);
+		sort($result);
 		$this->assertEquals($expected, $result);
 
 		CakeSession::write('Auth.User.id', 'bob');
