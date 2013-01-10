@@ -651,7 +651,21 @@ class ShopProduct extends ShopAppModel {
 
 			$result['ShopProductVariant']['ShopProductVariantPrice'] = &$result['ShopProductVariantMaster']['ShopProductVariantPrice'];
 			$result['ShopProductVariant']['ShopProductVariantSize'] = &$result['ShopProductVariantMaster']['ShopProductVariantSize'];
+
 			$this->_productOverride($result);
+
+			$quantity = $result['ShopListProduct']['quantity'];
+			foreach (array('cost', 'selling', 'retail') as $field) {
+				$result['ShopProductVariant']['ShopProductListPrice'][$field] = $result['ShopProductVariant']['ShopProductVariantPrice'][$field] * $quantity;
+				$result['ShopOrderProductPrice'][$field] = $result['ShopProductVariant']['ShopProductVariantPrice'][$field];
+			}
+
+			$fields = $result['ShopProductVariant']['ShopProductVariantSize'];
+			unset($fields['id']);
+			foreach (array_keys($fields) as $field) {
+				$result['ShopProductVariant']['ShopProductListSize'][$field] = $result['ShopProductVariant']['ShopProductVariantSize'][$field] * $quantity;
+				$result['ShopOrderProductSize'][$field] = $result['ShopProductVariant']['ShopProductVariantSize'][$field];
+			}
 		}
 
 		return $results;
@@ -689,8 +703,9 @@ class ShopProduct extends ShopAppModel {
 
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->ShopProductVariant->alias . '.*',
-
 				$this->ShopProductVariant->ShopOrderProduct->alias . '.*',
+				$this->ShopProductVariant->ShopOrderProduct->ShopOrderProductSize->alias . '.*',
+				$this->ShopProductVariant->ShopOrderProduct->ShopOrderProductPrice->alias . '.*',
 			));
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
@@ -709,6 +724,20 @@ class ShopProduct extends ShopAppModel {
 			));
 			$query['joins'][] = $this->ShopProductVariant->ShopOrderProduct->autoJoinModel(array(
 				'model' => $this->ShopProductVariant->ShopOrderProduct->ShopOrder
+			));
+			$query['joins'][] = $this->ShopProductVariant->ShopOrderProduct->autoJoinModel(array(
+				'model' => $this->ShopProductVariant->ShopOrderProduct->ShopOrderProductPrice,
+				'conditions' => array(
+					'ShopOrderProductPrice.foreign_key = ShopOrderProduct.id',
+					'ShopOrderProductPrice.model = "Shop.ShopOrderProduct"'
+				)
+			));
+			$query['joins'][] = $this->ShopProductVariant->ShopOrderProduct->autoJoinModel(array(
+				'model' => $this->ShopProductVariant->ShopOrderProduct->ShopOrderProductSize,
+				'conditions' => array(
+					'ShopOrderProductSize.foreign_key = ShopOrderProduct.id',
+					'ShopOrderProductSize.model = "Shop.ShopOrderProduct"'
+				)
 			));
 
 			$query['group'] = array_merge((array)$query['group'], array(
@@ -767,11 +796,16 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findCostForList($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			return self::_findProdcutListShipping($state, $query);
+			$query = self::_findProductsForList($state, $query);
+			return $query;
 		}
 
-		$results = self::_findProdcutListShipping($state, $query, $results);
-		return !empty($results['cost']) ? $results['cost'] : 0;
+		if (empty($results)) {
+			return 0;
+		}
+
+		$results = self::_findProductsForList($state, $query, $results);
+		return array_sum(Hash::extract($results, '{n}.ShopProductVariant.ShopProductListPrice.selling'));
 	}
 
 /**
@@ -948,52 +982,21 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProductShipping($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				$this->ShopProductVariant->ShopProductVariantPrice->findFields(),
-				$this->ShopProductVariant->ShopProductVariantSize->findFields(),
-				$this->ShopProductVariantMaster->ShopProductVariantPrice->findFields('ShopProductVariantMasterPrice'),
-				$this->ShopProductVariantMaster->ShopProductVariantSize->findFields('ShopProductVariantMasterSize')
-			);
-
-			$query['conditions'] = array_merge((array)$query['conditions'], array(
-				$this->alias . '.' . $this->primaryKey => $query['shop_product_id']
-			));
-
-			$query['joins'] = (array)$query['joins'];
-
-			$query['joins'][] = $this->autoJoinModel(array(
-				'model' => $this->ShopProductVariant,
-				'conditions' => array(
-					sprintf('%s.%s = %s.shop_product_id', $this->alias, $this->primaryKey, $this->ShopProductVariant->alias),
-					sprintf('%s.%s', $this->ShopProductVariant->alias, $this->ShopProductVariant->primaryKey) => $query['shop_product_variant_id']
-				)
-			));
-
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProductVariantPrice);
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProductVariantSize);
-
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariantMaster);
-			$query['joins'][] = $this->ShopProductVariantMaster->autoJoinModel(array(
-				'model' => $this->ShopProductVariantMaster->ShopProductVariantPrice,
-				'alias' => 'ShopProductVariantMasterPrice'
-			));
-			$query['joins'][] = $this->ShopProductVariantMaster->autoJoinModel(array(
-				'model' => $this->ShopProductVariantMaster->ShopProductVariantSize,
-				'alias' => 'ShopProductVariantMasterSize'
-			));
-
-			$query['limit'] = 1;
-
-			return $query;
+			if (!empty($query['shop_product_id'])) {
+				$query[0] = $query['shop_product_id'];
+			}
+			return self::_findProduct($state, $query);
 		}
+		$results = self::_findProduct($state, $query, $results);
 
 		if (empty($results)) {
 			return array();
 		}
 
-		$results = $results[0];
-
+		return array(
+			'cost' => 0,
+			'wight' => 0
+		);
 		$size = array(
 			'Master' => $results['ShopProductVariantMasterSize'],
 			'Variant' => $results['ShopProductVariantSize'],
@@ -1021,65 +1024,32 @@ class ShopProduct extends ShopAppModel {
  */
 	protected function _findProdcutListShipping($state, array $query, array $results = array()) {
 		if ($state == 'before') {
-			if (empty($query['shop_list_id'])) {
-				$query['shop_list_id'] = $this->ShopProductVariant->ShopListProduct->ShopList->currentListId(true);
-			}
-			$query['fields'] = array_merge(
-				(array)$query['fields'],
-				array($this->ShopProductVariant->ShopListProduct->alias . '.quantity'),
-				$this->ShopProductVariant->ShopProductVariantPrice->findFields(),
-				$this->ShopProductVariant->ShopProductVariantSize->findFields(),
-				$this->ShopProductVariantMaster->ShopProductVariantPrice->findFields('ShopProductVariantMasterPrice'),
-				$this->ShopProductVariantMaster->ShopProductVariantSize->findFields('ShopProductVariantMasterSize')
-			);
-
-			$query['conditions'] = array_merge((array)$query['conditions'], array(
-				$this->ShopProductVariant->ShopListProduct->ShopList->alias . '.' . $this->ShopProductVariant->ShopListProduct->ShopList->primaryKey => $query['shop_list_id']
-			));
-
-			$query['joins'] = (array)$query['joins'];
-
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant);
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopListProduct);
-			$query['joins'][] = $this->ShopProductVariant->ShopListProduct->autoJoinModel($this->ShopProductVariant->ShopListProduct->ShopList);
-
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProductVariantPrice);
-			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProductVariantSize);
-
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariantMaster);
-			$query['joins'][] = $this->ShopProductVariantMaster->autoJoinModel(array(
-				'model' => $this->ShopProductVariantMaster->ShopProductVariantPrice,
-				'alias' => 'ShopProductVariantMasterPrice'
-			));
-			$query['joins'][] = $this->ShopProductVariantMaster->autoJoinModel(array(
-				'model' => $this->ShopProductVariantMaster->ShopProductVariantSize,
-				'alias' => 'ShopProductVariantMasterSize'
-			));
-
-			return $query;
+			return self::_findProductsForList($state, $query);
 		}
 
 		if (empty($results)) {
 			return array();
 		}
 
+		$results = self::_findProductsForList($state, $query, $results);
+
 		foreach ($results as &$result) {
-			$size = array(
-				'Master' => $result['ShopProductVariantMasterSize'],
-				'Variant' => $result['ShopProductVariantSize'],
-				'quantity' => $result['ShopListProduct']['quantity']
+			$result = array(
+				'cost' => $result['ShopProductVariant']['ShopProductListPrice']['selling'],
+				'weight' => $result['ShopProductVariant']['ShopProductListSize']['shipping_weight'],
+				'width' => $result['ShopProductVariant']['ShopProductListSize']['shipping_width'],
+				'length' => $result['ShopProductVariant']['ShopProductListSize']['shipping_length'],
+				'height' => $result['ShopProductVariant']['ShopProductListSize']['shipping_height'],
 			);
-			$result = array_merge(array(
-				'cost' => ShopProductVariant::productPrice(array(
-					'Master' => $result['ShopProductVariantMasterPrice'],
-					'Variant' => $result['ShopProductVariantPrice'],
-					'quantity' => $result['ShopListProduct']['quantity']
-				)),
-				'weight' => ShopProductVariant::productWeight($size)
-			), ShopProductVariant::productSize($size));
 		}
 
-		return ShopProductVariant::productTotal($results);
+		return array(
+			'cost' => array_sum(Hash::extract($results, '{n}.cost')),
+			'weight' => array_sum(Hash::extract($results, '{n}.weight')),
+			'width' => max(Hash::extract($results, '{n}.width')),
+			'height' => max(Hash::extract($results, '{n}.height')),
+			'length' => max(Hash::extract($results, '{n}.length'))
+		);
 	}
 
 /**
