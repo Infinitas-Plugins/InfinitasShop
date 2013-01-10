@@ -6,7 +6,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property User $User
  * @property ShopShippingMethod $ShopShippingMethod
  * @property ShopPaymentMethod $ShopPaymentMethod
- * @property ShopListProduct $thisProduct
+ * @property ShopListProduct $ShopListProduct
  */
 class ShopList extends ShopAppModel {
 
@@ -17,10 +17,10 @@ class ShopList extends ShopAppModel {
  */
 	public $findMethods = array(
 		'hasList' => true,
-		'listDetails' => true,
 		'details' => true,
 		'overview' => true,
-		'mine' => true
+		'mine' => true,
+		'orderDetails' => true
 	);
 
 /**
@@ -159,9 +159,15 @@ class ShopList extends ShopAppModel {
 				$query[0] = $this->currentListId(true);
 			}
 
+			if (empty($query['user_id'])) {
+				$query['user_id'] = $this->currentUserId();
+			}
+
+
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
+				$this->alias . '.token',
 
 				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->primaryKey,
 				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->displayField,
@@ -172,13 +178,14 @@ class ShopList extends ShopAppModel {
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
 				$this->alias . '.' . $this->primaryKey => $query[0],
-				$this->alias . '.user_id' => $this->currentUserId()
+				$this->alias . '.user_id' => $query['user_id']
 			));
 
 			$query['joins'] = array(
 				$this->autoJoinModel($this->ShopShippingMethod->fullModelName()),
 				$this->autoJoinModel($this->ShopPaymentMethod->fullModelName()),
 			);
+			$results['limit'] = 1;
 			return $query;
 		}
 
@@ -268,8 +275,16 @@ class ShopList extends ShopAppModel {
 	public function currentListId($create = false) {
 		$currentList = CakeSession::read(self::$sessionListKey);
 
-		if (!empty($currentList) && $this->exists($currentList)) {
-			return $currentList;
+		if (!empty($currentList)) {
+			$mine = $this->find('count', array(
+				'conditions' => array(
+					$this->alias . '.' . $this->primaryKey => $currentList,
+					$this->alias . '.user_id' => $this->currentUserId()
+				)
+			));
+			if ($mine) {
+				return $currentList;
+			}
 		}
 
 		$currentList = $this->find('list', array(
@@ -487,5 +502,198 @@ class ShopList extends ShopAppModel {
 		}
 
 		return (bool)current(Hash::extract($results, sprintf('{n}.%s.list_count', $this->alias)));
+	}
+
+	protected function _gateway() {
+		if (!empty($this->_Gateway)) {
+			return $this->_Gateway;
+		}
+		$this->_Gateway = new InfinitasGateway();
+		$this->_Gateway
+			->provider('paypal-express')
+			->user(AuthComponent::user());
+		return $this->_Gateway;
+	}
+
+/**
+ * If a new method of shipping is submitted in the form save it
+ *
+ * - If the form and db method is the same it is returned as is
+ * - If the form value is empty and db is set the db value is returned
+ * - If a valid form value is submitted in the the db is updated
+ *
+ * If no shipping method can be found an execption will be thrown
+ *
+ * @param string $shopListId
+ * @param array $data
+ *
+ * @return string
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _shippingMethod($shopListId, array $data) {
+		$shipping = $this->find('first', array(
+			'fields' => array(
+				$this->alias . '.shop_shipping_method_id'
+			),
+			'conditions' => array(
+				$this->alias . '.' . $this->primaryKey => $shopListId,
+			)
+		));
+		$dbShippingMethod = current(Hash::flatten($shipping));
+		$formShippingMethod = !empty($data['ShopList']['shop_shipping_method_id']) ? $data['ShopList']['shop_shipping_method_id'] : null;
+
+		if ($dbShippingMethod == $formShippingMethod) {
+			return $dbShippingMethod;
+		}
+
+		if ($dbShippingMethod && empty($formShippingMethod)) {
+			return $dbShippingMethod;
+		}
+		if ($this->ShopShippingMethod->exists($formShippingMethod)) {
+			$updated = $this->updateAll(
+				array($this->alias . '.shop_shipping_method_id' => sprintf('"%s"', $formShippingMethod)),
+				array($this->alias . '.' . $this->primaryKey => $shopListId)
+			);
+			if ($updated) {
+				return $formShippingMethod;
+			}
+		}
+
+		throw new InvalidArgumentException(__d('shop', 'No shipping method selected'));
+	}
+
+	public function checkout(array $data) {
+		App::uses('InfinitasGateway', 'InfinitasPayments.Lib');
+
+		$shopListId = $this->currentListId();
+		$shopShippingMethodId = $this->_shippingMethod($shopListId, $data);
+		$shopList = $this->find('details');
+
+		if (!empty($shopList['ShopList']['token'])) {
+			$status = $this->_gateway()->status(array(
+				'token' => $shopList['ShopList']['token']
+			));
+			if ($status['paid_status'] === InfinitasGateway::$PAID) {
+				$this->toOrder($shopListId, $status);
+				return $status;
+			}
+		}
+
+		$shopListProducts = $this->ShopListProduct->ShopProductVariant->ShopProduct->find('productsForList');
+		if (empty($shopListProducts)) {
+			throw new InvalidArgumentException(__d('shop', 'There are no products to checkout'));
+		}
+
+		$this->_gateway()
+			->shipping($shopList['ShopShipping']['shipping'])
+			->insurance($shopList['ShopShipping']['insurance_rate'])
+			->handling($shopList['ShopShipping']['surcharge'])
+			->custom($shopListId)
+			->notifyUrl(array(
+				'plugin' => 'shop',
+				'controller' => 'shop_list_products',
+				'action' => 'process_payment',
+				$shopListId
+			))
+			->currencyCode(ShopCurrencyLib::getCurrency());
+
+		foreach ($shopListProducts as $shopListProduct) {
+			$this->_gateway()->item(array(
+				'name' => $shopListProduct['ShopProduct']['name'],
+				'selling' => $shopListProduct['ShopProductVariantMaster']['ShopProductVariantPrice']['selling'],
+				'quantity' => $shopListProduct['ShopListProduct']['quantity']
+			));
+		}
+		$request = $this->_gateway()->prepare();
+
+		if ($request['token']) {
+			$this->id = $shopListId;
+			$this->saveField('token', $request['token']);
+			return $request;
+		}
+		return false;
+	}
+
+/**
+ * Check that the order details match the list
+ *
+ * @param string $listId
+ * @param array $order
+ *
+ * @return boolean
+ */
+	public function validateOrder($listId, array $order) {
+		$shopList = $this->find('first', array(
+			'conditions' => array(
+				$this->alias . '.' . $this->primaryKey => $listId,
+				$this->alias . '.token' => $order['details']['token']
+			)
+		));
+		if (empty($shopList)) {
+			return false;
+		}
+
+		// check totals are correct
+
+		return true;
+	}
+
+/**
+ * remove all the products in a list
+ *
+ * @param string $listId the list id to empty
+ *
+ * @return array
+ */
+	public function truncateUserList($listId) {
+		$cleared = $this->ShopListProduct->deleteAll(array(
+			$this->ShopListProduct->alias . '.shop_list_id' => $listId
+		));
+
+		$updated = false;
+		if ($cleared) {
+			$updated = $this->updateAll(
+				array($this->alias . '.shop_list_product_count' => 0),
+				array($this->alias . '.id' => $listId)
+			);
+		}
+
+		return $cleared && $updated;
+	}
+
+/**
+ * Get the details required for making an order
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array|boolean
+ *
+ * @throws InvalidArgumentException
+ */
+	protected function _findOrderDetails($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
+				throw new InvalidArgumentException(__d('shop', 'No list specified'));
+			}
+			$query['fields'] = array(
+				$this->alias . '.user_id',
+				$this->alias . '.shop_shipping_method_id',
+				$this->alias . '.shop_payment_method_id',
+			);
+
+			$query['conditions'] = array(
+				$this->alias . '.' . $this->primaryKey => $query[0]
+			);
+			return $query;
+		}
+
+		if (!empty($results[0][$this->alias])) {
+			return $results[0][$this->alias];
+		}
+
+		return false;
 	}
 }

@@ -318,25 +318,9 @@ class ShopProductVariant extends ShopAppModel {
  * @return float
  */
 	public static function productPrice(array $data, $type = 'selling') {
+		pr($data);
 		$data = array_merge(array('quantity' => 1), $data);
-		$total = $data['Master'][$type ] + $data['Variant'][$type ];
+		$total = $data['Variant'][$type ];
 		return (float)$total * $data['quantity'];
-	}
-
-/**
- * Calculate the list total
- *
- * @param array $results
- *
- * @return array
- */
-	public static function productTotal(array $results) {
-		return array(
-			'cost' => array_sum(Hash::extract($results, '{n}.cost')),
-			'weight' => array_sum(Hash::extract($results, '{n}.weight')),
-			'width' => max(Hash::extract($results, '{n}.width')),
-			'height' => max(Hash::extract($results, '{n}.height')),
-			'length' => max(Hash::extract($results, '{n}.length'))
-		);
 	}
 }
