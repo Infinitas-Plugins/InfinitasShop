@@ -77,6 +77,32 @@ class ShopSizeFixture extends CakeTestFixture {
 			'product_weight' => 50,
 			'shipping_weight' => 65
 		),
+		array(
+			'id' => 'order-1a-size',
+			'model' => 'Shop.ShopOrderProduct',
+			'foreign_key' => 'order-1a',
+			'product_width' => '10.50000',
+			'product_height' => '10.50000',
+			'product_length' => '10.50000',
+			'shipping_width' => '12.50000',
+			'shipping_height' => '12.50000',
+			'shipping_length' => '12.50000',
+			'product_weight' => '500.00000',
+			'shipping_weight' => '650.00000',
+		),
+		array(
+			'id' => 'order-1b-size',
+			'model' => 'Shop.ShopOrderProduct',
+			'foreign_key' => 'order-1b',
+			'product_width' => '10.50000',
+			'product_height' => '10.50000',
+			'product_length' => '10.50000',
+			'shipping_width' => '12.50000',
+			'shipping_height' => '12.50000',
+			'shipping_length' => '12.50000',
+			'product_weight' => '500.00000',
+			'shipping_weight' => '650.00000',
+		),
 	);
 
 }

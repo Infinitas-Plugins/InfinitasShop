@@ -124,6 +124,26 @@ class ShopPriceFixture extends CakeTestFixture {
 			'foreign_key' => 'option-size-large',
 			'created' => '2012-10-05 10:04:09',
 			'modified' => '2012-10-05 10:04:09'
+		),
+		array(
+			'id' => 'order-1a-price',
+			'cost' => '10.00000',
+			'selling' => '12.00000',
+			'retail' => '15.00000',
+			'model' => 'Shop.ShopOrderProduct',
+			'foreign_key' => 'order-1a',
+			'created' => '2012-10-05 10:04:09',
+			'modified' => '2012-10-05 10:04:09'
+		),
+		array(
+			'id' => 'order-1b-price',
+			'cost' => '10.00000',
+			'selling' => '12.00000',
+			'retail' => '15.00000',
+			'model' => 'Shop.ShopOrderProduct',
+			'foreign_key' => 'order-1b',
+			'created' => '2012-10-05 10:04:09',
+			'modified' => '2012-10-05 10:04:09'
 		)
 	);
 
