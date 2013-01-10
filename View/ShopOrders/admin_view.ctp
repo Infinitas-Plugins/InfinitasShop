@@ -24,8 +24,8 @@ echo $this->Form->create();
 	$contents = array(
 		$this->element('Shop.order/overview'),
 		$this->element('Shop.order/payment'),
-		$this->element('Shop.order/delivery'),
 		$this->element('Shop.order/items'),
+		$this->element('Shop.order/delivery'),
 		$this->element('Shop.order/notes'),
 	);
 

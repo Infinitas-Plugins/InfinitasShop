@@ -23,8 +23,25 @@ if (empty($shopListProducts)) {
 
 echo $this->Form->create(null, array('action' => 'mass'));
 $contents = $this->element('Shop.checkout/contents');
+$total = $this->Html->tag('table', $this->Html->tag('thead', implode('', array(
+	$this->Html->tag('tr', implode('', array(
+		$this->Html->tag('td', ''),
+		$this->Html->tag('td', __d('shop', 'Sub Total'), array('style' => 'width: 100px;')),
+		$this->Html->tag('td', $this->Shop->cartPrice($shopListProducts), array('style' => 'width: 100px;'))
+	))),
+	$this->Html->tag('tr', implode('', array(
+		$this->Html->tag('td', ''),
+		$this->Html->tag('td', __d('shop', 'Shipping')),
+		$this->Html->tag('td', $this->Shop->shipping($shopShippingMethod))
+	))),
+	$this->Html->tag('tr', implode('', array(
+		$this->Html->tag('td', ''),
+		$this->Html->tag('td', __d('shop', 'Total')),
+		$this->Html->tag('td', ' ' . $this->Shop->cartPrice($shopListProducts, $shopShippingMethod))
+	)))
+))), array('class' => 'shipping'));
 if ($this->request->is('ajax')) {
-	echo $contents;
+	echo $contents . $total;
 	echo $this->Form->end();
 	return;
 }
@@ -135,22 +152,6 @@ echo $this->Html->tag('div', implode('', $boxes), array(
 	'class' => 'accordion',
 	'id' => 'accordion-checkout'
 ));
-echo $this->Html->tag('table', $this->Html->tag('thead', implode('', array(
-	$this->Html->tag('tr', implode('', array(
-		$this->Html->tag('td', ''),
-		$this->Html->tag('td', __d('shop', 'Sub Total'), array('style' => 'width: 100px;')),
-		$this->Html->tag('td', $this->Shop->cartPrice($shopListProducts), array('style' => 'width: 100px;'))
-	))),
-	$this->Html->tag('tr', implode('', array(
-		$this->Html->tag('td', ''),
-		$this->Html->tag('td', __d('shop', 'Shipping')),
-		$this->Html->tag('td', $this->Shop->shipping($shopShippingMethod))
-	))),
-	$this->Html->tag('tr', implode('', array(
-		$this->Html->tag('td', ''),
-		$this->Html->tag('td', __d('shop', 'Total')),
-		$this->Html->tag('td', ' ' . $this->Shop->cartPrice($shopListProducts, $shopShippingMethod))
-	)))
-))), array('class' => 'shipping'));
+echo $total;
 
 echo $this->Form->end();

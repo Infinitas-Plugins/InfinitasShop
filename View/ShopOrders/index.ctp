@@ -21,9 +21,8 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 	'edit',
 	'toggle',
 	'copy',
-	'delete',
-
-echo ));
+	'delete'
+));
 echo $this->Filter->alphabetFilter();
 ?>
 <table class="listing">
