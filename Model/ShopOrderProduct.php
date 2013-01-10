@@ -17,12 +17,40 @@
  *
  * @package	Shop.Model
  *
+ * @property ShopSize $ShopOrderProductSize
+ * @property ShopPrice $ShopOrderProductPrice
  * @property ShopOrder $ShopOrder
  * @property ShopProductVariant $ShopProductVariant
  * @property ShopProductType $ShopProductType
  * @property ShopImage $ShopImage
  */
 class ShopOrderProduct extends ShopAppModel {
+
+/**
+ * HasOne relations
+ *
+ * @var array
+ */
+	public $hasOne = array(
+		'ShopOrderProductSize' => array(
+			'className' => 'Shop.ShopSize',
+			'foreignKey' => 'foreign_key',
+			'conditions' => array(
+				'ShopSize.model' => 'Shop.ShopOrderProduct'
+			),
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopOrderProductPrice' => array(
+			'className' => 'Shop.ShopPrice',
+			'foreignKey' => 'foreign_key',
+			'conditions' => array(
+				'ShopSize.model' => 'Shop.ShopOrderProduct'
+			),
+			'fields' => '',
+			'order' => ''
+		),
+	);
 
 /**
  * belongsTo relations for this model
