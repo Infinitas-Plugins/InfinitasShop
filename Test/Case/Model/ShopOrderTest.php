@@ -278,6 +278,7 @@ class ShopOrderTest extends CakeTestCase {
 				'handling' => '0.000000',
 				'previous_orders_count' => '1',
 				'previous_orders_value' => '72.000000',
+				'shop_order_status_id' => 'pending'
 			),
 			'User' => array(
 				'id' => 'bob',
@@ -642,7 +643,7 @@ class ShopOrderTest extends CakeTestCase {
 		return array(
 			'ShopOrder' => array(
 				'id' => 'order-1',
-				'invoice_number' => '1',
+				'invoice_number' => '00001',
 				'shop_order_product_count' => '2',
 				'ip_address' => '127.0.0.1',
 				'total' => '72.000000',
@@ -652,6 +653,7 @@ class ShopOrderTest extends CakeTestCase {
 				'handling' => '10.000000',
 				'previous_orders_count' => '0',
 				'previous_orders_value' => null,
+				'shop_order_status_id' => 'pending'
 			),
 			'User' => array(
 				'id' => 'bob',
@@ -717,7 +719,24 @@ class ShopOrderTest extends CakeTestCase {
 				'created' => null,
 				'modified' => null,
 			),
-			'ShopOrderNote' => array(),
+			'ShopOrderNote' => array(
+				array(
+					'id' => 'order-1-note-a',
+					'shop_order_id' => 'order-1',
+					'shop_order_status_id' => 'pending',
+					'notes' => 'Order created',
+					'user_notified' => 1,
+					'created' => '2012-10-14 11:25:27'
+				),
+				array(
+					'id' => 'order-1-note-c',
+					'shop_order_id' => 'order-1',
+					'shop_order_status_id' => 'shipped',
+					'notes' => 'Shipped',
+					'user_notified' => 1,
+					'created' => '2012-10-14 11:25:27'
+				)
+			),
 			'ShopOrderProduct' => array(
 				array(
 					'ShopProduct' => array(
