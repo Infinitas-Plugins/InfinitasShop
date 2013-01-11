@@ -30,6 +30,8 @@ class ShopListProductTest extends CakeTestCase {
 		'plugin.shop.shop_category',
 		'plugin.shop.shop_product_types_option',
 		'plugin.shop.shop_size',
+		'plugin.shop.shop_shipping_method',
+		'plugin.shop.shop_payment_method',
 
 		'plugin.view_counter.view_counter_view',
 		'plugin.installer.plugin',
@@ -239,9 +241,7 @@ class ShopListProductTest extends CakeTestCase {
 	}
 
 	public function testFindCurrentList() {
-		$expected = array(
-
-		);
+		$expected = array();
 		$result = $this->Model->find('currentList');
 		$this->assertEquals($expected, $result);
 
@@ -334,6 +334,82 @@ class ShopListProductTest extends CakeTestCase {
 		$this->assertFalse($result);
 
 		$result = $this->Model->find('list');
+		$this->assertEquals($expected, $result);
+	}
+
+	public function testUpdateListProducts() {
+		CakeSession::write('Auth.User.id', 'bob');
+		$data1 = array(
+			array(
+				'id' => 'shop-list-bob-cart-active',
+				'quantity' => '2.00000',
+			),
+		);
+		$data2 = array(
+			array(
+				'id' => 'shop-list-bob-cart-multi-option1',
+				'quantity' => '15.00000',
+			),
+			array(
+				'id' => 'shop-list-bob-cart-multi-option2',
+				'quantity' => '7.00000',
+			),
+		);
+
+		$this->assertTrue($this->Model->updateListProducts($data1));
+		$this->assertTrue($this->Model->updateListProducts($data2));
+
+		$expected = array(
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-active',
+					'quantity' => '2.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+			),
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-multi-option1',
+					'quantity' => '15.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'multi-option',
+					'name' => 'multi-option',
+					'slug' => 'multi-option',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+			),
+			array(
+				'ShopListProduct' => array(
+					'id' => 'shop-list-bob-cart-multi-option2',
+					'quantity' => '7.00000',
+				),
+				'ShopProduct' => array(
+					'id' => 'multi-option',
+					'name' => 'multi-option',
+					'slug' => 'multi-option',
+				),
+				'ShopCategory' => array(
+					'id' => 'active',
+					'name' => 'active',
+					'slug' => 'active',
+				),
+			),
+		);
+		$result = $this->Model->find('currentList');
 		$this->assertEquals($expected, $result);
 	}
 }

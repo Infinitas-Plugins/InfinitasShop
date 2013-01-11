@@ -62,15 +62,34 @@ class ShopOrderNote extends ShopAppModel {
 		);
 	}
 
+/**
+ * Find notes related to the order specified
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return boolean
+ *
+ * @throws InvalidArgumentException
+ */
 	protected function _findNotes($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			if (empty($query[0])) {
 				throw new InvalidArgumentException(__d('shop', 'No order specified'));
 			}
 
+			$query = array_merge(array(
+				'admin' => false
+			), $query);
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
 				$this->alias . '.shop_order_id' => $query[0]
 			));
+
+			if (!$query['admin']) {
+				$query['conditions'][$this->alias . '.user_notified'] = true;
+			}
+
 			return $query;
 		}
 

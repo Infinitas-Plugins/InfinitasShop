@@ -30,10 +30,34 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 
 	public $records = array(
 		array(
-			'id' => '507a9317-5c80-481d-bdfe-4a0c6318cd70',
-			'shop_order_id' => 'Lorem ipsum dolor sit amet',
-			'shop_order_status_id' => 'Lorem ipsum dolor sit amet',
-			'notes' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+			'id' => 'order-1-note-a',
+			'shop_order_id' => 'order-1',
+			'shop_order_status_id' => 'pending',
+			'notes' => 'Order created',
+			'user_notified' => 1,
+			'created' => '2012-10-14 11:25:27'
+		),
+		array(
+			'id' => 'order-1-note-b',
+			'shop_order_id' => 'order-1',
+			'shop_order_status_id' => 'processing',
+			'notes' => 'Fetching products',
+			'user_notified' => 0,
+			'created' => '2012-10-14 11:25:27'
+		),
+		array(
+			'id' => 'order-1-note-c',
+			'shop_order_id' => 'order-1',
+			'shop_order_status_id' => 'shipped',
+			'notes' => 'Shipped',
+			'user_notified' => 1,
+			'created' => '2012-10-14 11:25:27'
+		),
+		array(
+			'id' => 'order-2-note-a',
+			'shop_order_id' => 'order-2',
+			'shop_order_status_id' => 'pending',
+			'notes' => 'Order created',
 			'user_notified' => 1,
 			'created' => '2012-10-14 11:25:27'
 		),
