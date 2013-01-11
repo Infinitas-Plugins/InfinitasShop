@@ -1,13 +1,20 @@
 <?php
 
 $blocks = array();
+
+$blocks[] = $this->Html->tag('div', implode('', array(
+	$this->Html->tag('h4', __d('shop', 'Billing Address')),
+	$this->Shop->address($shopOrder['ShopBillingAddress'], $shopOrder['User'])
+)), array('class' => 'span6'));
+
+$fee = $this->Shop->currency($shopOrder['InfinitasPaymentLog']['transaction_fee'], $shopOrder['InfinitasPaymentLog']['currency_code']);
 $blocks[] = $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h4', __d('shop', 'Details')),
 	$this->Html->tag('dl', implode('', array(
 		$this->Html->tag('dt', __d('shop', 'Currency')),
 		$this->Html->tag('dd', $shopOrder['InfinitasPaymentLog']['currency_code']),
 		$this->Html->tag('dt', __d('shop', 'Fee')),
-		$this->Html->tag('dd', $this->Shop->currency($shopOrder['InfinitasPaymentLog']['transaction_fee'], $shopOrder['InfinitasPaymentLog']['currency_code'])),
+		$this->Html->tag('dd', $fee, array('class' => 'text-error')),
 		$this->Html->tag('dt', __d('shop', 'Total')),
 		$this->Html->tag('dd', $this->Shop->currency($shopOrder['InfinitasPaymentLog']['total'], $shopOrder['InfinitasPaymentLog']['currency_code'])),
 		$this->Html->tag('dt', __d('shop', 'Date')),
@@ -17,6 +24,9 @@ $blocks[] = $this->Html->tag('div', implode('', array(
 	)), array('class' => 'dl-horizontal')),
 )), array('class' => 'span6'));
 
+echo $this->Html->tag('div', implode('', $blocks), array('class' => 'row'));
+
+$blocks = array();
 $blocks[] = $this->Html->tag('div', implode('', array(
 	$this->Html->tag('h4', __d('shop', 'Technical')),
 	$this->Html->tag('dl', implode('', array(

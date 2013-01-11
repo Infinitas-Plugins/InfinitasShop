@@ -12,7 +12,11 @@
  * @author Carl Sutton <dogmatic69@infinitas-cms.org>
  */
 echo $this->Form->create();
-	echo $this->Infinitas->adminEditHead();
+	echo $this->Infinitas->adminOtherHead(array(
+		'invoice',
+		'delivery-note',
+		'cancel'
+	));
 
 	$tabs = array(
 		__d('shop', 'Order'),
@@ -24,8 +28,8 @@ echo $this->Form->create();
 	$contents = array(
 		$this->element('Shop.order/overview'),
 		$this->element('Shop.order/payment'),
-		$this->element('Shop.order/items'),
 		$this->element('Shop.order/delivery'),
+		$this->element('Shop.order/items'),
 		$this->element('Shop.order/notes'),
 	);
 

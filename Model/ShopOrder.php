@@ -156,6 +156,7 @@ class ShopOrder extends ShopAppModel {
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.invoice_number',
 				$this->alias . '.shop_order_product_count',
+				$this->alias . '.shop_order_status_id',
 				$this->alias . '.ip_address',
 				$this->alias . '.total',
 				$this->alias . '.tax',

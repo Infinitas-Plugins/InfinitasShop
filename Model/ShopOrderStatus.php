@@ -61,13 +61,9 @@ class ShopOrderStatus extends ShopAppModel {
  */
 	public static $statusReversed = 25;
 
-/**
- * How the default ordering on this model is done
- *
- * @access public
- * @var array
- */
-	public $order = array();
+	public $findMethods = array(
+		'statuses' => true
+	);
 
 /**
  * hasMany relations for this model
@@ -159,5 +155,21 @@ class ShopOrderStatus extends ShopAppModel {
 		}
 
 		return $statuses;
+	}
+
+	protected function _findStatuses($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+
+			return $query;
+		}
+
+		$return = array();
+		$statuses = $this->statuses();
+		foreach($results as $result) {
+			$field = $statuses[$result[$this->alias]['status']];
+			$return[$field . ' '][$result[$this->alias][$this->primaryKey]] = $result[$this->alias][$this->displayField];
+		}
+
+		return $return;
 	}
 }

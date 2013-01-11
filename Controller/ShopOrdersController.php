@@ -114,6 +114,8 @@ class ShopOrdersController extends ShopAppController {
 		} catch (Exception $e) {
 			$this->notice($e);
 		}
+
+		$this->set('shopOrderStatuses', $this->ShopOrder->ShopOrderStatus->find('statuses'));
 	}
 
 /**
