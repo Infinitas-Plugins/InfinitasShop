@@ -22,10 +22,18 @@ class ShopListTest extends CakeTestCase {
 		'plugin.shop.shop_list_product',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_product_type',
+		'plugin.shop.shop_product_variant',
 		'plugin.shop.shop_option',
 		'plugin.shop.shop_option_value',
 		'plugin.shop.shop_price',
 		'plugin.shop.shop_image',
+		'plugin.shop.shop_branch_stock',
+		'plugin.shop.shop_brand',
+		'plugin.shop.shop_supplier',
+		'plugin.shop.shop_categories_product',
+		'plugin.shop.shop_category',
+		'plugin.shop.shop_size',
+		'plugin.shop.shop_option_variant',
 
 		'plugin.management.ticket',
 		'plugin.view_counter.view_counter_view'
@@ -531,6 +539,18 @@ class ShopListTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * test set shipping method exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testSetShippingMethodException() {
+		$this->{$this->modelClass}->setShippingMethod('fake-shipping-method');
+	}
+
+/**
+ * test set shipping method
+ */
 	public function testSetShippingMethod() {
 		$expected = array(
 			'shop-list-bob-cart' => 'shop-list-bob-cart',
@@ -718,5 +738,62 @@ class ShopListTest extends CakeTestCase {
 				)
 			)
 		);
+	}
+
+/**
+ * test find overview
+ */
+	public function testFindOverview() {
+		$expected = array(
+			'shop_list_product_count' => 0,
+			'value' => 0,
+		);
+		$result = $this->{$this->modelClass}->find('overview');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::write('Shop.Guest.id', 'guest-1');
+		$expected = array(
+			'shop_list_product_count' => 1,
+			'value' => 0,
+		);
+		$result = $this->{$this->modelClass}->find('overview');
+		$this->assertEquals($expected, $result);
+
+		CakeSession::write('Auth.User.id', 'bob');
+		$expected = array(
+			'shop_list_product_count' => 3,
+			'value' => 87,
+		);
+		$result = $this->{$this->modelClass}->find('overview');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test order details exception
+ *
+ * @expectedException InvalidArgumentException
+ */
+	public function testOrderDetailsException() {
+		$this->{$this->modelClass}->find('orderDetails');
+	}
+
+/**
+ * test find order details that are invalid
+ */
+	public function testOrderDetailsInvalid() {
+		$this->assertFalse($this->{$this->modelClass}->find('orderDetails', 'fake-shop-list'));
+	}
+
+/**
+ * test find order detatils
+ */
+	public function testOrderDetails() {
+		$expected = array(
+			'user_id' => 'bob',
+			'shop_shipping_method_id' => 'royal-mail-1st',
+			'shop_payment_method_id' => 'paypal'
+		);
+		$results = $this->{$this->modelClass}->find('orderDetails', 'shop-list-bob-cart');
+		$this->assertEquals($expected, $results);
 	}
 }
