@@ -21,6 +21,8 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 	'edit',
 	'toggle',
 	'copy',
+	'invoice',
+	'delivery-note',
 	'delete'
 ));
 echo $this->Filter->alphabetFilter();

@@ -165,6 +165,8 @@ class ShopOrder extends ShopAppModel {
 				$this->alias . '.handling',
 				'previous_orders_count',
 				'previous_orders_value',
+				$this->alias . '.created',
+				$this->alias . '.modified',
 
 				$this->User->alias . '.' . $this->User->primaryKey,
 				$this->User->alias . '.username',

@@ -162,4 +162,14 @@ class ShopOrdersController extends ShopAppController {
 		$infinitasPaymentLogs = $this->ShopOrder->InfinitasPaymentLog->find('list');
 		$this->set(compact('users', 'shopBillingAddresses', 'shopShippingAddresses', 'shopPaymentMethods', 'shopShippingMethods', 'shopOrderStatuses', 'infinitasPaymentLogs'));
 	}
+
+	public function __massActionInvoice(array $ids) {
+		$shopOrders = array();
+		foreach ($ids as $id) {
+			$shopOrders[] = $this->{$this->modelClass}->find('details', $id);
+		}
+
+		$this->set('shopOrders', $shopOrders);
+		$this->render('admin_invoice', 'Shop.invoice');
+	}
 }
