@@ -22,7 +22,7 @@ echo $this->Infinitas->adminIndexHead($filterOptions, array(
 	'toggle',
 	'copy',
 	'invoice',
-	'delivery-note',
+	'packing_slip',
 	'delete'
 ));
 echo $this->Filter->alphabetFilter();

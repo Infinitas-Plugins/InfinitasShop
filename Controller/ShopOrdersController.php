@@ -172,4 +172,14 @@ class ShopOrdersController extends ShopAppController {
 		$this->set('shopOrders', $shopOrders);
 		$this->render('admin_invoice', 'Shop.invoice');
 	}
+
+	public function __massActionPacking_slip(array $ids) {
+		$shopOrders = array();
+		foreach ($ids as $id) {
+			$shopOrders[] = $this->{$this->modelClass}->find('details', $id);
+		}
+
+		$this->set('shopOrders', $shopOrders);
+		$this->render('admin_packing_slip', 'Shop.invoice');
+	}
 }
