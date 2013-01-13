@@ -29,12 +29,15 @@
 		?>
 	</head>
 	<body>
-		<div class="container">
-			<?php
-				echo $content_for_layout;
-			?>
-		</div>
 		<?php
+			if (!empty($content_heading)) {
+				echo $this->Html->tag('div', $this->Html->tag('div', implode('', array(
+					$this->Html->tag('div', $content_for_layout, array('class' => 'span10')),
+					$this->Html->tag('div', $content_heading, array('class' => 'span2'))
+				)), array('class' => 'row-fluid')), array('class' => 'container-fluid'));
+			} else {
+				echo $this->Html->tag('div', $content_for_layout, array('class' => 'container-fluid'));
+			}
 			echo $this->Compress->script($js_for_layout),
 			$this->fetch('scripts_for_layout');
 		?>

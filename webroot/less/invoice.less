@@ -3,17 +3,61 @@
 	#debug-kit-toolbar {
 		display: none;
 	}
+	.row-fluid {
+		.span2 {
+			display: none;
+		}
+		.span10 {
+			width: 100%;
+		}
+	}
+	.invoice {
+		table {
+			th {
+				background-color: none;
+			}
+		}
+
+		page-break-after: always;
+		page-break-inside: avoid;
+	}
+}
+* {
+	font-size: 98%;
 }
 
+body {
+	padding-top: 0;
+	padding-bottom: 0;
+}
 .invoice {
-	page-break-after: always;
 	h2 {
 		border-bottom: 1px solid #DDD;
 		text-align: right;
 	}
-	thead {
-		th {
-			background-color: #c0c0c0;
+	table {
+		thead {
+			th {
+				background-color: #c0c0c0;
+			}
 		}
+		&.table {
+			margin-bottom: 10px;
+		}
+	}
+	address {
+		margin-bottom: 10px;
+	}
+}
+
+th {
+	&.tiny {
+		width: 20px;
+	}
+	&.small {
+		width: 75px;
+	}
+	&.medium {
+		width: 150px;
 	}
 }
