@@ -166,7 +166,10 @@ class ShopOrdersController extends ShopAppController {
 	public function __massActionInvoice(array $ids) {
 		$shopOrders = array();
 		foreach ($ids as $id) {
-			$shopOrders[] = $this->{$this->modelClass}->find('details', $id);
+			$shopOrders[] = $this->{$this->modelClass}->find('details', array(
+				$id,
+				'admin' => $this->request->params['admin']
+			));
 		}
 
 		$this->set('shopOrders', $shopOrders);
@@ -176,7 +179,10 @@ class ShopOrdersController extends ShopAppController {
 	public function __massActionPacking_slip(array $ids) {
 		$shopOrders = array();
 		foreach ($ids as $id) {
-			$shopOrders[] = $this->{$this->modelClass}->find('details', $id);
+			$shopOrders[] = $this->{$this->modelClass}->find('details', array(
+				$id,
+				'admin' => $this->request->params['admin']
+			));
 		}
 
 		$this->set('shopOrders', $shopOrders);
