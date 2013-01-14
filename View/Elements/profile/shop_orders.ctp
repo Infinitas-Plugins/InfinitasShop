@@ -46,3 +46,8 @@ foreach ($shopOrders as $shopOrder) {
 echo $this->Html->tag('table', implode('', $rows), array(
 	'class' => 'table'
 ));
+echo $this->Html->link(__d('shop', 'All orders'), array(
+	'plugin' => 'shop',
+	'controller' => 'shop_orders',
+	'action' => 'index'
+), array('class' => 'btn pull-right'));
