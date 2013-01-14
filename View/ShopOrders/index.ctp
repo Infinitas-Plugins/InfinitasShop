@@ -11,6 +11,7 @@
  *
  * @author Carl Sutton <dogmatic69@infinitas-cms.org>
  */
+echo $this->element('Shop.profile/header');
 ?>
 <table class="listing">
 	<?php
