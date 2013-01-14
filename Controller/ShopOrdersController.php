@@ -46,16 +46,13 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * View the oredr invoice
  *
- * Show detailed information on a single ShopOrder
- *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
  */
-	public function view($id = null) {
+	public function invoice($id = null) {
 		try {
 			$this->set('shopOrder', $this->ShopOrder->find('details', $id));
 		} catch (Exception $e) {
@@ -64,11 +61,36 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * reorder the selected invoice
  *
+ * @param string $id the invoice to reorder
+ *
+ * @return void
+ */
+	public function reorder($id = null) {
+		try {
+			$listId = $this->ShopOrder->reorder($id);
+			if ($listId) {
+				$this->notice(__d('shop', 'Products have been added to your cart'), array(
+					'redirect' => array(
+						'plugin' => 'shop',
+						'controller' => 'shop_lists',
+						'action' => 'change',
+						$listId
+					)
+				));
+			}
+			$this->notice(__d('shop', 'Unable to reorder selected invoice'), array(
+				'level' => 'warning',
+				'redirect' => true
+			));
+		} catch (Exception $e) {
+			$this->notice($e);
+		}
+	}
+
+/**
  * Show a paginated list of ShopOrder records.
- *
- * @todo update the documentation
  *
  * @return void
  */
@@ -96,11 +118,8 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
- *
  * Show detailed information on a single ShopOrder
  *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
@@ -119,11 +138,7 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
- *
  * Adding new ShopOrder records.
- *
- * @todo update the documentation
  *
  * @return void
  */
@@ -141,11 +156,8 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
- *
  * Edit old ShopOrder records.
  *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to edit
  *
  * @return void
