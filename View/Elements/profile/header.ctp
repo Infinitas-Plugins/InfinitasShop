@@ -25,6 +25,38 @@ $links = array(
 		)
 	),
 	array(
+		'text' => __d('shop', 'Addresses'),
+		'url' => array(
+			'plugin' => 'shop',
+			'controller' => 'shop_addresses',
+			'action' => 'index'
+		)
+	),
+	array(
+		'text' => __d('shop', 'Downloads'),
+		'url' => array(
+			'plugin' => 'shop',
+			'controller' => 'shop_downloads',
+			'action' => 'index'
+		)
+	),
+	array(
+		'text' => __d('shop', 'Returns'),
+		'url' => array(
+			'plugin' => 'shop',
+			'controller' => 'shop_returns',
+			'action' => 'index'
+		)
+	),
+	array(
+		'text' => __d('shop', 'Newsletter'),
+		'url' => array(
+			'plugin' => 'newsletter',
+			'controller' => 'newsletters',
+			'action' => 'subscriptions'
+		)
+	),
+	array(
 		'text' => __d('shop', 'Contact Us'),
 		'url' => array(
 			'plugin' => 'newsletter',
