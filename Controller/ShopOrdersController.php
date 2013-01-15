@@ -128,6 +128,24 @@ class ShopOrdersController extends ShopAppController {
  * @return void
  */
 	public function admin_view($id = null) {
+		if ($this->request->data) {
+			$this->{$this->modelClass}->updateStatus($id, $this->request->data['ShopOrderNote']['shop_order_status_id']);
+			$saved = $this->{$this->modelClass}->ShopOrderNote->saveNote(array(
+				'shop_order_id' => $this->request->data['ShopOrderNote']['shop_order_id'],
+				'shop_order_status_id' => $this->request->data['ShopOrderNote']['shop_order_status_id'],
+				'notes' => $this->request->data['ShopOrderNote']['notes'],
+				'user_notified' => $this->request->data['ShopOrderNote']['user_notified'],
+				'internal' => $this->request->data['ShopOrderNote']['internal'],
+			));
+			if ($saved) {
+				$this->notice(__d('shop', 'Order notes have been saved'), array(
+					'redirect' => true,
+				));
+			}
+			$this->notice(__d('shop', 'There was a problem saving the order notes'), array(
+				'level' => 'warning'
+			));
+		}
 		try {
 			$this->set('shopOrder', $this->ShopOrder->find('details', array(
 				$id,

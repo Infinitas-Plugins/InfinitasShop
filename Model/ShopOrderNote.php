@@ -19,6 +19,11 @@
 
 class ShopOrderNote extends ShopAppModel {
 
+/**
+ * custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'notes' => true
 	);
@@ -94,5 +99,31 @@ class ShopOrderNote extends ShopAppModel {
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);
+	}
+
+/**
+ * Add notes to an order
+ *
+ * If a note is marked as user_notified it can not be internal so the internal flag will be set to false
+ *
+ * @param arra $note the details to be saved
+ *
+ * @return boolean
+ */
+	public function saveNote(array $note) {
+		$note = array_merge(array(
+			'shop_order_id' => null,
+			'shop_order_status_id' => null,
+			'notes' => null,
+			'user_notified' => false,
+			'internal' => true,
+		), $note);
+
+		if ($note['user_notified']) {
+			$note['internal'] = false;
+		}
+
+		$this->create();
+		return (bool)$this->save($note);
 	}
 }

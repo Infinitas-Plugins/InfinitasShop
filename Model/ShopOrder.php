@@ -415,6 +415,37 @@ class ShopOrder extends ShopAppModel {
 	}
 
 /**
+ * update the status of an order
+ *
+ * If no status is specified the update wont run, if the status id is not valid it will throw an exception
+ *
+ * @param string $id the order to update
+ * @param string $statusId the new status
+ *
+ * @return boolean
+ *
+ * @throws InvalidArgumentException
+ */
+	public function updateStatus($id, $statusId) {
+		if (!$statusId) {
+			return;
+		}
+
+		if (!$this->ShopOrderStatus->exists($statusId)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid status selected'));
+		}
+
+		if (!$this->exists($id)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid order specified'));
+		}
+
+		return $this->updateAll(
+			array($this->alias . '.shop_order_status_id' => sprintf("'%s'", $statusId)),
+			array($this->alias . '.' . $this->primaryKey => $id)
+		);
+	}
+
+/**
  * Get the number of views each product had before purchasing
  *
  * @param string $userId the user id the order is for
