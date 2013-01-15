@@ -82,8 +82,6 @@ watch products - email users when changes occur
 
 free products
 
-call for price products
-
 ability to create products on the fly
 
 email admin when stock is low
@@ -140,9 +138,6 @@ cant edit address while order is in progress
 leave address name empty to use User full_name
 
 ### orders
-
-assign orders to 'staff'
-	add staff_id to order
 
 
 ### payments
