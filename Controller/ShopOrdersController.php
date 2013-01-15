@@ -32,6 +32,9 @@ class ShopOrdersController extends ShopAppController {
 				'ShopShippingMethod',
 				'ShopOrderStatus',
 				'InfinitasPaymentLog',
+			),
+			'conditions' => array(
+				$this->modelClass . '.user_id' => $this->{$this->modelClass}->currentUserId()
 			)
 		);
 

@@ -111,6 +111,9 @@ class ShopListsController extends ShopAppController {
 				'User',
 				'ShopShippingMethod',
 				'ShopPaymentMethod',
+			),
+			'conditions' => array(
+				$this->modelClass . '.user_id' => $this->{$this->modelClass}->currentUserId()
 			)
 		);
 
