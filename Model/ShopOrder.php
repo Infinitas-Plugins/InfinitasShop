@@ -13,6 +13,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopOrderNote $ShopOrderNote
  * @property ShopOrderProduct $ShopOrderProduct
  * @property ShopPaymentResponse $ShopPaymentResponse
+ * @property User $ShopAssignedUser
  */
 
 class ShopOrder extends ShopAppModel {
@@ -32,6 +33,13 @@ class ShopOrder extends ShopAppModel {
 		'User' => array(
 			'className' => 'Users.User',
 			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopAssignedUser' => array(
+			'className' => 'Users.User',
+			'foreignKey' => 'assigned_user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -168,6 +176,9 @@ class ShopOrder extends ShopAppModel {
 				$this->alias . '.created',
 				$this->alias . '.modified',
 
+				$this->ShopAssignedUser->alias . '.' . $this->ShopAssignedUser->primaryKey,
+				$this->ShopAssignedUser->alias . '.username',
+
 				$this->User->alias . '.' . $this->User->primaryKey,
 				$this->User->alias . '.username',
 				$this->User->alias . '.full_name',
@@ -216,6 +227,7 @@ class ShopOrder extends ShopAppModel {
 				'ShopUserOrder.created < ShopOrder.created'
 			);
 			$query['joins'][] = $join;
+			$query['joins'][] = $this->autoJoinModel($this->ShopAssignedUser);
 			$query['joins'][] = $this->autoJoinModel($this->User);
 			$query['joins'][] = $this->autoJoinModel($this->ShopBillingAddress);
 			$query['joins'][] = $this->autoJoinModel($this->ShopShippingAddress);

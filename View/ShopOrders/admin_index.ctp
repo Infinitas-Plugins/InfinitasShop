@@ -35,12 +35,14 @@ echo $this->Filter->alphabetFilter();
 					'class' => 'first',
 				),
 				$this->Paginator->sort('invoice_number', '#'),
+				$this->Paginator->sort('ShopAssignedUser.username', 'Assigned'),
 				$this->Paginator->sort('User.username', 'User'),
-				$this->Paginator->sort('total'),
-				$this->Paginator->sort('ShopShippingMethod.name', __d('shop', 'Shipping Method')),
+				$this->Paginator->sort('ShopShippingMethod.name', __d('shop', 'Shipping')),
+				$this->Paginator->sort('ShopPaymentMethod.name', __d('shop', 'Payment')),
 				$this->Paginator->sort('tracking_number', __d('shop', 'Tracking #')),
 				$this->Paginator->sort('ShopOrderStatus.name', 'Status'),
 				$this->Paginator->sort('ip_address'),
+				$this->Paginator->sort('total'),
 				$this->Paginator->sort('modified') => array(
 					'class' => 'date'
 				),
@@ -61,17 +63,26 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td>
 					<?php
+						if ($shopOrder['ShopAssignedUser']['id']) {
+							echo $this->Html->link($shopOrder['ShopAssignedUser']['username'], array(
+								'plugin' => 'users',
+								'controller' => 'users',
+								'action' => 'edit',
+								$shopOrder['ShopAssignedUser']['id']
+							));
+						} else {
+							echo '-';
+						}
+					?>&nbsp;
+				</td>
+				<td>
+					<?php
 						echo $this->Html->link($shopOrder['User']['username'], array(
 							'plugin' => 'users',
 							'controller' => 'users',
 							'action' => 'edit',
 							$shopOrder['User']['id']
 						));
-					?>&nbsp;
-				</td>
-				<td>
-					<?php
-						echo $this->Shop->adminCurrency($shopOrder['ShopOrder']['total']);
 					?>&nbsp;
 				</td>
 				<td>
@@ -87,9 +98,23 @@ echo $this->Filter->alphabetFilter();
 						}
 					?>&nbsp;
 				</td>
+				<td>
+					<?php
+						if ($shopOrder['ShopPaymentMethod']['name']) {
+							echo $this->Html->link($shopOrder['ShopPaymentMethod']['name'], array(
+								'controller' => 'shop_payment_methods',
+								'action' => 'edit',
+								$shopOrder['ShopPaymentMethod']['id']
+							));
+						} else {
+							echo '-';
+						}
+					?>&nbsp;
+				</td>
 				<td><?php echo $shopOrder['ShopOrder']['tracking_number'] ?: $this->Html->tag('em', 'null'); ?>&nbsp;</td>
 				<td><?php echo $this->Design->label($shopOrder['ShopOrderStatus']['name']); ?></td>
 				<td><?php echo $shopOrder['ShopOrder']['ip_address']; ?>&nbsp;</td>
+				<td><?php echo $this->Shop->adminCurrency($shopOrder['ShopOrder']['total']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopOrder['ShopOrder']); ?></td>
 				<td>
 					<?php

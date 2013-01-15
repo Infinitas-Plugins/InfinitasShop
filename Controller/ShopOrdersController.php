@@ -101,6 +101,7 @@ class ShopOrdersController extends ShopAppController {
 		$this->Paginator->settings = array(
 			'contain' => array(
 				'User',
+				'ShopAssignedUser',
 				'ShopBillingAddress',
 				'ShopShippingAddress',
 				'ShopPaymentMethod',
