@@ -653,7 +653,9 @@ class ShopOrderTest extends CakeTestCase {
 				'handling' => '10.000000',
 				'previous_orders_count' => '0',
 				'previous_orders_value' => null,
-				'shop_order_status_id' => 'pending'
+				'shop_order_status_id' => 'pending',
+				'created' => '2013-01-08 15:22:12',
+				'modified' => '2013-01-08 15:22:12'
 			),
 			'User' => array(
 				'id' => 'bob',
