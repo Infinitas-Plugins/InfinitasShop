@@ -17,7 +17,8 @@ class ShopBranchStock extends ShopAppModel {
 		'productStock' => true,
 		'isInStock' => true,
 		'totalProductStock' => true,
-		'stockList' => true
+		'stockList' => true,
+		'stockValue' => true
 	);
 
 /**
@@ -135,6 +136,43 @@ class ShopBranchStock extends ShopAppModel {
 		}
 
 		return $results;
+	}
+
+	protected function _findStockValue($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$this->virtualFields['selling'] = 'SUM(ShopBranchStock.stock * ShopProductVariantPrice.selling)';
+			$this->virtualFields['cost'] = 'SUM(ShopBranchStock.stock * ShopProductVariantPrice.cost)';
+			$this->virtualFields['stock'] = 'SUM(ShopBranchStock.stock)';
+			$this->virtualFields['shop_product_id'] = $this->ShopProductVariant->alias . '.shop_product_id';
+			$this->virtualFields['shop_product_variant_id'] = $this->ShopProductVariant->alias . '.' . $this->ShopProductVariant->primaryKey;
+			$this->virtualFields['variant_count'] = sprintf('COUNT(%s.%s)', $this->ShopProductVariant->alias, $this->ShopProductVariant->primaryKey);
+
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				'shop_product_id',
+				'shop_product_variant_id',
+				'variant_count',
+				'selling',
+				'cost',
+				'stock',
+			));
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->ShopProductVariant->alias . '.shop_product_id' => $query['shop_product_id']
+			));
+			$query['joins'] = (array)$query['joins'];
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant);
+			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopProductVariantPrice);
+
+			$group = array($this->ShopProductVariant->alias . '.shop_product_id');
+			if (array_key_exists('variant', $query) && $query['variant']) {
+				$group = array($this->ShopProductVariant->alias . '.id');
+			}
+
+			$query['group'] = array_merge((array)$query['group'], $group);
+
+			return $query;
+		}
+
+		return Hash::extract($results, '{n}.' . $this->alias);
 	}
 
 /**
