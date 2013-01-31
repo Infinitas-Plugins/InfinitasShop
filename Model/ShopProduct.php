@@ -841,7 +841,21 @@ class ShopProduct extends ShopAppModel {
 			return self::_findPaginated($state, $query);
 		}
 
-		return self::_findPaginated($state, $query, $results);
+		$results = self::_findPaginated($state, $query, $results);
+		if (empty($results)) {
+			return array();
+		}
+
+		$shopStockValues = $this->ShopProductVariant->ShopBranchStock->find('stockValue', array(
+			'shop_product_id' => Hash::extract($results, '{n}.ShopProduct.id')
+		));
+
+		foreach ($results as &$result) {
+			$extractTemplate = sprintf('{n}[shop_product_id=%s]', $result[$this->alias][$this->primaryKey]);
+			$result['ShopStockValue'] = current(Hash::extract($shopStockValues, $extractTemplate));
+		}
+
+		return $results;
 	}
 
 /**
@@ -1114,6 +1128,18 @@ class ShopProduct extends ShopAppModel {
 		$results['ShopSpotlight'] = $this->ShopSpotlight->find('spotlights', $options);
 		$results['ShopImagesProduct'] = $this->ShopImagesProduct->find('images', $options);
 
+		if (array_key_exists('admin', $query) && $query['admin']) {
+			$variantStockValue = $this->ShopProductVariant->ShopBranchStock->find('stockValue', array(
+				'shop_product_id' => $results[$this->alias][$this->primaryKey],
+				'variant' => true
+			));
+
+			foreach ($results['ShopProductVariant'] as &$variant) {
+				$extractTemplate = sprintf('{n}[shop_product_variant_id=%s]', $variant['id']);
+				$variant['ShopStockValue'] = current(Hash::extract($variantStockValue, $extractTemplate));
+			}
+		}
+
 		return $results;
 	}
 
@@ -1289,7 +1315,12 @@ class ShopProduct extends ShopAppModel {
 				$variant['ShopProductVariantPrice']['difference'] = $variant['ShopProductVariantPrice']['selling'] - $productSelling;
 			}
 			$this->_productOverride($result);
+			foreach ($result['ShopProductVariant'] as & $variant) {
+				$variant['ShopOptionVariant'] = Hash::sort($variant['ShopOptionVariant'], '{n}.ShopOption.name', 'asc','string');
+			}
+			$result['ShopProductVariant'] = Hash::sort($result['ShopProductVariant'], '{n}.product_code', 'asc','string');
 		}
+
 
 		return $results;
 	}
