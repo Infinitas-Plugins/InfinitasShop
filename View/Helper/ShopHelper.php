@@ -139,19 +139,11 @@ class ShopHelper extends AppHelper {
  *
  * @return string
  */
-	public function stockValue(array $variants) {
-		$stock = $value = 0;
-		foreach ($variants as $variant) {
-			$stock += $count = array_sum(Hash::extract($variant['ShopBranchStock'], '{n}.stock'));
-			$value += ($variant['ShopProductVariantPrice']['selling'] * $count);
-		}
-		if ($value < 0) {
-			$value = 0;
-		}
+	public function stockValue(array $value) {
 		return $this->Html->tag('div',
 			implode('', array(
-				$this->Html->tag('span', $stock, array('class' => 'quantity')),
-				$this->Html->tag('span', self::adminCurrency($value), array('class' => 'value'))
+				$this->Html->tag('span', $value['stock'], array('class' => 'quantity')),
+				$this->Html->tag('span', self::adminCurrency($value['selling']), array('class' => 'value'))
 			)),
 			array('class' => 'stock-value')
 		);
