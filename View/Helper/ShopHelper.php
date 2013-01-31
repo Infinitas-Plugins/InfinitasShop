@@ -370,13 +370,13 @@ class ShopHelper extends AppHelper {
  * @return type
  */
 	public function infoLinks($title, array $links) {
-		foreach ($links as $title => &$link) {
-			$link = $this->Html->link($title, $link);
+		foreach ($links as $linkTitle => &$link) {
+			$link = $this->Html->link($linkTitle, $link);
 		}
 
 		return $this->Html->tag('div', implode('', array(
 			$this->Html->tag('h4', $title),
-			$this->Design->arrayToList($links, array('ul' => 'unstyled'))
+			$this->Design->arrayToList($links)
 		)), array('class' => 'span3'));
 	}
 

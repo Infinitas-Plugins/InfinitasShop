@@ -61,22 +61,6 @@
 		$blocks[] = $this->Shop->infoLinks(__d('shop', 'Customer Service'), $links);
 
 		$links = array(
-			__d('shop', 'Brands') => array(
-
-			),
-			__d('shop', 'Gift Vouchers') => array(
-
-			),
-			__d('shop', 'Specials') => array(
-
-			),
-			__d('shop', 'Featured') => array(
-
-			)
-		);
-		$blocks[] = $this->Shop->infoLinks(__d('shop', 'More'), $links);
-
-		$links = array(
 			__d('shop', 'My Account') => array(
 				'plugin' => 'users',
 				'controller' => 'users',
@@ -94,8 +78,21 @@
 				'action' => 'subscribe'
 			)
 		);
-		$blocks[] = $this->Shop->infoLinks(__d('shop', 'My Account'), $links);
-		echo $this->Html->tag('div', implode('', $blocks), array('class' => 'row-fluid'));
+		$blocks[] = $this->Shop->infoLinks(__d('shop', 'Account'), $links);
+
+		$links = array(
+			__d('shop', 'Facebook') => array(
+
+			),
+			__d('shop', 'Twitter') => array(
+
+			),
+			__d('shop', 'Pinterest') => array(
+
+			)
+		);
+		$blocks[] = $this->Shop->infoLinks(__d('shop', 'Social'), $links);
+		echo $this->Html->tag('div', implode('', $blocks), array('class' => 'row'));
 
 		echo $this->Html->tag('p', __d('shop', '&copy %s %s', $this->Html->link(Configure::read('Website.name'), '/'), date('Y')));
 	?>

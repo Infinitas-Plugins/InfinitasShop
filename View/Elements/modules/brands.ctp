@@ -27,4 +27,7 @@ foreach ($shopBrandsList as &$shopBrand) {
 		array('class' => 'thumbnail')
 	), array('class' => array($class($shopBrand['ShopBrand']['image_medium']), 'brand')));
 }
+array_unshift($shopBrandsList, $this->Html->tag('li', __d('shop', 'Brands'), array(
+	'class' => 'nav-header'
+)));
 echo $this->Html->tag('ul', implode('', $shopBrandsList), array('class' => 'thumbnails'));
