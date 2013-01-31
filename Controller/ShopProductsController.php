@@ -181,7 +181,10 @@ class ShopProductsController extends ShopAppController {
 			$this->notice('not_found');
 		}
 
-		$shopProduct = $this->{$this->modelClass}->find('product', $id);
+		$shopProduct = $this->{$this->modelClass}->find('product', array(
+			'admin' => true,
+			$id
+		));
 		$this->set(compact('shopProduct'));
 	}
 
