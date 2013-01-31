@@ -79,7 +79,7 @@
 				<td>
 					<?php
 						echo $this->Html->link(
-							$this->Shop->stockValue(array($variant)),
+							$this->Shop->stockValue($variant['ShopStockValue']),
 							array(
 								'controller' => 'shop_branch_stock_logs',
 								'action' => 'index',

@@ -99,7 +99,7 @@ echo $this->Filter->alphabetFilter();
 				</td>
 				<td><?php echo $this->Shop->adminPrice($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
 				<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
-				<td><?php echo $this->Shop->stockValue($shopProduct['ShopProductVariant']); ?>&nbsp;</td>
+				<td><?php echo $this->Shop->stockValue($shopProduct['ShopStockValue']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?></td>
 				<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
 			</tr>
