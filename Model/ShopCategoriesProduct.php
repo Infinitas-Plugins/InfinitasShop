@@ -25,7 +25,8 @@ class ShopCategoriesProduct extends ShopAppModel {
 			'foreignKey' => 'shop_category_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => '',
+			'counterCache' => 'shop_product_count'
 		),
 		'ShopProduct' => array(
 			'className' => 'Shop.ShopProduct',
