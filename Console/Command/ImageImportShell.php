@@ -3,6 +3,12 @@ App::uses('ShopImageIterator', 'Shop.Lib');
 
 class ImageImportShell extends AppShell {
 
+	public $uses = array(
+		'Shop.ShopImage'
+	);
+
+	public $imageCommand = 'convert "%s" -fuzz 20%% -trim -shave 10%%x0 -gravity South -crop 50%%\! -colors 100 -resize 1x2\! "%s"';
+
 /**
  * @brief add the option for selecting the import type
  *
@@ -51,5 +57,65 @@ class ImageImportShell extends AppShell {
 				exit;
 			}
 		}
+	}
+/**
+ * Get the main colour of the images
+ * 
+ * @return void
+ */
+	public function mainColour() {
+		$images = $this->ShopImage->find('all', array(
+			'conditions' => array(
+				'ShopImage.colour_1 IS NULL'
+			)
+		));
+
+		$count = count($images);
+		foreach ($images as $k => $image) {
+			$this->out(sprintf('%s of %d: %s', str_pad($k+1, strlen($count), ' ', STR_PAD_LEFT), $count, $image['ShopImage']['image_full']));
+			$colours = $this->_colour(APP . 'webroot/' . $image['ShopImage']['image_full']);
+			$image['ShopImage']['colour_1'] = $colours[0];
+			$image['ShopImage']['colour_2'] = $colours[1];
+			$this->ShopImage->save($image['ShopImage']);
+		}
+	}
+
+/**
+ * Process the image and calculate the colour
+ * 
+ * @param string $image the full path to the image to be processed
+ * 
+ * @return array
+ */
+	protected function _colour($image) {
+		$out = TMP . 'image.png';
+		$command = sprintf($this->imageCommand, $image, $out);
+		`$command`;
+
+		$Image = imagecreatefrompng($out);
+
+		return array(
+			$this->_convert(imagecolorat($Image, 0, 0)),
+			$this->_convert(imagecolorat($Image, 0, 1)),
+		);
+	}
+
+/**
+ * Convert a integer to hex 
+ * 
+ * @param integer $colour the integer rgb value from imagecolorat
+ * 
+ * @return string
+ */
+	protected function _convert($colour) {
+		$r = dechex(($colour >> 16) & 0xFF);
+		$g = dechex(($colour >> 8) & 0xFF);
+		$b = dechex($colour & 0xFF);
+
+		return implode('', array(
+			str_pad($r, 2, $r),
+			str_pad($g, 2, $g),
+			str_pad($b, 2, $b),
+		));
 	}
 }
