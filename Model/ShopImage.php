@@ -67,6 +67,19 @@ class ShopImage extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'ShopImagesProduct' => array(
+			'className' => 'Shop.ShopImagesProduct',
+			'foreignKey' => 'shop_image_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'ShopSpecial' => array(
 			'className' => 'Shop.ShopSpecial',
 			'foreignKey' => 'shop_image_id',
