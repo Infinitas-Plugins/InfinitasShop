@@ -161,7 +161,6 @@ class ShopProductsController extends ShopAppController {
  */
 	public function admin_index() {
 		$this->Paginator->settings = array('adminPaginated');
-
 		$shopProducts = $this->Paginator->paginate(null, $this->Filter->filter);
 
 		$filterOptions = $this->Filter->filterOptions;
