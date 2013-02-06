@@ -171,29 +171,8 @@ class ShopHelperTest extends CakeTestCase {
 		return array(
 			'normal' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 10
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 5
-							)
-						)
-					),
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 5
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 2
-							),
-							array(
-								'stock' => 3
-							)
-						)
-					)
+					'stock' => 10,
+					'selling' => 75
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -208,16 +187,8 @@ class ShopHelperTest extends CakeTestCase {
 			),
 			'negative-stock' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 10
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => -10
-							)
-						)
-					)
+					'stock' => -10,
+					'selling' => 0
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -232,16 +203,8 @@ class ShopHelperTest extends CakeTestCase {
 			),
 			'null-price' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => null
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 10
-							)
-						)
-					)
+					'stock' => 10,
+					'selling' => null
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
