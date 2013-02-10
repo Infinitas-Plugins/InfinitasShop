@@ -82,6 +82,7 @@ class ShopCurrencyLib {
 		$currency = ClassRegistry::init('Shop.ShopCurrency')->find('currency', array(
 			'currency' => self::getCurrency($currency)
 		));
+		reset($currency);
 		$currency = current($currency);
 		$changeFields = array(
 			'whole_symbol',
