@@ -18,9 +18,11 @@
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
+$currentRoute = InfinitasRouter::currentRoute();
 if (!empty($currentRoute->options['pass'])) {
 	$url = array();
 	$currentRoute = Configure::read('CORE.current_route');
+
 	foreach ($currentRoute->options['pass'] as $pass) {
 		if (!empty($this->request->{$pass})) {
 			$url[$pass] = $this->request->{$pass};
