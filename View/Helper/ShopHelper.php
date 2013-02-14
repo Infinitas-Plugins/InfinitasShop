@@ -316,7 +316,12 @@ class ShopHelper extends AppHelper {
 		foreach ($shopCategories as &$category) {
 			$name = $category['ShopCategory']['name'];
 			if (Configure::read('Shop.display_category_count') && array_key_exists('shop_product_count', $category['ShopCategory'])) {
-				$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
+				if (!empty($category['children'])) {
+					$category['ShopCategory']['shop_product_count'] += array_sum(Hash::extract($category['children'], '{n}.ShopCategory.shop_product_count'));
+				}
+				if ($category['ShopCategory']['shop_product_count']) {
+					$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
+				}
 			}
 
 			$children = null;
