@@ -15,7 +15,8 @@
 class ShopAttribute extends ShopAppModel {
 
 	public $findMethods = array(
-		'connected' => true
+		'connected' => true,
+		'productAttributes' => true
 	);
 
 /**
@@ -34,7 +35,7 @@ class ShopAttribute extends ShopAppModel {
 				)
 			)
 		),
-		'Sequence' => array(
+		'Libs.Sequence' => array(
 			'groupFields' => array(
 				'shop_attribute_group_id'
 			)
@@ -98,6 +99,51 @@ class ShopAttribute extends ShopAppModel {
 		);
 	}
 
+	protected function _findProductAttributes($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query[0])) {
+				throw new InvalidArgumentException(__d('shop', 'No product specified'));
+			}
+			$this->virtualFields['group_name'] = 'ShopAttributeGroup.name';
+			$this->virtualFields['group_slug'] = 'ShopAttributeGroup.slug';
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				'ShopAttribute.id',
+				'ShopAttribute.name',
+				'ShopAttribute.slug',
+				'ShopAttribute.image_small',
+				'ShopAttribute.image_large',
+				'ShopAttribute.group_name',
+				'ShopAttribute.group_slug'
+			));
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->alias . '.' . $this->primaryKey . ' !=' => null
+			));
+
+			$query['joins'] = (array)$query['joins'];
+			$query['joins'][] = $this->autoJoinModel($this->ShopAttributeGroup);
+
+			$join = $this->autoJoinModel(array(
+				'model' => $this->ShopProductAttribute,
+				'type' => 'right',
+			));
+			$join['conditions'][] = sprintf('ShopProductAttribute.shop_product_id = "%s"', $query[0]);
+			$query['joins'][] = $join;
+
+			$query['order'] = array_merge((array)$query['order'], array(
+				'ShopAttributeGroup.name',
+				'ShopAttribute.name'
+			));
+
+			$query['group'] = array(
+				$this->alias . '.' . $this->primaryKey
+			);
+			return $query;
+		}
+
+		return (array)Hash::extract($results, '{n}.' . $this->alias);
+	}
+
 	protected function _findConnected($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$query = array_merge(array(
@@ -135,6 +181,7 @@ class ShopAttribute extends ShopAppModel {
 				));
 
 				$query['joins'][] = $categoryJoin;
+				$query['joins'][] = $this->autoJoinModel($this->ShopAttributeGroup);
 			}
 
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
