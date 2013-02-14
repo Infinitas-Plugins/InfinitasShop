@@ -1,4 +1,7 @@
 <?php
+if (empty($shopConnectedAttributes)) {
+	return;
+}
 echo $this->Form->create('ShopProduct', array(
 	'url' => array(
 		'plugin' => 'shop',
@@ -40,17 +43,6 @@ echo $this->Form->create('ShopProduct', array(
 			)));
 
 		}
-	}
-
-	$list[] = $this->Html->tag('li', __d('shop', 'Options'), array(
-		'class' => 'nav-header'
-	));
-	foreach ($shopFilterOptions['ShopOption'] as $option) {
-		$list[] = $this->Html->tag('li', $this->Form->input($option['id'], array(
-			'type' => 'checkbox',
-			'label' => $option['name'],
-			'div' => true
-		)));
 	}
 
 	echo $this->Html->tag('ul', implode('', $list), array(
