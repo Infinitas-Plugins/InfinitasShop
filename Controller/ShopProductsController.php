@@ -74,9 +74,11 @@ class ShopProductsController extends ShopAppController {
 		if (empty($this->request->category)) {
 			$this->request->category = null;
 		}
+
 		$this->Paginator->settings = array(
 			'paginated',
-			'category' => $this->request->category
+			'category' => $this->request->category,
+			'named' => $this->request->params['named']
 		);
 
 		$this->_productList();
