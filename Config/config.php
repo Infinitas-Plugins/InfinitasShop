@@ -26,5 +26,9 @@ $config['Shop'] = array(
 		__d('shop', '30 days') => __d('shop', '30 days'),
 		__d('shop', '60 days') => __d('shop', '60 days'),
 		__d('shop', '90 days') => __d('shop', '90 days'),
+	),
+	'pagination' => array(
+		'default' => 15,
+		'options' => array(3, 6, 12, 24, 48, 96)
 	)
 );
