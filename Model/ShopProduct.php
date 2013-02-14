@@ -21,6 +21,7 @@
  * @property ShopSize $ShopSize
  * @property ShopProductVariant $ShopProductVariant
  * @property ShopProductVariant $ShopProductVariantMaster
+ * @property ShopProductAttribute $ShopProductAttribute
  */
 
 class ShopProduct extends ShopAppModel {
@@ -56,7 +57,10 @@ class ShopProduct extends ShopAppModel {
 		'recentlyViewed' => true,
 		'search' => true,
 		'possibleOptions' => true,
-		'orderQuantity' => true
+		'orderQuantity' => true,
+		'availableAttributes' => true,
+		'availableColours' => true,
+		'availableOptions' => true
 	);
 
 /**
@@ -111,7 +115,7 @@ class ShopProduct extends ShopAppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'ShopCurrentSpecial' => array(
+		/*'ShopCurrentSpecial' => array(
 			'className' => 'Shop.ShopSpecial',
 			'foreignKey' => 'shop_product_id',
 			'conditions' => array(
@@ -119,7 +123,7 @@ class ShopProduct extends ShopAppModel {
 			),
 			'fields' => '',
 			'order' => ''
-		),
+		),*/
 		'ShopCurrentSpotlight' => array(
 			'className' => 'Shop.ShopSpotlight',
 			'foreignKey' => 'shop_product_id',
@@ -206,6 +210,19 @@ class ShopProduct extends ShopAppModel {
 			'conditions' => array(
 				'ShopProductVariant.master' => 0
 			),
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopProductAttribute' => array(
+			'className' => 'Shop.ShopProductAttribute',
+			'foreignKey' => 'shop_product_id',
+			'dependent' => true,
+			'conditions' => '',
 			'fields' => '',
 			'order' => '',
 			'limit' => '',
@@ -391,9 +408,18 @@ class ShopProduct extends ShopAppModel {
 		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
+			$remove = array('_attributes', 'ShopProduct.total_stock', 'ShopProduct.total_variants');
+			array_walk($remove, function($field) use (&$query) {
+				$key = array_search($field, $query['fields']);
+				if ($key !== false) {
+					unset($query['fields'][$key]);
+				}
+			});
+
 			$query['order'] = array(
 				$this->alias . '.created' => 'desc'
 			);
+			$query['group'] = array();
 
 			return $query;
 		}
@@ -442,10 +468,19 @@ class ShopProduct extends ShopAppModel {
 		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
+			$remove = array('_attributes', 'ShopProduct.total_stock', 'ShopProduct.total_variants');
+			array_walk($remove, function($field) use (&$query) {
+				$key = array_search($field, $query['fields']);
+				if ($key !== false) {
+					unset($query['fields'][$key]);
+				}
+			});
+
 			$query['order'] = array(
 				$this->alias . '.views' => 'desc',
 				$this->alias . '.created' => 'desc',
 			);
+			$query['group'] = array();
 
 			return $query;
 		}
@@ -493,6 +528,14 @@ class ShopProduct extends ShopAppModel {
 		if ($state == 'before') {
 			$query = self::_findPaginated($state, $query);
 
+			$remove = array('_attributes', 'ShopProduct.total_stock', 'ShopProduct.total_variants');
+			array_walk($remove, function($field) use (&$query) {
+				$key = array_search($field, $query['fields']);
+				if ($key !== false) {
+					unset($query['fields'][$key]);
+				}
+			});
+
 			$this->virtualFields['view_date'] = 'MAX(ViewCounterView.created)';
 
 			$query['joins'][] = $this->autoJoinModel(array(
@@ -508,6 +551,7 @@ class ShopProduct extends ShopAppModel {
 			$query['order'] = array(
 				'view_date' => 'desc'
 			);
+			$query['group'] = array();
 			return $query;
 		}
 
@@ -825,6 +869,8 @@ class ShopProduct extends ShopAppModel {
 			$query['admin'] = true;
 
 			$this->virtualFields['category_active'] = 'ActiveCategory.active';
+			$this->virtualFields['base_cost'] = 'MIN(ShopProductVariantPrice.cost)';
+			$this->virtualFields['base_selling'] = 'MIN(ShopProductVariantPrice.selling)';
 			$query['fields'] = array_merge((array)$query['fields'], array(
 				$this->fullFieldName('modified'),
 				$this->fullFieldName('available'),
@@ -835,10 +881,16 @@ class ShopProduct extends ShopAppModel {
 				$this->ShopBrand->fullFieldName('active'),
 				$this->ShopProductType->fullFieldName('active'),
 				'category_active',
-				'total_stock'
+				'total_stock',
+				'base_cost',
+				'base_selling'
 			));
-
-			return self::_findPaginated($state, $query);
+			$query = self::_findPaginated($state, $query);
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => 'Shop.ShopProductVariant',
+				'model' => 'Shop.ShopProductVariantPrice',
+			));
+			return $query;
 		}
 
 		$results = self::_findPaginated($state, $query, $results);
@@ -945,12 +997,11 @@ class ShopProduct extends ShopAppModel {
 
 			$query['fields'][] = $this->fullFieldName('description');
 
-			$query['group'] = array_merge(
-				(array)$query['group'],
-				array(
-					$this->alias . '.' . $this->primaryKey
-				)
-			);
+			$query['group'] = array_merge((array)$query['group'], array(
+				$this->alias . '.' . $this->primaryKey
+			));
+
+			$query = $this->_searchFilter($query);
 
 			return $query;
 		}
@@ -960,12 +1011,14 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		$results = $this->_findBasics($state, $query, $results);
+		if (empty($results)) {
+			return array();
+		}
 
 		$options = array(
 			'shop_product_id' => Hash::extract($results, sprintf('{n}.%s.%s', $this->alias, $this->primaryKey)),
 			'extract' => true
 		);
-
 		$shopCategories = $this->ShopCategoriesProduct->ShopCategory->find('related', $options);
 		$shopSpecials = $this->ShopProductsSpecial->ShopSpecial->find('specials', $options);
 		$shopSpotlights = $this->ShopSpotlight->find('spotlights', $options);
@@ -977,6 +1030,10 @@ class ShopProduct extends ShopAppModel {
 			$result['ShopSpecial'] = Hash::extract($shopSpecials, $extractTemplate);
 			$result['ShopSpotlight'] = Hash::extract($shopSpotlights, $extractTemplate);
 			//$result['ShopOption'] = Hash::extract($shopOptions, $extractTemplate);
+			
+			$result['ShopProductAttribute'] = $this->ShopProductAttribute->ShopAttribute->find('productAttributes', $result[$this->alias][$this->primaryKey]);
+			unset($result['ShopProduct']['_attributes']);
+		
 		}
 
 		return $results;
@@ -1220,7 +1277,7 @@ class ShopProduct extends ShopAppModel {
 			$this->virtualFields['total_variants'] = sprintf('COUNT(%s.id) - 1', $this->ShopProductVariant->alias);
 
 			$fields = array(
-				'DISTINCT(ActiveCategory.id)',
+				sprintf('DISTINCT(%s)', $this->alias . '.' . $this->primaryKey),
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
 				$this->alias . '.slug',
@@ -1229,6 +1286,7 @@ class ShopProduct extends ShopAppModel {
 				$this->alias . '.views',
 				$this->alias . '.sales',
 				$this->alias . '.active',
+				$this->alias . '.shop_product_attribute_count',
 				$this->alias . '.total_stock',
 				$this->alias . '.total_variants',
 
@@ -1248,35 +1306,32 @@ class ShopProduct extends ShopAppModel {
 			if (!isset($query['admin']) || $query['admin'] !== true) {
 				$this->_activeOnlyConditions($query);
 			}
-
-			if (!empty($query['category'])) {
-				$query['conditions'] = array_merge((array)$query['conditions'], array(
-					'or' => array(
-						'ActiveCategory.id' => $query['category'],
-						'ActiveCategory.slug' => $query['category']
-					)
-				));
-			}
 			$query['conditions'] = array_merge((array)$query['conditions'], array(
 				$this->alias . '.' . $this->primaryKey . ' IS NOT NULL'
 			));
 
 			$query['joins'] = array_filter($query['joins']);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductType);
+			$this->_searchFilterProductType($query);
+			$this->_searchFilterBrand($query);
+			$this->_searchFilterSupplier($query);
+
 			$query['joins'][] = $this->autoJoinModel($this->ShopImage);
-			$query['joins'][] = $this->autoJoinModel($this->ShopBrand);
-			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier);
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant);
 			$query['joins'][] = $this->ShopProductVariant->autoJoinModel($this->ShopProductVariant->ShopBranchStock);
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct);
-			$query['joins'][] = $this->autoJoinModel(array(
-				'from' => $this->ShopCategoriesProduct,
-				'model' => $this->ShopCategoriesProduct->ShopCategory,
-				'alias' => 'ActiveCategory'
-			));
+			
+			$this->_searchFilterCategory($query);
+			
+			if (!empty($query['sort'])) {
+				$direction = 'asc';
+				if (!empty($query['direction']) && trim(strtolower($query['direction'])) == 'desc') {
+					$direction = $query['direction'];
+				} 
+				$query['order'][$query['sort']] = $direction;
+			}
 
 			return $query;
 		}
@@ -1384,6 +1439,140 @@ class ShopProduct extends ShopAppModel {
 		}
 	}
 
+/**
+ * Get a list of all available options for the selected conditions
+ * 
+ * @param  [type] $state   [description]
+ * @param  [type] $query   [description]
+ * @param  array  $results [description]
+ * 
+ * @return array
+ */
+	protected function _findAvailableAttributes($state, $query, array $results = array()) {
+		if ($state == 'before') {
+			$this->virtualFields['shop_product_attribute_count'] = sprintf('COUNT(%s.%s)', $this->ShopProductAttribute->alias, $this->ShopProductAttribute->primaryKey);
+			$query['fields'] = array(
+				$this->ShopProductAttribute->ShopAttribute->alias . '.*',
+				$this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->alias . '.id',
+				$this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->alias . '.name',
+				$this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->alias . '.slug',
+				'shop_product_attribute_count'
+			);
+
+			$this->_searchFilterBrand($query);
+			$this->_searchFilterSupplier($query);
+			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
+			$this->_searchFilterCategory($query);
+
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductAttribute);
+			$query['joins'][] = $this->ShopProductAttribute->autoJoinModel($this->ShopProductAttribute->ShopAttribute);
+			$query['joins'][] = $this->ShopProductAttribute->ShopAttribute->autoJoinModel($this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup);
+			$attributeFilter = $this->_attributeFilter($query);
+			if (array_key_exists('attributes', $attributeFilter) && !empty($attributeFilter['attributes'])) {
+				//$this->_searchFilterAttributes($attributeFilter['attributes'], $query);
+			}
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->ShopProductAttribute->ShopAttribute->alias . '.id IS NOT NULL',
+				'ShopProduct.shop_product_attribute_count > 0'
+			));
+
+			$query['group'] = array(
+				$this->ShopProductAttribute->ShopAttribute->alias . '.' . $this->ShopProductAttribute->ShopAttribute->primaryKey
+			);
+			$query['order'] = array(
+				$this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->alias . '.' . $this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->primaryKey,
+				$this->ShopProductAttribute->ShopAttribute->alias . '.' . $this->ShopProductAttribute->ShopAttribute->primaryKey
+			);
+			return $query;
+		}
+		if (empty($results)) {
+			return array();
+		}
+
+		foreach ($results as &$result) {
+			$result['ShopAttribute']['shop_product_attribute_count'] = $result['ShopProduct']['shop_product_attribute_count'];
+		}
+
+		$attributeGroups = array_map('unserialize', array_unique(array_map('serialize', Hash::extract($results, '{n}.ShopAttributeGroup'))));
+		foreach ($attributeGroups as &$attributeGroup) {
+			$extractTemplate = sprintf('{n}.ShopAttribute[shop_attribute_group_id=%s]', $attributeGroup['id']);
+			$attributeGroup = array(
+				'ShopAttributeGroup' => $attributeGroup,
+				'ShopAttribute' => Hash::extract($results, $extractTemplate)
+			);
+		}
+		unset($this->virtualFields['shop_product_attribute_count']);
+		return array_values($attributeGroups);
+	}
+
+	protected function _findAvailableColours($state, $query, array $results = array()) {
+		if ($state == 'before') {
+			$this->virtualFields['shop_product_attribute_count'] = sprintf('COUNT(%s.%s)', $this->alias, $this->primaryKey);
+			$this->virtualFields['slug'] = sprintf('%s.colour_1', $this->ShopImage->alias);
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				'DISTINCT(ShopImage.id)',
+				$this->ShopImage->alias . '.' . $this->ShopImage->primaryKey,
+				'slug',
+				'ShopOptionValue.name',
+				'shop_product_attribute_count',
+			));
+
+			$this->_searchFilterBrand($query);
+			$this->_searchFilterSupplier($query);
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductVariant);
+			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct);
+			$this->_searchFilterCategory($query);
+
+			$query['joins'][] = $this->autoJoinModel(array(
+				'model' => $this->ShopImage,
+				'conditions' => array(
+					'ShopImage.id = ShopProductVariant.shop_image_id'
+				)
+			));
+			$query['joins'][] = $this->autoJoinModel(array(
+				'from' => 'Shop.ShopImage',
+				'model' => 'Shop.ShopOptionValue',
+				'conditions' => array(
+					'ShopOptionValue.colour = ShopImage.colour_1'
+				)
+			));
+			$query['joins'][] = $this->autoJoinModel($this->ShopProductAttribute);
+			$query['joins'][] = $this->ShopProductAttribute->autoJoinModel($this->ShopProductAttribute->ShopAttribute);
+			$query['joins'][] = $this->ShopProductAttribute->ShopAttribute->autoJoinModel($this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup);
+
+			$query['conditions'] = array_merge((array)$query['conditions'], array(
+				$this->ShopProductAttribute->ShopAttribute->alias . '.id IS NOT NULL',
+				$this->ShopImage->alias . '.id IS NOT NULL',
+				'ShopProduct.shop_product_attribute_count > 0'
+			));
+
+			$query['group'] = array(
+				'ShopOptionValue.colour'
+			);
+			$query['order'] = array(
+				$this->ShopImage->alias . '.colour_1'
+			);
+			return $query;
+		}
+		unset($this->virtualFields['shop_product_attribute_count'], $this->virtualFields['slug']);
+		if (empty($results)) {
+			return array();
+		}
+
+		foreach ($results as &$result) {
+			$result = call_user_func_array('array_merge', $result);
+		}
+
+		return array(array(
+			'ShopAttributeGroup' => array(
+				'name' => 'Product Colour',
+				'slug' => 'product-colour'
+			),
+			'ShopAttribute' => $results
+		));
+	}
+
 
 /**
  * Find a list of possible options for a category
@@ -1414,7 +1603,10 @@ class ShopProduct extends ShopAppModel {
 				'product_count'
 			);
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopProductType->fullModelName());
+			$this->_searchFilterProductType($query);
+			$this->_searchFilterBrand($query);
+			$this->_searchFilterSupplier($query);
+
 			$query['joins'][] = $this->autoJoinModel(array(
 				'from' => $this->ShopProductType->fullModelName(),
 				'model' => $this->ShopProductType->ShopProductTypesOption->fullModelName()
@@ -1425,8 +1617,6 @@ class ShopProduct extends ShopAppModel {
 				'type' => 'right'
 			));
 
-			$query['joins'][] = $this->autoJoinModel($this->ShopBrand->fullModelName());
-			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
 			$query['joins'][] = $this->autoJoinModel($this->ShopCategoriesProduct->fullModelName());
 			$query['joins'][] = $this->autoJoinModel(array(
 				'from' => $this->ShopCategoriesProduct->fullModelName(),
@@ -1468,20 +1658,7 @@ class ShopProduct extends ShopAppModel {
 	protected function _activeOnlyConditions(array &$query) {
 		$query['conditions'] = array_merge((array)$query['conditions'], array(
 			$this->alias . '.active' => 1,
-			$this->alias . '.available <=' => date('Y-m-d H:i:00'),
-			'ActiveCategory.active' => 1,
-			array('or' => array(
-				$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
-				$this->ShopBrand->alias . '.active' => 1,
-			)),
-			array('or' => array(
-				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
-				$this->ShopProductType->alias . '.active' => 1,
-			)),
-			array('or' => array(
-				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
-				$this->ShopSupplier->alias . '.active' => 1,
-			))
+			$this->alias . '.available <=' => date('Y-m-d H:i:00')
 		));
 	}
 
@@ -1515,6 +1692,11 @@ class ShopProduct extends ShopAppModel {
 		if (!empty($product['ShopProductVariant'])) {
 			$shopProductVariants = $product['ShopProductVariant'];
 			unset($product['ShopProductVariant']);
+		}
+
+		if (!empty($product['ShopProductAttribute'])) {
+			$shopProductAttributes = $product['ShopProductAttribute'];
+			unset($product['ShopProductAttribute']);
 		}
 
 		$saved = (bool)$this->saveAll($product);
@@ -1578,6 +1760,22 @@ class ShopProduct extends ShopAppModel {
 			}
 		}
 
+		if (!empty($shopProductAttributes)) {
+			$this->ShopProductAttribute->deleteAll(array(
+				'shop_product_id' => $productId
+			));
+
+			foreach ($shopProductAttributes as $k => $attribute) {
+				$shopProductAttributes[$k] = array(
+					'shop_attribute_id' => $attribute,
+					'shop_product_id' => $productId
+				);
+			}
+
+			$this->ShopProductAttribute->create();
+			$saved = $saved && $this->ShopProductAttribute->saveAll($shopProductAttributes[$k]);
+		}
+
 		if ($saved) {
 			$this->transaction(true);
 			return true;
@@ -1587,4 +1785,226 @@ class ShopProduct extends ShopAppModel {
 		return false;
 	}
 
+/**
+ * Filter products based on passed options
+ * 
+ * @param array $query the query params to adjust and filter on
+ * 
+ * @return array
+ */
+	protected function _searchFilter($query) {
+		foreach ($this->_attributeFilter($query) as $type => $options) {
+			switch ($type) {
+				case 'attributes':
+					$this->_searchFilterAttributes($options, $query);
+					break;
+
+				case 'product-colour':
+					$this->_searchFilterColour($options, $query);
+					break;
+			}
+		}
+		return $query;
+	}
+
+	protected function _attributeFilter($query) {
+		if (empty($query['named'])) {
+			return array();
+		}
+
+		$keys = array_keys($query['named']);
+		$attributeGroups = array_keys($this->ShopProductAttribute->ShopAttribute->ShopAttributeGroup->find('list', array(
+			'fields' => array(
+				'ShopAttributeGroup.slug',
+				'ShopAttributeGroup.slug'
+			),
+			'conditions' => array(
+				'ShopAttributeGroup.slug' => $keys
+			)
+		)));
+		$attributeGroups = array_intersect($keys, $attributeGroups);
+		$other = array_diff($keys, $attributeGroups);
+		$return = array(
+			'attributes' => $attributeGroups
+		);
+		foreach ($other as $o) {
+			$return[$o] = $query['named'][$o];
+		}
+		return $return;
+	}
+
+	protected function _searchFilterAttributes($attributeGroups, &$query) {
+		$attributes = array();
+		foreach ($attributeGroups as &$attributeGroup) {
+			$attributes[] = $query['named'][$attributeGroup];
+		}
+		if (!empty($attributeGroups)) {
+			$conditions = array();
+			foreach (array_unique(array_filter(array_values(Hash::flatten($attributes)))) as $attribute) {
+				$conditions[]['ShopAttributeFilter.slug'] = $attribute;
+			}
+			$query['joins'][] = $this->autoJoinModel(array(
+				'type' => 'right',
+				'model' => $this->ShopProductAttribute,
+			));
+			$query['joins'][] = $this->ShopProductAttribute->autoJoinModel(array(
+				'type' => 'right',
+				'model' => $this->ShopProductAttribute->ShopAttribute,
+				'alias' => 'ShopAttributeFilter',
+				'conditions' => array(
+					'ShopAttribute.id = ShopProductAttribute.shop_attribute_id',
+					'and' => $conditions
+				)
+			));
+		}
+	}
+
+/**
+ * Filter by the specified category
+ * 
+ * @param array $query the query array
+ * 
+ * @return array
+ */
+	protected function _searchFilterCategory(&$query) {
+		$categoryConditions = array(
+			'ActiveCategory.id = ShopCategoriesProduct.shop_category_id',
+			'ActiveCategory.active = 1'
+		);
+
+		if (!empty($query['category'])) {
+			$categoryConditions = array_merge($categoryConditions, array(
+				'or' => array(
+					'ActiveCategory.id' => $query['category'],
+					'ActiveCategory.slug' => $query['category']
+				)
+			));
+		}
+
+		$query['joins'][] = $this->autoJoinModel(array(
+			'from' => $this->ShopCategoriesProduct,
+			'model' => $this->ShopCategoriesProduct->ShopCategory,
+			'alias' => 'ActiveCategory',
+			'type' => 'right',
+			'conditions' => $categoryConditions
+		));
+	}
+
+/**
+ * Filter products by colour
+ *
+ * Will filter so that products or options with the selected colour will be found
+ * 
+ * @param array $options colours to filter
+ * @param array $query query array by reference
+ * @return void
+ */
+	protected function _searchFilterColour($options, &$query) {
+		$query['joins'][] = $this->autoJoinModel(array(
+			'type' => 'right',
+			'model' => $this->ShopImage,
+			'alias' => 'ShopImageFilter',
+			'type' => 'right',
+			'conditions' => array(
+				'ShopImage.id = ShopProductVariant.shop_image_id',
+				'ShopImage.colour_1' => $options
+			)
+		));
+		$imageTable = $this->ShopImage->fullTableName();
+		foreach ($query['joins'] as $k => $join) {
+			$imageJoin = $join['table'] == $imageTable && $join['alias'] == $this->ShopImage->alias;
+			if ($imageJoin) {
+				$join['conditions'] = array(
+					'ShopImage.id = ShopImageFilter.id'
+				);
+				$query['joins'][] = $join;
+				unset($query['joins'][$k]);
+			}
+		}
+		$query['joins'] = array_values($query['joins']);
+	}
+
+/**
+ * Filter by Brand 
+ * 
+ * @param array $query the find query params
+ * 
+ * @return void
+ */
+	protected function _searchFilterBrand(&$query) {
+		$join = $this->autoJoinModel($this->ShopBrand->fullModelName());
+
+		$conditions = array();
+		if (!array_key_exists('admin', $query) || !$query['admin']) {
+			$conditions[]['or'] = array(
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => null,
+				$this->ShopBrand->alias . '.active' => 1
+			);
+		}
+		if (!empty($query['brand'])) {
+			$conditions[]['or'] = array(
+				$this->ShopBrand->alias . '.' . $this->ShopBrand->primaryKey => $query['brand'],
+				$this->ShopBrand->alias . '.slug' => $query['brand'],
+			);
+			$join['type'] = 'right';
+		}
+		$join['conditions'] = array_merge($join['conditions'], $conditions);
+		$query['joins'][] = $join;
+	}
+
+/**
+ * Filter by product type 
+ * 
+ * @param array $query the find query params
+ * 
+ * @return void
+ */
+	protected function _searchFilterProductType(&$query) {
+		$join = $this->autoJoinModel($this->ShopProductType->fullModelName());
+
+		$conditions = array();
+		if (!array_key_exists('admin', $query) || !$query['admin']) {
+			$conditions[]['or'] = array(
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => null,
+				$this->ShopProductType->alias . '.active' => 1,
+			);
+		}
+		if (!empty($query['product_type'])) {
+			$conditions[]['or'] = array(
+				$this->ShopProductType->alias . '.' . $this->ShopProductType->primaryKey => $query['product_type'],
+				$this->ShopProductType->alias . '.slug' => $query['product_type'],
+			);
+			$join['type'] = 'right';
+		}
+		$join['conditions'] = array_merge($join['conditions'], $conditions);
+		$query['joins'][] = $join;
+	}
+
+/**
+ * Filter by supplier 
+ * 
+ * @param array $query the find query params
+ * 
+ * @return void
+ */
+	protected function _searchFilterSupplier(&$query) {
+		$join = $this->autoJoinModel($this->ShopSupplier->fullModelName());
+
+		$conditions = array();
+		if (!array_key_exists('admin', $query) || !$query['admin']) {
+			$conditions[]['or'] = array(
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => null,
+				$this->ShopSupplier->alias . '.active' => 1,
+			);
+		}
+		if (!empty($query['supplier'])) {
+			$conditions[]['or'] = array(
+				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey => $query['supplier'],
+				$this->ShopSupplier->alias . '.slug' => $query['supplier'],
+			);
+			$join['type'] = 'right';
+		}
+		$join['conditions'] = array_merge($join['conditions'], $conditions);
+		$query['joins'][] = $join;
+	}
 }
