@@ -6,6 +6,7 @@
  * @property ShopProduct $ShopProduct
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
+ * @property ShopProductVariant $ShopProductVariant
  */
 
 class ShopImage extends ShopAppModel {
@@ -56,6 +57,19 @@ class ShopImage extends ShopAppModel {
 		),
 		'ShopProduct' => array(
 			'className' => 'Shop.ShopProduct',
+			'foreignKey' => 'shop_image_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopProductVariant' => array(
+			'className' => 'Shop.ShopProductVariant',
 			'foreignKey' => 'shop_image_id',
 			'dependent' => false,
 			'conditions' => '',
