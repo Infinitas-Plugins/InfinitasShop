@@ -667,7 +667,9 @@ class ShopProduct extends ShopAppModel {
 				$this->ShopProductVariant->ShopListProduct->alias . '.' . $this->ShopProductVariant->ShopListProduct->primaryKey
 			));
 
-			return $query;
+			return array_merge((array(
+				'cache' => false
+			)), $query);
 		}
 
 		$results = $this->_findBasics($state, $query, $results);
@@ -849,7 +851,11 @@ class ShopProduct extends ShopAppModel {
 		}
 
 		$results = self::_findProductsForList($state, $query, $results);
-		return array_sum(Hash::extract($results, '{n}.ShopProductVariant.ShopProductListPrice.selling'));
+		$total = 0;
+		foreach ($results as $result) {
+			$total += $result['ShopOrderProductPrice']['selling'] * $result['ShopListProduct']['quantity'];
+		}
+		return $total;
 	}
 
 /**
@@ -1331,6 +1337,10 @@ class ShopProduct extends ShopAppModel {
 					$direction = $query['direction'];
 				} 
 				$query['order'][$query['sort']] = $direction;
+			}
+
+			if (array_key_exists('admin', $query) && $query['admin'] === true) {
+				// @todo needed? $query['cache'] = false;
 			}
 
 			return $query;

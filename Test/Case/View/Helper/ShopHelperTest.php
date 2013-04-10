@@ -146,9 +146,9 @@ class ShopHelperTest extends CakeTestCase {
 	public function adminCurrencyDataProvider() {
 		return array(
 			'penny' => array(.1, '10p'),
-			'pound' => array(1, '&#163;1.00'),
-			'high' => array(1234.56, '&#163;1,234.56'),
-			'neg' => array(-123.999, '(&#163;124.00)')
+			'pound' => array(1, '£1.00'),
+			'high' => array(1234.56, '£1,234.56'),
+			'neg' => array(-123.999, '(£124.00)')
 		);
 	}
 
@@ -180,7 +180,7 @@ class ShopHelperTest extends CakeTestCase {
 							10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;75.00',
+							'£75.00',
 						'/span',
 					'/div'
 				)
@@ -196,7 +196,7 @@ class ShopHelperTest extends CakeTestCase {
 							-10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;0.00',
+							'£0.00',
 						'/span',
 					'/div'
 				)
@@ -212,7 +212,7 @@ class ShopHelperTest extends CakeTestCase {
 							10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;0.00',
+							'£0.00',
 						'/span',
 					'/div'
 				)
