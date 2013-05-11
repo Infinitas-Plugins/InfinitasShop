@@ -245,6 +245,10 @@ class ShopShippingMethod extends ShopAppModel {
  * @return array
  */
 	protected function _getShipping(array $sizes, array &$method) {
+		$sizes = array_merge(array(
+			'weight' => 0,
+			'cost' => 0
+		), (array)$sizes);
 		$shipping = self::_calculateShipping($sizes['weight'], $method['rates']);
 		$insurance = self::_calculateInsurance($sizes['cost'], $method['insurance']);
 		return array(

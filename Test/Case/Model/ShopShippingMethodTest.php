@@ -313,7 +313,6 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider productDataProvider
  */
 	public function testProduct($data, $expected) {
-		$this->markTestIncomplete('Unset variables');
 		$result = $this->{$this->modelClass}->find('product', array(
 			'shop_shipping_method_id' => $data['shop_shipping_method_id'],
 			'shop_product_variant_id' => $data['product_variant'],
@@ -369,7 +368,6 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider productListDataProvider
  */
 	public function testProductList($data, $expected) {
-		$this->markTestIncomplete();
 		App::uses('CakeSession', 'Model/Datasource');
 		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
@@ -413,8 +411,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'user_id' => 'bob'
 				),
 				array(
-					'total' => 4.71,
-					'shipping' => 3.71,
+					'total' => 4.05,
+					'shipping' => 3.05,
 					'insurance_rate' => 1.0,
 					'insurance_cover' => 100.0,
 					'surcharge' => '0.00000'
@@ -428,8 +426,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'user_id' => 'bob'
 				),
 				array(
-					'total' => 3.15,
-					'shipping' => 3.15,
+					'total' => 2.61,
+					'shipping' => 2.61,
 					'insurance_rate' => 0.0,
 					'insurance_cover' => 0.0,
 					'surcharge' => '0.00000'
