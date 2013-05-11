@@ -369,7 +369,7 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider productListDataProvider
  */
 	public function testProductList($data, $expected) {
-		$this->skipIf(true);
+		$this->markTestIncomplete();
 		App::uses('CakeSession', 'Model/Datasource');
 		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
@@ -454,7 +454,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 	public function testFindAvailable() {
-		$this->skipIf(true);
+		$this->markTestIncomplete();
 		$result = $this->{$this->modelClass}->find('available');
 		$expected = array(
 			'royal-mail-1st' => 'royal-mail-1st',
