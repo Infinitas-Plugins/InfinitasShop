@@ -17,6 +17,8 @@ class ShopProductFindTest extends CakeTestCase {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.shop.shop_attribute',
+		'plugin.shop.shop_attribute_group',
 		'plugin.shop.shop_product',
 		'plugin.shop.shop_brand',
 		'plugin.shop.shop_size',
@@ -30,6 +32,7 @@ class ShopProductFindTest extends CakeTestCase {
 		'plugin.shop.shop_product_type',
 		'plugin.shop.shop_products_special',
 		'plugin.shop.shop_product_variant',
+		'plugin.shop.shop_product_attribute',
 		'plugin.shop.shop_option_variant',
 		'plugin.shop.shop_special',
 		'plugin.shop.shop_spotlight',
@@ -277,7 +280,7 @@ class ShopProductFindTest extends CakeTestCase {
 			)
 		));
 		$this->assertTrue((bool)$saved);
-		$this->markTestIncomplete('Probably cache here');
+
 		$expected = array(
 			'active',
 			'multi-option'

@@ -551,7 +551,9 @@ class ShopProduct extends ShopAppModel {
 			$query['order'] = array(
 				'view_date' => 'desc'
 			);
-			$query['group'] = array();
+			$query['group'] = array(
+				$this->alias . '.' . $this->primaryKey
+			);
 			return $query;
 		}
 
