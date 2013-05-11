@@ -831,7 +831,6 @@ class ShopProductTest extends CakeTestCase {
 		$stockCount = Hash::apply($result['ShopProductVariant'], '{n}.ShopBranchStock.{n}.id', 'count');
 		$this->assertEquals(3, $stockCount);
 
-		$this->markTestIncomplete("Update test to reflect internal changes");
 		$largeRed = current(Hash::extract($result['ShopProductVariant'], '{n}[product_code=redl]'));
 		$this->assertEquals(2, count($largeRed['ShopOptionVariant']));
 		$this->assertEquals(110, array_sum(Hash::extract($largeRed, 'ShopBranchStock.{n}.stock')));
