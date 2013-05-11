@@ -117,8 +117,13 @@ class ShopProductsController extends ShopAppController {
 
 		$shopProduct = $this->{$this->modelClass}->find('product', $this->request->slug);
 		$categoryPath = $this->{$this->modelClass}->ShopCategoriesProduct->ShopCategory->getPath($this->request->category);
+		try {
+			$shopProductShipping = ClassRegistry::init('Shop.ShopShippingMethod')->find('product', array(
+				'shop_product_id' => $shopProduct[$this->modelClass]['id']
+			));
+		} catch (CakeException $e) {}
 
-		$this->set(compact('shopProduct', 'categoryPath'));
+		$this->set(compact('shopProduct', 'categoryPath', 'shopProductShipping'));
 	}
 
 /**

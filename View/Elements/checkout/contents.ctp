@@ -9,10 +9,9 @@ if (empty($shopList['ShopShipping'])) {
 <table class="listing">
 	<?php
 		echo $this->Infinitas->adminTableHeader(array(
-			__d('shop', 'Image') => array(
-				'style' => 'width: 100px;'
+			__d('shop', 'Product') => array(
+				'colspan' => 2
 			),
-			__d('shop', 'Product'),
 			__d('shop', 'Quantity') => array(
 				'style' => 'width: 100px;'
 			),
@@ -30,9 +29,7 @@ if (empty($shopList['ShopShipping'])) {
 		foreach ($shopListProducts as $k => $shopListProduct) { ?>
 			<tr>
 				<td rowspan="<?php echo !empty($shopListProduct['ShopProductVariant']['ShopOptionVariant']) ? 2 : 1; ?>">
-					<?php
-					echo $this->Html->image($shopListProduct['ShopImage']['image_small']);
-					?>
+					<?php echo $this->Html->image($shopListProduct['ShopImage']['image_small']); ?>
 				</td>
 				<td>
 					<?php
