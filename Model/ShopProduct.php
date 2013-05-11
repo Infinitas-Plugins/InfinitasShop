@@ -1070,21 +1070,19 @@ class ShopProduct extends ShopAppModel {
 			return array();
 		}
 
+		$selling = $sWidth = $sHeight = $sLength = $sWeight = array();
+		foreach ($results['ShopProductVariant'] as $variant) {
+			$selling[] = $variant['ShopProductVariantPrice']['selling'];
+			list(,,,, $sWidth[], $sHeight[], $sLength[],, $sWeight[]) = array_values($variant['ShopProductVariantSize']);
+		}
+
 		return array(
-			'cost' => 0,
-			'wight' => 0
+			'cost' => max($selling),
+			'width' => max($sWidth),
+			'height' => max($sHeight),
+			'length' => max($sLength),
+			'weight' => max($sWeight),
 		);
-		$size = array(
-			'Master' => $results['ShopProductVariantMasterSize'],
-			'Variant' => $results['ShopProductVariantSize'],
-		);
-		return array_merge(array(
-			'cost' => ShopProductVariant::productPrice(array(
-				'Master' => $results['ShopProductVariantMasterPrice'],
-				'Variant' => $results['ShopProductVariantPrice']
-			)),
-			'weight' => ShopProductVariant::productWeight($size)
-		), ShopProductVariant::productSize($size));
 	}
 
 /**
@@ -1410,7 +1408,7 @@ class ShopProduct extends ShopAppModel {
 			$masterPrice[$this->ShopProductVariant->ShopProductVariantPrice->primaryKey],
 			$masterSize[$this->ShopProductVariant->ShopProductVariantSize->primaryKey]
 		);
-		$this->_productVariantOverride($masterPrice, $result);
+		$this->_productVariantOverride($masterPrice, $masterSize, $result);
 
 		$prices = Hash::extract($result[$this->ShopProductVariant->alias], '{n}.ShopProductVariantPrice.selling');
 
@@ -1421,7 +1419,7 @@ class ShopProduct extends ShopAppModel {
 		}
 	}
 
-	protected function _productVariantOverride($masterPrice, &$result) {
+	protected function _productVariantOverride($masterPrice, $masterSize, &$result) {
 		$numeric = Hash::numeric(array_keys($result[$this->ShopProductVariant->alias]));
 		if(!$numeric) {
 			$result[$this->ShopProductVariant->alias] = array($result[$this->ShopProductVariant->alias]);
@@ -1443,7 +1441,26 @@ class ShopProduct extends ShopAppModel {
 				array_filter($optionPrice),
 				array_filter($productVariant['ShopProductVariantPrice'])
 			);
+
+			$optionSize = array(
+				'product_width' => $masterSize['product_width'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.product_width')),
+				'product_height' => $masterSize['product_height'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.product_height')),
+				'product_length' => $masterSize['product_length'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.product_length')),
+				'shipping_width' => $masterSize['shipping_width'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.shipping_width')),
+				'shipping_height' => $masterSize['shipping_height'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.shipping_height')),
+				'shipping_length' => $masterSize['shipping_length'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.shipping_length')),
+				'product_weight' => $masterSize['product_weight'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.product_weight')),
+				'shipping_weight' => $masterSize['shipping_weight'] + max(Hash::extract($productVariant['ShopOptionVariant'], '{n}.ShopSize.shipping_weight'))
+			);
+			$result[$this->ShopProductVariant->alias][$k]['ShopProductVariantSize'] = array_merge(
+				array($this->ShopProductVariant->ShopProductVariantSize->primaryKey => null),
+				$masterSize,
+				array_filter($optionSize),
+				array_filter($productVariant['ShopProductVariantSize'])
+
+			);
 		}
+
 		if(!$numeric) {
 			$result[$this->ShopProductVariant->alias] = $result[$this->ShopProductVariant->alias][0];
 		}

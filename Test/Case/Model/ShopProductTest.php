@@ -268,7 +268,6 @@ class ShopProductTest extends CakeTestCase {
  * @dataProvider findProductShippingDataProvider
  */
 	public function testFindProductShipping($data, $expected) {
-		$this->markTestIncomplete('shipping is not calculated correctly');
 		$results = $this->{$this->modelClass}->find('productShipping', $data);
 		$this->assertEquals($expected, $results);
 	}
@@ -293,11 +292,11 @@ class ShopProductTest extends CakeTestCase {
 					'shop_product_variant_id' => 'varian-active-1',
 				),
 				array(
-					'width' => 12.5,
-					'height' => 12.5,
-					'length' => 12.5,
-					'weight' => 650.0,
-					'cost' => 12.0
+					'width' => 15,
+					'height' => 15,
+					'length' => 15,
+					'weight' => 715.0,
+					'cost' => 15
 				)
 			)
 		);
@@ -339,7 +338,7 @@ class ShopProductTest extends CakeTestCase {
 					'width' => 12.5,
 					'height' => 12.5,
 					'length' => 12.5,
-					'weight' => 650.0,
+					'weight' => 715.0,
 					'cost' => 87.0
 				)
 			),
