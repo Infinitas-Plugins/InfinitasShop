@@ -396,6 +396,11 @@ class ShopList extends ShopAppModel {
  * @return null|boolean
  */
 	public function guestToUser() {
+		$this->deleteAll(array(
+			$this->alias . '.shop_list_product_count <=' => 0,
+			$this->alias . '.user_id' => CakeSession::read('Shop.Guest.id')
+		));
+
 		$lists = $this->find('all', array(
 			'fields' => array(
 				$this->alias . '.' . $this->primaryKey
@@ -584,7 +589,9 @@ class ShopList extends ShopAppModel {
 		if (empty($shopListProducts)) {
 			throw new InvalidArgumentException(__d('shop', 'There are no products to checkout'));
 		}
-
+		if (empty($shopList['ShopShipping'])) {
+			throw new InvalidArgumentException(__d('shop', 'Shipping details have not been completed'));
+		}
 		$this->_gateway()
 			->shipping($shopList['ShopShipping']['shipping'])
 			->insurance($shopList['ShopShipping']['insurance_rate'])
