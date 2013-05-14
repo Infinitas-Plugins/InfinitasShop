@@ -109,6 +109,19 @@ $(document).ready(function() {
 	$('ul.small a').on('click', function() {
 		return false;
 	});
+
+	$('#AddressOption').on('change', function() {
+		$('.address-details').hide();
+		$('#details-' + $(this).val()).show();
+	});
+
+	$('#BillingAddressCheck').on('change', function() {
+		var billing = $('.billing-adddress');
+		$('input', billing.toggle()).val('');
+		if ($(this).attr('checked') === 'checked') {
+			billing.show();
+		}
+	});
 });
 
 function productFilter() {
