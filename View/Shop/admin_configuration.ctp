@@ -17,7 +17,7 @@ $links = array(
 			'name' => __d('shop', 'Attributes'),
 			'description' => __d('shop', 'Manage store attributes'),
 			'icon' => 'check',
-			'dashboard' => array('controller' => 'shop_attributes', 'action' => 'index')
+			'dashboard' => array('controller' => 'shop_attribute_groups', 'action' => 'index')
 		),
 		array(
 			'name' => __d('shop', 'Currencies'),

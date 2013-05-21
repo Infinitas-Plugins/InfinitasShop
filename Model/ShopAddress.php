@@ -47,4 +47,5 @@ class ShopAddress extends ShopAppModel {
 		$this->validate = array(
 		);
 	}
+
 }

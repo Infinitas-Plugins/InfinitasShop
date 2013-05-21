@@ -6,6 +6,7 @@
  * @property ShopProduct $ShopProduct
  * @property ShopSpecial $ShopSpecial
  * @property ShopSpotlight $ShopSpotlight
+ * @property ShopProductVariant $ShopProductVariant
  */
 
 class ShopImage extends ShopAppModel {
@@ -67,6 +68,32 @@ class ShopImage extends ShopAppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'ShopProductVariant' => array(
+			'className' => 'Shop.ShopProductVariant',
+			'foreignKey' => 'shop_image_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
+		'ShopImagesProduct' => array(
+			'className' => 'Shop.ShopImagesProduct',
+			'foreignKey' => 'shop_image_id',
+			'dependent' => false,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'ShopSpecial' => array(
 			'className' => 'Shop.ShopSpecial',
 			'foreignKey' => 'shop_image_id',
@@ -104,6 +131,10 @@ class ShopImage extends ShopAppModel {
  */
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		$this->order = array(
+			$this->alias . '.' . $this->displayField => 'asc'
+		);
 
 		$this->validate = array(
 

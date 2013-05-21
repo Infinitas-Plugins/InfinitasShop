@@ -368,7 +368,6 @@ class ShopShippingMethodTest extends CakeTestCase {
  * @dataProvider productListDataProvider
  */
 	public function testProductList($data, $expected) {
-		$this->skipIf(true);
 		App::uses('CakeSession', 'Model/Datasource');
 		if (isset($data['user_id'])) {
 			CakeSession::write('Auth.User.id', $data['user_id']);
@@ -412,8 +411,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'user_id' => 'bob'
 				),
 				array(
-					'total' => 4.71,
-					'shipping' => 3.71,
+					'total' => 4.05,
+					'shipping' => 3.05,
 					'insurance_rate' => 1.0,
 					'insurance_cover' => 100.0,
 					'surcharge' => '0.00000'
@@ -427,8 +426,8 @@ class ShopShippingMethodTest extends CakeTestCase {
 					'user_id' => 'bob'
 				),
 				array(
-					'total' => 3.15,
-					'shipping' => 3.15,
+					'total' => 2.61,
+					'shipping' => 2.61,
 					'insurance_rate' => 0.0,
 					'insurance_cover' => 0.0,
 					'surcharge' => '0.00000'
@@ -452,8 +451,10 @@ class ShopShippingMethodTest extends CakeTestCase {
 		);
 	}
 
+/**
+ * test find available
+ */
 	public function testFindAvailable() {
-		$this->skipIf(true);
 		$result = $this->{$this->modelClass}->find('available');
 		$expected = array(
 			'royal-mail-1st' => 'royal-mail-1st',
@@ -479,17 +480,20 @@ class ShopShippingMethodTest extends CakeTestCase {
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
 
-		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-1';
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-1st-rate-1';
 		$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_maximum', 30);
 
 		$expected = array(
-			'royal-mail-1st' => 'royal-mail-1st'
+			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$result = $this->{$this->modelClass}->find('available');
 		$this->assertEquals($expected, $result);
 
-		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-1';
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-1st-rate-1';
 		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_maximum', null));
+
+		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-1';
+		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', null));
 
 		$this->{$this->modelClass}->ShopShippingMethodValue->id = 'royal-mail-2nd-rate-2';
 		$this->assertTrue((bool)$this->{$this->modelClass}->ShopShippingMethodValue->saveField('total_minimum', null));

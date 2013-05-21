@@ -31,7 +31,7 @@ echo $this->Filter->alphabetFilter();
 			$this->Form->checkbox('all') => array(
 				'class' => 'first'
 			),
-			$this->Paginator->sort('name') => array(
+			$this->Paginator->sort('ShopProduct.name', __d('shop', 'Name')) => array(
 				'colspan' => 3
 			),
 			$this->Paginator->sort('ShopProductType.name', __d('shop', 'Type')) => array(
@@ -40,7 +40,10 @@ echo $this->Filter->alphabetFilter();
 			$this->Paginator->sort('ShopBrand.name', __d('shop', 'Brand')) => array(
 				'class' => 'larger'
 			),
-			$this->Paginator->sort('ShopPrice.selling', __d('shop', 'Price')) => array(
+			$this->Paginator->sort('shop_product_attribute_count', __d('shop', 'Attributes')) => array(
+				'class' => 'small'
+			),
+			$this->Paginator->sort('base_selling', __d('shop', 'Price')) => array(
 				'class' => 'medium'
 			),
 			__d('shop', 'Markup') => array(
@@ -97,9 +100,18 @@ echo $this->Filter->alphabetFilter();
 						));
 					?>&nbsp;
 				</td>
+				<td>
+					<?php 
+						echo $this->Html->link($this->Design->count($shopProduct['ShopProduct']['shop_product_attribute_count']), array(
+							'controller' => 'shop_attribute_groups',
+							'action' => 'product',
+							$shopProduct['ShopProduct']['id']
+						), array('escape' => false)); 
+					?>
+				</td>
 				<td><?php echo $this->Shop->adminPrice($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
 				<td><?php echo $this->Shop->adminMarkup($shopProduct['ShopProductVariantMaster']['ShopProductVariantPrice']); ?>&nbsp;</td>
-				<td><?php echo $this->Shop->stockValue($shopProduct['ShopProductVariant']); ?>&nbsp;</td>
+				<td><?php echo $this->Shop->stockValue($shopProduct['ShopStockValue']); ?>&nbsp;</td>
 				<td><?php echo $this->Infinitas->date($shopProduct['ShopProduct']); ?></td>
 				<td><?php echo $this->Shop->adminStatus($shopProduct); ?>&nbsp;</td>
 			</tr>

@@ -146,9 +146,9 @@ class ShopHelperTest extends CakeTestCase {
 	public function adminCurrencyDataProvider() {
 		return array(
 			'penny' => array(.1, '10p'),
-			'pound' => array(1, '&#163;1.00'),
-			'high' => array(1234.56, '&#163;1,234.56'),
-			'neg' => array(-123.999, '(&#163;124.00)')
+			'pound' => array(1, '£1.00'),
+			'high' => array(1234.56, '£1,234.56'),
+			'neg' => array(-123.999, '(£124.00)')
 		);
 	}
 
@@ -171,29 +171,8 @@ class ShopHelperTest extends CakeTestCase {
 		return array(
 			'normal' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 10
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 5
-							)
-						)
-					),
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 5
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 2
-							),
-							array(
-								'stock' => 3
-							)
-						)
-					)
+					'stock' => 10,
+					'selling' => 75
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -201,23 +180,15 @@ class ShopHelperTest extends CakeTestCase {
 							10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;75.00',
+							'£75.00',
 						'/span',
 					'/div'
 				)
 			),
 			'negative-stock' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => 10
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => -10
-							)
-						)
-					)
+					'stock' => -10,
+					'selling' => 0
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -225,23 +196,15 @@ class ShopHelperTest extends CakeTestCase {
 							-10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;0.00',
+							'£0.00',
 						'/span',
 					'/div'
 				)
 			),
 			'null-price' => array(
 				array(
-					array(
-						'ShopProductVariantPrice' => array(
-							'selling' => null
-						),
-						'ShopBranchStock' => array(
-							array(
-								'stock' => 10
-							)
-						)
-					)
+					'stock' => 10,
+					'selling' => null
 				),
 				array(
 					array('div' => array('class' => 'stock-value')),
@@ -249,7 +212,7 @@ class ShopHelperTest extends CakeTestCase {
 							10,
 						'/span',
 						array('span' => array('class' => 'value')),
-							'&#163;0.00',
+							'£0.00',
 						'/span',
 					'/div'
 				)

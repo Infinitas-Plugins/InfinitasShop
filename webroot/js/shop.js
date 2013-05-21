@@ -75,6 +75,40 @@ $(document).ready(function() {
 	});
 
 	productFilter();
+
+	$('a.attribute-group').on('click', function() {
+		var $this = $(this),
+			type = $this.data('attribute-group'),
+			active = 0,
+			total = 0,
+			items = $('li.' + type, $this.parent().parent());
+
+		$.each(items, function(k, v) {
+			total += 1;
+			if ($(v).is(':visible')) {
+				active += 1;
+			}
+		});
+		if (active > 0 && active != total) {
+			items.show();
+		} else {
+			items.toggle();
+		}
+
+		return false;
+	});
+
+	$('ul.small a').on('mouseover', function() {
+		var $this = $(this),
+			href = $this.attr('href');
+		$('img', $this).css('height', $('img.main').clientHeight);
+		
+		$('img.main').attr('src', href);
+	});
+
+	$('ul.small a').on('click', function() {
+		return false;
+	});
 });
 
 function productFilter() {

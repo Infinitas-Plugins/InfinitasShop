@@ -9,13 +9,6 @@
 class ShopSupplier extends ShopAppModel {
 
 /**
- * Validation rules
- *
- * @var array
- */
-	public $validate = array();
-
-/**
  * behaviors that are attached
  *
  * @var array
@@ -84,6 +77,11 @@ class ShopSupplier extends ShopAppModel {
 
 	public function __construct($id = false, $table = null, $ds = null) {
 		parent::__construct($id, $table, $ds);
+
+		$this->order = array(
+			$this->alias . '.active' => 'desc',
+			$this->alias . '.' . $this->displayField => 'asc'
+		);
 
 		$this->validate = array(
 			'name' => array(

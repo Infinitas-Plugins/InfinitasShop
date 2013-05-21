@@ -18,17 +18,20 @@
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
+$currentRoute = InfinitasRouter::currentRoute();
+$url = array();
 if (!empty($currentRoute->options['pass'])) {
-	$url = array();
 	$currentRoute = Configure::read('CORE.current_route');
+
 	foreach ($currentRoute->options['pass'] as $pass) {
 		if (!empty($this->request->{$pass})) {
 			$url[$pass] = $this->request->{$pass};
 		}
 	}
-	if (!empty($url)) {
-		$this->Paginator->options(array('url' => $url));
-	}
+}
+$url = array_merge($url, $this->request->params['named']);
+if (!empty($url)) {
+	$this->Paginator->options(array('url' => $url));
 }
 
 $hasPrev = $this->Paginator->hasPrev();

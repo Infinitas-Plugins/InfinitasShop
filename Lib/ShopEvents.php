@@ -60,24 +60,6 @@ class ShopEvents extends AppEvents {
 	}
 
 /**
- * get the plugins configuration
- *
- * @return array
- */
-	public function onSetupCache(Event $Event) {
-		return array(
-			'name' => 'shop',
-			'config' => array(
-				'duration' => 3600,
-				'probability' => 100,
-				'prefix' => 'shop.',
-				'lock' => false,
-				'serialize' => true
-			)
-		);
-	}
-
-/**
  * figure out a url slug
  *
  * @param Event $Event the Event

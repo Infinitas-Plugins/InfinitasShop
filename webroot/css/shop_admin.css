@@ -74,3 +74,33 @@ div.markup span.percentage,
 div.stock-value span.value{
 	display: none;
 }
+
+
+div.attributes li.active img {
+	border: 1px solid red;
+}
+div.attributes li.active img:hover {
+	border: 1px solid #333;
+}
+div.attributes li img:hover {
+	border: 1px solid orange;
+}
+
+li.attribute {
+	position: relative;
+}
+
+li.attribute .badge {
+	position: absolute;
+	top: 2px;
+	right: 2px;
+}
+
+li.attribute .name {
+	font-size: 11px;
+}
+
+h4 small.count {
+	padding-right: 10px;
+	float: right;
+}

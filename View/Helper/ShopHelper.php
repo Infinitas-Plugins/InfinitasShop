@@ -139,19 +139,11 @@ class ShopHelper extends AppHelper {
  *
  * @return string
  */
-	public function stockValue(array $variants) {
-		$stock = $value = 0;
-		foreach ($variants as $variant) {
-			$stock += $count = array_sum(Hash::extract($variant['ShopBranchStock'], '{n}.stock'));
-			$value += ($variant['ShopProductVariantPrice']['selling'] * $count);
-		}
-		if ($value < 0) {
-			$value = 0;
-		}
+	public function stockValue(array $value) {
 		return $this->Html->tag('div',
 			implode('', array(
-				$this->Html->tag('span', $stock, array('class' => 'quantity')),
-				$this->Html->tag('span', self::adminCurrency($value), array('class' => 'value'))
+				$this->Html->tag('span', $value['stock'], array('class' => 'quantity')),
+				$this->Html->tag('span', self::adminCurrency($value['selling']), array('class' => 'value'))
 			)),
 			array('class' => 'stock-value')
 		);
@@ -324,7 +316,12 @@ class ShopHelper extends AppHelper {
 		foreach ($shopCategories as &$category) {
 			$name = $category['ShopCategory']['name'];
 			if (Configure::read('Shop.display_category_count') && array_key_exists('shop_product_count', $category['ShopCategory'])) {
-				$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
+				if (!empty($category['children'])) {
+					$category['ShopCategory']['shop_product_count'] += array_sum(Hash::extract($category['children'], '{n}.ShopCategory.shop_product_count'));
+				}
+				if ($category['ShopCategory']['shop_product_count']) {
+					$name = sprintf('%s (%d)', $category['ShopCategory']['name'], $category['ShopCategory']['shop_product_count']);
+				}
 			}
 
 			$children = null;
@@ -370,13 +367,13 @@ class ShopHelper extends AppHelper {
  * @return type
  */
 	public function infoLinks($title, array $links) {
-		foreach ($links as $title => &$link) {
-			$link = $this->Html->link($title, $link);
+		foreach ($links as $linkTitle => &$link) {
+			$link = $this->Html->link($linkTitle, $link);
 		}
 
 		return $this->Html->tag('div', implode('', array(
 			$this->Html->tag('h4', $title),
-			$this->Design->arrayToList($links, array('ul' => 'unstyled'))
+			$this->Design->arrayToList($links)
 		)), array('class' => 'span3'));
 	}
 

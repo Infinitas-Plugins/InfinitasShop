@@ -74,9 +74,11 @@ class ShopProductsController extends ShopAppController {
 		if (empty($this->request->category)) {
 			$this->request->category = null;
 		}
+
 		$this->Paginator->settings = array(
 			'paginated',
-			'category' => $this->request->category
+			'category' => $this->request->category,
+			'named' => $this->request->params['named']
 		);
 
 		$this->_productList();
@@ -161,7 +163,6 @@ class ShopProductsController extends ShopAppController {
  */
 	public function admin_index() {
 		$this->Paginator->settings = array('adminPaginated');
-
 		$shopProducts = $this->Paginator->paginate(null, $this->Filter->filter);
 
 		$filterOptions = $this->Filter->filterOptions;
@@ -181,7 +182,10 @@ class ShopProductsController extends ShopAppController {
 			$this->notice('not_found');
 		}
 
-		$shopProduct = $this->{$this->modelClass}->find('product', $id);
+		$shopProduct = $this->{$this->modelClass}->find('product', array(
+			'admin' => true,
+			$id
+		));
 		$this->set(compact('shopProduct'));
 	}
 

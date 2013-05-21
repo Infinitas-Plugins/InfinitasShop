@@ -32,6 +32,19 @@ class ShopComponent extends InfinitasComponent {
 		if (isset($Controller->request->params['admin']) && $Controller->request->params['admin']) {
 			return parent::beforeRender($Controller);
 		}
+		if ($Controller->request->params['controller'] == 'shop_products') {
+			$shopConnectedAttributes = ClassRegistry::init('Shop.ShopProduct')->find('availableAttributes', array(
+				'category' => !empty($Controller->request->params['category']) ? $Controller->request->params['category'] : null,
+				'product' => !empty($Controller->request->params['slug']) ? $Controller->request->params['slug'] : null,
+				'named' => $Controller->request->params['named']
+			));
+			$shopConnectedColours = ClassRegistry::init('Shop.ShopProduct')->find('availableColours', array(
+				'category' => !empty($Controller->request->params['category']) ? $Controller->request->params['category'] : null,
+				'product' => !empty($Controller->request->params['slug']) ? $Controller->request->params['slug'] : null,
+				'named' => $Controller->request->params['named']
+			));
+			$shopConnectedAttributes = array_merge($shopConnectedAttributes, $shopConnectedColours);
+		}
 
 		$shopCurrencies = ClassRegistry::init('Shop.ShopCurrency')->find('switch');
 		$shopCategoriesNav = ClassRegistry::init('Shop.ShopCategory')->find('threaded', array(
@@ -50,7 +63,7 @@ class ShopComponent extends InfinitasComponent {
 		));
 		$shopBrandsList = ClassRegistry::init('Shop.ShopBrand')->find('brands');
 		$shopListOverview = ClassRegistry::init('Shop.ShopList')->find('overview');
-		$Controller->set(compact('shopCurrencies', 'shopCategoriesNav', 'shopBrandsList', 'shopListOverview'));
+		$Controller->set(compact('shopConnectedAttributes', 'shopCurrencies', 'shopCategoriesNav', 'shopBrandsList', 'shopListOverview'));
 
 		$this->_moduleData($Controller);
 
@@ -112,9 +125,7 @@ class ShopComponent extends InfinitasComponent {
 		if ($Controller->request->category) {
 			$category = $Controller->request->category;
 		}
-		$shopFilterOptions = $ShopProduct->find('possibleOptions', array(
-			'category' => $category
-		));
+		//$shopFilterOptions = $ShopProduct->find('possibleOptions', array('category' => $category));
 
 		//$shopRelatedCategories = $ShopProduct->ShopCategoriesProduct->ShopCategory->find('all');
 

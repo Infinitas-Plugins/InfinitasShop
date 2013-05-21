@@ -359,6 +359,7 @@ class ShopOrderTest extends CakeTestCase {
 						'total_variants' => '1',
 						'price_max' => 0,
 						'price_min' => 0,
+						'shop_product_attribute_count' => '0',
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',
@@ -454,6 +455,7 @@ class ShopOrderTest extends CakeTestCase {
 						'total_variants' => '0',
 						'price_max' => 0,
 						'price_min' => 0,
+						'shop_product_attribute_count' => '0',
 					),
 					'ShopProductType' => array(
 						'id' => 'complex-options',
@@ -551,6 +553,7 @@ class ShopOrderTest extends CakeTestCase {
 						'total_variants' => '0',
 						'price_max' => 0,
 						'price_min' => 0,
+						'shop_product_attribute_count' => '0',
 					),
 					'ShopProductType' => array(
 						'id' => 'complex-options',
@@ -586,14 +589,14 @@ class ShopOrderTest extends CakeTestCase {
 						),
 						'ShopProductVariantSize' => array(
 							'id' => null,
-							'product_width' => null,
-							'product_height' => null,
-							'product_length' => null,
-							'shipping_width' => null,
-							'shipping_height' => null,
-							'shipping_length' => null,
-							'product_weight' => null,
-							'shipping_weight' => null,
+							'product_width' => 1.5,
+							'product_height' => 1.5,
+							'product_length' => 1.5,
+							'shipping_width' => 2.5,
+							'shipping_height' => 2.5,
+							'shipping_length' => 2.5,
+							'product_weight' => 50,
+							'shipping_weight' => 65,
 						),
 					),
 					'ShopOrderProduct' => array(
@@ -624,15 +627,15 @@ class ShopOrderTest extends CakeTestCase {
 						'model' => 'Shop.ShopOrderProduct',
 					),
 					'ShopOrderProductSize' => array(
-						'model' => null,
-						'product_width' => null,
-						'product_height' => null,
-						'product_length' => null,
-						'shipping_width' => null,
-						'shipping_height' => null,
-						'shipping_length' => null,
-						'product_weight' => null,
-						'shipping_weight' => null,
+						'model' => 'Shop.ShopOrderProduct',
+						'product_width' => 1.5,
+						'product_height' => 1.5,
+						'product_length' => 1.5,
+						'shipping_width' => 2.5,
+						'shipping_height' => 2.5,
+						'shipping_length' => 2.5,
+						'product_weight' => 50,
+						'shipping_weight' => 65,
 					)
 				)
 			)
@@ -653,7 +656,9 @@ class ShopOrderTest extends CakeTestCase {
 				'handling' => '10.000000',
 				'previous_orders_count' => '0',
 				'previous_orders_value' => null,
-				'shop_order_status_id' => 'pending'
+				'shop_order_status_id' => 'pending',
+				'created' => '2013-01-08 15:22:12',
+				'modified' => '2013-01-08 15:22:12'
 			),
 			'User' => array(
 				'id' => 'bob',
@@ -751,6 +756,7 @@ class ShopOrderTest extends CakeTestCase {
 						'total_variants' => '0',
 						'price_max' => 0,
 						'price_min' => 0,
+						'shop_product_attribute_count' => '0',
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',
@@ -854,6 +860,7 @@ class ShopOrderTest extends CakeTestCase {
 						'total_variants' => '1',
 						'price_max' => 0,
 						'price_min' => 0,
+						'shop_product_attribute_count' => '0',
 					),
 					'ShopProductType' => array(
 						'id' => 'shirts',

@@ -33,6 +33,7 @@ class ShopProductFixture extends CakeTestFixture {
 		'quantity_min' => array('type' => 'float', 'null' => false, 'default' => '1.0000'),
 		'quantity_max' => array('type' => 'float', 'null' => true, 'default' => null),
 		'available' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'shop_product_attribute_count' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 5),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
@@ -69,6 +70,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 2,
 			'quantity_max' => 10,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-05 01:14:47',
 			'modified' => '2012-10-05 01:14:47'
 		),
@@ -92,6 +94,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-04 01:14:47',
 			'modified' => '2012-10-04 01:14:47'
 		),
@@ -115,6 +118,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-04 01:12:47',
 			'modified' => '2012-10-04 01:12:47'
 		),
@@ -138,6 +142,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-03 01:14:47',
 			'modified' => '2012-10-03 01:14:47'
 		),
@@ -161,6 +166,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-03 01:13:47',
 			'modified' => '2012-10-03 01:13:47'
 		),
@@ -184,6 +190,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-02 01:14:47',
 			'modified' => '2012-10-15 01:14:47'
 		),
@@ -207,6 +214,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-02 01:13:47',
 			'modified' => '2012-10-16 01:13:47'
 		),
@@ -230,6 +238,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-01 01:14:47',
 			'modified' => '2012-10-01 01:14:47'
 		),
@@ -253,6 +262,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-01 01:13:47',
 			'modified' => '2012-10-01 01:13:47'
 		),
@@ -276,6 +286,7 @@ class ShopProductFixture extends CakeTestFixture {
 			'quantity_min' => 1,
 			'quantity_max' => null,
 			'available' => '2012-10-05 01:14:47',
+			'shop_product_attribute_count' => 0,
 			'created' => '2012-10-01 01:12:47',
 			'modified' => '2012-10-15 01:12:47'
 		),

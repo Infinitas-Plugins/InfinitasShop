@@ -32,3 +32,18 @@ $('div.stock-value, div.price, div.markup').hover(function() {
 $('.imageSelector').imageSelector({
 
 });
+
+$('.attributes a.attribute').on('click', function() {
+	var $this = $(this),
+		li = $this.parent(),
+		checkbox = $($('div.attribute input[type="checkbox"]', li)[0]);
+
+	checkbox.attr('checked', !checkbox.attr('checked'));
+
+	li.removeClass('active');
+	if (checkbox.attr('checked')) {
+		li.addClass('active');
+	}
+	
+	return false;
+});
