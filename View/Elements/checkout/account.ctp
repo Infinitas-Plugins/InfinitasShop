@@ -1,43 +1,26 @@
 <?php
 if (!AuthComponent::user('id')) {
 	echo $this->Html->tag('div', implode('', array(
+		$this->Html->link(__d('shop', 'Guest Checkout'), $this->here . '#', array(
+			'class' => 'checkout-type',
+			'data-type' => 'guest'
+		), array('class' => 'btn btn-small')),
+		$this->Html->link(__d('shop', 'Registered Checkout'), $this->here . '#', array(
+			'class' => 'checkout-type',
+			'data-type' => 'registered'
+		), array('class' => 'btn btn-small')),
+	)), array('class' => 'btn-group'));
+
+	echo $this->Html->tag('div', implode('', array(
 		$this->Html->tag('div', $this->element('Users.register'), array(
 			'class' => 'span4 register'
 		)),
 		$this->Html->tag('div', $this->element('Users.login'), array(
 			'class' => 'span4 login'
 		))
-	)), array('class' => 'span8'));
-	return;
-}
+	)), array('class' => 'checkout-type row', 'id' => 'checkout-registered'));
 
-echo $this->Html->tag('div', implode('', array(
-	$this->Form->input('Ignore.address_option', array(
-		'type' => 'select',
-		'empty' => __d('shop', 'Please enter your details'),
-		'label' => false,
-		'id' => 'AddressOption',
-		'options' => array(
-			'account' => __d('shop', 'Use my account details'),
-			'gateway' => __d('shop', 'Use the details from my payment provider'),
-			'guest' => __d('shop', 'I will check out as a guest')
-		)
-	)),
-	$this->Html->tag('div', implode('', array(
-		$this->Form->input('address', array(
-			'type' => 'select',
-			'label' => false,
-			'empyt' => __d('shop', 'Select a past address'),
-		)),
-		$this->Html->link(__d('shop', 'Add new address'), array(
-			'controller' => 'shop_address',
-			'action' => 'add'
-		))
-	)), array('class' => 'address-details', 'id' => 'details-account')),
-	$this->Html->tag('div', implode('', array(
-
-	)), array('class' => 'address-details', 'id' => 'details-gateway')),
-	$this->Html->tag('div', implode('', array(
+	echo $this->Html->tag('div', implode('', array(
 		$this->Html->tag('div', implode('', array(
 			$this->Html->tag('h4', __d('shop', 'Shipping Information')),
 			$this->Form->input('ShopShippingAddress.full_name'),
@@ -73,5 +56,34 @@ echo $this->Html->tag('div', implode('', array(
 				'class' => 'input checkbox span8'
 			)
 		)),
-	)), array('class' => 'address-details row', 'id' => 'details-guest')),
+	)), array('class' => 'checkout-type row', 'id' => 'checkout-guest'));
+	return;
+}
+
+echo $this->Html->tag('div', implode('', array(
+	$this->Form->input('Ignore.address_option', array(
+		'type' => 'select',
+		'empty' => __d('shop', 'Please enter your details'),
+		'label' => false,
+		'id' => 'AddressOption',
+		'options' => array(
+			'account' => __d('shop', 'Use my account details'),
+			'gateway' => __d('shop', 'Use the details from my payment provider'),
+			'guest' => __d('shop', 'I will check out as a guest')
+		)
+	)),
+	$this->Html->tag('div', implode('', array(
+		$this->Form->input('address', array(
+			'type' => 'select',
+			'label' => false,
+			'empyt' => __d('shop', 'Select a past address'),
+		)),
+		$this->Html->link(__d('shop', 'Add new address'), array(
+			'controller' => 'shop_address',
+			'action' => 'add'
+		))
+	)), array('class' => 'address-details', 'id' => 'details-account')),
+	$this->Html->tag('div', implode('', array(
+
+	)), array('class' => 'address-details', 'id' => 'details-gateway')),
 )), array('class' => 'span8'));
