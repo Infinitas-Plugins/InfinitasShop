@@ -38,12 +38,16 @@ echo $this->Form->create();
 		$this->Html->tag('dl', implode('', array(
 			$this->Html->tag('dt', __d('shop', 'Status')),
 			$this->Html->tag('dd', $this->Design->label($shopOrder['ShopOrderStatus']['name'])),
+			$this->Html->tag('dt', __d('shop', 'Order date')),
+			$this->Html->tag('dd', CakeTime::timeAgoInWords($shopOrder['ShopOrder']['created'])),
 			$this->Html->tag('dt', __d('shop', 'Customer')),
 			$this->Html->tag('dd', $shopOrder['User']['full_name']),
 			$this->Html->tag('dt', __d('users', 'Email')),
 			$this->Html->tag('dd', $this->Text->autoLinkEmails($shopOrder['User']['email'])),
 			$this->Html->tag('dt', __d('shop', 'Value')),
 			$this->Html->tag('dd', $this->Shop->adminCurrency($shopOrder['ShopOrder']['total'])),
+			$this->Html->tag('dt', __d('shop', 'Assigned To')),
+			$this->Html->tag('dd', $this->Text->autoLinkEmails($shopOrder['ShopAssignedUser']['username'] ?: '-')),
 		)), array('class' => 'dl-horizontal')),
 	));
 

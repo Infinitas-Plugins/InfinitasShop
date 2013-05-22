@@ -5,13 +5,13 @@ foreach ($shopOrders as &$shopOrder) {
 		$shopOrder['ShopOrder']['invoice_number'],
 		$this->here . '#' . $shopOrder['ShopOrder']['invoice_number']
 	));
-	$shopOrder = $this->element('Shop.order/invoice', array(
+	$shopOrder = $this->element('Shop.order/packing_slip', array(
 		'shopOrder' => $shopOrder
 	));
 }
 
 $this->set('content_heading', $this->Html->tag('div', implode('', array(
-	$this->Html->tag('h3', __d('shop', 'Invoices')),
+	$this->Html->tag('h3', __d('shop', 'Pakcing slips')),
 	implode('', $content_heading)
 ))));
 

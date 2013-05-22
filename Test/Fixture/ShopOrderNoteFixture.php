@@ -19,6 +19,7 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 		'shop_order_status_id' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'notes' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'user_notified' => array('type' => 'boolean', 'null' => true, 'default' => null),
+		'internal' => array('type' => 'boolean', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
@@ -35,6 +36,7 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 			'shop_order_status_id' => 'pending',
 			'notes' => 'Order created',
 			'user_notified' => 1,
+			'internal' => 0,
 			'created' => '2012-10-14 11:25:27'
 		),
 		array(
@@ -43,6 +45,7 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 			'shop_order_status_id' => 'processing',
 			'notes' => 'Fetching products',
 			'user_notified' => 0,
+			'internal' => 0,
 			'created' => '2012-10-14 11:25:27'
 		),
 		array(
@@ -51,6 +54,7 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 			'shop_order_status_id' => 'shipped',
 			'notes' => 'Shipped',
 			'user_notified' => 1,
+			'internal' => 0,
 			'created' => '2012-10-14 11:25:27'
 		),
 		array(
@@ -59,6 +63,16 @@ class ShopOrderNoteFixture extends CakeTestFixture {
 			'shop_order_status_id' => 'pending',
 			'notes' => 'Order created',
 			'user_notified' => 1,
+			'internal' => 0,
+			'created' => '2012-10-14 11:25:27'
+		),
+		array(
+			'id' => 'order-2-note-b',
+			'shop_order_id' => 'order-2',
+			'shop_order_status_id' => 'pending',
+			'notes' => 'internal',
+			'user_notified' => 0,
+			'internal' => 1,
 			'created' => '2012-10-14 11:25:27'
 		),
 	);

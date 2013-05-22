@@ -9,7 +9,7 @@
  * @license	http://infinitas-cms.org/mit-license The MIT License
  * @since 0.9b1
  *
- * @author dogmatic69
+ * @author Carl Sutton <dogmatic69@infinitas-cms.org>
  */
 
 class ShopAddress extends ShopAppModel {
@@ -54,4 +54,5 @@ class ShopAddress extends ShopAppModel {
 			)
 		);
 	}
+
 }

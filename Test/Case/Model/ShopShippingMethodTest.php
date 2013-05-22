@@ -305,6 +305,19 @@ class ShopShippingMethodTest extends CakeTestCase {
 	}
 
 /**
+ * Test exception shipping
+ *
+ * @expectedException CakeException
+ */
+	public function testProductException() {
+		$this->{$this->modelClass}->find('product', array(
+			'shop_shipping_method_id' => 123,
+			'shop_product_variant_id' => 321,
+			'shop_product_id' => 213
+		));
+	}
+
+/**
  * test product
  *
  * @param  [type] $data     [description]
@@ -503,6 +516,49 @@ class ShopShippingMethodTest extends CakeTestCase {
 			'royal-mail-2nd' => 'royal-mail-2nd'
 		);
 		$result = $this->{$this->modelClass}->find('available');
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test exception shipping
+ *
+ * @expectedException CakeException
+ */
+	public function testHeavyProduct() {
+		$result = $this->{$this->modelClass}->find('product', array(
+			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
+			'shop_shipping_method_id' => 'royal-mail-1st'
+		));
+		$this->assertTrue((bool)$result);
+
+		ClassRegistry::init('Shop.ShopSize')->id = 'product-active';
+		ClassRegistry::init('Shop.ShopSize')->saveField('shipping_weight', 999999999);
+
+		$this->{$this->modelClass}->find('product', array(
+			'shop_product_id' => 'active',
+			'shop_product_variant_id' => 'variant-active-1',
+			'shop_shipping_method_id' => 'royal-mail-1st'
+		));
+	}
+
+	public function testFindInfo() {
+		$expected = array(
+			array(
+				'ShopShippingMethod' => array (
+					'id' => 'royal-mail-1st',
+					'name' => 'royal-mail-1st',
+					'shipping_time_min' => '48',
+					'shipping_time_max' => '96',
+					'insurance_cover_max' => 500,
+				),
+				'ShopSupplier' => array (
+					'id' => 'mail-supplier',
+					'name' => 'mail-supplier',
+				)
+			)
+		);
+		$result = $this->{$this->modelClass}->find('info');
 		$this->assertEquals($expected, $result);
 	}
 }

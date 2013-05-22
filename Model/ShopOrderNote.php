@@ -19,6 +19,11 @@
 
 class ShopOrderNote extends ShopAppModel {
 
+/**
+ * custom find methods
+ *
+ * @var array
+ */
 	public $findMethods = array(
 		'notes' => true
 	);
@@ -59,11 +64,45 @@ class ShopOrderNote extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
+			'shop_order_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order specified'),
+					'required' => true
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid order specified'),
+				)
+			),
+			'shop_order_status_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order status specified'),
+					'required' => true
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid order status specified'),
+				)
+			),
+			'notes' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order status specified'),
+				)
+			)
 		);
 	}
 
 /**
  * Find notes related to the order specified
+ * 
+ * Notes displayed to the user will only include those set with `user_notified` as true
+ * and `internal` as false.
+ *
+ * Setting a note to internal allows site admins to create notes on orders that are only 
+ * visable to administrators of the site. Users will not see these notes.
  *
  * @param string $state
  * @param array $query
@@ -94,5 +133,31 @@ class ShopOrderNote extends ShopAppModel {
 		}
 
 		return Hash::extract($results, '{n}.' . $this->alias);
+	}
+
+/**
+ * Add notes to an order
+ *
+ * If a note is marked as user_notified it can not be internal so the internal flag will be set to false
+ *
+ * @param arra $note the details to be saved
+ *
+ * @return boolean
+ */
+	public function saveNote(array $note) {
+		$note = array_merge(array(
+			'shop_order_id' => null,
+			'shop_order_status_id' => null,
+			'notes' => null,
+			'user_notified' => false,
+			'internal' => true,
+		), $note);
+
+		if ($note['user_notified']) {
+			$note['internal'] = false;
+		}
+
+		$this->create();
+		return (bool)$this->save($note);
 	}
 }

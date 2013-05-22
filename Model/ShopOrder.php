@@ -13,6 +13,7 @@ App::uses('ShopAppModel', 'Shop.Model');
  * @property ShopOrderNote $ShopOrderNote
  * @property ShopOrderProduct $ShopOrderProduct
  * @property ShopPaymentResponse $ShopPaymentResponse
+ * @property User $ShopAssignedUser
  */
 
 class ShopOrder extends ShopAppModel {
@@ -32,6 +33,13 @@ class ShopOrder extends ShopAppModel {
 		'User' => array(
 			'className' => 'Users.User',
 			'foreignKey' => 'user_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
+		),
+		'ShopAssignedUser' => array(
+			'className' => 'Users.User',
+			'foreignKey' => 'assigned_user_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
@@ -168,6 +176,9 @@ class ShopOrder extends ShopAppModel {
 				$this->alias . '.created',
 				$this->alias . '.modified',
 
+				$this->ShopAssignedUser->alias . '.' . $this->ShopAssignedUser->primaryKey,
+				$this->ShopAssignedUser->alias . '.username',
+
 				$this->User->alias . '.' . $this->User->primaryKey,
 				$this->User->alias . '.username',
 				$this->User->alias . '.full_name',
@@ -216,6 +227,7 @@ class ShopOrder extends ShopAppModel {
 				'ShopUserOrder.created < ShopOrder.created'
 			);
 			$query['joins'][] = $join;
+			$query['joins'][] = $this->autoJoinModel($this->ShopAssignedUser);
 			$query['joins'][] = $this->autoJoinModel($this->User);
 			$query['joins'][] = $this->autoJoinModel($this->ShopBillingAddress);
 			$query['joins'][] = $this->autoJoinModel($this->ShopShippingAddress);
@@ -412,6 +424,37 @@ class ShopOrder extends ShopAppModel {
 		}
 
 		return $results[0][$this->alias];
+	}
+
+/**
+ * update the status of an order
+ *
+ * If no status is specified the update wont run, if the status id is not valid it will throw an exception
+ *
+ * @param string $id the order to update
+ * @param string $statusId the new status
+ *
+ * @return boolean
+ *
+ * @throws InvalidArgumentException
+ */
+	public function updateStatus($id, $statusId) {
+		if (!$statusId) {
+			return;
+		}
+
+		if (!$this->ShopOrderStatus->exists($statusId)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid status selected'));
+		}
+
+		if (!$this->exists($id)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid order specified'));
+		}
+
+		return $this->updateAll(
+			array($this->alias . '.shop_order_status_id' => sprintf("'%s'", $statusId)),
+			array($this->alias . '.' . $this->primaryKey => $id)
+		);
 	}
 
 /**

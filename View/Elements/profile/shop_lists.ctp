@@ -70,5 +70,10 @@ echo $this->Form->create('ShopList', array(
 		'class' => 'pull-right'
 	));
 echo $this->Form->end();
+echo $this->Html->link(__d('shop', 'All lists'), array(
+	'plugin' => 'shop',
+	'controller' => 'shop_lists',
+	'action' => 'index'
+), array('class' => 'btn pull-right'));
 
 

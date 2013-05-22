@@ -58,4 +58,35 @@ class ShopOrderStatusTest extends CakeTestCase {
 		$this->assertEquals($expected, $results);
 	}
 
+/**
+ * Test find statuses
+ *
+ * @return void
+ */
+	public function testFindStatuses() {
+		$expected = array (
+			'Canceled ' => array (
+				'canceled' => 'canceled',
+			),
+			'Pending ' => array (
+				'pending' => 'pending',
+			),
+			'Processing ' => array (
+				'processing' => 'processing',
+			),
+			'Processed ' => array (
+				'processed' => 'processed',
+				'shipped' => 'shipped',
+			),
+			'Completed ' => array (
+				'completed' => 'completed',
+			),
+			'Reversed ' => array (
+				'reversed' => 'reversed',
+			),
+		);
+		$result = $this->{$this->modelClass}->find('statuses');
+		$this->assertEquals($expected, $result);
+	}
+
 }

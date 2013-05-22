@@ -32,6 +32,9 @@ class ShopOrdersController extends ShopAppController {
 				'ShopShippingMethod',
 				'ShopOrderStatus',
 				'InfinitasPaymentLog',
+			),
+			'conditions' => array(
+				$this->modelClass . '.user_id' => $this->{$this->modelClass}->currentUserId()
 			)
 		);
 
@@ -46,16 +49,13 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
+ * View the oredr invoice
  *
- * Show detailed information on a single ShopOrder
- *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
  */
-	public function view($id = null) {
+	public function invoice($id = null) {
 		try {
 			$this->set('shopOrder', $this->ShopOrder->find('details', $id));
 		} catch (Exception $e) {
@@ -64,11 +64,36 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief the index method
+ * reorder the selected invoice
  *
+ * @param string $id the invoice to reorder
+ *
+ * @return void
+ */
+	public function reorder($id = null) {
+		try {
+			$listId = $this->ShopOrder->reorder($id);
+			if ($listId) {
+				$this->notice(__d('shop', 'Products have been added to your cart'), array(
+					'redirect' => array(
+						'plugin' => 'shop',
+						'controller' => 'shop_lists',
+						'action' => 'change',
+						$listId
+					)
+				));
+			}
+			$this->notice(__d('shop', 'Unable to reorder selected invoice'), array(
+				'level' => 'warning',
+				'redirect' => true
+			));
+		} catch (Exception $e) {
+			$this->notice($e);
+		}
+	}
+
+/**
  * Show a paginated list of ShopOrder records.
- *
- * @todo update the documentation
  *
  * @return void
  */
@@ -76,6 +101,7 @@ class ShopOrdersController extends ShopAppController {
 		$this->Paginator->settings = array(
 			'contain' => array(
 				'User',
+				'ShopAssignedUser',
 				'ShopBillingAddress',
 				'ShopShippingAddress',
 				'ShopPaymentMethod',
@@ -96,16 +122,31 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief view method for a single row
- *
  * Show detailed information on a single ShopOrder
  *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to find
  *
  * @return void
  */
 	public function admin_view($id = null) {
+		if ($this->request->data) {
+			$this->{$this->modelClass}->updateStatus($id, $this->request->data['ShopOrderNote']['shop_order_status_id']);
+			$saved = $this->{$this->modelClass}->ShopOrderNote->saveNote(array(
+				'shop_order_id' => $this->request->data['ShopOrderNote']['shop_order_id'],
+				'shop_order_status_id' => $this->request->data['ShopOrderNote']['shop_order_status_id'],
+				'notes' => $this->request->data['ShopOrderNote']['notes'],
+				'user_notified' => $this->request->data['ShopOrderNote']['user_notified'],
+				'internal' => $this->request->data['ShopOrderNote']['internal'],
+			));
+			if ($saved) {
+				$this->notice(__d('shop', 'Order notes have been saved'), array(
+					'redirect' => true,
+				));
+			}
+			$this->notice(__d('shop', 'There was a problem saving the order notes'), array(
+				'level' => 'warning'
+			));
+		}
 		try {
 			$this->set('shopOrder', $this->ShopOrder->find('details', array(
 				$id,
@@ -119,11 +160,7 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief admin create action
- *
  * Adding new ShopOrder records.
- *
- * @todo update the documentation
  *
  * @return void
  */
@@ -141,11 +178,8 @@ class ShopOrdersController extends ShopAppController {
 	}
 
 /**
- * @brief admin edit action
- *
  * Edit old ShopOrder records.
  *
- * @todo update the documentation
  * @param mixed $id int or string uuid or the row to edit
  *
  * @return void
@@ -166,10 +200,26 @@ class ShopOrdersController extends ShopAppController {
 	public function __massActionInvoice(array $ids) {
 		$shopOrders = array();
 		foreach ($ids as $id) {
-			$shopOrders[] = $this->{$this->modelClass}->find('details', $id);
+			$shopOrders[] = $this->{$this->modelClass}->find('details', array(
+				$id,
+				'admin' => $this->request->params['admin']
+			));
 		}
 
 		$this->set('shopOrders', $shopOrders);
 		$this->render('admin_invoice', 'Shop.invoice');
+	}
+
+	public function __massActionPacking_slip(array $ids) {
+		$shopOrders = array();
+		foreach ($ids as $id) {
+			$shopOrders[] = $this->{$this->modelClass}->find('details', array(
+				$id,
+				'admin' => $this->request->params['admin']
+			));
+		}
+
+		$this->set('shopOrders', $shopOrders);
+		$this->render('admin_packing_slip', 'Shop.invoice');
 	}
 }
