@@ -79,7 +79,7 @@ others that purchsed this also viewed ...
 others that viewed this also viewed ...
 others that viewed this purchesed ...
 
-What others are vieing right now (eg: order by views group by product_id, not ordered by count(views))
+What others are viewing right now (eg: order by views group by product_id, not ordered by count(views))
 
 watch products - email users when changes occur
 	- add checkbox in backend on product for to send mail on save
@@ -146,6 +146,24 @@ cant edit address while order is in progress
 leave address name empty to use User full_name
 
 ### orders
+
+### Print
+
+Some print related things are required such as invoices and order notes.
+
+Invoice: 
+	Html / PDF / Print
+	Allow custom template (for sticky labels etc)
+	Store / customer versions (eg: store does not use stick labels)
+Purchase order: 
+	Html / PDF / Print
+	Same as invoice, different content
+Stamps:
+	
+Customs:
+	[UK](http://www.royalmail.com/business/help-and-support/I-need-advice-about-customs-requirements): 
+		[CN22](http://www.royalmail.com/sites/default/files/cn22.pdf) - below £270 
+		[CN23](http://www.royalmail.com/sites/default/files/CN23.pdf) - above £27
 
 
 ### payments
