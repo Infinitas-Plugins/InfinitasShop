@@ -112,6 +112,12 @@ class ShopOrderTest extends CakeTestCase {
 		$results = $this->Model->find('details', $expected);
 		$this->assertEmpty($results);
 
+		$results = $this->Model->find('details', array(
+			$expected,
+			'admin' => true
+		));
+		$this->assertEquals($expected, $results[$this->Model->alias]['id']);
+
 		CakeSession::write('Auth.User.id', 'sally');
 		$results = $this->Model->find('details', $expected);
 		$this->assertEquals($expected, $results[$this->Model->alias]['id']);
@@ -345,6 +351,10 @@ class ShopOrderTest extends CakeTestCase {
 				'modified' => '2013-01-09 00:11:13'
 			),
 			'ShopOrderNote' => array(),
+			'ShopAssignedUser' => array(
+				'id' => null,
+				'username' => null
+			),
 			'ShopOrderProduct' => array(
 				array(
 					'ShopProduct' => array(
@@ -731,6 +741,7 @@ class ShopOrderTest extends CakeTestCase {
 					'shop_order_status_id' => 'pending',
 					'notes' => 'Order created',
 					'user_notified' => 1,
+					'internal' => 0,
 					'created' => '2012-10-14 11:25:27'
 				),
 				array(
@@ -739,8 +750,13 @@ class ShopOrderTest extends CakeTestCase {
 					'shop_order_status_id' => 'shipped',
 					'notes' => 'Shipped',
 					'user_notified' => 1,
+					'internal' => 0,
 					'created' => '2012-10-14 11:25:27'
 				)
+			),
+			'ShopAssignedUser' => array(
+				'id' => 'admin',
+				'username' => 'admin'
 			),
 			'ShopOrderProduct' => array(
 				array(
