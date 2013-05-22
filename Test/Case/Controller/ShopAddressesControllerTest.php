@@ -14,8 +14,8 @@ class ShopAddressesControllerTest extends ControllerTestCase {
  */
 	public $fixtures = array(
 		'plugin.shop.shop_address',
-		'plugin.shop.user',
-		'plugin.shop.group'
+		'plugin.shop.core_user',
+		'plugin.shop.core_group'
 	);
 
 /**

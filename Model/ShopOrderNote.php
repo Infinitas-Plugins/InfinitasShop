@@ -64,11 +64,45 @@ class ShopOrderNote extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
+			'shop_order_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order specified'),
+					'required' => true
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid order specified'),
+				)
+			),
+			'shop_order_status_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order status specified'),
+					'required' => true
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid order status specified'),
+				)
+			),
+			'notes' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No order status specified'),
+				)
+			)
 		);
 	}
 
 /**
  * Find notes related to the order specified
+ * 
+ * Notes displayed to the user will only include those set with `user_notified` as true
+ * and `internal` as false.
+ *
+ * Setting a note to internal allows site admins to create notes on orders that are only 
+ * visable to administrators of the site. Users will not see these notes.
  *
  * @param string $state
  * @param array $query
