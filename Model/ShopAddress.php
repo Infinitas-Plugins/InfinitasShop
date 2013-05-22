@@ -13,31 +13,6 @@
  */
 
 class ShopAddress extends ShopAppModel {
-/**
- * Additional behaviours that are attached to this model
- *
- * @var array
- */
-	public $actsAs = array(
-		// 'Libs.Feedable',
-		// 'Libs.Rateable'
-	);
-
-/**
- * How the default ordering on this model is done
- *
- * @var array
- */
-	public $order = array(
-	);
-
-/**
- * hasOne relations for this model
- *
- * @var array
- */
-	public $hasOne = array(
-	);
 
 /**
  * belongsTo relations for this model
@@ -58,22 +33,6 @@ class ShopAddress extends ShopAppModel {
 	);
 
 /**
- * hasMany relations for this model
- *
- * @var array
- */
-	public $hasMany = array(
-	);
-
-/**
- * hasAndBelongsToMany relations for this model
- *
- * @var array
- */
-	public $hasAndBelongsToMany = array(
-	);
-
-/**
  * Constructor
  *
  * @param string|integer $id string uuid or id
@@ -86,6 +45,13 @@ class ShopAddress extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
+			'address_1' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'Address required'),
+					'required' => true
+				)
+			)
 		);
 	}
 }
