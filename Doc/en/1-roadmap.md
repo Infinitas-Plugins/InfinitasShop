@@ -33,6 +33,8 @@ new purchses get added to existing PO's
 figure out colour of the image
 auto build the virtualFields when using fields array
 
+Allow customers to upload their own images to products. This would require active field for moderation and possibly a description field for some basic details.
+
 ### Supplier
 
 new fields:
@@ -77,8 +79,14 @@ others that purchsed this also viewed ...
 others that viewed this also viewed ...
 others that viewed this purchesed ...
 
+What others are vieing right now (eg: order by views group by product_id, not ordered by count(views))
+
 watch products - email users when changes occur
 	- add checkbox in backend on product for to send mail on save
+
+price alerts - email users when price changes
+	- make use of newsletter plugin?
+	- per product or category
 
 free products
 
