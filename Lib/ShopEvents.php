@@ -327,18 +327,15 @@ class ShopEvents extends AppEvents {
 	public function onPaymentCompleted(Event $Event, array $data) {
 		$ShopList = ClassRegistry::init('Shop.ShopList');
 		if (!$ShopList->validateOrder($data['order']['custom'], $data)) {
-			// invalid order
 			return false;
 		}
 
 		$order = $ShopList->ShopListProduct->ShopProductVariant->ShopOrderProduct->ShopOrder->orderFromList($data['order']['custom'], array(
 			'infinitas_payment_log_id' => $data['order']['infinitas_payment_log_id']
 		));
-
 		if (!$order) {
 			return false;
 		}
-
 
 		// send email
 
