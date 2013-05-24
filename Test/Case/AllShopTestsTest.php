@@ -13,6 +13,9 @@ class AllShopTestsTest extends AllTestsBase {
 
 		$path = CakePlugin::path('Shop') . 'Test' . DS . 'Case' . DS;
 		$suite->addTestDirectoryRecursive($path);
+		
+		$path = CakePlugin::path('InfinitasPayments') . 'Test' . DS . 'Case' . DS;
+		$suite->addTestDirectoryRecursive($path);
 
 		return $suite;
 	}
