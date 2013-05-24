@@ -347,6 +347,7 @@ class ShopOrderTest extends CakeTestCase {
 				'tax' => 2.50,
 				'custom' => 'custom-var',
 				'status' => 'Complete',
+				'infinitas_payment_method_id' => 'paypal',
 				'created' => '2013-01-09 00:11:13',
 				'modified' => '2013-01-09 00:11:13'
 			),
@@ -723,8 +724,8 @@ class ShopOrderTest extends CakeTestCase {
 				'transaction_id' => null,
 				'transaction_type' => null,
 				'transaction_fee' => null,
-				'raw_request' => false,
-				'raw_response' => false,
+				'raw_request' => null,
+				'raw_response' => null,
 				'transaction_date' => null,
 				'currency_code' => null,
 				'total' => null,
@@ -733,6 +734,7 @@ class ShopOrderTest extends CakeTestCase {
 				'status' => null,
 				'created' => null,
 				'modified' => null,
+				'infinitas_payment_method_id' => null,
 			),
 			'ShopOrderNote' => array(
 				array(

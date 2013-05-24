@@ -109,7 +109,8 @@ class ShopOrderNoteTest extends CakeTestCase {
 				'shop_order_status_id' => 'pending',
 				'notes' => 'Order created',
 				'user_notified' => 1,
-				'created' => '2012-10-14 11:25:27'
+				'created' => '2012-10-14 11:25:27',
+				'internal' => 0
 			),
 			array(
 				'id' => 'order-1-note-b',
@@ -117,7 +118,8 @@ class ShopOrderNoteTest extends CakeTestCase {
 				'shop_order_status_id' => 'processing',
 				'notes' => 'Fetching products',
 				'user_notified' => 0,
-				'created' => '2012-10-14 11:25:27'
+				'created' => '2012-10-14 11:25:27',
+				'internal' => 0
 			),
 			array(
 				'id' => 'order-1-note-c',
@@ -125,7 +127,8 @@ class ShopOrderNoteTest extends CakeTestCase {
 				'shop_order_status_id' => 'shipped',
 				'notes' => 'Shipped',
 				'user_notified' => 1,
-				'created' => '2012-10-14 11:25:27'
+				'created' => '2012-10-14 11:25:27',
+				'internal' => 0
 			),
 		);
 		$result = $this->Model->find('notes', array(
@@ -144,7 +147,8 @@ class ShopOrderNoteTest extends CakeTestCase {
 			'shop_order_status_id' => 'pending',
 			'notes' => 'Order created',
 			'user_notified' => 1,
-			'created' => '2012-10-14 11:25:27'
+			'created' => '2012-10-14 11:25:27',
+			'internal' => 0
 		));
 		$result = $this->Model->find('notes', 'order-2');
 		$this->assertEquals($expected, $result);
@@ -155,14 +159,16 @@ class ShopOrderNoteTest extends CakeTestCase {
 			'shop_order_status_id' => 'pending',
 			'notes' => 'Order created',
 			'user_notified' => 1,
-			'created' => '2012-10-14 11:25:27'
+			'created' => '2012-10-14 11:25:27',
+			'internal' => 0
 		), array(
 			'id' => 'order-2-note-b',
 			'shop_order_id' => 'order-2',
 			'shop_order_status_id' => 'pending',
 			'notes' => 'internal',
 			'user_notified' => 0,
-			'created' => '2012-10-14 11:25:27'
+			'created' => '2012-10-14 11:25:27',
+			'internal' => 1
 		));
 		$result = $this->Model->find('notes', array(
 			'order-2',
