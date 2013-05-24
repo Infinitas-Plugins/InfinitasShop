@@ -12,6 +12,13 @@ class ShopPaymentMethod extends ShopAppModel {
 		'available' => true
 	);
 
+	public $belongsTo = array(
+		'InfinitasPaymentMethod' => array(
+			'className' => 'InfinitasPayments.InfinitasPaymentMethod',
+			'foreignKey' => 'infinitas_payment_method_id'
+		)
+	);
+
 /**
  * hasMany associations
  *
