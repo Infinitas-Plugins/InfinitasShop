@@ -250,7 +250,10 @@ class ShopOrder extends ShopAppModel {
 		$results[$this->InfinitasPaymentLog->alias]['raw_request'] = json_decode($results[$this->InfinitasPaymentLog->alias]['raw_request'], true);
 		$results[$this->InfinitasPaymentLog->alias]['raw_response'] = json_decode($results[$this->InfinitasPaymentLog->alias]['raw_response'], true);
 
-		$results[$this->ShopOrderNote->alias] = $this->ShopOrderNote->find('notes', $results[$this->alias][$this->primaryKey]);
+		$results[$this->ShopOrderNote->alias] = $this->ShopOrderNote->find('notes', array(
+			$results[$this->alias][$this->primaryKey],
+			'admin' => $query['admin']
+		));
 		$results[$this->ShopOrderProduct->alias] = $this->ShopOrderProduct->ShopProductVariant->ShopProduct->find('productsForOrder', array(
 			'shop_order_id' => $results[$this->alias][$this->primaryKey],
 			'admin' => $query['admin']
