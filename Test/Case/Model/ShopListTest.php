@@ -796,4 +796,27 @@ class ShopListTest extends CakeTestCase {
 		$results = $this->{$this->modelClass}->find('orderDetails', 'shop-list-bob-cart');
 		$this->assertEquals($expected, $results);
 	}
+
+/**
+ * test truncate user list
+ */
+	public function testTruncateUserList() {
+		$this->assertCount(3, $this->{$this->modelClass}->ShopListProduct->find('list', array(
+			'conditions' => array(
+				'ShopListProduct.shop_list_id' => 'shop-list-bob-cart'
+			)
+		)));
+		$this->{$this->modelClass}->id = 'shop-list-bob-cart';
+		$this->assertTrue((bool)$this->{$this->modelClass}->saveField('token', 'abc'));
+
+		$this->assertTrue($this->{$this->modelClass}->truncateUserList('shop-list-bob-cart'));
+
+		$this->{$this->modelClass}->id = 'shop-list-bob-cart';
+		$this->assertEmpty($this->{$this->modelClass}->field('token'));
+		$this->assertCount(0, $this->{$this->modelClass}->ShopListProduct->find('list', array(
+			'conditions' => array(
+				'ShopListProduct.shop_list_id' => 'shop-list-bob-cart'
+			)
+		)));
+	}
 }
