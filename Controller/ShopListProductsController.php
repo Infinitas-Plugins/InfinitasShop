@@ -116,6 +116,11 @@ class ShopListProductsController extends ShopAppController {
 
 	}
 
+	public function infinitas_payment_completed() {
+		$results = parent::infinitas_payment_completed();
+		$this->set(compact('results'));
+	}
+
 /**
  * Update the contents of the list
  *
