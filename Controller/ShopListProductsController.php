@@ -52,8 +52,13 @@ class ShopListProductsController extends ShopAppController {
 		} catch (Exception $e) {
 			$shopShippingMethod = array();
 		}
-		$shopShippingMethods = $this->{$this->modelClass}->ShopList->ShopShippingMethod->find('available');
-		$shopPaymentMethods = $this->{$this->modelClass}->ShopList->ShopPaymentMethod->find('available');
+		$orderValue = $this->{$this->modelClass}->ShopProductVariant->ShopProduct->find('costForList');
+		$shopShippingMethods = $this->{$this->modelClass}->ShopList->ShopShippingMethod->find('available', array(
+			'order_value' => $orderValue
+		));
+		$shopPaymentMethods = $this->{$this->modelClass}->ShopList->ShopPaymentMethod->find('available', array(
+			'order_value' => $orderValue
+		));
 
 		$this->set(compact('shopList', 'shopListProducts', 'listTotalCost', 'shopShippingMethod', 'shopShippingMethods', 'shopPaymentMethods'));
 	}
