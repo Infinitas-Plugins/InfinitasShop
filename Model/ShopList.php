@@ -168,6 +168,7 @@ class ShopList extends ShopAppModel {
 				$this->alias . '.' . $this->primaryKey,
 				$this->alias . '.' . $this->displayField,
 				$this->alias . '.token',
+				$this->alias . '.user_id',
 
 				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->primaryKey,
 				$this->ShopShippingMethod->alias . '.' . $this->ShopShippingMethod->displayField,
@@ -315,22 +316,43 @@ class ShopList extends ShopAppModel {
 /**
  * Set the shipping method for a shopping list
  *
- * @param string $shippingMethodId the method to use
- * @param string $thisId optional, will use the default list if not passed in
+ * @param string $methodId the method to use
+ * @param string $id optional, will use the default list if not passed in
  *
  * @return array
  */
-	public function setShippingMethod($shippingMethodId, $thisId = null) {
-		if (!$this->ShopShippingMethod->exists($shippingMethodId)) {
+	public function setShippingMethod($methodId, $id = null) {
+		if (!$this->ShopShippingMethod->exists($methodId)) {
 			throw new InvalidArgumentException(__d('shop', 'Invalid shipping method selected'));
 		}
 
-		if (!$thisId) {
-			$thisId = $this->currentListId();
+		if (!$id) {
+			$id = $this->currentListId();
 		}
 
-		$this->id = $thisId;
-		return $this->saveField('shop_shipping_method_id', $shippingMethodId);
+		$this->id = $id;
+		return $this->saveField('shop_shipping_method_id', $methodId);
+	}
+
+/**
+ * Set the payment method for a shopping list
+ *
+ * @param string $methodId the method to use
+ * @param string $id optional, will use the default list if not passed in
+ *
+ * @return array
+ */
+	public function setPaymentMethod($methodId, $id = null) {
+		if (!$this->ShopPaymentMethod->exists($methodId)) {
+			throw new InvalidArgumentException(__d('shop', 'Invalid payment method selected'));
+		}
+
+		if (!$id) {
+			$id = $this->currentListId();
+		}
+
+		$this->id = $id;
+		return $this->saveField('shop_payment_method_id', $methodId);
 	}
 
 /**
@@ -661,7 +683,10 @@ class ShopList extends ShopAppModel {
 		$updated = false;
 		if ($cleared) {
 			$updated = $this->updateAll(
-				array($this->alias . '.shop_list_product_count' => 0),
+				array(
+					$this->alias . '.shop_list_product_count' => 0,
+					$this->alias . '.token' => '""'
+				),
 				array($this->alias . '.id' => $listId)
 			);
 		}
