@@ -63,6 +63,39 @@ class ShopListProductsController extends ShopAppController {
 		$this->set(compact('shopList', 'shopListProducts', 'listTotalCost', 'shopShippingMethod', 'shopShippingMethods', 'shopPaymentMethods'));
 	}
 
+	public function set_payment_method($methodId = null) {
+		$json = array('success' => 0);
+		var_dump($this->{$this->modelClass}->ShopList->setPaymentMethod($methodId));
+		try {
+			if ($this->{$this->modelClass}->ShopList->setPaymentMethod($methodId)) {
+				$json = array('success' => 1);
+				$this->notice(__d('shop', 'Payment method changed'), array(
+					'redirect' => false
+				));
+			}
+		} catch (Exception $e) {}
+
+		$this->set('json', $json);
+		$this->redirect($this->referer());
+		exit;
+	}
+
+	public function set_shipping_method($methodId = null) {
+		$json = array('success' => 0);
+		try {
+			if ($this->{$this->modelClass}->ShopList->setShippingMethod($methodId)) {
+				$json = array('success' => 1);
+				$this->notice(__d('shop', 'Shipping method changed'), array(
+					'redirect' => false
+				));
+			}
+		} catch (Exception $e) {}
+		
+		$this->set('json', $json);
+		$this->set('_serialize', 'json');
+		$this->redirect($this->referer());
+	}
+
 /**
  * Process the users cart
  *

@@ -122,6 +122,15 @@ $(document).ready(function() {
 			billing.show();
 		}
 	});
+
+	$('.options.shipping a, .options.payment a').on('click', function() {
+		var $this = $(this);
+		$.get($this.attr('href') + '.json', function(data) {
+			$('a', $this.parent()).removeClass('active');
+			$this.addClass('active');
+		});
+		return false;
+	})
 });
 
 function productFilter() {
