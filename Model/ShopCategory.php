@@ -123,6 +123,15 @@ class ShopCategory extends ShopAppModel {
 		);
 	}
 
+/**
+ * Get the path of the selected category
+ * 
+ * @param string $id the category id to check
+ * @param array $fields the fields to fetch
+ * @param integer $recursive the recursive level to use for the find
+ *
+ * @return array
+ */
 	public function getPath($id = null, $fields = null, $recursive = null) {
 		unset($this->virtualFields['shop_product_id']);
 		if ($id) {
@@ -216,6 +225,17 @@ class ShopCategory extends ShopAppModel {
 		return $results;
 	}
 
+/**
+ * find a specific category level
+ *
+ * optionally pass the slug to find or it will get top level categories
+ *
+ * @param string $state before / after
+ * @param array $query the query conditions
+ * @param array $results the results of the find
+ *
+ * @return array
+ */
 	protected function _findLevel($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$query['fields'] = array_merge((array)$query['fields'], array(
@@ -236,8 +256,8 @@ class ShopCategory extends ShopAppModel {
 			if (empty($query[0])) {
 				$query['conditions'] = array_merge((array)$query['conditions'], array(
 					'or' => array(
-						$this->fullFieldName('parent_id') => null,
-						$this->fullFieldName('parent_id') => ''
+						array($this->fullFieldName('parent_id') => null),
+						array($this->fullFieldName('parent_id') => '')
 					)
 				));
 			} else {

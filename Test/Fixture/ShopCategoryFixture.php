@@ -90,7 +90,7 @@ class ShopCategoryFixture extends CakeTestFixture {
 			'path_depth' => 1,
 			'lft' => 4,
 			'rght' => 5,
-			'parent_id' => 'inactive-parent',
+			'parent_id' => 'inactive',
 			'created' => '2012-10-05 02:00:12',
 			'modified' => '2012-10-05 02:00:12'
 		),

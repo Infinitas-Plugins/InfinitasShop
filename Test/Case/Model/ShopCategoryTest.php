@@ -211,7 +211,94 @@ class ShopCategoryTest extends CakeTestCase {
 		$this->assertEquals(2, $result);
 	}
 
-	public function testFindLevel() {
+/**
+ * test find level
+ *
+ * @dataProvider findLevelDataProvider
+ */
+	public function testFindLevel($data, $expected) {
+		if ($data) {
+			$this->{$this->modelClass}->updateAll(array(
+				'ShopCategory.active' => 1
+			));
+		}
+		$result = $this->{$this->modelClass}->find('level', $data);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * find level data provider
+ */
+	public function findLevelDataProvider() {
+		return array(
+			'top-level' => array(
+				null,
+				array(
+					array(
+						'ShopCategory' => array(
+							'id' => 'active',
+							'name' => 'active',
+							'slug' => 'active',
+							'parent_id' => NULL,
+							'lft' => '1',
+							'rght' => '2',
+						),
+						'ShopImage' => array(
+							'id' => NULL,
+							'image' => NULL,
+							'image_full' => '/filemanager/img/no-image.png',
+							'image_large' => '/filemanager/img/no-image.png',
+							'image_medium' => '/filemanager/img/no-image.png',
+							'image_small' => '/filemanager/img/no-image.png',
+							'image_thumb' => '/filemanager/img/no-image.png',
+						)
+					),
+					array(
+						'ShopCategory' => array(
+							'id' => 'another',
+							'name' => 'another',
+							'slug' => 'another',
+							'parent_id' => NULL,
+							'lft' => '7',
+							'rght' => '8',
+						),
+						'ShopImage' => array(
+							'id' => NULL,
+							'image' => NULL,
+							'image_full' => '/filemanager/img/no-image.png',
+							'image_large' => '/filemanager/img/no-image.png',
+							'image_medium' => '/filemanager/img/no-image.png',
+							'image_small' => '/filemanager/img/no-image.png',
+							'image_thumb' => '/filemanager/img/no-image.png',
+						)
+					),
+				)
+			),
+			'inactive' => array(
+				'inactive',
+				array(
+					array(
+						'ShopCategory' => array(
+							'id' => 'inactive-parent',
+							'name' => 'inactive-parent',
+							'slug' => 'inactive-parent',
+							'parent_id' => 'inactive',
+							'lft' => '4',
+							'rght' => '5',
+						),
+						'ShopImage' => array(
+							'id' => NULL,
+							'image' => NULL,
+							'image_full' => '/filemanager/img/no-image.png',
+							'image_large' => '/filemanager/img/no-image.png',
+							'image_medium' => '/filemanager/img/no-image.png',
+							'image_small' => '/filemanager/img/no-image.png',
+							'image_thumb' => '/filemanager/img/no-image.png',
+						)
+					),
+				)
+			)
+		);
 	}
 
 /**
@@ -219,7 +306,7 @@ class ShopCategoryTest extends CakeTestCase {
  *
  * @dataProvider findCurrentDataProvider
  */
-	public function testFindCurrent($data, $expected) {
+	public function testFindCurrent($data, $expected) {		
 		$result = $this->{$this->modelClass}->find('current', $data);
 		$this->assertEquals($expected, $result['ShopCategory']);
 	}
@@ -248,6 +335,10 @@ class ShopCategoryTest extends CakeTestCase {
  * @dataProvider findParentDataProvider
  */
 	public function testFindParent($data, $expected) {
+		$this->{$this->modelClass}->updateAll(array(
+			'ShopCategory.active' => 1
+		));
+
 		$result = $this->{$this->modelClass}->find('parent', $data);
 		$this->assertEquals($expected, $result['ShopCategory']);
 	}
@@ -265,9 +356,9 @@ class ShopCategoryTest extends CakeTestCase {
 			'inactive-parent' => array(
 				'inactive-parent',
 				array(
-					'id' => 'inactive-parent',
+					'id' => 'inactive',
 					'name' => 'Parent Category',
-					'slug' => 'inactive-parent'
+					'slug' => 'inactive'
 				)
 			)
 		);
@@ -281,4 +372,5 @@ class ShopCategoryTest extends CakeTestCase {
 	public function testFindSingleCategoryException() {
 		$this->{$this->modelClass}->find('parent');
 	}
+
 }
