@@ -70,8 +70,9 @@ echo $this->Form->create('ShopAddress', array(
 	echo $this->Form->input('address_2', array(
 		'placeholder' => __d('shop', 'Address line 2')
 	));
-	echo $this->Form->input('country_id');
-	echo $this->Form->input('state_id');
+	echo $this->element('GeoLocation.region_select', array(
+		'model' => 'ShopAddress'
+	));
 	echo $this->Form->input('post_code', array(
 		'placeholder' => __d('shop', 'Post / Zip code')
 	));

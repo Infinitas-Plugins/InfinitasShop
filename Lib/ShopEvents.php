@@ -313,11 +313,10 @@ class ShopEvents extends AppEvents {
 				))
 			);
 		}
-
 		$return[] = array(
 			'title' => __d('shop', 'Addresses'),
 			'content' => $View->element('Shop.profile/shop_addresses', array(
-				'shopAddresses' => ClassRegistry::init('Shop.ShopAddress')->find('mine')
+				'shopAddresses' => ClassRegistry::init('Shop.ShopAddress')->find('addresses')
 			))
 		);
 

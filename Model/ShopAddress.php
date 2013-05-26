@@ -15,6 +15,15 @@
 class ShopAddress extends ShopAppModel {
 
 /**
+ * Custom find methods
+ *
+ * @var array
+ */
+	public $findMethods = array(
+		'addresses' => true
+	);
+
+/**
  * belongsTo relations for this model
  *
  * @var array
@@ -53,6 +62,48 @@ class ShopAddress extends ShopAppModel {
 				)
 			)
 		);
+	}
+
+/**
+ * Find addresses for the specified user
+ *
+ * if no user condition has been supplied the current logged in user id will be used
+ *
+ * @param string $state before / after
+ * @param array $query the find conditions
+ * @param array $results the results of the find
+ *
+ * @return array
+ */
+	protected function _findAddresses($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			if (empty($query['conditions'][$this->alias . '.user_id'])) {
+				$query['conditions'][$this->alias . '.user_id'] = $this->currentUserId();
+			}
+
+			$query['fields'] = $this->alias . '.*'; // hack
+			return $query;
+		}
+
+		return $results;
+	}
+
+/**
+ * Get a list of countries
+ */
+	public function countries() {
+		return ClassRegistry::init('GeoLocation.GeoLocationCountry')->find('list');
+	}
+
+/**
+ * Get a list of regions for the specified country
+ *
+ * @param string|integer $countryId the id of the country
+ *
+ * @return array
+ */
+	public function regions($countryId) {
+		return ClassRegistry::init('GeoLocation.GeoLocationRegion')->find('regions', $countryId);
 	}
 
 }

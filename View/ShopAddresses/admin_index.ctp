@@ -36,8 +36,8 @@ echo $this->Filter->alphabetFilter();
 					$this->Paginator->sort('name'),
 					$this->Paginator->sort('address_1'),
 					$this->Paginator->sort('address_2'),
-					$this->Paginator->sort('state_id'),
-					$this->Paginator->sort('country_id'),
+					$this->Paginator->sort('geo_location_country_id'),
+					$this->Paginator->sort('geo_region_country_id'),
 					$this->Paginator->sort('post_code'),
 					$this->Paginator->sort('created') => array(
 						'style' => 'width:75px;'
@@ -57,8 +57,8 @@ echo $this->Filter->alphabetFilter();
 					<td><?php echo $this->Html->adminQuickLink($shopAddress['ShopAddress']); ?>&nbsp;</td>
 					<td><?php echo $shopAddress['ShopAddress']['address_1']; ?>&nbsp;</td>
 					<td><?php echo $shopAddress['ShopAddress']['address_2']; ?>&nbsp;</td>
-					<td><?php echo $shopAddress['ShopAddress']['state_id']; ?>&nbsp;</td>
-					<td><?php echo $shopAddress['ShopAddress']['country_id']; ?>&nbsp;</td>
+					<td><?php echo $shopAddress['ShopAddress']['geo_location_country_id']; ?>&nbsp;</td>
+					<td><?php echo $shopAddress['ShopAddress']['geo_location_region_id']; ?>&nbsp;</td>
 					<td><?php echo $shopAddress['ShopAddress']['post_code']; ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopAddress['ShopAddress']); ?>&nbsp;</td>
 					<td><?php echo $this->Infinitas->date($shopAddress['ShopAddress']); ?>&nbsp;</td>

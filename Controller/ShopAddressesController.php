@@ -18,16 +18,6 @@
  */
 
 class ShopAddressesController extends ShopAppController {
-/**
- * The helpers linked to this controller
- *
- * @access public
- * @var array
- */
-	public $helpers = array(
-		//'Shop.Shop', // uncoment this for a custom plugin controller
-		//'Libs.Gravatar',
-	);
 
 /**
  * @brief the index method

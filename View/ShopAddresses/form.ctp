@@ -22,8 +22,8 @@
 				echo $this->Form->input('name');
 				echo $this->Form->input('address_1');
 				echo $this->Form->input('address_2');
-				echo $this->Form->input('state_id', array('empty' => Configure::read('Website.empty_select')));
-				echo $this->Form->input('country_id', array('empty' => Configure::read('Website.empty_select')));
+				echo $this->Form->input('geo_location_country_id', array('empty' => Configure::read('Website.empty_select')));
+				echo $this->Form->input('geo_location_region_id', array('empty' => Configure::read('Website.empty_select')));
 				echo $this->Form->input('post_code');
 			?>
 		</fieldset>
