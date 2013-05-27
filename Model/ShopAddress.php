@@ -38,6 +38,14 @@ class ShopAddress extends ShopAppModel {
 			'counterScope' => array(
 				'ShopAddress.active' => 1
 			),
+		),
+		'GeoLocationCountry' => array(
+			'className' => 'GeoLocation.GeoLocationCountry',
+			'foreignKey' => 'geo_location_country_id'
+		),
+		'GeoLocationRegion' => array(
+			'className' => 'GeoLocation.GeoLocationRegion',
+			'foreignKey' => 'geo_location_region_id'
 		)
 	);
 
@@ -81,7 +89,27 @@ class ShopAddress extends ShopAppModel {
 				$query['conditions'][$this->alias . '.user_id'] = $this->currentUserId();
 			}
 
-			$query['fields'] = $this->alias . '.*'; // hack
+			$this->virtualFields['country'] = $this->GeoLocationCountry->alias . '.' . $this->GeoLocationCountry->displayField;
+			$this->virtualFields['region'] = $this->GeoLocationRegion->alias . '.' . $this->GeoLocationRegion->displayField;
+			$query['fields'] = array_merge((array)$query['fields'], array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+				$this->alias . '.address_1',
+				$this->alias . '.address_2',
+				$this->alias . '.post_code',
+				$this->alias . '.billing',
+				$this->alias . '.modified',
+				'country',
+				'region'
+			));
+
+			if (empty($query['joins'])) {
+				$query['joins'] = array();
+			}
+			$query['joins'] = (array)$query['joins'];
+
+			$query['joins'][] = $this->autoJoinModel($this->GeoLocationCountry);
+			$query['joins'][] = $this->autoJoinModel($this->GeoLocationRegion);
 			return $query;
 		}
 
