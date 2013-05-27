@@ -62,6 +62,17 @@ class ShopAddress extends ShopAppModel {
 		parent::__construct($id, $table, $ds);
 
 		$this->validate = array(
+			'user_id' => array(
+				'notEmpty' => array(
+					'rule' => 'notEmpty',
+					'message' => __d('shop', 'No user specified'),
+					'required' => 'create'
+				),
+				'validateRecordExists' => array(
+					'rule' => 'validateRecordExists',
+					'message' => __d('shop', 'Invalid user specified'),
+				)
+			),
 			'address_1' => array(
 				'notEmpty' => array(
 					'rule' => 'notEmpty',
@@ -70,6 +81,12 @@ class ShopAddress extends ShopAppModel {
 				)
 			)
 		);
+	}
+
+	public function beforeValidate(array $options = array()) {
+		if (empty($this->data[$this->alias]['user_id'])) {
+			$this->data[$this->alias]['user_id'] = $this->currentUserId();
+		}
 	}
 
 /**

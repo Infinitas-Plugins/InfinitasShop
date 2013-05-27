@@ -79,7 +79,7 @@ echo $this->Html->tag('div', implode('', array(
 			'empyt' => __d('shop', 'Select a past address'),
 		)),
 		$this->Html->link(__d('shop', 'Add new address'), array(
-			'controller' => 'shop_address',
+			'controller' => 'shop_addresses',
 			'action' => 'add'
 		))
 	)), array('class' => 'address-details', 'id' => 'details-account')),

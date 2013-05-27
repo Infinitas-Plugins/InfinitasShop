@@ -13,45 +13,34 @@
  */
 
 echo $this->element('Shop.profile/header');
-echo $this->Form->create(null, array('action' => 'mass'));
-echo $this->Infinitas->massActionButtons(array(
-	'add',
-	'edit',
-	'toggle',
-	'delete'
-));
 ?>
 <table class="listing">
 	<?php
 		echo $this->Infinitas->adminTableHeader(array(
-			$this->Form->checkbox('all') => array(
-				'class' => 'first',
-			),
 			$this->Paginator->sort('name'),
-			$this->Paginator->sort('address_1'),
-			$this->Paginator->sort('address_2'),
-			$this->Paginator->sort('geo_location_region_id'),
-			$this->Paginator->sort('geo_location_country_id'),
-			$this->Paginator->sort('post_code'),
-			$this->Paginator->sort('modified', __d('shop', 'Updated')) => array(
-				'style' => 'width:75px;'
-			)
-		));
+			$this->Paginator->sort('address_1', __d('shop', 'Address')),
+			$this->Paginator->sort('GeoLocationRegion.name', __d('geo_location', 'Region')),
+			$this->Paginator->sort('GeoLocationCountry.name', __d('geo_location', 'Country')),
+			__d('infinitas', 'Actions'),
+		), false);
 
 		foreach ($shopAddresses as $shopAddress) { ?>
 			<tr>
-				<td><?php echo $this->Infinitas->massActionCheckBox($shopAddress); ?>&nbsp;</td>
 				<td><?php echo $this->Html->adminQuickLink($shopAddress['ShopAddress']); ?>&nbsp;</td>
-				<td><?php echo $shopAddress['ShopAddress']['address_1']; ?>&nbsp;</td>
-				<td><?php echo $shopAddress['ShopAddress']['address_2']; ?>&nbsp;</td>
-				<td><?php echo $shopAddress['ShopAddress']['geo_location_region_id']; ?>&nbsp;</td>
-				<td><?php echo $shopAddress['ShopAddress']['geo_location_country_id']; ?>&nbsp;</td>
-				<td><?php echo $shopAddress['ShopAddress']['post_code']; ?>&nbsp;</td>
-				<td><?php echo $this->Infinitas->date($shopAddress['ShopAddress']); ?>&nbsp;</td>
+				<td><?php echo h(implode(', ', array($shopAddress['ShopAddress']['address_1'], $shopAddress['ShopAddress']['address_2'], $shopAddress['ShopAddress']['post_code']))); ?></td>
+				<td><?php echo $shopAddress['GeoLocationRegion']['name']; ?></td>
+				<td><?php echo $shopAddress['GeoLocationCountry']['name']; ?></td>
+				<td>
+					<?php
+						echo $this->Html->link(__d('infinitas', 'Delete'), array(
+							'action' => 'delete',
+							$shopAddress['ShopAddress']['id']
+						));
+					?>
+				</td>
 			</tr><?php
 		}
 	?>
 </table>
 <?php
-	echo $this->Form->end();
 	echo $this->element('pagination/navigation');

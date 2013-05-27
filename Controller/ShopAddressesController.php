@@ -32,6 +32,8 @@ class ShopAddressesController extends ShopAppController {
 		$this->Paginator->settings = array(
 			'contain' => array(
 				'User',
+				'GeoLocationCountry',
+				'GeoLocationRegion'
 			)
 		);
 
@@ -43,6 +45,84 @@ class ShopAddressesController extends ShopAppController {
 		);
 
 		$this->set(compact('shopAddresses', 'filterOptions'));
+	}
+
+/**
+ * allow users to add new addresses
+ * 
+ * @return void
+ */
+	public function add() {
+		if (!empty($this->request->data)) {
+			if ($this->{$this->modelClass}->save($this->request->data)) {
+				$this->notice(__d('shop', 'Address saved'), array(
+					'redirect' => ''
+				));
+			}
+			$this->notice('not_saved', array(
+				'redirect' => true
+			));
+		}
+
+		$this->saveRedirectMarker();
+	}
+
+/**
+ * allow users to modify their own addresses
+ *
+ * @param string $id the id of the address record to modify
+ * 
+ * @return void
+ */
+	public function edit($id = null) {
+		if (!empty($this->request->data)) {
+			if ($this->{$this->modelClass}->save($this->request->data)) {
+				$this->notice('saved');
+			}
+			$this->notice('not_saved');
+		}
+
+		if (empty($this->request->data) && $id) {
+			$this->request->data = $this->{$this->modelClass}->find('first', array(
+				'conditions' => array(
+					$this->modelClass . '.' . $this->{$this->modelClass}->primaryKey => $id,
+					$this->modelClass . '.user_id' => AuthComponent::user('id'),
+				)
+			));
+
+			if (empty($this->request->data)) {
+				$this->notice('not_found', array(
+					'redirect' => '/'
+				));
+			}
+		}
+
+		$geoLocationCountries = $this->{$this->modelClass}->countries();
+		$geoLocationRegions = $this->{$this->modelClass}->regions($this->request->data[$this->modelClass]['geo_location_country_id']);
+		$this->set(compact('geoLocationCountries', 'geoLocationRegions'));
+		$this->saveRedirectMarker();
+	}
+
+/**
+ * allow users to delete their own addresses
+ *
+ * @param string $id the address id to remove
+ * 
+ * @return void
+ */
+	public function delete($id = null) {
+		$id = $this->{$this->modelClass}->field('id', array(
+			$this->modelClass . '.id' => $id,
+			$this->modelClass . '.user_id' => $this->{$this->modelClass}->currentUserId()
+		));
+		if (!$id) {
+			$this->notice('not_found');
+		}
+
+		if ($this->{$this->modelClass}->delete($id)) {
+			$this->notice('deleted');
+		}
+		$this->notice('not_deleted');
 	}
 
 /**

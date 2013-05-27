@@ -22,15 +22,10 @@
 				echo $this->Form->input('name');
 				echo $this->Form->input('address_1');
 				echo $this->Form->input('address_2');
-				echo $this->Form->input('geo_location_country_id', array('empty' => Configure::read('Website.empty_select')));
-				echo $this->Form->input('geo_location_region_id', array('empty' => Configure::read('Website.empty_select')));
+				echo $this->element('GeoLocation.region_select', array(
+					'model' => 'ShopAddress'
+				));
 				echo $this->Form->input('post_code');
 			?>
-		</fieldset>
-
-		<fieldset>
-			<h1><?php echo __('Configuration'); ?></h1><?php
-				echo $this->Form->input('user_id', array('empty' => Configure::read('Website.empty_select')));
-		?>
 		</fieldset><?php
 	echo $this->Form->end();
