@@ -92,7 +92,7 @@ class ShopAddress extends ShopAppModel {
  * Get a list of countries
  */
 	public function countries() {
-		return ClassRegistry::init('GeoLocation.GeoLocationCountry')->find('list');
+		return ClassRegistry::init('GeoLocation.GeoLocationCountry')->find('countries');
 	}
 
 /**
