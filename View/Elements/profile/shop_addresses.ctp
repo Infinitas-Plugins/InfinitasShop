@@ -40,41 +40,34 @@ if (!empty($shopAddresses)) {
 	));
 }
 
-echo $this->Form->create('ShopAddress', array(
-	'url' => array(
-		'plugin' => 'shop',
-		'controller' => 'shop_addresses',
-		'action' => 'add',
-	),
-	'inputDefaults' => array(
-		'div' => false,
-		'label' => false
-	)
-));
-	echo $this->Form->input('name', array(
-		'placeholder' => __d('shop', 'eg: Home or Work')
-	));
-	echo $this->Form->input('address_1', array(
-		'placeholder' => __d('shop', 'Address line 1')
-	));
-	echo $this->Form->input('address_2', array(
-		'placeholder' => __d('shop', 'Address line 2')
-	));
-	echo $this->element('GeoLocation.region_select', array(
-		'model' => 'ShopAddress'
-	));
-	echo $this->Form->input('post_code', array(
-		'placeholder' => __d('shop', 'Post / Zip code')
-	));
-	echo $this->Form->input('billing', array(
-		'label' => __d('shop', 'This is for billing only'),
-		'type' => 'checkbox',
-		'div' => true
-	));
-	echo $this->Form->submit(__d('shop', 'Save'), array(
-		'div' => false,
-		'class' => 'pull-right'
-	));
-echo $this->Form->end();
+echo $this->Html->tag('div', implode('', array(
+	$this->Form->create('ShopAddress', array(
+		'url' => array(
+			'plugin' => 'shop',
+			'controller' => 'shop_addresses',
+			'action' => 'add',
+		),
+		'inputDefaults' => array(
+			'div' => false,
+			'label' => false
+		)
+	)),
+		$this->element('Shop.profile/address_form'),
+		$this->Form->submit(__d('shop', 'Save'), array(
+			'div' => false,
+			'class' => 'pull-right'
+		)),
+	$this->Form->end()
+)), array('class' => 'address-form'));
+echo $this->Html->link(__d('shop', 'Add address'), array(
+	'plugin' => 'shop',
+	'controller' => 'shop_addresses',
+	'action' => 'add'
+), array('class' => 'btn pull-right address-form'));
+echo $this->Html->link(__d('shop', 'All addresses'), array(
+	'plugin' => 'shop',
+	'controller' => 'shop_addresses',
+	'action' => 'index'
+), array('class' => 'btn pull-right'));
 
 

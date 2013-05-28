@@ -144,7 +144,7 @@ class ShopEvents extends AppEvents {
  * @return array
  */
 	public function onRequireCssToLoad(Event $Event) {
-		if ($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
+		if ($Event->Handler->request->params['admin']) {
 			return array(
 				'Shop.shop_admin'
 			);
@@ -163,7 +163,7 @@ class ShopEvents extends AppEvents {
  * @return array
  */
 	public function onRequireJavascriptToLoad(Event $Event) {
-		if ($Event->Handler->request->params['admin'] || $Event->Handler->request->params['plugin'] != 'shop') {
+		if ($Event->Handler->request->params['admin']) {
 			return array(
 				'Shop.shop_admin'
 			);

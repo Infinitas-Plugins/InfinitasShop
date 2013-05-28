@@ -130,7 +130,14 @@ $(document).ready(function() {
 			$this.addClass('active');
 		});
 		return false;
-	})
+	});
+
+	$('a.address-form').on('click', function() {
+		$('div.address-form').show();
+		$(this).hide();
+
+		return false;
+	});
 });
 
 function productFilter() {
