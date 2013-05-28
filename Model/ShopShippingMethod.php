@@ -377,6 +377,7 @@ class ShopShippingMethod extends ShopAppModel {
 
 				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->primaryKey,
 				$this->ShopSupplier->alias . '.' . $this->ShopSupplier->displayField,
+				$this->ShopSupplier->alias . '.logo',
 			));
 
 			$query['joins'][] = $this->autoJoinModel($this->ShopSupplier->fullModelName());
