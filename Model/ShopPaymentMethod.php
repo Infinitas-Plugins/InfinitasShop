@@ -15,7 +15,8 @@ class ShopPaymentMethod extends ShopAppModel {
  * @var array
  */
 	public $findMethods = array(
-		'available' => true
+		'available' => true,
+		'info' => true
 	);
 
 /**
@@ -113,5 +114,35 @@ class ShopPaymentMethod extends ShopAppModel {
 			sprintf('{n}.%s.%s', $this->alias, $this->primaryKey),
 			sprintf('{n}.%s.%s', $this->alias, $this->displayField)
 		);
+	}
+
+
+/**
+ * get the info of the available payment methods
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
+	protected function _findInfo($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$fields = $query['fields'];
+			$query = self::_findAvailable($state, $query);
+
+			$query['fields'] = array_merge((array)$fields, array(
+				$this->alias . '.' . $this->primaryKey,
+				$this->alias . '.' . $this->displayField,
+
+				$this->InfinitasPaymentMethod->alias . '.' . $this->InfinitasPaymentMethod->primaryKey,
+				$this->InfinitasPaymentMethod->alias . '.' . $this->InfinitasPaymentMethod->displayField,
+				$this->InfinitasPaymentMethod->alias . '.image',
+			));
+
+			return $query;
+		}
+
+		return $results;
 	}
 }

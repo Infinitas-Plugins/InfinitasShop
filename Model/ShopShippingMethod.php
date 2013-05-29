@@ -361,6 +361,16 @@ class ShopShippingMethod extends ShopAppModel {
 		);
 	}
 
+
+/**
+ * Get the detials of the available shipping methods
+ *
+ * @param string $state
+ * @param array $query
+ * @param array $results
+ *
+ * @return array
+ */
 	protected function _findInfo($state, array $query, array $results = array()) {
 		if ($state == 'before') {
 			$fields = $query['fields'];
