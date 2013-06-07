@@ -10,5 +10,8 @@ $config = array_merge(array(
 ), $config);
 echo $this->Html->tag('h3', $config['title']);
 foreach ((array)$paymentOptions as $paymentOption) {
-	echo $this->Html->tag('div', $paymentOption['ShopPaymentMethod']['name']);
+	echo $this->Html->tag('div', $this->Html->image($paymentOption['InfinitasPaymentMethod']['image_thumb'], array(
+		'title' => $paymentOption['ShopPaymentMethod']['name'],
+		'alt' => $paymentOption['ShopPaymentMethod']['name']
+	)));
 }

@@ -143,6 +143,12 @@ class ShopPaymentMethod extends ShopAppModel {
 			return $query;
 		}
 
+		foreach ($results as &$result) {
+			foreach ($this->InfinitasPaymentMethod->uploadImageSizes('image') as $size) {
+				$result['InfinitasPaymentMethod']['image_' . $size] = $this->InfinitasPaymentMethod->uploadImageUrl('image', $result['InfinitasPaymentMethod']['id'], $result['InfinitasPaymentMethod']['image'], $size);
+			}
+		}
+
 		return $results;
 	}
 }
