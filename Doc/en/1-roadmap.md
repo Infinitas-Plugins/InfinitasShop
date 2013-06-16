@@ -10,19 +10,20 @@ add counter cache to ShopProductType
 
 ### Stock
 
-add supplier to stock logs
-add purchase order to stock logs
-add cost to stock logs
+- add supplier to stock logs
+- add purchase order to stock logs
+- add cost to stock logs
 
-stock turn over rate
-stock value + per department / whole store
+- stock turn over rate
+- stock value / per department / whole store
 
 ### Purchase orders
 
 generate purchse orders for products based on the supplier for the products purchased
-	quantity
-	cost
-	part number
+
+* quantity
+* cost
+* part number
 
 linked to supplier
 
@@ -79,7 +80,7 @@ others that purchsed this also viewed ...
 others that viewed this also viewed ...
 others that viewed this purchesed ...
 
-What others are viewing right now (eg: order by views group by product_id, not ordered by count(views))
+What others are viewing right now (eg: order by views group by product\_id, not ordered by count(views))
 
 watch products - email users when changes occur
 	- add checkbox in backend on product for to send mail on save
@@ -120,7 +121,7 @@ add slug field - look up option by slug (to ignore for importer)
 
 ### specials / featured
 
-allow linking specials to categories (product_id should be fk + model)
+allow linking specials to categories (product\_id should be fk + model)
 
 add field to special
 	name (so its easy to find in the backend)
@@ -129,7 +130,7 @@ add max usage times
 
 make specials work for the cart (no product specified + code == coupon)
 
-change spotlight product_id to fk + model (allow categories as a spot light)
+change spotlight product\_id to fk + model (allow categories as a spot light)
 
 add php that can create random specials + promotions
 	far into the future, with configurable time spans eg: 1 week, 3 days, 1 month etc
