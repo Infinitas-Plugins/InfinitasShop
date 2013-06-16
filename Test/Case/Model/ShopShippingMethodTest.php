@@ -555,6 +555,7 @@ class ShopShippingMethodTest extends CakeTestCase {
 				'ShopSupplier' => array (
 					'id' => 'mail-supplier',
 					'name' => 'mail-supplier',
+					'logo' => 'mail-supplier.png',
 				)
 			)
 		);

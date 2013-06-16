@@ -537,7 +537,7 @@ class ShopList extends ShopAppModel {
 		}
 		$this->_Gateway = new InfinitasGateway();
 		$this->_Gateway
-			->provider('paypal-express')
+			->provider('cash-payments')
 			->user(AuthComponent::user());
 		return $this->_Gateway;
 	}
@@ -602,7 +602,15 @@ class ShopList extends ShopAppModel {
 				'token' => $shopList['ShopList']['token']
 			));
 			if ($status['paid_status'] === InfinitasGateway::$PAID) {
-				$this->toOrder($shopListId, $status);
+				$results = array();
+				foreach ($status['orders'] as $order) {
+					$results[] = EventCore::trigger($this, 'paymentCompleted', array(
+						'details' => $order,
+						'order' => $order
+					));
+				}
+				var_dump($results);
+				exit;
 				return $status;
 			}
 		}
@@ -612,7 +620,7 @@ class ShopList extends ShopAppModel {
 			throw new InvalidArgumentException(__d('shop', 'There are no products to checkout'));
 		}
 		if (empty($shopList['ShopShipping'])) {
-			throw new InvalidArgumentException(__d('shop', 'Shipping details have not been completed'));
+			//throw new InvalidArgumentException(__d('shop', 'Shipping details have not been completed'));
 		}
 		$this->_gateway()
 			->shipping($shopList['ShopShipping']['shipping'])
@@ -634,7 +642,11 @@ class ShopList extends ShopAppModel {
 				'quantity' => $shopListProduct['ShopListProduct']['quantity']
 			));
 		}
-		$request = $this->_gateway()->prepare();
+		try {
+			$request = $this->_gateway()->prepare();
+		} catch (Exception $e) {
+			var_dump($e);
+		}
 
 		if ($request['token']) {
 			$this->id = $shopListId;

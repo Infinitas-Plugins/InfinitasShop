@@ -72,7 +72,7 @@ $links = array(
 		array(
 			'name' => __d('shop', 'Orders'),
 			'description' => __d('shop', 'Manage store orders'),
-			'icon' => 'bar-chart',
+			'icon' => 'globe',
 			'dashboard' => array('controller' => 'shop_orders', 'action' => 'index')
 		),
 		array(
@@ -80,6 +80,12 @@ $links = array(
 			'description' => __d('shop', 'Manage store carts'),
 			'icon' => 'shopping-cart',
 			'dashboard' => array('controller' => 'shop_lists', 'action' => 'index')
+		),
+		array(
+			'name' => __d('shop', 'Reports'),
+			'description' => __d('shop', 'Vew reports'),
+			'icon' => 'bar-chart',
+			'dashboard' => array('controller' => 'shop_reports', 'action' => 'index')
 		),
 	)
 );

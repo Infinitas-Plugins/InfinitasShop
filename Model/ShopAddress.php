@@ -63,14 +63,10 @@ class ShopAddress extends ShopAppModel {
 
 		$this->validate = array(
 			'user_id' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => __d('shop', 'No user specified'),
-					'required' => 'create'
-				),
 				'validateRecordExists' => array(
 					'rule' => 'validateRecordExists',
 					'message' => __d('shop', 'Invalid user specified'),
+					'allowEmpty' => true
 				)
 			),
 			'address_1' => array(

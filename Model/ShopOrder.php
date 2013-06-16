@@ -21,7 +21,8 @@ class ShopOrder extends ShopAppModel {
 	public $findMethods = array(
 		'details' => true,
 		'mine' => true,
-		'newOrderBasics' => true
+		'newOrderBasics' => true,
+		'grouped' => true
 	);
 
 /**
@@ -485,5 +486,83 @@ class ShopOrder extends ShopAppModel {
 				$ViewCounterView->alias . '.foreign_key'
 			)
 		));
+	}
+
+	protected function _findGrouped($state, array $query, array $results = array()) {
+		if ($state == 'before') {
+			$this->setSource('infinitas_data_dates');
+			$this->virtualFields['total'] = 'ROUND(IFNULL(SUM(ShopOrderData.total), 0), 2)';
+			$this->virtualFields['date'] = 'IFNULL(MAX(ShopOrderData.created), ShopOrder.date)';
+			$this->virtualFields['sales'] = 'COUNT(*)';
+			$this->virtualFields['products'] = 'IFNULL(SUM(ShopOrderData.shop_order_product_count), 0)';
+			$this->virtualFields['week'] = 'ShopOrder.week_of_year';
+
+			$query['group'] = empty($query['group']) ? 'days' : $query['group'];
+			if (is_string($query['group'])) {
+				switch ($query['group']) {
+					case 'all':
+						$query['group'] = array();
+						break;
+					
+					case 'years':
+						$query['group'] = array(
+							'ShopOrder.year',
+						);
+						break;
+					
+					case 'months':
+						$query['group'] = array(
+							'ShopOrder.year',
+							'ShopOrder.month',
+						);
+						break;
+					
+					case 'weeks':
+						$query['group'] = array(
+							'ShopOrder.year',
+							'ShopOrder.week_of_year',
+						);
+						break;
+
+					case 'days':
+						$query['group'] = array(
+							'ShopOrder.year',
+							'ShopOrder.month',
+							'ShopOrder.day',
+						);
+						break;
+				}
+			}
+
+			$query['conditions'] = array(
+				'`ShopOrder`.`date` <= ' => date('Y-m-d', strtotime('+1 month'))
+			);
+
+			$query['fields'] = array(
+				'ShopOrder.year',
+				'ShopOrder.month',
+				'ShopOrder.week',
+				'ShopOrder.day',
+				'total',
+				'date',
+				'sales',
+				'products'
+			);
+
+			$query['joins'] = array(array(
+				'table' => 'shop_orders',
+				'alias' => 'ShopOrderData',
+				'type' => 'left',
+				'conditions' => array(
+					'DATE(ShopOrderData.created) = ShopOrder.date'
+				)
+			));
+
+			$query['order'] = array('ShopOrder.date' => 'asc');
+
+			return $query;
+		}
+
+		return Hash::extract($results, '{n}.' . $this->alias);
 	}
 }

@@ -121,6 +121,96 @@ class ShopOrdersController extends ShopAppController {
 		$this->set(compact('shopOrders', 'filterOptions'));
 	}
 
+	public function admin_report_data($type = null) {
+		switch ($type) {
+			case 'swimlane':
+				$shopOrders = $this->ShopOrder->find('all', array(
+					'contain' => array(
+						'ShopAssignedUser',
+					),
+					'fields' => array(
+						'ShopOrder.id',
+						'ShopOrder.invoice_number',
+						'ShopOrder.created',
+						'ShopOrder.total',
+						'ShopOrder.assigned_user_id',
+						'ShopAssignedUser.id',
+						'ShopAssignedUser.prefered_name'
+					)
+				));
+
+				$return = array();
+				foreach ($shopOrders as $k => $shopOrder) {
+					$return['items'][] = array(
+						'id' => $k,
+						'class' => 'past',
+						'desc' => sprintf('#%s', $shopOrder['ShopOrder']['invoice_number']),
+						'start' => $shopOrder['ShopOrder']['created'],
+						'end' => date('Y-m-d H:i:s', strtotime($shopOrder['ShopOrder']['created']) + rand(0, 5 * 24 * 60 * 60)),
+						'lane' => $shopOrder['ShopOrder']['assigned_user_id']
+					);
+				}
+				$return['lanes'] = array(
+					array('id' => 1, 'label' => 'User 1'),
+					array('id' => 2, 'label' => 'User 2'),
+					array('id' => 3, 'label' => 'User 3'),
+					array('id' => 4, 'label' => 'User 4'),
+					array('id' => 5, 'label' => 'User 5'),
+				);
+				break;
+
+			case 'orders':
+				$shopOrders = $this->ShopOrder->find('all', array(
+					'contain' => array(
+						'InfinitasPaymentLog',
+					)
+				));
+				$return = array();
+				foreach ($shopOrders as $shopOrder) {
+					$return[] = array(
+						'invoice_number' => $shopOrder['ShopOrder']['invoice_number'],
+						'value' => $shopOrder['ShopOrder']['total'],
+						//'tax' => $shopOrder['ShopOrder']['tax'],
+						//'shipping' => $shopOrder['ShopOrder']['shipping'],
+						//'insurance' => $shopOrder['ShopOrder']['insurance'],
+						//'handling' => $shopOrder['ShopOrder']['handling'],
+						'date' => $shopOrder['ShopOrder']['created'],
+						'end_date' => date('Y-m-d H:i:s', strtotime($shopOrder['ShopOrder']['created']) + rand(0, 5 * 24 * 60 * 60)),
+						'user_id' => $shopOrder['ShopOrder']['user_id'],
+						//'fee' => $shopOrder['InfinitasPaymentLog']['transaction_fee'],
+						'product_count' => $shopOrder['ShopOrder']['shop_order_product_count']
+					);
+				}
+				break;
+
+			case 'grouped':
+				$return = array(
+					'days' => $this->ShopOrder->find('grouped', array(
+						'group' => 'days'
+					)),
+					'weeks' => $this->ShopOrder->find('grouped', array(
+						'group' => 'weeks'
+					)),
+					'months' => $this->ShopOrder->find('grouped', array(
+						'group' => 'months'
+					)),
+					'years' => $this->ShopOrder->find('grouped', array(
+						'group' => 'years'
+					)),
+				);
+
+				foreach ($return['weeks'] as $k => $week) {
+					$return['weeks'][$k]['_start'] = date('Y-m-d H:i:s', strtotime($week['year'] . 'W' . str_pad($week['week'], 2, '0', STR_PAD_LEFT)));
+				}
+				break;
+
+			default:
+				throw new InvalidArgumentException(__('shop', 'Unknown data type selected'));
+		}
+		echo json_encode($return);
+		exit;
+	}
+
 /**
  * Show detailed information on a single ShopOrder
  *

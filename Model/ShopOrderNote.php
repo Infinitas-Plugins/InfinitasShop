@@ -85,12 +85,6 @@ class ShopOrderNote extends ShopAppModel {
 					'rule' => 'validateRecordExists',
 					'message' => __d('shop', 'Invalid order status specified'),
 				)
-			),
-			'notes' => array(
-				'notEmpty' => array(
-					'rule' => 'notEmpty',
-					'message' => __d('shop', 'No order status specified'),
-				)
 			)
 		);
 	}

@@ -1736,7 +1736,7 @@ class ShopProduct extends ShopAppModel {
 				'shop_product_id' => $productId
 			));
 
-			foreach ($shopCategories as $k => $category) {
+			foreach (array_unique($shopCategories) as $k => $category) {
 				$shopCategories[$k] = array(
 					'shop_category_id' => $category,
 					'shop_product_id' => $productId
