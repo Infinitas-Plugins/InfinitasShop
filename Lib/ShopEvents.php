@@ -146,7 +146,12 @@ class ShopEvents extends AppEvents {
 	public function onRequireCssToLoad(Event $Event) {
 		if ($Event->Handler->request->params['admin']) {
 			return array(
-				'Shop.shop_admin'
+				'Shop.shop_admin',
+				'Shop.reports/crossfilter',
+				'Shop.reports/calendar',
+				'Shop.reports/gantt',
+				'Shop.reports/swimlane',
+				'Shop.reports/grouped',
 			);
 		}
 
@@ -165,7 +170,12 @@ class ShopEvents extends AppEvents {
 	public function onRequireJavascriptToLoad(Event $Event) {
 		if ($Event->Handler->request->params['admin']) {
 			return array(
-				'Shop.shop_admin'
+				'Shop.shop_admin',
+				'Shop.reports/orders',
+				'Shop.reports/calendar',
+				'Shop.reports/gantt',
+				'Shop.reports/swimlane',
+				'Shop.reports/grouped',
 			);
 		}
 

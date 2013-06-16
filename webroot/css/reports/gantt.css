@@ -1,0 +1,111 @@
+.gantt .axis path,
+.gantt .axis line {
+    fill: none;
+    stroke: none;
+    shape-rendering: crispEdges;
+}
+.gantt .axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.gantt .bar{
+    background-color:#fc0;
+    height:20px;
+    margin-bottom:10px;
+}
+.gantt .bar-wrapper{
+    width:100%;
+}
+.gantt .bar-wrapper:hover .bar{
+    opacity:.75;
+    -moz-opacity:.75;
+    -webkit-opacity:.75;
+}
+.gantt .bar-wrapper:hover .bar-name{
+    text-decoration: underline;
+
+}
+.gantt .bar-wrapper:hover {
+	background-color: gray;
+}
+.gantt .bar-name{
+    font-size:11px;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light","Helvetica Neue", Helvetica,sans-serif;
+    font-weight: 300;
+    position: absolute;
+    left: 0;
+    padding-top:4px;
+}
+.gantt .bar-name:hover{
+    cursor:default;
+}
+.gantt #button-container{
+    height:100px;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light","Helvetica Neue", Helvetica,sans-serif;
+    font-weight: 300;
+}
+.gantt h4{
+    padding:0;
+    margin:0;
+}
+.gantt .button-block li a{
+    font-size:14px;
+    color:#0CD3EE;
+    text-decoration: none;
+}
+.gantt .button-block li a:hover{
+    text-decoration: underline;
+}
+.gantt .button-block{
+    float:left;
+    margin-right:20px;
+}
+/**** Isotope Filtering ****/
+
+.gantt .isotope-item {
+  z-index: 2;
+}
+
+.gantt .isotope-hidden.isotope-item {
+  pointer-events: none;
+  z-index: 1;
+}
+
+/**** Isotope CSS3 transitions ****/
+
+.gantt .isotope,
+.gantt .isotope .isotope-item {
+  -webkit-transition-duration: 0.4s;
+     -moz-transition-duration: 0.4s;
+      -ms-transition-duration: 0.4s;
+       -o-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+}
+
+.gantt .isotope {
+  -webkit-transition-property: height, width;
+     -moz-transition-property: height, width;
+      -ms-transition-property: height, width;
+       -o-transition-property: height, width;
+          transition-property: height, width;
+}
+
+.gantt .isotope .isotope-item {
+  -webkit-transition-property: -webkit-transform, opacity;
+     -moz-transition-property:    -moz-transform, opacity;
+      -ms-transition-property:     -ms-transform, opacity;
+       -o-transition-property:      -o-transform, opacity;
+          transition-property:         transform, opacity;
+}
+
+/**** disabling Isotope CSS3 transitions ****/
+
+.gantt .isotope.no-transition,
+.gantt .isotope.no-transition .isotope-item,
+.gantt .isotope .isotope-item.no-transition {
+  -webkit-transition-duration: 0s;
+     -moz-transition-duration: 0s;
+      -ms-transition-duration: 0s;
+       -o-transition-duration: 0s;
+          transition-duration: 0s;
+}

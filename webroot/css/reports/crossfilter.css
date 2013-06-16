@@ -1,0 +1,85 @@
+@import url(http://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700);
+
+.crossfilter #charts {
+  padding: 10px 0;
+}
+
+.crossfilter .chart {
+  display: inline-block;
+  height: 151px;
+  margin-bottom: 20px;
+}
+
+.crossfilter .reset {
+  padding-left: 1em;
+  font-size: smaller;
+  color: #ccc;
+}
+
+.crossfilter .background.bar {
+  fill: #ccc;
+}
+
+.crossfilter .foreground.bar {
+  fill: steelblue;
+}
+
+.crossfilter .axis path, 
+.crossfilter .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.crossfilter .axis text {
+  font: 10px sans-serif;
+}
+
+.crossfilter .brush rect.extent {
+  fill: steelblue;
+  fill-opacity: .125;
+}
+
+.crossfilter .brush .resize path {
+  fill: #eee;
+  stroke: #666;
+}
+
+.crossfilter #order-list .date,
+.crossfilter #order-list .day {
+  margin-bottom: .4em;
+}
+
+.crossfilter #order-list .order {
+  line-height: 1.5em;
+  background: #eee;
+  width: 640px;
+  margin-bottom: 1px;
+}
+
+.crossfilter #order-list .time {
+  color: #999;
+}
+
+.crossfilter #order-list .order div {
+  display: inline-block;
+  width: 100px;
+}
+
+.crossfilter #order-list div.distance,
+.crossfilter #order-list div.delay {
+  width: 160px;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.crossfilter #order-list .early {
+  color: green;
+}
+
+.crossfilter aside {
+  position: absolute;
+  left: 740px;
+  font-size: smaller;
+  width: 220px;
+}

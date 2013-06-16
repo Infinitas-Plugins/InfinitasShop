@@ -1,0 +1,45 @@
+.swimlane .chart {
+	shape-rendering: crispEdges;
+}
+
+.swimlane .mini text {
+	font: 9px sans-serif;	
+}
+
+.swimlane .main text {
+	font: 12px sans-serif;	
+}
+
+.swimlane .month text {
+	text-anchor: start;
+}
+
+.swimlane .todayLine {
+	stroke: blue;
+	stroke-width: 1.5;
+}
+
+.swimlane .axis line, 
+.swimlane .axis path {
+	stroke: black;
+}
+
+.swimlane .miniItem {
+	stroke-width: 6;	
+}
+
+.swimlane .future {
+	stroke: gray;
+	fill: #ddd;
+}
+
+.past {
+	stroke: green;
+	fill: lightgreen;
+}
+
+.swimlane .brush .extent {
+	stroke: gray;
+	fill: blue;
+	fill-opacity: .165;
+}
