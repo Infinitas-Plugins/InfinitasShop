@@ -5,7 +5,7 @@
 	 * Auto generated database update
 	 */
 	 
-	class R509b160505bc4937b31c0c456318cd70 extends CakeRelease {
+	class R51d84d26cec443b48a0251126318cd70 extends CakeRelease {
 
 	/**
 	* Migration description
@@ -13,7 +13,7 @@
 	* @var string
 	* @access public
 	*/
-		public $description = 'Migration for Shop version 0.9.2';
+		public $description = 'Migration for Shop version 0.9.5';
 
 	/**
 	* Plugin name
@@ -32,6 +32,52 @@
 		public $migration = array(
 			'up' => array(
 			'create_table' => array(
+				'shop_addresses' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'user_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'company' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'address_1' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'address_2' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'geo_location_region_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'geo_location_country_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'post_code' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 10, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'billing' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
+				'shop_attribute_groups' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_attribute_count' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
+				'shop_attributes' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'slug' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'image' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 150, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_attribute_group_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_attribute_count' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+					'ordering' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 3),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'fk_shop_attributes_shop_attribute_groups2_idx' => array('column' => 'shop_attribute_group_id', 'unique' => 0),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
 				'shop_branch_stock_logs' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_branch_stock_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -47,12 +93,12 @@
 				'shop_branch_stocks' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_branch_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_variant_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'stock' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_branch_stocks_shop_products1' => array('column' => 'shop_product_id', 'unique' => 0),
 						'fk_shop_branch_stocks_shop_branches1' => array('column' => 'shop_branch_id', 'unique' => 0),
+						'fk_shop_branch_stocks_shop_product_variants1' => array('column' => 'shop_product_variant_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -81,7 +127,7 @@
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 					),
-					'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'InnoDB'),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
 				'shop_categories' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
@@ -143,10 +189,15 @@
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'image' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'ext' => array('type' => 'string', 'null' => false, 'default' => 'jpg', 'length' => 4, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'keywords' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'colour_1' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 6, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'colour_2' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 6, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'colour_3' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 6, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'colour_1' => array('column' => 'colour_1', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -161,30 +212,16 @@
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM'),
 				),
-				'shop_list_product_options' => array(
-					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_list_product_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_option_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_option_value_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_list_product_options_shop_lists1_idx' => array('column' => 'shop_list_product_id', 'unique' => 0),
-						'fk_shop_list_product_options_shop_options1_idx' => array('column' => 'shop_option_id', 'unique' => 0),
-						'fk_shop_list_product_options_shop_option_values1_idx' => array('column' => 'shop_option_value_id', 'unique' => 0),
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
 				'shop_list_products' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_list_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_product_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_variant_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'quantity' => array('type' => 'float', 'null' => false, 'default' => '1.00000', 'length' => '15,5'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_wishlists_shop_products1_idx' => array('column' => 'shop_product_id', 'unique' => 0),
+						'fk_shop_wishlists_shop_products1_idx' => array('column' => 'shop_product_variant_id', 'unique' => 0),
 						'fk_shop_lists_shop_lists_users1_idx' => array('column' => 'shop_list_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'MyISAM'),
@@ -192,9 +229,11 @@
 				'shop_lists' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'token' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'user_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_shipping_method_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_payment_method_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_list_product_count' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 8),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
@@ -209,12 +248,24 @@
 					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'description' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'product_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 10, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'colour' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 6, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_option_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 						'fk_shop_attributes_shop_attribute_groups1' => array('column' => 'shop_option_id', 'unique' => 0),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
+				'shop_option_variants' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_variant_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_option_value_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'fk_shop_option_variants_shop_product_variants1_idx' => array('column' => 'shop_product_variant_id', 'unique' => 0),
+						'fk_shop_option_variants_shop_option_values1_idx' => array('column' => 'shop_option_value_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -238,11 +289,31 @@
 					'shop_order_status_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'notes' => array('type' => 'text', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'user_notified' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+					'internal' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 						'fk_shop_order_notes_order_statuses1_idx' => array('column' => 'shop_order_status_id', 'unique' => 0),
 						'fk_shop_order_notes_shop_orders1_idx' => array('column' => 'shop_order_id', 'unique' => 0),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
+				'shop_order_products' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_order_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_variant_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_type_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'quantity' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '10,3'),
+					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 150, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'brand' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'product_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'time_to_purchase' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 10),
+					'view_to_purchase' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 5),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'fk_shop_order_products_shop_orders1_idx' => array('column' => 'shop_order_id', 'unique' => 0),
+						'fk_shop_order_products_shop_products1_idx' => array('column' => 'shop_product_variant_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -256,23 +327,32 @@
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 					),
-					'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'InnoDB'),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
 				'shop_orders' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'invoice_number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'invoice_number' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 5, 'key' => 'unique'),
 					'user_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'total' => array('type' => 'float', 'null' => false, 'default' => '0.000000', 'length' => '15,6'),
+					'tax' => array('type' => 'float', 'null' => false, 'default' => '0.000000', 'length' => '15,6'),
+					'shipping' => array('type' => 'float', 'null' => false, 'default' => '0.000000', 'length' => '15,6'),
+					'insurance' => array('type' => 'float', 'null' => false, 'default' => '0.000000', 'length' => '15,6'),
+					'handling' => array('type' => 'float', 'null' => false, 'default' => '0.000000', 'length' => '15,6'),
 					'shop_billing_address_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_shipping_address_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_payment_method_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_shipping_method_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'tracking_number' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'infinitas_payment_log_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_order_status_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'assigned_user_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'ip_address' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_order_product_count' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 8),
 					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'invoice_number' => array('column' => 'invoice_number', 'unique' => 1),
 						'fk_shop_orders_order_statuses1_idx' => array('column' => 'shop_order_status_id', 'unique' => 0),
 						'fk_shop_orders_shop_user_addresses1_idx' => array('column' => 'shop_billing_address_id', 'unique' => 0),
 						'fk_shop_orders_shop_user_addresses2_idx' => array('column' => 'shop_shipping_address_id', 'unique' => 0),
@@ -281,22 +361,21 @@
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
-				'shop_payment_method_apis' => array(
+				'shop_payment_methods' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_payment_method_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'email' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 150, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'username' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 150, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'api_url' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_currency_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'encryption_certificate_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'encryption_key_file' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'encryption_certificate_file' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'encryption_provider_certificate_file' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'encryption_build_notation' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 100, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'name' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'active' => array('type' => 'boolean', 'null' => true, 'default' => '1'),
+					'ordering' => array('type' => 'integer', 'null' => true, 'default' => NULL, 'length' => 5),
+					'debug' => array('type' => 'boolean', 'null' => true, 'default' => '0'),
+					'total_minimum' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '15,5'),
+					'total_maximum' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '15,5'),
+					'require_login' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+					'infinitas_payment_method_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'processing_fee' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '15,5'),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_payment_method_apis_shop_currencies1_idx' => array('column' => 'shop_currency_id', 'unique' => 0),
-						'fk_payment_method_apis_shop_payment_methods1_idx' => array('column' => 'shop_payment_method_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -311,7 +390,18 @@
 					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'shop_product_id_UNIQUE' => array('column' => 'foreign_key', 'unique' => 1),
+						'asd' => array('column' => 'foreign_key', 'unique' => 1),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
+				'shop_product_attributes' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_attribute_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'fk_shop_product_attributes_shop_products1_idx' => array('column' => 'shop_product_id', 'unique' => 0),
+						'fk_shop_product_attributes_shop_attributes1_idx' => array('column' => 'shop_attribute_id', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -341,13 +431,26 @@
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
+				'shop_product_variants' => array(
+					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_product_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'master' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
+					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'modified' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
+					'indexes' => array(
+						'PRIMARY' => array('column' => 'id', 'unique' => 1),
+						'fk_shop_product_variants_shop_products1_idx' => array('column' => 'shop_product_id', 'unique' => 0),
+					),
+					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
+				),
 				'shop_products' => array(
 					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'name' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'slug' => array('type' => 'string', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'description' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'specifications' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'active' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+					'active' => array('type' => 'boolean', 'null' => false, 'default' => '0', 'key' => 'index'),
 					'shop_image_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_product_type_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'rating' => array('type' => 'float', 'null' => true, 'default' => '0'),
@@ -357,52 +460,20 @@
 					'product_code' => array('type' => 'string', 'null' => true, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_supplier_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 					'shop_brand_id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+					'quantity_unit' => array('type' => 'float', 'null' => false, 'default' => '1.0000', 'length' => '5,4'),
+					'quantity_min' => array('type' => 'float', 'null' => false, 'default' => '1.00000', 'length' => '10,5'),
+					'quantity_max' => array('type' => 'float', 'null' => true, 'default' => NULL, 'length' => '10,5'),
 					'available' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-					'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
+					'call_for_price' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+					'shop_product_attribute_count' => array('type' => 'integer', 'null' => false, 'default' => '0', 'length' => 5),
+					'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL, 'key' => 'index'),
 					'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 					'indexes' => array(
 						'PRIMARY' => array('column' => 'id', 'unique' => 1),
 						'fk_shop_products_shop_suppliers1' => array('column' => 'shop_supplier_id', 'unique' => 0),
+						'list' => array('column' => array('active', 'available'), 'unique' => 0),
+						'created' => array('column' => 'created', 'unique' => 0),
 						'fk_shop_products_shop_images1' => array('column' => 'shop_image_id', 'unique' => 0),
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'shop_products_option_ignores' => array(
-					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_option_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'foreign_key' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_option_ignores_shop_options1' => array('column' => 'shop_option_id', 'unique' => 0),
-						'fk_shop_option_ignores_shop_products1' => array('column' => 'foreign_key', 'unique' => 0),
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'shop_products_option_value_ignores' => array(
-					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_option_value_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'foreign_key' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_products_option_value_ignores_shop_products1' => array('column' => 'foreign_key', 'unique' => 0),
-						'fk_shop_products_option_value_ignores_shop_option_values1' => array('column' => 'shop_option_value_id', 'unique' => 0),
-					),
-					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
-				),
-				'shop_products_option_value_overrides' => array(
-					'id' => array('type' => 'string', 'null' => false, 'default' => NULL, 'length' => 36, 'key' => 'primary', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'shop_option_value_id' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'model' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 50, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'foreign_key' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => 36, 'key' => 'index', 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-					'created' => array('type' => 'datetime', 'null' => true, 'default' => NULL),
-					'indexes' => array(
-						'PRIMARY' => array('column' => 'id', 'unique' => 1),
-						'fk_shop_option_values_products_shop_option_values1' => array('column' => 'shop_option_value_id', 'unique' => 0),
-						'fk_shop_product_option_value_overides_shop_products1' => array('column' => 'foreign_key', 'unique' => 0),
 					),
 					'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB'),
 				),
@@ -522,7 +593,7 @@
 		),
 		'down' => array(
 			'drop_table' => array(
-				'shop_branch_stock_logs', 'shop_branch_stocks', 'shop_branches', 'shop_brands', 'shop_categories', 'shop_categories_products', 'shop_currencies', 'shop_images', 'shop_images_products', 'shop_list_product_options', 'shop_list_products', 'shop_lists', 'shop_option_values', 'shop_options', 'shop_order_notes', 'shop_order_statuses', 'shop_orders', 'shop_payment_method_apis', 'shop_prices', 'shop_product_types', 'shop_product_types_options', 'shop_products', 'shop_products_option_ignores', 'shop_products_option_value_ignores', 'shop_products_option_value_overrides', 'shop_products_specials', 'shop_shipping_method_values', 'shop_shipping_methods', 'shop_sizes', 'shop_specials', 'shop_spotlights', 'shop_suppliers'
+				'shop_addresses', 'shop_attribute_groups', 'shop_attributes', 'shop_branch_stock_logs', 'shop_branch_stocks', 'shop_branches', 'shop_brands', 'shop_categories', 'shop_categories_products', 'shop_currencies', 'shop_images', 'shop_images_products', 'shop_list_products', 'shop_lists', 'shop_option_values', 'shop_option_variants', 'shop_options', 'shop_order_notes', 'shop_order_products', 'shop_order_statuses', 'shop_orders', 'shop_payment_methods', 'shop_prices', 'shop_product_attributes', 'shop_product_types', 'shop_product_types_options', 'shop_product_variants', 'shop_products', 'shop_products_specials', 'shop_shipping_method_values', 'shop_shipping_methods', 'shop_sizes', 'shop_specials', 'shop_spotlights', 'shop_suppliers'
 			),
 		),
 		);
